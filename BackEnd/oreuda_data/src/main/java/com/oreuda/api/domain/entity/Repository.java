@@ -1,7 +1,11 @@
 package com.oreuda.api.domain.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,8 +41,13 @@ public class Repository {
 	// star 수
 	private int starCount;
 
-	// 나의 커밋 수
-	private int myCommitCount;
+	// 연도별 커밋
+	@OneToMany
+	private List<YearlyCommit> yearlyCommit = new ArrayList<>();
+
+	// 일별 커밋
+	@OneToMany
+	private List<DailyCommit> dailyCommit = new ArrayList<>();
 
 	// 수정일시
 	private String updateDate;
