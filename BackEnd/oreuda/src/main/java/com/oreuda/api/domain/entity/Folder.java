@@ -1,5 +1,7 @@
 package com.oreuda.api.domain.entity;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,9 +28,9 @@ public class Folder {
 	private Long id;
 
 	// 사용자
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
 	@NotNull
+	@JoinColumn(name = "user_id")
+	@ManyToOne(fetch = FetchType.LAZY)
 	private User user;
 
 	// 폴더명
@@ -40,6 +42,21 @@ public class Folder {
 	@NotNull
 	@Column(name = "folder_color")
 	private String color;
+
+	// 폴더 상태
+	@NotNull
+	@Column(name = "folder_status", length = 36)
+	private String status;
+
+	// 폴더 순서
+	@NotNull
+	@Column(name = "folder_order")
+	private int order;
+
+	// 폴더 생성 일자
+	@NotNull
+	@Column(name = "folder_date")
+	private LocalDateTime date;
 
 	public Folder() {
 	}
