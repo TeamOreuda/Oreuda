@@ -5,5 +5,15 @@ spring:
       client:
         registration:
           github:
-            client-id: 7b0b2b0b
-            client-secret: 7b0b2b0b
+            client-id: 2be30667924d9df85864
+            client-secret: e540d97b9595cb46b4a6d8bddadee78fd8bd6efc
+#            scope: user:email,read:user
+            scope: user:email,read:user,repo
+            client-name: GitHub
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            client-authentication-method: POST
+            authorization-grant-type: authorization_code
+            provider: github
+#        provider:
+#          github:
+#            authorization-uri:
