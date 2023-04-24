@@ -1,4 +1,4 @@
-package com.oreuda.api.domain.entity;
+package com.oreuda.api.domain.entity.readme;
 
 
 import javax.persistence.Column;

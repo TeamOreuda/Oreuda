@@ -11,6 +11,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
+import com.oreuda.api.domain.entity.readme.Contact;
+import com.oreuda.api.domain.entity.readme.Gitstats;
+import com.oreuda.api.domain.entity.readme.MostLanguage;
+import com.oreuda.api.domain.entity.readme.ReadmeTechstack;
+import com.oreuda.api.domain.entity.readme.Writing;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,8 +35,8 @@ public class Readme {
 
 	// 사용자
 	@NotNull
-	@JoinColumn(name = "user_id")
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
 	private User user;
 
 	// 리드미 종류
@@ -43,7 +49,7 @@ public class Readme {
 	@Column(name = "readme_order")
 	private int order;
 
-	// 리드미 종류
+	// 백준
 	@Column(name = "readme_boj")
 	private String boj;
 
@@ -61,6 +67,11 @@ public class Readme {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "contact_id")
 	private Contact contact;
+
+	// 주로 사용하는 언어
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "most_language_id")
+	private MostLanguage mostLanguage;
 
 
 	// 리드미 기술 스택
