@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Oreuda",
+  "description": "프로젝트 햣의 오르다 확장 프로그램입니다.",
+  "version": "1.0.0",
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "Oreuda"
+  },
+  "icons": {
+    "192": "logo192.png",
+    "512": "logo512.png"
+  },
+  "permissions": ["scripting"]
+}
