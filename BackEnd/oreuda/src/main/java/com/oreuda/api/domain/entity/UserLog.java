@@ -28,9 +28,9 @@ public class UserLog {
 	private Long id;
 
 	// 사용자
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
 	@NotNull
+	@JoinColumn(name = "user_id")
+	@ManyToOne(fetch = FetchType.LAZY)
 	private User user;
 
 	// 사용자 로그 일시
