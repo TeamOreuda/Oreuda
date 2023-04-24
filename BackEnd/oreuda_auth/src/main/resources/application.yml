@@ -1,0 +1,24 @@
+server:
+  port: 8090
+
+spring:
+  #MySQL
+  datasource:
+    url: jdbc:mysql://localhost:3306/oreuda_auth?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
+    username: oreuda
+    password: git0410
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+#    properties:
+#      hibernate:
+#        format_sql: true
+
+  profiles:
+    include: auth
