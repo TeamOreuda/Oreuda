@@ -1,10 +1,11 @@
-package com.oreuda.api.domain.entity;
+package com.oreuda.api.domain.entity.readme;
 
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,23 +15,20 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class Techstack {
+public class Gitstats {
 
 	// 기본키
 	@Id
 	@GeneratedValue
-	@Column(name = "techstack_id")
+	@Column(name = "gitstats_id")
 	private Long id;
 
-	// 기술 스택 이름
-	@Column(name = "techstack_name")
-	private String name;
+	// 테마
+	@NotNull
+	@Column(name = "gitstats_theme")
+	private String theme;
 
-	// 기술 스택 순서
-	@Column(name = "techstack_order")
-	private int order;
-
-	public Techstack() {
+	public Gitstats() {
 	}
 
 }

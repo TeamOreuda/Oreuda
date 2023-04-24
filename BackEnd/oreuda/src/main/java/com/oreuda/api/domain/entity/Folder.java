@@ -29,8 +29,8 @@ public class Folder {
 
 	// 사용자
 	@NotNull
-	@JoinColumn(name = "user_id")
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
 	private User user;
 
 	// 폴더명

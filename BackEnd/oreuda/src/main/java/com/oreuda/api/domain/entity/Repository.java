@@ -27,8 +27,8 @@ public class Repository {
 
 	// 폴더
 	@NotNull
-	@JoinColumn(name = "folder_id")
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "folder_id")
 	private Folder folder;
 
 	// 레포지토리 url
