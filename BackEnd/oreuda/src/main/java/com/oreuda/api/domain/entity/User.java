@@ -61,6 +61,11 @@ public class User {
 	@Column(name = "user_streak_max")
 	private int streakMax;
 
+	// 사용자 주언어
+	@NotNull
+	@Column(name = "user_most_language")
+	private String mostLanguage;
+
 	public User() {
 	}
 
