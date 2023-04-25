@@ -12,6 +12,7 @@ import java.util.Map;
 @Getter
 //@RequiredArgsConstructor
 //@AllArgsConstructor
+//@Builder
 public class OAuth2Attributes {
     private final Map<String, Object> attributes;
     private final String nameAttributeKey;
