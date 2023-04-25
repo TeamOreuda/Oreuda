@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,9 +22,10 @@ import java.util.UUID;
 @Builder
 public class Auth {
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @GeneratedValue(generator = "auth_id")
+    @GenericGenerator(name = "auth_id", strategy = "uuid2")
     @Column(name = "auth_id", updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
+    @Type(type = "uuid-char")
     private UUID authId;
 
     @NotNull

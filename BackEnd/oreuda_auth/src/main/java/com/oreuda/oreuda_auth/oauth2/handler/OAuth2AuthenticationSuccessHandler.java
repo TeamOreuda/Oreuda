@@ -1,5 +1,7 @@
 package com.oreuda.oreuda_auth.oauth2.handler;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.oreuda.oreuda_auth.domain.dto.AuthDto;
 import com.oreuda.oreuda_auth.oauth2.Provider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Slf4j
@@ -20,12 +23,13 @@ import java.util.Map;
 @Component
 public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    private String redirectUrl = "https://localhost:8080";
+    private String redirectUrl = "https://localhost:8080/oauth2/success";
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         log.info("로그인 성공");
 //        String[] path = request.getRequestURI().split("/");
+//        log.info("path = {}", new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(path));
 //        Provider provider = Provider.valueOf(path[path.length - 1].toUpperCase());
 //        String oauthId = authentication.getName();
 //        String uri = UriComponentsBuilder.fromUriString("/oauth2/success")
@@ -36,6 +40,11 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
 
         OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
         Map<String, Object> attributes = oauth2User.getAttributes();
-
+        AuthDto authDto = AuthDto.builder()
+                .code(String.valueOf(attributes.get("id")))
+                .registrationDate(LocalDateTime.now())
+                .build();
+        log.info("authDto = {}", authDto);
+        response.sendRedirect(redirectUrl);
     }
 }
