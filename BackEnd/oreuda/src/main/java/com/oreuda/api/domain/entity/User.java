@@ -66,6 +66,11 @@ public class User {
 	@Column(name = "user_most_language")
 	private String mostLanguage;
 
+	// 사용자 업데이트 시간
+	@NotNull
+	@Column(name = "user_update_time")
+	private LocalDate updateTime;
+
 	public User() {
 	}
 
