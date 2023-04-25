@@ -47,3 +47,34 @@
 ## 웹앱 개발시 중요한 포인트
 
 - 웹 사이트를 개발시 **TTV와 TTI**(Time To Interact)를 최소로 하는 것이 정말 중요함
+
+## 기본 파일 설명
+
+`head.tsx` → 우리 홈페이지의 헤더
+
+`layout.tsx` → 재사용 가능한 기본 레이아웃 골격(상태를 계속 기억하고 유지함)
+
+- ex) header, nav, footer
+
+`template.tsx` → 골격은 정하지만 내부 상태는 기억하지 않음
+
+`page.tsx` → 우리 홈페이지의 첫 페이지 컴포넌트
+
+`eslint.json` → eslint 규칙을 정의할 수  있는 파일
+
+`next-env.d.ts` → next에 관련된 typescript 정의 파일
+
+`next.config.js` → next에 관련해서 설정해야 할 내용 작성 파일
+
+`package.json` → 실행할 수 있는 명령어들(scripts)과 외부 디펜던시들이 작성된 파일
+
+- scripts
+    - dev: 우리가 개발할 때 쓰는 개발용 모드
+    - build : 서버에 배포한 뒤 프로젝트를 빌드할 때
+    - start : 서버에 배포한 뒤 빌드 후 실행할 때 쓰는 것
+    - lint : 프로젝트 소스코드를 검사할 때 쓰는 것
+        - vsc의 eslint 익스텐션: lint를 실행하지 않아도 즉각적으로 소스코드를 검사해줌
+    - ※ SSG으로 만들어도 dev로 실행하게 되면 빌드를 하지 않음 → 정적인 HTML 파일이 없음 → 항상 SSR로 행동을 함
+    따라서,  SSG로 만든것을 확인하기 위해서는 → build를 하고 → start를 해야 함
+
+`tsconfig.json` → compilerOptions : typescript로 개발하고 실제로 배포할 때 js 버전을 어디까지 컴파일할 지 정의
