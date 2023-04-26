@@ -17,6 +17,8 @@ public class AuthDto {
 
     private String code;
 
+    private String accessToken;
+
     private LocalDateTime registrationDate;
 
     public Auth toAuth(AuthDto authDto) {

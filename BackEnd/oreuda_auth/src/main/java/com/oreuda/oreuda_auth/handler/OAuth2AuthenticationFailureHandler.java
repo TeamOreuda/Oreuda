@@ -1,4 +1,4 @@
-package com.oreuda.oreuda_auth.oauth2.handler;
+package com.oreuda.oreuda_auth.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
