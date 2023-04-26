@@ -10,31 +10,37 @@
   width: 300px;
   height: 100vh;
   background-color: #fffff6;
+
+  ul {
+    padding-left: 0px;
+    margin : {
+      bottom: 40px;
+      left: 40px;
+    }
+
+    .link {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: black;
+
+      .img {
+        margin-right: 16px;
+      }
+    }
+  }
 }
 
 .header {
-  margin-top: 40px;
-  margin-bottom: 48px;
-  margin-left: 40px;
-}
-
-.img {
-  margin-right: 16px;
-}
-
-.navul {
-  padding-left: 0px;
-  margin-top: 32px;
-  margin-left: 40px;
-}
-
-.link {
   display: flex;
   align-items: center;
-  text-decoration: none;
-  color: black;
-}
+  margin: {
+    top: 40px;
+    bottom: 48px;
+    left: 40px;
+  }
 
-.logout {
-  margin-bottom: 32px;
+  .img {
+    margin-right: 24px;
+  }
 }

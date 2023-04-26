@@ -16,14 +16,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <header className={st.header}>
               <Image
                 className={st.img}
-                src="/images/character/sprout.png"
+                src="/images/character/oreuda.svg"
                 alt=""
-                width={24}
-                height={24}
+                width={40}
+                height={40}
               />
               OREUDA
             </header>
-            <ul className={st.navul}>
+            <ul>
               <Link href="" className={st.link}>
                 <Image
                   className={st.img}
@@ -35,7 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 홈
               </Link>
             </ul>
-            <ul className={st.navul}>
+            <ul>
               <Link href="/repository" className={st.link}>
                 <Image
                   className={st.img}
@@ -47,7 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 레포지토리
               </Link>
             </ul>
-            <ul className={st.navul}>
+            <ul>
               <Link href="/readme" className={st.link}>
                 <Image
                   className={st.img}
@@ -60,7 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </Link>
             </ul>
           </div>
-          <ul className={st.logout}>
+          <ul>
             <Link href="" className={st.link}>
               <Image
                 className={st.img}
