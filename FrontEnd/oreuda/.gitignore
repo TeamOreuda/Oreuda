@@ -33,19 +33,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-
-
-# 빈파일
-!Component/Landing/.keep
-!Component/Main/.keep
-!Component/Readme/.keep
-!Component/Repository/.keep
-!Style/Color/.keep
-!Style/Common/.keep
-!Api/Folders/.keep
-!Api/Oauth/.keep
-!Api/Plant/.keep
-!Api/Readme/.keep
-!Api/Repository/.keep
-!Api/Users/.keep
