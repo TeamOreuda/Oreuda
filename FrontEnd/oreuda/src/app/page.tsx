@@ -1,6 +1,7 @@
 import st from "./page.module.scss";
 import Statistic from "@/Component/Main/statistic";
 import Character from "@/Component/Main/character";
+import CharacterGraph from "@/Component/Main/charactergraph";
 
 export default function Home() {
   return (
@@ -8,7 +9,7 @@ export default function Home() {
       <Statistic />
       <div className={st.character}>
         <Character />
-        <div>그래프</div>
+        <CharacterGraph />
       </div>
     </div>
   );
