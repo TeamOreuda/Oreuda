@@ -1,0 +1,59 @@
+type Query {
+    viewer: User!
+}
+
+type User {
+    id: ID!
+    name: String!
+    repositories(first: Int!, after: String): RepositoryConnection!
+    organizations(first: Int!, after: String): OrganizationConnection!
+}
+
+type Repository {
+    id: ID!
+    nameWithOwner: String!
+    description: String
+    isPrivate: Boolean!
+    url: String!
+    stargazerCount: Int!
+    primaryLanguage: Language
+    createdAt: String!
+    updatedAt: String!
+}
+
+type Organization {
+    id: ID!
+    name: String!
+    description: String
+    url: String!
+    repositories(first: Int!, after: String): RepositoryConnection!
+}
+
+type RepositoryConnection {
+    edges: [RepositoryEdge!]!
+    pageInfo: PageInfo!
+}
+
+type RepositoryEdge {
+    cursor: String!
+    node: Repository!
+}
+
+type Language {
+    name: String!
+}
+
+type PageInfo {
+    endCursor: String
+    hasNextPage: Boolean!
+}
+
+type OrganizationConnection {
+    edges: [OrganizationEdge!]!
+    pageInfo: PageInfo!
+}
+
+type OrganizationEdge {
+    cursor: String!
+    node: Organization!
+}

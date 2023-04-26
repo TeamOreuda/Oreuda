@@ -1,0 +1,31 @@
+query GetOrgRepositories($perPage: Int!, $cursor: String) {
+    viewer {
+        organizations(first: $perPage) {
+            edges {
+                node {
+                    repositories(first: $perPage, after: $cursor) {
+                        edges {
+                            node {
+                                id
+                                nameWithOwner
+                                description
+                                isPrivate
+                                url
+                                stargazerCount
+                                primaryLanguage{
+                                    name
+                                }
+                                createdAt
+                                updatedAt
+                            }
+                        }
+                        pageInfo {
+                            endCursor
+                            hasNextPage
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
