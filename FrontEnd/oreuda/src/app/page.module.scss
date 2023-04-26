@@ -1,4 +1,8 @@
 .body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
   width: 100vw;
   margin: {
     top: 40px;
@@ -6,4 +10,9 @@
     left: 64px;
     right: 64px;
   }
+}
+
+.character {
+  display: flex;
+  justify-content: space-between;
 }
