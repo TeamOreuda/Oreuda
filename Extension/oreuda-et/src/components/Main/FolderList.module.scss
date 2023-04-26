@@ -1,0 +1,18 @@
+.folderList{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: center;
+    margin: 0 auto;
+    width: 92%;
+    .folderImg {
+      width: 64px;
+      height: 64px;
+    }
+    .folderTitle{
+        width: 64px;
+        text-overflow: ellipsis;
+    }
+}
+

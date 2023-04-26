@@ -11,5 +11,11 @@
     "192": "logo192.png",
     "512": "logo512.png"
   },
-  "permissions": ["scripting"]
+  "permissions": [
+    "scripting",
+    "cookies",
+    "http://localhost/",
+    "http://localhost:3000/"
+  ],
+  "host_permissions": ["<all_urls>"]
 }
