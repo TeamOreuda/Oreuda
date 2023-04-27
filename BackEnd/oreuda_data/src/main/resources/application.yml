@@ -25,10 +25,6 @@ spring:
         time_zone: Asia/Seoul
     open-in-view: false
 
-  graphql:
-    graphiql:
-      enabled: true
-
   # Redis
   cache:
     type: redis
@@ -37,6 +33,8 @@ spring:
       port: 6379
 #    password: git0410
 
-#graphql:
-#  graphiql:
-#    enabled: true
+# graphql
+graphql:
+  graphiql:
+    enabled: true
+

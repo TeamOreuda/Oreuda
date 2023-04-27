@@ -35,11 +35,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
 	// GraphQL
-//	implementation 'com.graphql-java-kickstart:graphql-spring-boot-starter:11.1.0'
-//	runtimeOnly 'com.graphql-java-kickstart:graphiql-spring-boot-starter:11.1.0'
-//	implementation 'com.graphql-java-kickstart:playground-spring-boot-starter:11.0.0'
-	implementation 'com.graphql-java-kickstart:graphql-spring-boot-starter:13.0.0'
-	testImplementation 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:13.0.0'
+	implementation 'com.graphql-java-kickstart:graphql-webclient-spring-boot-starter:1.0.0'
 }
 
 tasks.named('test') {

@@ -1,6 +1,6 @@
 query GetRepositories($perPage: Int!, $cursor: String) {
     viewer {
-        repositories(first: $perPage, after: $cursor) {
+        repositories(first: $perPage, after: $cursor, isFork: false) {
             edges {
                 node {
                     id

@@ -1,9 +1,9 @@
-query GetOrgRepositories($perPage: Int!, $cursor: String) {
+query GetOrgRepositories($perPage: Int!) {
     viewer {
         organizations(first: $perPage) {
             edges {
                 node {
-                    repositories(first: $perPage, after: $cursor) {
+                    repositories(first: $perPage) {
                         edges {
                             node {
                                 id
@@ -18,10 +18,6 @@ query GetOrgRepositories($perPage: Int!, $cursor: String) {
                                 createdAt
                                 updatedAt
                             }
-                        }
-                        pageInfo {
-                            endCursor
-                            hasNextPage
                         }
                     }
                 }
