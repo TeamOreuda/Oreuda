@@ -10,5 +10,6 @@ import lombok.Data;
 public class SignUpDto {
 
 	String userId;
+	String nickname;
 	String image;
 }
