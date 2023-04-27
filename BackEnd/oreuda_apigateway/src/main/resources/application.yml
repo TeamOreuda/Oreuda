@@ -1,0 +1,26 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: spring-cloud-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: business-server
+          uri: http://localhost:8080/
+          predicates:
+            - Path=/api/v1/users/**
+        - id: business-server
+          uri: http://localhost:8080/
+          predicates:
+            - Path=/api/v1/test/**
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defalutZone: http://localhost:8761/eureka
