@@ -92,7 +92,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             saveGitHubToken(String.valueOf(auth.getAuthId()), String.valueOf(attributes.get("accessToken")));
         }
         // 리다이렉트
-        String redirectUrl = "http://localhost:3000#/oauth2/success";
+        String redirectUrl = "http://localhost:3000/oauth2/success";
         String targetUrl = UriComponentsBuilder.fromUriString(redirectUrl)
                 .queryParam(TokenKey.ACCESS.getKey(), "Bearer-" + token.getAccessToken())
                 .queryParam(TokenKey.REFRESH.getKey(), "Bearer-" + token.getRefreshToken())

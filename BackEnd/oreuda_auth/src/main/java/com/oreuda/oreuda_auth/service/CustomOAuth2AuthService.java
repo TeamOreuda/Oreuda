@@ -37,6 +37,7 @@ public class CustomOAuth2AuthService implements OAuth2UserService<OAuth2UserRequ
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
         String accessToken = userRequest.getAccessToken().getTokenValue();
         OAuth2Attributes attributes = OAuth2Attributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes(), accessToken);
+        log.info("serviceAttributes = {}", new ObjectMapper().registerModule(new JavaTimeModule()).writerWithDefaultPrettyPrinter().writeValueAsString(attributes));
         Map<String, Object> attributesMap = attributes.convertToMap();
         return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("USER")), attributesMap, "id");
     }

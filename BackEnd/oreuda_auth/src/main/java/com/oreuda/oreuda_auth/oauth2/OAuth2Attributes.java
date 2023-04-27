@@ -16,7 +16,6 @@ public class OAuth2Attributes {
     private final String id;
     private final String attributeKey;
     private final String nickname;
-    private final String email;
     private final String image;
     private final Provider provider;
     private final String accessToken;
@@ -27,7 +26,6 @@ public class OAuth2Attributes {
         this.attributeKey = attributeKey;
         this.id = id;
         this.nickname = nickname;
-        this.email = email;
         this.image = image;
         this.provider = provider;
         this.accessToken = accessToken;
@@ -64,7 +62,6 @@ public class OAuth2Attributes {
         map.put("key", attributeKey);
         map.put("id", id);
         map.put("nickname", nickname);
-        map.put("email", email);
         map.put("image", image);
         map.put("provider", provider);
         map.put("accessToken", accessToken);
