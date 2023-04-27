@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import Header from "../../components/Main/Header";
 import FolderList from "../../components/Main/FolderList";
+import Footer from "../../components/Main/Footer";
 
 const Main = () => {
   const navigate = useNavigate();
@@ -35,6 +36,7 @@ const Main = () => {
       <>
         <Header></Header>
         <FolderList></FolderList>
+        <Footer></Footer>
       </>
     );
   }

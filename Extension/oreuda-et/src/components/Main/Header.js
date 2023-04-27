@@ -43,10 +43,10 @@ const Header = () => {
       </div>
       <div className={st.layoutRight}>
         <div className={st.renewalBtn} onClick={renewalData}>
-          <img src="/assets/renewal.png"></img>
+          <img className={st.renewalIcon} src="/assets/renewal.svg"></img>
         </div>
         <div className={st.settingBtn} onClick={setting}>
-          <img src="/assets/setting.png"></img>
+          <img className={st.settingIcon} src="/assets/setting.svg"></img>
         </div>
       </div>
     </div>

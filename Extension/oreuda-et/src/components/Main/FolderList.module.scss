@@ -1,18 +1,39 @@
-.folderList{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    flex-direction: row;
-    justify-content: space-between;
+@use '../../styles/list.scss' as list;
+
+.folderList {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  flex-direction: row;
+  justify-content: space-between;
+  @include list.list;
+  
+  .folderImg {
+    width: 64px;
+    height: 64px;
+  }
+  .folderImg:hover {
+    cursor: pointer;
+  }
+  .folderTitle {
+    width: 64px;
     text-align: center;
     margin: 0 auto;
-    width: 92%;
-    .folderImg {
-      width: 64px;
-      height: 64px;
-    }
-    .folderTitle{
-        width: 64px;
-        text-overflow: ellipsis;
-    }
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .folderTitle:hover {
+    cursor: pointer;
+    white-space: normal;
+    text-overflow: unset;
+  }
 }
-
+.folderList::-webkit-scrollbar {
+  width: 4px;
+}
+.folderList::-webkit-scrollbar-thumb {
+  background-color: #000000;
+}
+.folderList::-webkit-scrollbar-track {
+  background-color: grey;
+}
