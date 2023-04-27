@@ -8,7 +8,7 @@ spring:
     username: oreuda
     password: git0410
     driver-class-name: com.mysql.cj.jdbc.Driver
-
+  #JPA
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -16,9 +16,10 @@ spring:
     hibernate:
       ddl-auto: update
     open-in-view: false
-#    properties:
-#      hibernate:
-#        format_sql: true
+  #Redis
+  redis:
+    host: localhost
+    port: 6379
 
   profiles:
     include: auth
