@@ -5,8 +5,8 @@ type Query {
 type User {
     id: ID!
     name: String!
-    repositories(first: Int!, after: String): RepositoryConnection!
-    organizations(first: Int!, after: String): OrganizationConnection!
+    repositories(first: Int!, after: String, isFork: Boolean): RepositoryConnection!
+    organizations(first: Int!): OrganizationConnection!
 }
 
 type Repository {
@@ -30,13 +30,8 @@ type Organization {
 }
 
 type RepositoryConnection {
-    edges: [RepositoryEdge!]!
+    nodes: Repository!
     pageInfo: PageInfo!
-}
-
-type RepositoryEdge {
-    cursor: String!
-    node: Repository!
 }
 
 type Language {
@@ -49,11 +44,6 @@ type PageInfo {
 }
 
 type OrganizationConnection {
-    edges: [OrganizationEdge!]!
+    nodes: Organization!
     pageInfo: PageInfo!
-}
-
-type OrganizationEdge {
-    cursor: String!
-    node: Organization!
 }
