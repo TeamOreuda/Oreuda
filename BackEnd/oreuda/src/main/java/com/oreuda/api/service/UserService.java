@@ -39,7 +39,7 @@ public class UserService {
 			.image(signUpDto.getImage())
 			.joinDate(LocalDate.now())
 			.stats(0)
-			.nickname("ji")
+			.nickname(signUpDto.getNickname())
 			.commitCnt(100)
 			.repositoryCnt(10)
 			.streakMax(20)
