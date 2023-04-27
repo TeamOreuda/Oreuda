@@ -1,0 +1,30 @@
+.folderHeader {
+  display: flex;
+  width: 295px;
+  height: 26px;
+  .backBtn {
+    // height: 14px;
+    position: relative;
+    left: 3px;
+    top: 5px;
+    padding-right: 5px;
+    .backBtnIcon {
+      width: 9px;
+      height: 14px;
+    }
+  }
+  .folderName {
+    position: relative;
+    left: 3px;
+    top: 6px;
+    padding-right: 5px;
+  }
+  .folderIndicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 6px;
+    background-color: red;
+    position: relative;
+    top: 7px;
+  }
+}

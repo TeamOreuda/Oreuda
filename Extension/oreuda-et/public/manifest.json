@@ -13,9 +13,8 @@
   },
   "permissions": [
     "scripting",
-    "cookies",
-    "http://localhost/",
-    "http://localhost:3000/"
+    "cookies"
+
   ],
   "host_permissions": ["<all_urls>"]
 }
