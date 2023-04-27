@@ -52,4 +52,18 @@ public class GitHubClient {
 		// 		System.out.println("error@@@");
 		// 	});
 	}
+
+	public JsonNode getCommitByRepository(String accessToken, GraphQLRequest request) {
+		return webClient.post()
+			.uri(GITHUB_URL)
+			.header("Authorization", "Bearer " + accessToken)
+			.bodyValue(request.getRequestBody())
+			.retrieve()
+			.bodyToMono(JsonNode.class)
+			.block()
+			.get("data")
+			.get("repository")
+			.get("object")
+			.get("history");
+	}
 }

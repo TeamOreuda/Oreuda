@@ -18,10 +18,11 @@ public class DataService {
 	private final CommitService commitService;
 
 	public void getGitHubData(String userId) {
-		String accessToken = "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";
+		String accessToken = "";
 
 		repositoryService.getRepositories(accessToken, loadQueryFile("repository.graphql"));
 		repositoryService.getOrgRepositories(accessToken, loadQueryFile("org-repository.graphql"));
+		commitService.getCommitByRepository(accessToken, loadQueryFile("commit.graphql"));
 	}
 
 	private String loadQueryFile(String fileName) {

@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RepositoryService {
 
-	private final static int PER_PAGE = 10;
 	private final GitHubClient gitHubClient;
 
 	/**
@@ -25,7 +24,6 @@ public class RepositoryService {
 	public void getRepositories(String accessToken, String query) {
 		// GraphQL query 변수 설정
 		Map<String, Object> variables = new HashMap<>();
-		variables.put("perPage", PER_PAGE);
 
 		JsonNode data;
 		do {
@@ -44,12 +42,8 @@ public class RepositoryService {
 	 * @param accessToken
 	 */
 	public void getOrgRepositories(String accessToken, String query) {
-		// GraphQL query 변수 설정
-		Map<String, Object> variables = new HashMap<>();
-		variables.put("perPage", PER_PAGE);
-
 		JsonNode data = gitHubClient.getRepositories(accessToken, GraphQLRequest
-				.builder().query(query).variables(variables).build())
+				.builder().query(query).build())
 			.get("organizations");
 
 		System.out.println("org-repo");

@@ -15,27 +15,34 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CommitService {
 
-	private final static int PER_PAGE = 10;
 	private final GitHubClient gitHubClient;
 
 	/**
-	 * 사용자의 커밋 정보 불러오기
+	 * 사용자의 레포별 커밋 정보 불러오기
 	 * @param accessToken
 	 * @param query
 	 */
-	public void getRepositories(String accessToken, String query) {
+	public void getCommitByRepository(String accessToken, String query) {
+		// userId가 redis에 없으면 getViewer로 얻어오는 로직
+		String userId = "";
+
 		// GraphQL query 변수 설정
 		Map<String, Object> variables = new HashMap<>();
-		variables.put("perPage", PER_PAGE);
+		variables.put("userId", userId);
+
+		// repository별
+		String repoName = "";
+		String repoOwner = "";
+		variables.put("repoName", repoName);
+		variables.put("repoOwner", repoOwner);
 
 		JsonNode data;
 		do {
-			data = gitHubClient.getRepositories(accessToken, GraphQLRequest
-					.builder().query(query).variables(variables).build())
-				.get("repositories");
+			data = gitHubClient.getCommitByRepository(accessToken, GraphQLRequest
+					.builder().query(query).variables(variables).build());
 
-			System.out.println("repo");
-			System.out.println(data.get("edges"));
+			System.out.println("commit");
+			System.out.println(data.get("nodes"));
 			variables.put("cursor", data.get("pageInfo").get("endCursor"));
 		} while (data.get("pageInfo").get("hasNextPage").booleanValue());
 	}

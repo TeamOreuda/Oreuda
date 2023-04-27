@@ -1,5 +1,6 @@
 type Query {
     viewer: User!
+    repository(name: String!, owner: String!): RepositoryObject
 }
 
 type User {
@@ -46,4 +47,32 @@ type PageInfo {
 type OrganizationConnection {
     nodes: Organization!
     pageInfo: PageInfo!
+}
+
+type RepositoryObject {
+    object(expression: String!): GitObject
+}
+
+interface GitObject {
+    oid: String!
+}
+
+type Commit implements GitObject {
+    oid: String!
+    history(first: Int!, after: String, author: CommitAuthor): CommitHistoryConnection!
+}
+
+type CommitAuthor {
+    id: String!
+}
+
+type CommitHistoryConnection {
+    nodes: [CommitHistoryNode!]!
+    pageInfo: PageInfo!
+}
+
+type CommitHistoryNode {
+    id: String!
+    message: String!
+    committedDate: String!
 }

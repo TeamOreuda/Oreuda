@@ -1,8 +1,8 @@
-query GetOrgRepositories($perPage: Int!) {
+query GetOrgRepositories {
     viewer {
-        organizations(first: $perPage) {
+        organizations(first: 100) {
             nodes {
-                repositories(first: $perPage) {
+                repositories(first: 100) {
                     nodes {
                         id
                         nameWithOwner
