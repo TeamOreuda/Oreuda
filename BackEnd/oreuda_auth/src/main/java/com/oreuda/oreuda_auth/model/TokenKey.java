@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum TokenKey {
-    ACCESS("Authorization"), REFRESH("refreshToken");
+    ACCESS("Authorization"), REFRESH("RefreshToken");
 
     private String key;
 

@@ -33,7 +33,7 @@ public class TokenProvider implements InitializingBean {
             @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds,
             RedisTemplate<String, String> redisTemplate) {
         this.secret = secret;
-        this.tokenValidityInSeconds = tokenValidityInSeconds;
+        this.tokenValidityInSeconds = tokenValidityInSeconds * 1000;
         this.redisTemplate = redisTemplate;
     }
     // secret값을 Base64 Decode해서 key변수에 할당
@@ -44,13 +44,15 @@ public class TokenProvider implements InitializingBean {
     }
 
     public String getRefresh(String key) {
-        return redisTemplate.opsForValue().get(key);
+        String newKey = "refreshtoken_" + key;
+        return redisTemplate.opsForValue().get(newKey);
     }
 
     public void setRefresh(String key, String value, Long time) {
         ValueOperations<String, String> vop = redisTemplate.opsForValue();
-        vop.set(key, value);
-        redisTemplate.expire(key, time, TimeUnit.SECONDS);
+        String newKey = "refreshtoken_" + key;
+        vop.set(newKey, value);
+        redisTemplate.expire(newKey, time, TimeUnit.SECONDS);
     }
     // access token
     public String generateAccess(String userId, String role) {
@@ -58,9 +60,14 @@ public class TokenProvider implements InitializingBean {
     }
     // refresh token
     public String generateRefresh(String userId, String role) {
+        Long ttl = redisTemplate.getExpire("refreshtoken_" + userId);
+        log.info("ttl: " + ttl);
+        if (ttl != null && ttl > tokenValidityInSeconds * 24 * 2) {
+            return getRefresh(userId);
+        }
         return createToken(userId, role, TokenKey.REFRESH);
     }
-    //
+    // access token, refresh token
     public Token generateToken(String userId, String role) {
         return Token.builder()
                 .accessToken(generateAccess(userId, role))
@@ -101,14 +108,19 @@ public class TokenProvider implements InitializingBean {
     }
     // 토큰에서 claims 추출
     public Claims getClaims(String token) {
-        return Jwts.parserBuilder().setSigningKey(secret).build().parseClaimsJws(token).getBody();
+        try {
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        } catch (ExpiredJwtException e) {
+            // 만료된 토큰에서 claims 추출
+            return e.getClaims();
+        }
     }
     // 토큰의 유효기간 설정
     public Long getExpiration(TokenKey tokenKey) {
         String delimiter = tokenKey.getKey();
         if (delimiter.equals(TokenKey.ACCESS.getKey())) {
             // 2시간
-            return tokenValidityInSeconds * 2;
+            return tokenValidityInSeconds * 2 / 1000;
         } else if (delimiter.equals(TokenKey.REFRESH.getKey())) {
             // 1달
             return tokenValidityInSeconds * 24 * 30;

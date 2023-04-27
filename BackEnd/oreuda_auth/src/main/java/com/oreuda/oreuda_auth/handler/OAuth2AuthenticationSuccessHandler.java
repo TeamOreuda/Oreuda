@@ -61,15 +61,15 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             UserDto userDto = new UserDto(String.valueOf(auth.getAuthId()), String.valueOf(attributes.get("image")), String.valueOf(attributes.get("nickname")));
             // 토큰 발급
             token = tokenProvider.generateToken(userDto.getUserId(), Role.USER.getKey());
-            tokenProvider.setRefresh(
-                    "refreshtoken_" + auth.getAuthId(),
-                    token.getRefreshToken(),
-                    tokenProvider.getExpiration(TokenKey.REFRESH)
-            );
             // DB에 저장
             // userClient.insertUser(userDto);
             log.info("user = {}", new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(userDto));
             saveGitHubToken(String.valueOf(auth.getAuthId()), String.valueOf(attributes.get("accessToken")));
+            tokenProvider.setRefresh(
+                    String.valueOf(auth.getAuthId()),
+                    token.getRefreshToken(),
+                    tokenProvider.getExpiration(TokenKey.REFRESH)
+            );
         } else {
             // 로그인
             UserDto userDto = new UserDto(String.valueOf(auth.getAuthId()), String.valueOf(attributes.get("image")), String.valueOf(attributes.get("nickname")));
@@ -83,11 +83,16 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             } else {
                 // refresh token 재발급
                 token = tokenProvider.generateToken(userDto.getUserId(), Role.USER.getKey());
+                tokenProvider.setRefresh(
+                        String.valueOf(auth.getAuthId()),
+                        token.getRefreshToken(),
+                        tokenProvider.getExpiration(TokenKey.REFRESH)
+                );
             }
             saveGitHubToken(String.valueOf(auth.getAuthId()), String.valueOf(attributes.get("accessToken")));
         }
         // 리다이렉트
-        String redirectUrl = "http://localhost:8090/oauth2/success";
+        String redirectUrl = "http://localhost:3000#/oauth2/success";
         String targetUrl = UriComponentsBuilder.fromUriString(redirectUrl)
                 .queryParam(TokenKey.ACCESS.getKey(), "Bearer-" + token.getAccessToken())
                 .queryParam(TokenKey.REFRESH.getKey(), "Bearer-" + token.getRefreshToken())
