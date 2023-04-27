@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TestController {
 
-	@GetMapping("/api/v1/users")
+	@GetMapping("/api/v1/business-service")
 	public String springCloudService() {
 		return "business-service 호출!";
 	}

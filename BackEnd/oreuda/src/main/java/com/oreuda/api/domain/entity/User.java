@@ -1,6 +1,7 @@
 package com.oreuda.api.domain.entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,9 +23,8 @@ public class User {
 
 	// 기본키
 	@Id
-	@GeneratedValue
 	@Column(name = "user_id", length = 36)
-	private Long id;
+	private String id;
 
 	// 사용자 프로필 이미지
 	@NotNull
@@ -69,7 +69,7 @@ public class User {
 	// 사용자 업데이트 시간
 	@NotNull
 	@Column(name = "user_update_time")
-	private LocalDate updateTime;
+	private LocalDateTime updateTime;
 
 	public User() {
 	}
