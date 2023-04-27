@@ -28,8 +28,14 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-//	redis
+	//	redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+	// webclient
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+	// GraphQL
+	implementation 'com.graphql-java-kickstart:graphql-webclient-spring-boot-starter:1.0.0'
 }
 
 tasks.named('test') {

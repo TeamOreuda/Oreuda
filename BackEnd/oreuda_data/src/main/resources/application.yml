@@ -33,4 +33,8 @@ spring:
       port: 6379
 #    password: git0410
 
+# graphql
+graphql:
+  graphiql:
+    enabled: true
 

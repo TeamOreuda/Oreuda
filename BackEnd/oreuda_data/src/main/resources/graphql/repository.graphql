@@ -1,0 +1,23 @@
+query GetRepositories($cursor: String) {
+    viewer {
+        repositories(first: 100, after: $cursor, isFork: false) {
+            nodes {
+                id
+                nameWithOwner
+                description
+                isPrivate
+                url
+                stargazerCount
+                primaryLanguage{
+                    name
+                }
+                createdAt
+                updatedAt
+            }
+            pageInfo {
+                endCursor
+                hasNextPage
+            }
+        }
+    }
+}
