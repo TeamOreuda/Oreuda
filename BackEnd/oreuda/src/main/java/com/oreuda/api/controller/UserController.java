@@ -39,9 +39,8 @@ public class UserController {
 
 	// 사용자 정보 조회
 	@GetMapping()
-	public ResponseEntity<?> detailDiary(@RequestHeader HttpHeaders header, @RequestParam("userId") String userId) throws Exception {
-		//String token = header.get("Authorization").get(0).substring(7);   // 헤더의 토큰 파싱 (Bearer 제거)
-		//String userId = jwtUtil.getUid(token);
+	public ResponseEntity<?> detailDiary(@RequestHeader String userId) throws Exception {
+		log.info(userId);
 
 		UserDto userDto = userService.getUser(userId);
 		return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
