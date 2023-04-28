@@ -1,0 +1,22 @@
+.body {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  width: 100vw;
+  margin: 50px;
+
+  & .leftBody {
+    width: calc((100vw - 400px) / 2);
+    border: 3px solid tomato;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  & .rightBody {
+    width: calc((100vw - 400px) / 2);
+    border: 3px solid green;
+  }
+}
