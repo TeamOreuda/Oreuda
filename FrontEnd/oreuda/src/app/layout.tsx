@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import st from "./layout.module.scss";
+import { Providers } from "@/store/provider";
 
 const navList: any = [
   {
@@ -21,7 +22,11 @@ const navList: any = [
   },
 ];
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="kr">
       <body className={st.body}>
@@ -69,7 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </ul>
           </div>
         </nav>
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
