@@ -11,6 +11,7 @@ spring:
   cloud:
     gateway:
       routes:
+        # business-server
         - id: business-server
           uri: http://localhost:8080/
           predicates:
@@ -18,11 +19,38 @@ spring:
           filters:
             - AuthorizationHeaderFilter
 
-        - id: test-server
-          uri: http://localhost:8080/
+        # data-server
+        - id: data-server
+          uri: http://localhost:8050/
           predicates:
-            - Path=/api/v1/test/**
+            - Path=/api/v1/data/**
+          filters:
+            - AuthorizationHeaderFilter
 
+        # plant-server
+        - id: plant-server
+          uri: http://localhost:8060/
+          predicates:
+            - Path=/api/v1/plant/**
+          filters:
+            - AuthorizationHeaderFilter
+
+        # repo-server
+        - id: repo-server
+          uri: http://localhost:8070/
+          predicates:
+            - Path=/api/v1/folder/**
+          filters:
+            - AuthorizationHeaderFilter
+
+        - id: repo-server
+          uri: http://localhost:8070/
+          predicates:
+            - Path=/api/v1/repository/**
+          filters:
+            - AuthorizationHeaderFilter
+
+        # auth-server
         - id: auth-server
           uri: http://localhost:8090/
           predicates:
@@ -32,6 +60,12 @@ spring:
           uri: http://localhost:8090/
           predicates:
             - Path=/api/v1/auth/**
+
+        # test-server
+        - id: test-server
+          uri: http://localhost:8080/
+          predicates:
+            - Path=/api/v1/test/**
 
   # application-jwt
   profiles:
