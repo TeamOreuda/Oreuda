@@ -2,8 +2,34 @@
 
 import { useState } from "react";
 import st from "./Baekjoon.module.scss";
-import { selectReadme, setBaekjoonId } from "@/store/modules/readme";
+import {
+  selectReadme,
+  setBaekjoonId,
+  setBaekjoonTheme,
+  setSolvedTheme,
+} from "@/store/modules/readme";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
+
+const bjDesignData: string[] = [
+  "dark",
+  "radical",
+  "merko",
+  "gruvbox",
+  "tokyonight",
+  "onedark",
+  "cobalt",
+  "synthwave",
+  "highcontrast",
+  "dracula",
+];
+
+const svDesignData: string[] = ["warm", "cold", "dark"];
+
+// const bjDesignData: bjDesignData[] = [
+//   {
+//     date: "2023-03-01",
+//     value: 330,
+//   },
 
 export default function Baekjoon() {
   const [id, setId] = useState("");
@@ -16,6 +42,15 @@ export default function Baekjoon() {
       dispatch(setBaekjoonId(id));
     }
   };
+
+  const onClickBJTheme = (e: any) => {
+    dispatch(setBaekjoonTheme(e.target.value));
+  };
+
+  const onClickSVTheme = (e: any) => {
+    dispatch(setSolvedTheme(e.target.value));
+  };
+
   return (
     <div className={st.body}>
       <div className={st.titleDiv}>
@@ -29,6 +64,28 @@ export default function Baekjoon() {
           onChange={(e) => setId(e.target.value)}
           onKeyDown={(e) => activeEnter(e)}
         ></input>
+        <div className={st.selectBox}>
+          {/* <select className={st.selectBJ} onClick={onClickBJTheme}>
+            {bjDesignData.map((data: string, index: number) => {
+              return (
+                <option value={data} key={index}>
+                  {data}
+                </option>
+              );
+            })}
+          </select> */}
+          <span>테마 설정</span>
+          <select className={st.selectSV} onClick={onClickSVTheme}>
+            {svDesignData.map((data: string, index: number) => {
+              return (
+                <option value={data} key={index}>
+                  {data}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+
         {/* <button>확인</button> */}
       </div>
     </div>
