@@ -1,6 +1,5 @@
 package com.oreuda.oreuda_auth.oauth2;
 
-import com.oreuda.oreuda_auth.exception.OAuth2RegistrationException;
 import com.oreuda.oreuda_auth.provider.Provider;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -36,12 +35,15 @@ public class OAuth2Attributes {
 //        log.info("attributes = {}", new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(attributes));
         String registrationIdToLower = registrationId.toLowerCase();
         // provider 에 따라 분기처리
-        switch (registrationIdToLower) {
-            case "github":
-                return ofGithub(userNameAttributeName, attributes, accessToken);
-            default:
-                throw new OAuth2RegistrationException("해당 소셜 로그인은 현재 지원하지 않습니다.");
-        }
+//        switch (registrationIdToLower) {
+//            case "google":
+//                return ofGoogle(userNameAttributeName, attributes, accessToken);
+//            case "github":
+//                return ofGithub(userNameAttributeName, attributes, accessToken);
+//            default:
+//                throw new OAuth2RegistrationException("해당 소셜 로그인은 현재 지원하지 않습니다.");
+//        }
+        return ofGithub(userNameAttributeName, attributes, accessToken);
     }
     // Github
     private static OAuth2Attributes ofGithub(String userNameAttributeName, Map<String, Object> attributes, String accessToken) {

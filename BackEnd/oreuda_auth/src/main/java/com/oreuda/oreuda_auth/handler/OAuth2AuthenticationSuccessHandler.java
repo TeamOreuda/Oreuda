@@ -1,6 +1,7 @@
 package com.oreuda.oreuda_auth.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.oreuda.oreuda_auth.client.UserClient;
 import com.oreuda.oreuda_auth.domain.dto.AuthDto;
 import com.oreuda.oreuda_auth.domain.dto.UserDto;
 import com.oreuda.oreuda_auth.domain.entity.Auth;
@@ -36,6 +37,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private final AuthRepository authRepository;
     private final TokenProvider tokenProvider;
+    private final UserClient userClient;
     private final RedisTemplate<String, String> redisTemplate;
 
     @Override
@@ -58,12 +60,16 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             // 회원가입
             authRepository.save(authDto.toAuth(authDto));
             auth = authRepository.findByCode(authDto.getCode()).orElseThrow();
-            UserDto userDto = new UserDto(String.valueOf(auth.getAuthId()), String.valueOf(attributes.get("image")), String.valueOf(attributes.get("nickname")));
+            UserDto userDto = UserDto.builder()
+                    .userId(String.valueOf(auth.getAuthId()))
+                    .nickname(String.valueOf(attributes.get("nickname")))
+                    .image(String.valueOf(attributes.get("image")))
+                    .build();
             // 토큰 발급
             token = tokenProvider.generateToken(userDto.getUserId(), Role.USER.getKey());
             // DB에 저장
-            // userClient.insertUser(userDto);
-            log.info("user = {}", new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(userDto));
+            userClient.insertUser(userDto);
+//            log.info("user = {}", new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(userDto));
             saveGitHubToken(String.valueOf(auth.getAuthId()), String.valueOf(attributes.get("accessToken")));
             tokenProvider.setRefresh(
                     String.valueOf(auth.getAuthId()),
@@ -72,7 +78,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             );
         } else {
             // 로그인
-            UserDto userDto = new UserDto(String.valueOf(auth.getAuthId()), String.valueOf(attributes.get("image")), String.valueOf(attributes.get("nickname")));
+            UserDto userDto = UserDto.builder()
+                    .userId(String.valueOf(auth.getAuthId()))
+                    .nickname(String.valueOf(attributes.get("nickname")))
+                    .image(String.valueOf(attributes.get("image")))
+                    .build();
             // 토큰 발급
             String access = tokenProvider.generateAccess(userDto.getUserId(), Role.USER.getKey());
             String refresh = tokenProvider.getRefresh(String.valueOf(auth.getAuthId()));
@@ -99,6 +109,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 .build().toUriString();
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
+
     // GitHub access token 저장
     public void saveGitHubToken(String authId, String token) {
         ValueOperations<String, String> vop = redisTemplate.opsForValue();

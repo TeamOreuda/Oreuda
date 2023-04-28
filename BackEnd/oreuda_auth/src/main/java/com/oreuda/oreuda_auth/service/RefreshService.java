@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 @Slf4j
 @Service
@@ -14,9 +14,9 @@ import java.util.Map;
 public class RefreshService {
 
     public static Map<String,String> refreshAccessToken(String accessToken, String refreshToken) {
-        Map<String,String> tokens = new HashMap<>();
-        tokens.put(String.valueOf(TokenKey.ACCESS), accessToken);
-        tokens.put(String.valueOf(TokenKey.REFRESH), refreshToken);
+        Map<String,String> tokens = new TreeMap<>();
+        tokens.put(String.valueOf(TokenKey.ACCESS.getKey()), accessToken);
+        tokens.put(String.valueOf(TokenKey.REFRESH.getKey()), refreshToken);
         return tokens;
     }
 }
