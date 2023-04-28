@@ -6,6 +6,7 @@ import {
   LinearScale,
   PointElement,
   LineElement,
+  Filler,
   Tooltip,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
@@ -144,11 +145,12 @@ const charactergraph: Charactergraph[] = [
   },
 ];
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip);
 
 const data = {
   datasets: [
     {
+      fill: true,
       data: charactergraph.map((e) => {
         const date = `${e.date.substring(2, 4)}.${e.date.substring(5, 7)}.${e.date.substring(
           8,
