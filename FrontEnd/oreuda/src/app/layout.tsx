@@ -22,11 +22,7 @@ const navList: any = [
   },
 ];
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="kr">
       <body className={st.body}>
@@ -44,7 +40,6 @@ export default function RootLayout({
               O R E U D A
             </header>
             {navList.map((e: any) => {
-              console.log(e, e.imageName);
               return (
                 <ul key={e.name}>
                   <Link href={`${e.moveTo}`} className={st.link}>
@@ -60,6 +55,18 @@ export default function RootLayout({
                 </ul>
               );
             })}
+            <ul>
+              <Link href="/login" className={st.link}>
+                <Image
+                  className={st.img}
+                  src={`/images/nav/logout.svg`}
+                  alt=""
+                  width={24}
+                  height={24}
+                />
+                로그인
+              </Link>
+            </ul>
             <ul>
               <Link href="" className={st.link}>
                 <Image
