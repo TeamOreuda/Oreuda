@@ -60,11 +60,14 @@ public class TokenProvider implements InitializingBean {
     }
     // refresh token
     public String generateRefresh(String userId, String role) {
+        // refresh token 의 유효기간 확인
         Long ttl = redisTemplate.getExpire("refreshtoken_" + userId);
         log.info("ttl: " + ttl);
+        // refresh token 의 유효기간이 2일 이상 남았다면 기존 refresh token 반환
         if (ttl != null && ttl > tokenValidityInSeconds * 24 * 2) {
             return getRefresh(userId);
         }
+        // refresh token 의 유효기간이 2일 이하로 남았다면 새로운 refresh token 발급
         return createToken(userId, role, TokenKey.REFRESH);
     }
     // access token, refresh token

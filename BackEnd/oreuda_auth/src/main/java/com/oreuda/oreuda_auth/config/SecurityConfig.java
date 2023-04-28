@@ -33,7 +33,9 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
+        http    
+                // http basic 인증 방식 비활성아
+                // rest -> csrf, 폼로그인, 세션 비활성화
                 .httpBasic().disable()
                 .formLogin().disable()
                 .csrf().disable()
@@ -42,15 +44,23 @@ public class SecurityConfig {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                // 요청에 대한 인가 설정
                 .authorizeRequests()
+                // 토큰 발급 요청, 메인페이지는 인증 없이 접근 가능
                 .antMatchers("/", "/oauth2/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
+                // 로그아웃 설정
+                .logout()
+                .logoutSuccessUrl("/")
+                .and()
                 .oauth2Login()
                 .userInfoEndpoint()
+                // 사용자 정보를 가져오는 서비스
                 .oidcUserService(customOidcUserService)
                 .userService(customOAuth2AuthService)
                 .and()
+                // 로그인 성공 후 실행할 핸들러
                 .successHandler(oAuth2AuthenticationSuccessHandler)
                 .failureHandler(oAuth2AuthenticationFailureHandler);
         http.addFilterBefore(new JWTAuthFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);

@@ -73,7 +73,7 @@ public class JWTAuthFilter extends GenericFilterBean {
                 Authentication auth = getAuthentication(authDto);
                 SecurityContextHolder.getContext().setAuthentication(auth);
                 log.info("name = {}, uri = {}", auth.getName(), ((HttpServletRequest) request).getRequestURI());
-        }
+            }
         } else {
             log.info("token is not valid");
         }
