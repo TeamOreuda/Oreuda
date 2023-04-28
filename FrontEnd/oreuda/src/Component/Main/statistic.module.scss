@@ -1,0 +1,52 @@
+.header {
+  margin: {
+    top: 0px;
+    bottom: 16px;
+  }
+
+  padding: 0px;
+  font-size: 32px;
+
+  span {
+    color: #00712f;
+    font-weight: bold;
+  }
+}
+
+.statistic {
+  display: flex;
+  justify-content: space-between;
+
+  .box {
+    display: flex;
+    justify-content: space-between;
+    width: 20%;
+    height: 80px;
+    background: rgba(75, 202, 128, 0.4);
+    border-radius: 20px;
+    padding: 2%;
+
+    div {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      ul {
+        color: #00712f;
+        font-size: 20px;
+        margin: 0px;
+        padding: 0px;
+      }
+
+      span {
+        color: black;
+        font-size: 32px;
+        font-weight: bold;
+
+        span {
+          font-size: 20px;
+        }
+      }
+    }
+  }
+}

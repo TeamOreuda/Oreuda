@@ -11,5 +11,10 @@
     "192": "logo192.png",
     "512": "logo512.png"
   },
-  "permissions": ["scripting"]
+  "permissions": [
+    "scripting",
+    "cookies"
+
+  ],
+  "host_permissions": ["<all_urls>"]
 }

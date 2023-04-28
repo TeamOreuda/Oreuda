@@ -1,0 +1,75 @@
+.body {
+  border: 1px solid #008000;
+  position: relative;
+  & .headerDiv {
+    width: 100%;
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+    & .Colbar {
+      background-color: #d4d4d3;
+      width: 7px;
+      height: 80px;
+      left: 0px;
+      top: 0px;
+    }
+    & .MainText {
+      font-size: 40px;
+      margin-left: 10px;
+    }
+    & .SubText {
+      font-size: 16px;
+      color: #979696;
+      line-height: 0px;
+      margin-left: 10px;
+    }
+
+    .downloadBtn {
+      position: absolute;
+      width: 45px;
+      height: 45px;
+      right: 140px;
+      background-color: #4bca80;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .CopyBtn {
+      position: absolute;
+      width: 45px;
+      height: 45px;
+      right: 195px;
+      background-color: #4bca80;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .btnDiv {
+      position: absolute;
+      width: 130px;
+      height: 45px;
+      right: 0px;
+      background: #4bca80;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      border-radius: 10px;
+      font-family: "GmarketSansMedium";
+      border: none;
+      cursor: pointer;
+    }
+  }
+
+  & .contentDiv {
+    width: 100%;
+    height: calc(95vh - 180px);
+    margin-top: 3vh;
+    border: 3px solid #9d1dff;
+  }
+}
