@@ -24,7 +24,33 @@
       margin-left: 10px;
     }
 
-    & .btnDiv {
+    .downloadBtn {
+      position: absolute;
+      width: 45px;
+      height: 45px;
+      right: 140px;
+      background-color: #4bca80;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .CopyBtn {
+      position: absolute;
+      width: 45px;
+      height: 45px;
+      right: 195px;
+      background-color: #4bca80;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .btnDiv {
       position: absolute;
       width: 130px;
       height: 45px;
@@ -36,6 +62,7 @@
       border-radius: 10px;
       font-family: "GmarketSansMedium";
       border: none;
+      cursor: pointer;
     }
   }
 
