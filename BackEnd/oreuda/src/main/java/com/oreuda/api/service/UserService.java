@@ -74,5 +74,12 @@ public class UserService {
 
 		return userDto;
 	}
+
+	public String getImage(String userId) {
+		User user = userRepository.findById(userId).get();
+		String userImage = user.getImage();
+
+		return userImage;
+	}
 }
 

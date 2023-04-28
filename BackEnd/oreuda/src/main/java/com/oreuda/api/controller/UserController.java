@@ -39,12 +39,20 @@ public class UserController {
 
 	// 사용자 정보 조회
 	@GetMapping()
-	public ResponseEntity<?> detailDiary(@RequestHeader String userId) throws Exception {
+	public ResponseEntity<?> getUser(@RequestHeader String userId) throws Exception {
 		log.info(userId);
 
 		UserDto userDto = userService.getUser(userId);
 		return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
 	}
 
+	// 사용자 프로필 이미지 조회
+	@GetMapping("/profile")
+	public ResponseEntity<?> getImage(@RequestHeader String userId) throws Exception {
+		log.info(userId);
+
+		String userImage = userService.getImage(userId);
+		return new ResponseEntity<String>(userImage, HttpStatus.OK);
+	}
 
 }
