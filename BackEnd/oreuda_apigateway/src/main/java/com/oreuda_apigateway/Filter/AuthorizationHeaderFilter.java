@@ -64,8 +64,14 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
     public class JwtTokenExceptionHandler implements ErrorWebExceptionHandler {
         private String getErrorCode(int errorCode) {
 
-            log.info(""+errorCode);
-            return "{\"errorCode\":" + errorCode + "}";
+            String str = "다른 코튼 오류";
+            if(errorCode == 100)
+            {
+                str = "토큰이 없습니다.";
+            } else if (errorCode == 200) {
+                str = "토큰이 만료됐습니다.";
+            }
+            return "{\"errorCode\":" + str + "}";
         }
 
         @Override
@@ -82,17 +88,17 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
             byte[] bytes = getErrorCode(errorCode).getBytes(StandardCharsets.UTF_8);
             DataBuffer buffer = exchange.getResponse().bufferFactory().wrap(bytes);
 
-             // 토큰 값 null 일 시에 401 or 만료 시에 403 에러 발생
+             // 토큰 값 null 일 시에 403 or 만료 시에 401 에러 발생
              if (errorCode == 100) {
-                 exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-                 return exchange.getResponse().writeWith(Flux.just(buffer));
-             }
-             else if (errorCode == 200) {
                  exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);
                  return exchange.getResponse().writeWith(Flux.just(buffer));
              }
-             else {
+             else if (errorCode == 200) {
                  exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+                 return exchange.getResponse().writeWith(Flux.just(buffer));
+             }
+             else {
+                 exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);
                  return exchange.getResponse().writeWith(Flux.just(buffer));
              }
         }
