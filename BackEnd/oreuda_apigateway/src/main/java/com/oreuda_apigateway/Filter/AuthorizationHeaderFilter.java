@@ -64,7 +64,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
     public class JwtTokenExceptionHandler implements ErrorWebExceptionHandler {
         private String getErrorCode(int errorCode) {
 
-            String str = "다른 코튼 오류";
+            String str = "토큰 오류";
             if(errorCode == 100)
             {
                 str = "토큰이 없습니다.";
