@@ -24,15 +24,15 @@ public class CommitService {
 	 */
 	public void getCommitByRepository(String accessToken, String query) {
 		// userId가 redis에 없으면 getViewer로 얻어오는 로직
-		String userId = "";
+		String userId = "MDQ6VXNlcjQ5NjUwNzEy";
 
 		// GraphQL query 변수 설정
 		Map<String, Object> variables = new HashMap<>();
 		variables.put("userId", userId);
 
 		// repository별
-		String repoName = "";
-		String repoOwner = "";
+		String repoName = "ssaibrary";
+		String repoOwner = "JJ-Planet";
 		variables.put("repoName", repoName);
 		variables.put("repoOwner", repoOwner);
 

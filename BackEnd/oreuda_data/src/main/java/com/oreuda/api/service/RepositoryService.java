@@ -27,12 +27,16 @@ public class RepositoryService {
 
 		JsonNode data;
 		do {
+			// GitHub API 호출
 			data = gitHubClient.getRepositories(accessToken, GraphQLRequest
 					.builder().query(query).variables(variables).build())
 				.get("repositories");
 
 			System.out.println("repo");
 			System.out.println(data.get("nodes"));
+
+
+			// 다음 페이지 불러오기
 			variables.put("cursor", data.get("pageInfo").get("endCursor"));
 		} while (data.get("pageInfo").get("hasNextPage").booleanValue());
 	}

@@ -24,7 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 public class RedisBase {
 
 	private final RedisTemplate redisTemplate;
-
 	private final ObjectMapper objectMapper;
 
 	/**
@@ -39,7 +38,7 @@ public class RedisBase {
 		redisTemplate.execute(new RedisCallback() {
 			@Override
 			public Object doInRedis(RedisConnection connection) throws DataAccessException {
-				ScanOptions options = ScanOptions.scanOptions().match("*" + key).count(20).build();
+				ScanOptions options = ScanOptions.scanOptions().match(key + "*").count(20).build();
 
 				Cursor<byte[]> entries = connection.scan(options);
 
@@ -72,11 +71,10 @@ public class RedisBase {
 	 * redis에 데이터 저장
 	 * @param key
 	 * @param value
-	 * @param expireTime 데이터 유효기간
 	 * @param <T> 데이터 타입
 	 */
-	public <T> void set(String key, T value, Duration expireTime) {
-		redisTemplate.opsForValue().set(key, value, expireTime);
+	public <T> void set(String key, T value) {
+		redisTemplate.opsForValue().set(key, value);
 	}
 
 	/**
@@ -87,5 +85,3 @@ public class RedisBase {
 		redisTemplate.delete(key);
 	}
 }
-
-
