@@ -16,10 +16,6 @@ public class CommitRepository {
 
 	private final RedisBase redisBase;
 
-	public List<Commit> getList(String userId) {
-		return redisBase.getList(getKey(userId), Commit.class);
-	}
-
 	public Optional<Commit> get(String key) {
 		return redisBase.get(getKey(key), Commit.class);
 	}
@@ -32,7 +28,7 @@ public class CommitRepository {
 		redisBase.remove(getKey(key));
 	}
 
-	public String getKey(String id) {
+	private String getKey(String id) {
 		return "commit_" + id;
 	}
 }

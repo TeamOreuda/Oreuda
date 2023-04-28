@@ -27,34 +27,6 @@ public class RedisBase {
 	private final ObjectMapper objectMapper;
 
 	/**
-	 * key값으로 끝나는 key의 value 데이터들 찾기
-	 * @param key
-	 * @param classType
-	 * @return
-	 * @param <T>
-	 */
-	public <T> List<T> getList(String key, Class<T> classType) {
-		List<T> result = new ArrayList<>();
-		redisTemplate.execute(new RedisCallback() {
-			@Override
-			public Object doInRedis(RedisConnection connection) throws DataAccessException {
-				ScanOptions options = ScanOptions.scanOptions().match(key + "*").count(20).build();
-
-				Cursor<byte[]> entries = connection.scan(options);
-
-				while (entries.hasNext()) {
-					String key = new String(entries.next());
-					result.add(get(key, classType).orElseThrow());
-				}
-
-				return result;
-			}
-		});
-
-		return result;
-	}
-
-	/**
 	 * redis에서 해당 key의 value 반환
 	 * @param key
 	 * @param classType 데이터 타입

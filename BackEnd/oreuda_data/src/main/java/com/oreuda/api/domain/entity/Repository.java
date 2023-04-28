@@ -40,12 +40,6 @@ public class Repository {
 	@JsonProperty("stargazerCount")
 	private int starCount;
 
-	// 연도별 커밋
-	private List<YearlyCommit> yearlyCommit = new ArrayList<>();
-
-	// 일별 커밋
-	private List<DailyCommit> dailyCommit = new ArrayList<>();
-
 	// 수정일시
 	@JsonProperty("updatedAt")
 	private String updateDate;
@@ -53,4 +47,9 @@ public class Repository {
 	// 생성일시
 	@JsonProperty("createdAt")
 	private String createDate;
+
+	// YYYY-MM-DDTHH:MM:SSZ to YYYY-MM-DD
+	public void dateFormatter() {
+		this.createDate = this.createDate.split("T")[0];
+	}
 }

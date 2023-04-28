@@ -4,21 +4,22 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
+import com.oreuda.api.domain.entity.RepoCommit;
 import com.oreuda.common.redis.RedisBase;
 
 import lombok.RequiredArgsConstructor;
 
 @Repository
 @RequiredArgsConstructor
-public class RepositoryRepository {
+public class RepoCommitRepository {
 
 	private final RedisBase redisBase;
 
-	public Optional<com.oreuda.api.domain.entity.Repository> get(String key) {
-		return redisBase.get(getKey(key), com.oreuda.api.domain.entity.Repository.class);
+	public Optional<RepoCommit> get(String key) {
+		return redisBase.get(getKey(key), RepoCommit.class);
 	}
 
-	public void set(String key, com.oreuda.api.domain.entity.Repository value) {
+	public void set(String key, RepoCommit value) {
 		redisBase.set(getKey(key), value);
 	}
 
@@ -27,6 +28,6 @@ public class RepositoryRepository {
 	}
 
 	private String getKey(String id) {
-		return "repository_" + id;
+		return "repo_commit_" + id;
 	}
 }

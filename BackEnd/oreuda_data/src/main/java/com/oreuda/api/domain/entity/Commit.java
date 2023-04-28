@@ -22,4 +22,9 @@ public class Commit {
 	// 작성일시
 	@JsonProperty("committedDate")
 	private String date;
+
+	// YYYY-MM-DDTHH:MM:SSZ to YYYY-MM-DD
+	public void dateFormatter() {
+		this.date = this.date.split("T")[0];
+	}
 }
