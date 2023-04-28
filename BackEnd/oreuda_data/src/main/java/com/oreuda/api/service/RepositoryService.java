@@ -6,7 +6,11 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oreuda.api.client.GitHubClient;
+import com.oreuda.api.domain.entity.Repository;
+import com.oreuda.api.repository.RepositoryRepository;
+import com.oreuda.common.exception.GitHubException;
 
 import graphql.kickstart.spring.webclient.boot.GraphQLRequest;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +19,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RepositoryService {
 
+	private final RepositoryRepository repositoryRepository;
 	private final GitHubClient gitHubClient;
+	private final ObjectMapper objectMapper;
 
 	/**
 	 * 사용자의 레포지토리 정보 불러오기
@@ -35,6 +41,17 @@ public class RepositoryService {
 			System.out.println("repo");
 			System.out.println(data.get("nodes"));
 
+			// JsonNode to Object
+			try {
+				for (JsonNode repo : data.get("nodes")) {
+					Repository repository = objectMapper.treeToValue(repo, Repository.class);
+					// repositoryRepository.set(repository.getId(), repository);
+					System.out.println(repository.getName());
+
+				}
+			} catch (Exception e) {
+				throw new GitHubException("Error parsing Repositories");
+			}
 
 			// 다음 페이지 불러오기
 			variables.put("cursor", data.get("pageInfo").get("endCursor"));
@@ -46,11 +63,25 @@ public class RepositoryService {
 	 * @param accessToken
 	 */
 	public void getOrgRepositories(String accessToken, String query) {
+		// GitHub API 호출
 		JsonNode data = gitHubClient.getRepositories(accessToken, GraphQLRequest
 				.builder().query(query).build())
-			.get("organizations");
+			.get("organizations").get("nodes");
 
 		System.out.println("org-repo");
-		System.out.println(data.get("nodes"));
+		System.out.println(data);
+
+		// JsonNode to Object
+		try {
+			for (JsonNode org : data) {
+				for (JsonNode repo : org.get("repositories").get("nodes")) {
+					Repository repository = objectMapper.treeToValue(repo, Repository.class);
+					// repositoryRepository.set(repository.getId(), repository);
+					System.out.println(repository.getName());
+				}
+			}
+		} catch (Exception e) {
+			throw new GitHubException("Error parsing OrgRepositories");
+		}
 	}
 }

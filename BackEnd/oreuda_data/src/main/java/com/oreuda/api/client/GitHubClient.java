@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.oreuda.common.exception.ApiException;
+import com.oreuda.common.exception.GitHubException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,7 +27,7 @@ public class GitHubClient {
 			.build();
 	}
 
-	public JsonNode getRepositories(String accessToken, GraphQLRequest request) throws ApiException {
+	public JsonNode getRepositories(String accessToken, GraphQLRequest request) throws GitHubException {
 		return webClient.post()
 			.uri(GITHUB_URL)
 			.header("Authorization", "Bearer " + accessToken)
@@ -39,7 +39,7 @@ public class GitHubClient {
 			.get("viewer");
 	}
 
-	public JsonNode getCommitByRepository(String accessToken, GraphQLRequest request) throws ApiException {
+	public JsonNode getCommitByRepository(String accessToken, GraphQLRequest request) throws GitHubException {
 		return webClient.post()
 			.uri(GITHUB_URL)
 			.header("Authorization", "Bearer " + accessToken)
