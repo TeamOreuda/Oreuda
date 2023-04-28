@@ -35,6 +35,7 @@ public class OAuth2Attributes {
     public static OAuth2Attributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes, String accessToken) {
 //        log.info("attributes = {}", new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(attributes));
         String registrationIdToLower = registrationId.toLowerCase();
+        // provider 에 따라 분기처리
         switch (registrationIdToLower) {
             case "github":
                 return ofGithub(userNameAttributeName, attributes, accessToken);
@@ -42,7 +43,7 @@ public class OAuth2Attributes {
                 throw new OAuth2RegistrationException("해당 소셜 로그인은 현재 지원하지 않습니다.");
         }
     }
-
+    // Github
     private static OAuth2Attributes ofGithub(String userNameAttributeName, Map<String, Object> attributes, String accessToken) {
         String nickname = ObjectUtils.isEmpty(attributes.get("name")) ? "login" : "name";
         return OAuth2Attributes.builder()
@@ -56,7 +57,7 @@ public class OAuth2Attributes {
                 .accessToken(accessToken)
                 .build();
     }
-
+    // 원하는 정보를 Map 형태로 반환
     public Map<String, Object> convertToMap() {
         Map<String, Object> map = new HashMap<>();
         map.put("key", attributeKey);
@@ -68,6 +69,4 @@ public class OAuth2Attributes {
 
         return map;
     }
-
-
 }

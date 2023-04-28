@@ -24,7 +24,7 @@ public class Auth {
     @Id
     @GeneratedValue(generator = "auth_id")
     @GenericGenerator(name = "auth_id", strategy = "uuid2")
-    @Column(name = "auth_id", updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
+    @Column(updatable = false, nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
     @Type(type = "uuid-char")
     private UUID authId;
 
