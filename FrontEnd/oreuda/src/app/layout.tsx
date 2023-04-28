@@ -4,7 +4,13 @@ import Image from "next/image";
 import st from "./layout.module.scss";
 import { Providers } from "@/store/provider";
 
-const navList: any = [
+interface NavList {
+  moveTo: string;
+  imageName: string;
+  name: string;
+}
+
+const navList: NavList[] = [
   {
     moveTo: "/",
     imageName: "home",
@@ -39,7 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               />
               O R E U D A
             </header>
-            {navList.map((e: any) => {
+            {navList.map((e: NavList) => {
               return (
                 <ul key={e.name}>
                   <Link href={`${e.moveTo}`} className={st.link}>
