@@ -1,8 +1,6 @@
 package com.oreuda.api.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -11,7 +9,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oreuda.api.client.GitHubClient;
 import com.oreuda.api.domain.entity.Commit;
-import com.oreuda.api.domain.entity.RepoCommit;
 import com.oreuda.api.repository.CommitRepository;
 import com.oreuda.api.repository.RepoCommitRepository;
 import com.oreuda.api.repository.UserRepository;
