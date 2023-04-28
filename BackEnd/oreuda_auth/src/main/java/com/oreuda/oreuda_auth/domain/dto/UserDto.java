@@ -13,7 +13,7 @@ public class UserDto {
 
     String userId;
 
-    String image;
-
     String nickname;
+
+    String image;
 }

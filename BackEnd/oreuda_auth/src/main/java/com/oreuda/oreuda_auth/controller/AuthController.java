@@ -24,7 +24,7 @@ public class AuthController {
 
     @PostMapping(path="/refresh")
     public ResponseEntity<?> reissue(ServletRequest request, ServletResponse response) {
-        log.info("refreshAccessToken");
+        log.info("Token Refreshed");
         String accessToken = ((HttpServletResponse) response).getHeader(TokenKey.ACCESS.getKey());
         String refreshToken = ((HttpServletResponse) response).getHeader(TokenKey.REFRESH.getKey());
         if (accessToken == null || refreshToken == null) {

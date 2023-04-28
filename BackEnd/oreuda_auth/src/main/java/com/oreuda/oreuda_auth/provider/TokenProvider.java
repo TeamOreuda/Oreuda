@@ -62,7 +62,7 @@ public class TokenProvider implements InitializingBean {
     public String generateRefresh(String userId, String role) {
         // refresh token 의 유효기간 확인
         Long ttl = redisTemplate.getExpire("refreshtoken_" + userId);
-        log.info("ttl: " + ttl);
+        log.info("refresh token expiredIn: " + ttl);
         // refresh token 의 유효기간이 2일 이상 남았다면 기존 refresh token 반환
         if (ttl != null && ttl > tokenValidityInSeconds * 24 * 2) {
             return getRefresh(userId);
@@ -123,7 +123,7 @@ public class TokenProvider implements InitializingBean {
         String delimiter = tokenKey.getKey();
         if (delimiter.equals(TokenKey.ACCESS.getKey())) {
             // 2시간
-            return tokenValidityInSeconds * 2 / 1000;
+            return tokenValidityInSeconds * 2;
         } else if (delimiter.equals(TokenKey.REFRESH.getKey())) {
             // 1달
             return tokenValidityInSeconds * 24 * 30;
