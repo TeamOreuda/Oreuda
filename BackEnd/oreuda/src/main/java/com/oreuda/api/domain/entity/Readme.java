@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
+import com.oreuda.api.domain.entity.readme.Boj;
 import com.oreuda.api.domain.entity.readme.Contact;
 import com.oreuda.api.domain.entity.readme.Gitstats;
 import com.oreuda.api.domain.entity.readme.MostLanguage;
@@ -49,10 +50,6 @@ public class Readme {
 	@Column(name = "readme_order")
 	private int order;
 
-	// 백준
-	@Column(name = "readme_boj")
-	private String boj;
-
 	// 글
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "writing_id")
@@ -78,6 +75,11 @@ public class Readme {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "readme_techstack_id")
 	private ReadmeTechstack readmeTechstack;
+
+	// 백준
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "boj_id")
+	private Boj boj;
 
 	public Readme() {
 	}
