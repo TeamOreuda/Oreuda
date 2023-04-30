@@ -1,5 +1,6 @@
 package com.oreuda.api.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
@@ -14,6 +15,10 @@ import lombok.RequiredArgsConstructor;
 public class CommitRepository {
 
 	private final RedisBase redisBase;
+
+	public List<Commit> getList(String userId) {
+		return redisBase.getList(getKey(userId), Commit.class);
+	}
 
 	public Optional<Commit> get(String key) {
 		return redisBase.get(getKey(key), Commit.class);

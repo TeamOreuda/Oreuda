@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oreuda.api.service.RepositoryService;
+import com.oreuda.api.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,11 +18,12 @@ import lombok.RequiredArgsConstructor;
 public class DataController {
 
 	private final RepositoryService repositoryService;
+	private final UserService userService;
 
 	@GetMapping
 	public ResponseEntity<?> data(@RequestHeader String userId) {
-		repositoryService.getRepositories(userId);
-		repositoryService.getOrgRepositories(userId);
+		repositoryService.getAllRepositories(userId);
+		userService.updateUser(userId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

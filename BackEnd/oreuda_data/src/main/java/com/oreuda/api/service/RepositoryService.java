@@ -36,6 +36,19 @@ public class RepositoryService {
 	private final ObjectMapper objectMapper;
 
 	/**
+	 * 사용자의 모든 레포지토리 불러오기
+	 * @param userId
+	 */
+	public void getAllRepositories(String userId) {
+		// 사용자 레포지토리 정보 초기화
+		userRepository.remove(userId);
+
+		// 사용자의 모든 레포지토리 조회
+		getRepositories(userId);
+		getOrgRepositories(userId);
+	}
+
+	/**
 	 * 사용자의 레포지토리 정보 불러오기
 	 * @param userId
 	 */
@@ -59,6 +72,10 @@ public class RepositoryService {
 					Repository repository = objectMapper.treeToValue(repo, Repository.class);
 					repository.dateFormatter();
 					// repositoryRepository.set(repository.getId(), repository);
+
+					if(userRepository.isMember(userId, repository.getName())) continue;
+					// 해당 레포지토리가 이미 사용자 레포지토리 목록에 없으면 사용자 레포지토리에 저장
+					userRepository.add(userId, repository.getName());
 
 					// 3. Repository별 Commit
 					commitService.getCommitByRepository(userId, repository.getName(), loadQueryFile("commit.graphql"));
@@ -92,6 +109,10 @@ public class RepositoryService {
 					Repository repository = objectMapper.treeToValue(repo, Repository.class);
 					repository.dateFormatter();
 					// repositoryRepository.set(repository.getId(), repository);
+
+					if(userRepository.isMember(userId, repository.getName())) continue;
+					// 해당 레포지토리가 이미 사용자 레포지토리 목록에 없으면 사용자 레포지토리에 저장
+					userRepository.add(userId, repository.getName());
 
 					// 3. Repository별 Commit
 					commitService.getCommitByRepository(userId, repository.getName(), loadQueryFile("commit.graphql"));
