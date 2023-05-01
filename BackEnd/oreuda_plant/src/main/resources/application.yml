@@ -4,7 +4,7 @@ server:
 spring:
   #MySQL
   datasource:
-    url: jdbc:mysql://localhost:3306/oreuda_auth?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/oreuda?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
     username: oreuda
     password: git0410
     driver-class-name: com.mysql.cj.jdbc.Driver

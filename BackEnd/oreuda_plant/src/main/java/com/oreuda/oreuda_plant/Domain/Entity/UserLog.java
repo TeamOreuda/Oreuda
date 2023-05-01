@@ -1,10 +1,14 @@
 package com.oreuda.oreuda_plant.Domain.Entity;
 
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -17,26 +21,28 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Plant {
+public class UserLog {
 
     // 기본키
     @Id
     @GeneratedValue
-    @Column(name = "plant_id")
+    @Column(name = "user_log_id")
     private Long id;
 
-    // 식물 이름
+    // 사용자 로그 일시
     @NotNull
-    @Column(name = "plant_name")
-    private String name;
+    @Column(name = "user_log_time")
+    private LocalDateTime time;
 
-    // 식물 기준 최소값
+    // 사용자 로그 값
     @NotNull
-    @Column(name = "plant_min")
-    private int min;
+    @Column(name = "user_log_val")
+    private int val;
 
-    // 식물 기준 최대값
+    // 사용자
     @NotNull
-    @Column(name = "plant_max")
-    private int max;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 }
+
