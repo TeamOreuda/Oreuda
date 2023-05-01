@@ -1,4 +1,4 @@
-import styles from "./Landing.module.scss";
+import st from "./Landing.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -62,11 +62,11 @@ const Landing = () => {
     // window.location.href = `http://192.168.31.233:8090/oauth2/authorization/github`;
     // window.location.href = "https://naver.com"
     console.log("logging");
-    // chrome.windows.create({ url: "https://www.naver.com", type: "popup", width: 800, height: 600 });
     // 창을 열 때
     chrome.windows.create(
       {
-        url: "http://192.168.31.233:8090/oauth2/authorization/github",
+        // url: "http://192.168.31.233:8090/oauth2/authorization/github",
+        url : "https://naver.com",
         type: "popup",
         width: 800,
         height: 600,
@@ -76,6 +76,8 @@ const Landing = () => {
         chrome.windows.onRemoved.addListener(function (windowId) {
           if (newWindow.id === windowId) {
             console.log("창이 닫혔습니다.");
+            console.log(newWindow);
+            console.log(newWindow.tabs[0].pendingUrl);
           }
         });
       }
@@ -93,17 +95,17 @@ const Landing = () => {
   };
   if (isLoading) {
     return (
-      <div className={styles.landing}>
-        <div className={styles.logoDiv}>
-          <img className={styles.logo} src="/Frame 36.png"></img>
-          <div className={styles.logoTitle}>O R E U D A</div>
+      <div className={st.landing}>
+        <div className={st.logoDiv}>
+          <img className={st.logo} src="/Frame 36.png"></img>
+          <div className={st.logoTitle}>O R E U D A</div>
         </div>
         <Link to="/main">
-          <div className={styles.loginBtn} onClick={login}>
+          <div className={st.loginBtn} onClick={login}>
             Github LOG IN
           </div>
         </Link>
-        <div className={styles.footer}>
+        <div className={st.footer}>
           powered by{" "}
           <a
             href="https://www.notion.so/a1184fd74f9142b8ad5880e41a1e590d"

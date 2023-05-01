@@ -1,0 +1,16 @@
+@mixin folderIndicator{
+    width: 12px;
+    height: 12px;
+    border-radius: 6px;
+    position: relative;
+    top: 9px;
+}
+
+@mixin smallIndicator{
+    margin-right: 4px;
+    margin-top: 2px;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+}
+
