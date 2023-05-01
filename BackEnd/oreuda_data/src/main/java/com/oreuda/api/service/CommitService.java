@@ -78,7 +78,6 @@ public class CommitService {
 					int year = Integer.parseInt(date.split("-")[0]);
 					if (yearlyCommit.containsKey(year)) yearlyCommit.put(year, YearlyCommit.builder().year(year).count(yearlyCommit.get(year).getCount() + 1).build());
 					else yearlyCommit.put(year, YearlyCommit.builder().year(year).count(1).build());
-
 				}
 			} catch (Exception e) {
 				throw new GitHubException("Error parsing Commit");

@@ -97,6 +97,11 @@ public class RepositoryService {
 		}
 	}
 
+	/**
+	 * 레포지토리 전처리 및 레포지토리별 커밋 조회
+	 * @param userId
+	 * @param repo
+	 */
 	private void toRepository(String userId, JsonNode repo) {
 		try {
 			// JsonNode to Object

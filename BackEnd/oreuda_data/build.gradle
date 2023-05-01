@@ -37,8 +37,22 @@ dependencies {
 
 	// GraphQL
 	implementation 'com.graphql-java-kickstart:graphql-webclient-spring-boot-starter:1.0.0'
+
+	// feign
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+// Spring Cloud
+ext {
+	set('springCloudVersion', "2021.0.4")
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
 }

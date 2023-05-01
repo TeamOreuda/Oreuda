@@ -38,3 +38,8 @@ graphql:
   graphiql:
     enabled: true
 
+# feign
+feign:
+  hystrix:
+    enabled: true
+

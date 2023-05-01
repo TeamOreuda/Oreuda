@@ -11,9 +11,9 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import com.oreuda.api.client.PlantClient;
 import com.oreuda.api.domain.entity.Commit;
 import com.oreuda.api.domain.entity.User;
 import com.oreuda.api.repository.CommitRepository;
@@ -31,6 +31,8 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final CommitRepository commitRepository;
 
+	private final PlantClient plantClient;
+
 	public void updateUser(String userId) {
 		User user = userJpaRepository.findById(userId).orElseThrow(NotFoundException::new);
 
@@ -41,6 +43,9 @@ public class UserService {
 
 		user.updateGitHubData(repoCnt, commits.size(), countStreak(commits), getMostLanguage(user.getNickname()), LocalDateTime.now());
 		userJpaRepository.save(user);
+
+		// 데이터 전처리 완료 알리기
+		plantClient.notifyCompletion(userId);
 	}
 
 	/**
