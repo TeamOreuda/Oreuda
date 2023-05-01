@@ -1,6 +1,5 @@
 package com.oreuda.common.redis;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,22 +23,17 @@ import lombok.extern.slf4j.Slf4j;
 public class RedisBase {
 
 	private final RedisTemplate redisTemplate;
-
 	private final ObjectMapper objectMapper;
 
-	/**
-	 * key값으로 끝나는 key의 value 데이터들 찾기
-	 * @param key
-	 * @param classType
-	 * @return
-	 * @param <T>
-	 */
 	public <T> List<T> getList(String key, Class<T> classType) {
+
 		List<T> result = new ArrayList<>();
+
 		redisTemplate.execute(new RedisCallback() {
 			@Override
 			public Object doInRedis(RedisConnection connection) throws DataAccessException {
-				ScanOptions options = ScanOptions.scanOptions().match("*" + key).count(20).build();
+
+				ScanOptions options = ScanOptions.scanOptions().match(key + "*").count(20).build();
 
 				Cursor<byte[]> entries = connection.scan(options);
 
@@ -72,11 +66,10 @@ public class RedisBase {
 	 * redis에 데이터 저장
 	 * @param key
 	 * @param value
-	 * @param expireTime 데이터 유효기간
 	 * @param <T> 데이터 타입
 	 */
-	public <T> void set(String key, T value, Duration expireTime) {
-		redisTemplate.opsForValue().set(key, value, expireTime);
+	public <T> void set(String key, T value) {
+		redisTemplate.opsForValue().set(key, value);
 	}
 
 	/**
@@ -87,5 +80,3 @@ public class RedisBase {
 		redisTemplate.delete(key);
 	}
 }
-
-

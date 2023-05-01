@@ -1,18 +1,12 @@
 package com.oreuda.api.domain.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Getter
 @Builder
 @NoArgsConstructor
@@ -20,10 +14,10 @@ import lombok.NoArgsConstructor;
 public class Repository {
 
 	// 고유 ID
-	@Id
 	private String id;
 
 	// 이름
+	@JsonProperty("nameWithOwner")
 	private String name;
 
 	// 설명
@@ -33,25 +27,26 @@ public class Repository {
 	private String url;
 
 	// 주 사용언어
+	@JsonProperty("primaryLanguage.name")
 	private String language;
 
 	// 공개여부
-	private String isPublic;
+	private String isPrivate;
 
 	// star 수
+	@JsonProperty("stargazerCount")
 	private int starCount;
 
-	// 연도별 커밋
-	@OneToMany
-	private List<YearlyCommit> yearlyCommit = new ArrayList<>();
-
-	// 일별 커밋
-	@OneToMany
-	private List<DailyCommit> dailyCommit = new ArrayList<>();
-
 	// 수정일시
+	@JsonProperty("updatedAt")
 	private String updateDate;
 
 	// 생성일시
+	@JsonProperty("createdAt")
 	private String createDate;
+
+	// YYYY-MM-DDTHH:MM:SSZ to YYYY-MM-DD
+	public void dateFormatter() {
+		this.createDate = this.createDate.split("T")[0];
+	}
 }
