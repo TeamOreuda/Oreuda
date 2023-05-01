@@ -17,7 +17,7 @@ function App() {
     <div className="App">
       <Router>
         <Routes>
-          <Route path="/" element={<Landing />}></Route>
+          <Route path="/" element={<Folder />}></Route>
           <Route path="/main" element={<Main />}></Route>
           <Route path="/folder/:name" element={<Folder />}></Route>
           <Route path="/oauth2/success" element={<Oauth />}></Route>

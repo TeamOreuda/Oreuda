@@ -1,5 +1,9 @@
 @use "../../styles/list.scss" as list;
+@use "../../styles/indicator.scss" as indi;
 
+.fontSize {
+  zoom: 0.8;
+}
 .cardList {
   @include list.list;
   height: 75%;
@@ -14,16 +18,89 @@
 
     border: 1px solid #aeaeae;
     border-radius: 10px;
-
-    .cardHeader {
+    display: flex;
+    // flex-direction: row;
+    justify-content: space-between;
+    .layoutLeft {
       display: flex;
-      font-size: 12px;
-      line-height: 12px;
-      padding-bottom: 5px;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 70%;
+      .cardTitle {
+        text-align: left;
+        font-size: 12px;
+        line-height: 20px;
+      }
+      .cardContent {
+        padding-bottom: 5px;
+        font-size: 7px;
+        line-height: 14px;
+        color: #ffffff;
+        .cardSummary {
+          display: flex;
+          flex-direction: row;
+          .repoVisibilityPublic {
+            background: #0596ff;
+            width: 50px;
+            height: 12px;
+            margin-right: 8px;
+            border-radius: 5px;
+            font-size: 7px;
+            line-height: 12px;
+            align-items: center;
+            text-align: center;
+          }
+          .repoVisibilityPrivate {
+            width: 50px;
+            height: 12px;
+            margin-right: 8px;
+            background: #ff0505;
+            border-radius: 5px;
+            font-size: 10px;
+            line-height: 12px;
+            align-items: center;
+            text-align: center;
+          }
+          .repoIndicator {
+            @include indi.smallIndicator;
+            background-color: #64b4ff;
+          }
+          .repoLanguage {
+            color: #000000;
+          }
+        }
+
+        .repoDescription {
+          text-align: left;
+          font-size: 8px;
+          line-height: 12px;
+
+          color: #858181;
+          // display: inline-block;
+          width: 100%;
+
+          height: 36px;
+          padding-top: 3px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
+          /* 여러 줄 자르기 추가 스타일 */
+          white-space: normal;
+          text-align: left;
+          word-wrap: break-word;
+          -webkit-line-clamp: 3;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+        }
+      }
+    }
+
+    .layoutRight {
+      display: flex;
+      flex-direction: column;
       justify-content: space-between;
       .dropdownBtn {
         box-sizing: border-box;
-
         width: 63px;
         height: 16px;
 
@@ -40,83 +117,69 @@
           width: 8px;
           height: 8px;
         }
-      }
-    }
-    .cardContent {
-      padding-bottom: 5px;
-      .layoutTop {
-        display: flex;
-        font-size: 7px;
-        line-height: 7px;
-        color: #ffffff;
-        .repoVisibilityPublic {
-          background: #0596ff;
-          width: 50px;
-          height: 14px;
-          margin-right: 8px;
+        .dropdownIcon:hover {
+          cursor: pointer;
+        }
+        .dropdownActivate {
+          display: flex;
+          flex-direction: column;
+          // position: absolute;
+          position: relative;
+
+          background-color: #fffff6;
+          width: 60px;
+          // margin-top: 2px;
+
+          border: 1px solid black;
           border-radius: 5px;
-          font-size: 7px;
-          line-height: 14px;
-          align-items: center;
-          text-align: center;
+
+          z-index: 999;
+          .itemLayout {
+            display: flex;
+            flex-direction: row;
+            height: 14px;
+            .itemLayoutLeft {
+              display: flex;
+              flex-direction: row;
+              .folderTitle {
+                text-align: left;
+                padding-left: 4px;
+                padding-right: 4px;
+                height: 14px;
+                max-width: 40px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+              }
+            }
+            .itemLayoutRight {
+              position: absolute;
+              right: 0;
+              .radioBtn {
+                padding-top: 2px;
+                width: 10px;
+                height: 10px;
+                padding-right: 2px;
+              }
+            }
+            .itemLayout:hover {
+              cursor: pointer;
+              background-color: #4bca80;
+            }
+          }
         }
-        .repoVisibilityPrivate {
-          width: 50px;
-          height: 14px;
-          margin-right: 8px;
-          background: #ff0505;
-          border-radius: 5px;
-          font-size: 7px;
-          line-height: 14px;
-          align-items: center;
-          text-align: center;
-        }
-        .repoIndicator {
-          margin-right: 4px;
-
-          width: 10px;
-          height: 10px;
-          border-radius: 5px;
-          background-color: #64b4ff;
-        }
-        .repoLanguage {
-          margin-right: 4px;
-          color: #000000;
-        }
-      }
-      .layoutBottom {
-        display: inline-block;
-        width: 70%;
-
-        height: 29px;
-        padding-top: 3px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-
-        /* 여러 줄 자르기 추가 스타일 */
-        white-space: normal;
-        text-align: left;
-        word-wrap: break-word;
-        -webkit-line-clamp: 3;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-
-        .repoDescription {
-          text-align: left;
-          font-size: 8px;
-          line-height: 10px;
-
-          color: #858181;
+        .dropdownDeactivate {
+          display: none;
         }
       }
-    }
-    .cardFooter {
-      text-align: right;
-      font-size: 8px;
-      line-height: 8px;
-      /* identical to box height */
+      .cardFooter {
+        text-align: right;
+        font-size: 8px;
+        line-height: 12px;
+        /* identical to box height */
 
-      color: #000000;
+        color: #000000;
+      }
     }
   }
 }
