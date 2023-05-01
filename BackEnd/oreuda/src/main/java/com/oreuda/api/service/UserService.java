@@ -40,10 +40,10 @@ public class UserService {
 			.joinDate(LocalDate.now())
 			.stats(0)
 			.nickname(signUpDto.getNickname())
-			.commitCnt(100)
-			.repositoryCnt(10)
-			.streakMax(20)
-			.mostLanguage("java")
+			.commitCnt(0)
+			.repositoryCnt(0)
+			.streakMax(0)
+			.mostLanguage("empty")
 			.updateTime(LocalDateTime.now())
 			.build();
 		userRepository.save(user);
