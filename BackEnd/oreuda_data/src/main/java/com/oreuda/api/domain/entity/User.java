@@ -70,10 +70,11 @@ public class User {
 	@Column(name = "user_update_time")
 	private LocalDateTime updateTime;
 
-	public void updateGitHubData(int repositoryCnt, int commitCnt, int streakMax, LocalDateTime updateTime) {
+	public void updateGitHubData(int repositoryCnt, int commitCnt, int streakMax, String mostLanguage, LocalDateTime updateTime) {
 		this.repositoryCnt = repositoryCnt;
 		this.commitCnt = commitCnt;
 		this.streakMax = streakMax;
+		this.mostLanguage = mostLanguage;
 		this.updateTime = updateTime;
 	}
 }
