@@ -10,6 +10,7 @@ sourceCompatibility = '11'
 
 ext {
     set('springCloudVersion', "2021.0.6")
+    openFeignVersion = "10.12"
 }
 
 configurations {
@@ -23,8 +24,6 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.jetbrains:annotations:23.0.0'
@@ -33,6 +32,14 @@ dependencies {
     runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    // eureka
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    // jpa
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // feign client
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation group: 'io.github.openfeign', name: 'feign-core', version: '12.1'
+    implementation "io.github.openfeign:feign-httpclient:${openFeignVersion}"
 }
 
 //eureka
