@@ -1,5 +1,9 @@
 package com.oreuda.api.domain.entity;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -25,6 +29,11 @@ public class Commit {
 
 	// YYYY-MM-DDTHH:MM:SSZ to YYYY-MM-DD
 	public void dateFormatter() {
-		this.date = this.date.split("T")[0];
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+		LocalDateTime dateTime = LocalDateTime.parse( this.date, formatter);
+		// UTC+9
+		LocalDate date = dateTime.plusHours(9).toLocalDate();
+
+		this.date = date.toString().split("T")[0];
 	}
 }

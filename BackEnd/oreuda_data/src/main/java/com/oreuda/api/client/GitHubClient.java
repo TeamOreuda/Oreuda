@@ -20,7 +20,6 @@ public class GitHubClient {
 	private final WebClient webClient;
 
 	public GitHubClient() {
-		System.out.println("GitHubClient!!!");
 		this.webClient = WebClient.builder()
 			.baseUrl(GITHUB_URL)
 			.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
