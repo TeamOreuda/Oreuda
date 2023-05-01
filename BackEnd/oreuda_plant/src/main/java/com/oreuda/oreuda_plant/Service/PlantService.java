@@ -46,10 +46,16 @@ public class PlantService {
         List<StatusDto> statusDtoList = new ArrayList<>();
         for (UserLog userLog : userLogs) {
             statusDtoList.add(StatusDto.builder()
+                    .id(userLog.getId())
                     .time(userLog.getTime())
                     .val(userLog.getVal())
                     .build());
         }
         return statusDtoList;
+    }
+
+    public void setStatus(String userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+
     }
 }
