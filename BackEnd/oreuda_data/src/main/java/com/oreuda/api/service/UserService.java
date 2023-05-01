@@ -1,5 +1,7 @@
 package com.oreuda.api.service;
 
+import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -22,20 +24,22 @@ public class UserService {
 	private final CommitRepository commitRepository;
 
 	public void updateUser(String userId) {
-		System.out.println("here");
 		User user = userJpaRepository.findById(userId).orElseThrow(NotFoundException::new);
 
-		System.out.println("user");
-		System.out.println(user);
-
+		// 사용자 Repository 수
 		int repoCnt = userRepository.getSize(userId).intValue();
-		System.out.println("repo cnt : " + repoCnt);
-
+		// 사용자 Commit 정보
 		List<Commit> commits = commitRepository.getList(userId);
-		System.out.println("cmt cnt : " + commits.size());
 
-		user.updateGitHubData(repoCnt, commits.size(), 0);
-
+		user.updateGitHubData(repoCnt, commits.size(), streakMax(commits), LocalDateTime.now());
 		userJpaRepository.save(user);
+	}
+
+	private int streakMax(List<Commit> commits) {
+		int streakMax = 0;
+
+		Collections.sort(commits, (o1, o2) -> o1.getDate().compareTo(o2.getDate()));
+
+		return streakMax;
 	}
 }

@@ -1,12 +1,12 @@
 package com.oreuda.api.domain.entity;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.ColumnDefault;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,7 +43,7 @@ public class User {
 	// 사용자 가입 일자
 	@NotNull
 	@Column(name = "user_join_date")
-	private String joinDate;
+	private LocalDate joinDate;
 
 	// 사용자 총 커밋 수
 	@NotNull
@@ -66,13 +66,14 @@ public class User {
 	private String mostLanguage;
 
 	// 사용자 업데이트 시간
-	@LastModifiedDate
+	@NotNull
 	@Column(name = "user_update_time")
-	private String updateTime;
+	private LocalDateTime updateTime;
 
-	public void updateGitHubData(int commitCnt, int repositoryCnt, int streakMax) {
-		this.commitCnt = commitCnt;
+	public void updateGitHubData(int repositoryCnt, int commitCnt, int streakMax, LocalDateTime updateTime) {
 		this.repositoryCnt = repositoryCnt;
+		this.commitCnt = commitCnt;
 		this.streakMax = streakMax;
+		this.updateTime = updateTime;
 	}
 }

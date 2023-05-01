@@ -1,7 +1,6 @@
 package com.oreuda.api.repository;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -20,16 +19,8 @@ public class CommitRepository {
 		return redisBase.getList(getKey(userId), Commit.class);
 	}
 
-	public Optional<Commit> get(String key) {
-		return redisBase.get(getKey(key), Commit.class);
-	}
-
 	public void set(String key, Commit value) {
 		redisBase.set(getKey(key), value);
-	}
-
-	public void remove(String key) {
-		redisBase.remove(getKey(key));
 	}
 
 	private String getKey(String id) {

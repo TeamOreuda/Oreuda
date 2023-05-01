@@ -66,25 +66,12 @@ public class RepositoryService {
 					.builder().query(query).variables(variables).build())
 				.get("repositories");
 
-			try {
-				for (JsonNode repo : data.get("nodes")) {
-					// 2. JsonNode to Object
-					Repository repository = objectMapper.treeToValue(repo, Repository.class);
-					repository.dateFormatter();
-					// repositoryRepository.set(repository.getId(), repository);
-
-					if(userRepository.isMember(userId, repository.getName())) continue;
-					// 해당 레포지토리가 이미 사용자 레포지토리 목록에 없으면 사용자 레포지토리에 저장
-					userRepository.add(userId, repository.getName());
-
-					// 3. Repository별 Commit
-					commitService.getCommitByRepository(userId, repository.getName(), loadQueryFile("commit.graphql"));
-				}
-			} catch (Exception e) {
-				throw new GitHubException("Error parsing Repositories");
+			// 2. 레포지토리 preprocessing
+			for (JsonNode repo : data.get("nodes")) {
+				toRepository(userId, repo);
 			}
 
-			// 4. 다음 페이지 불러오기
+			// 3. 다음 페이지 불러오기
 			variables.put("cursor", data.get("pageInfo").get("endCursor"));
 		} while (data.get("pageInfo").get("hasNextPage").booleanValue());
 	}
@@ -102,24 +89,29 @@ public class RepositoryService {
 				.builder().query(query).build())
 			.get("organizations").get("nodes");
 
-		try {
-			for (JsonNode org : data) {
-				for (JsonNode repo : org.get("repositories").get("nodes")) {
-					// 2. JsonNode to Object
-					Repository repository = objectMapper.treeToValue(repo, Repository.class);
-					repository.dateFormatter();
-					// repositoryRepository.set(repository.getId(), repository);
-
-					if(userRepository.isMember(userId, repository.getName())) continue;
-					// 해당 레포지토리가 이미 사용자 레포지토리 목록에 없으면 사용자 레포지토리에 저장
-					userRepository.add(userId, repository.getName());
-
-					// 3. Repository별 Commit
-					commitService.getCommitByRepository(userId, repository.getName(), loadQueryFile("commit.graphql"));
-				}
+		// 2. 레포지토리 preprocessing
+		for (JsonNode org : data) {
+			for (JsonNode repo : org.get("repositories").get("nodes")) {
+				toRepository(userId, repo);
 			}
+		}
+	}
+
+	private void toRepository(String userId, JsonNode repo) {
+		try {
+			// JsonNode to Object
+			Repository repository = objectMapper.treeToValue(repo, Repository.class);
+			repository.dateFormatter();
+			repositoryRepository.set(repository.getId(), repository);
+
+			if (userRepository.isMember(userId, repository.getName())) return;
+			// 해당 레포지토리가 이미 사용자 레포지토리 목록에 없으면 사용자 레포지토리에 저장
+			userRepository.add(userId, repository.getName());
+
+			// 레포지토리별 커밋
+			commitService.getCommitByRepository(userId, loadQueryFile("commit.graphql"), repository.getId(), repository.getName());
 		} catch (Exception e) {
-			throw new GitHubException("Error parsing OrgRepositories");
+			throw new GitHubException("Error parsing Repository");
 		}
 	}
 
