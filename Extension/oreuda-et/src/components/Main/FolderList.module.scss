@@ -2,20 +2,20 @@
 
 .folderList {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   flex-direction: row;
   justify-content: space-between;
   @include list.list;
   
   .folderImg {
-    width: 64px;
-    height: 64px;
+    width: 80px;
+    height: 80px;
   }
   .folderImg:hover {
     cursor: pointer;
   }
   .folderTitle {
-    width: 64px;
+    width: 80px;
     text-align: center;
     margin: 0 auto;
     overflow: hidden;

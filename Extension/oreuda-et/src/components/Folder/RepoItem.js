@@ -5,6 +5,8 @@ import color from "../../styles/color.module.scss";
 import indicator from "../../styles/common.module.scss";
 
 const RepoItem = ({ repo, folderList }) => {
+  const chrome = window.chrome;
+
   const [isClicked, setIsClicked] = useState(false);
   const [radioIndex, setRadioIndex] = useState(-1);
 
@@ -13,8 +15,20 @@ const RepoItem = ({ repo, folderList }) => {
   };
 
   const radioCheck = (e) => {
-    console.log(e);
     setRadioIndex(e);
+  };
+
+  const moveConfirm = () => {
+    console.log(radioIndex);
+  };
+
+  const repoMove = (repoUrl) => {
+    chrome.tabs.create({
+      url: repoUrl,
+      // type: "popup",
+      // width: 800,
+      // height: 600,
+    });
   };
 
   const unClassified = (
@@ -47,7 +61,9 @@ const RepoItem = ({ repo, folderList }) => {
   return (
     <div className={st.card}>
       <div className={st.layoutLeft}>
-        <div className={st.cardTitle}>{repo.name}</div>
+        <div className={st.cardTitle} onClick={() => repoMove(repo.url)}>
+          {repo.name}
+        </div>
         <div className={st.cardContent}>
           <div className={st.cardSummary}>
             <div
@@ -72,9 +88,15 @@ const RepoItem = ({ repo, folderList }) => {
       </div>
       <div className={st.layoutRight}>
         <div className={st.dropdownBtn}>
-          <span className={st.fontSize}>Move to </span>
+          <span
+            className={`${st.fontSize} ${st.dropdownTitle}`}
+            onClick={() => dropdownOnClick(repo.id)}
+          >
+            Move to{" "}
+          </span>
           <img
-            className={st.dropdownIcon}
+            className={`${st.dropdownIcon} ${isClicked ? st.reverse : ""}`}
+            // src={isClicked ? "/assets/dropdownReverse.svg" : "/assets/dropdown.svg"}
             src="/assets/dropdown.svg"
             onClick={() => dropdownOnClick(repo.id)}
           ></img>
@@ -83,7 +105,10 @@ const RepoItem = ({ repo, folderList }) => {
           >
             {folderList.map((key) => {
               return (
-                <div className={st.itemLayout}>
+                <div
+                  className={st.itemLayout}
+                  onClick={() => radioCheck(key.id)}
+                >
                   <div className={st.itemLayoutLeft}>
                     <div className={`${st.folderTitle} ${st.fontSize}`}>
                       {key.name}
@@ -98,13 +123,11 @@ const RepoItem = ({ repo, folderList }) => {
                     {key.id === radioIndex ? (
                       <img
                         className={st.radioBtn}
-                        onClick={() => radioCheck(key.id)}
                         src="/assets/ClickedIcon.svg"
                       ></img>
                     ) : (
                       <img
                         className={st.radioBtn}
-                        onClick={() => radioCheck(key.id)}
                         src="/assets/UnClickedIcon.svg"
                       ></img>
                     )}
@@ -114,7 +137,7 @@ const RepoItem = ({ repo, folderList }) => {
             })}
             {unClassified}
 
-            <div className={st.confirmBtn}></div>
+            <div className={st.confirmBtn} onClick={moveConfirm}></div>
           </div>
         </div>
         <div className={st.cardFooter}>
