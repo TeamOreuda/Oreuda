@@ -11,6 +11,7 @@ const repoList = [
     language: "Python",
     description: "Source code for Twitter's Recommendation Algorithm ",
     updateDate: "Dec 29, 2021",
+    url: "https://github.com/tykimdream/twitter-algorithm",
   },
   {
     id: 2,
@@ -20,6 +21,7 @@ const repoList = [
     description:
       "movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project",
     updateDate: "Dec 29, 2022",
+    url: "https://github.com/tykimdream/twitter-algorithm",
   },
   {
     id: 3,
@@ -28,6 +30,8 @@ const repoList = [
     language: "Python",
     description: "Source code for Twitter's Recommendation Algorithm ",
     updateDate: "Dec 29, 2021",
+
+    url: "https://github.com/tykimdream/twitter-algorithm",
   },
   {
     id: 4,
@@ -37,6 +41,7 @@ const repoList = [
     description:
       "movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project",
     updateDate: "Dec 29, 2022",
+    url: "https://github.com/tykimdream/twitter-algorithm",
   },
   {
     id: 5,
@@ -45,6 +50,7 @@ const repoList = [
     language: "Python",
     description: "Source code for Twitter's Recommendation Algorithm ",
     updateDate: "Dec 29, 2021",
+    url: "https://github.com/tykimdream/twitter-algorithm",
   },
   {
     id: 6,
@@ -54,6 +60,7 @@ const repoList = [
     description:
       "movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project",
     updateDate: "Dec 29, 2022",
+    url: "https://github.com/tykimdream/twitter-algorithm",
   },
   {
     id: 7,
@@ -62,6 +69,7 @@ const repoList = [
     language: "Python",
     description: "Source code for Twitter's Recommendation Algorithm ",
     updateDate: "Dec 29, 2021",
+    url: "https://github.com/tykimdream/twitter-algorithm",
   },
   {
     id: 8,
@@ -71,15 +79,28 @@ const repoList = [
     description:
       "movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project",
     updateDate: "Dec 29, 2022",
+    url: "https://github.com/tykimdream/twitter-algorithm",
   },
 ];
 
 const folderList = [
-  { id: 1, name: "FE", color: "blue", order: 1, repositoryCount: 3 },
-  { id: 2, name: "BE", color: "pink", order: 2, repositoryCount: 3 },
+  {
+    id: 1,
+    name: "FE",
+    color: "blue",
+    order: 1,
+    repositoryCount: 3,
+  },
+  {
+    id: 2,
+    name: "BE",
+    color: "pink",
+    order: 2,
+    repositoryCount: 3,
+  },
   {
     id: 3,
-    name: "Team Project",
+    name: "Team Project For SSAFY 8th Generation",
     color: "green",
     order: 3,
     repositoryCount: 3,
@@ -93,7 +114,7 @@ const RepoList = () => {
     <div className={st.cardList}>
       {repoList.map((repo) => {
         console.log(repo);
-        return <RepoItem repo={repo} folderList= {folderList} />;
+        return <RepoItem repo={repo} folderList={folderList} />;
       })}
     </div>
   );

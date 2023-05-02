@@ -21,7 +21,10 @@ const Landing = () => {
     // 쿼리 파라미터에서 accessToken과 refreshToken 추출하기
     const accessTokenParam = queryParams.get("Authorization");
     const refreshTokenParam = queryParams.get("refreshToken");
-    if (accessTokenParam && refreshTokenParam) {
+    if (!accessTokenParam && refreshTokenParam) {
+      
+      // 로그인 실행
+
       setAccessToken(accessTokenParam);
       setRefreshToken(refreshTokenParam);
       chrome.cookies.set({

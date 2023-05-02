@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import Header from "../../components/Main/Header";
@@ -7,14 +8,24 @@ import RepoList from "../../components/Folder/RepoList";
 
 const Folder = () => {
   const params = useParams();
+  useEffect(() => {
+    // 마지막 페이지를 저장하는 부분
+    window.chrome.cookies.set({
+      url: "http://localhost:3000",
+      name: "page",
+      value: "folder",
+    });
+  }, []);
+
+
   return (
     <>
-      <Header></Header>
+      <Header />
 
-      <FolderHeader></FolderHeader>
-      <RepoList></RepoList>
+      <FolderHeader />
+      <RepoList />
 
-      <Footer></Footer>
+      <Footer/>
     </>
   );
 };

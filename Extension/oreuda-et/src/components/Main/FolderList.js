@@ -10,19 +10,19 @@ const folders = [
     isIn: true,
   },
   {
-    name: "Team Project",
+    name: "TeamProject ForSSAFY8thGeneration",
     img: "/assets/folderPink.svg",
     index: "2",
     isIn: true,
   },
   {
-    name: "BE",
+    name: "즐거운 팀프로젝트 룰루랄라",
     img: "/assets/folderGreen.svg",
     index: "3",
     isIn: true,
   },
   {
-    name: "Data",
+    name: "Team Project For SSAFY 8th Generation",
     img: "/assets/folderBlue.svg",
     index: "4",
     isIn: true,

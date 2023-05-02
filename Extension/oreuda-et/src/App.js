@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   HashRouter as Router,
   Routes,
@@ -13,11 +14,13 @@ import Oauth from "./pages/Oauth/Oauth";
 import "./App.css";
 
 function App() {
+
+
   return (
     <div className="App">
       <Router>
         <Routes>
-          <Route path="/" element={<Folder />}></Route>
+          <Route path="/" element={<Landing />}></Route>
           <Route path="/main" element={<Main />}></Route>
           <Route path="/folder/:name" element={<Folder />}></Route>
           <Route path="/oauth2/success" element={<Oauth />}></Route>
