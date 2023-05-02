@@ -1,3 +1,5 @@
+@use "../../styles/indicator.scss" as indi;
+
 .folderHeader {
   display: flex;
   width: 295px;
@@ -20,11 +22,6 @@
     padding-right: 5px;
   }
   .folderIndicator {
-    width: 12px;
-    height: 12px;
-    border-radius: 6px;
-    background-color: red;
-    position: relative;
-    top: 7px;
+    @include indi.folderIndicator;   
   }
 }
