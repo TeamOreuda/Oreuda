@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.oreuda.api.client.DataClient;
 import com.oreuda.api.domain.dto.SignUpDto;
 import com.oreuda.api.domain.dto.UserDto;
 import com.oreuda.api.domain.entity.Folder;
@@ -14,7 +15,6 @@ import com.oreuda.api.domain.entity.UserLog;
 import com.oreuda.api.repository.FolderRepository;
 import com.oreuda.api.repository.UserLogRepository;
 import com.oreuda.api.repository.UserRepository;
-import com.oreuda.client.DataClient;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
