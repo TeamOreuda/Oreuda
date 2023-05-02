@@ -145,17 +145,24 @@ const charactergraph: Charactergraph[] = [
   },
 ];
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Filler,
+  Tooltip
+);
 
 const data = {
   datasets: [
     {
       fill: true,
       data: charactergraph.map((e) => {
-        const date = `${e.date.substring(2, 4)}.${e.date.substring(5, 7)}.${e.date.substring(
-          8,
-          10
-        )}`;
+        const date = `${e.date.substring(2, 4)}.${e.date.substring(
+          5,
+          7
+        )}.${e.date.substring(8, 10)}`;
         return { x: date, y: e.value };
       }),
     },
