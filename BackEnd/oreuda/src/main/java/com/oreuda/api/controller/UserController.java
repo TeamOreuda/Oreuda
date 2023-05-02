@@ -1,7 +1,5 @@
 package com.oreuda.api.controller;
 
-import javax.transaction.Transactional;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
-@Transactional
 public class UserController {
 
 	private final UserService userService;

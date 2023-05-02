@@ -3,11 +3,6 @@ package com.oreuda.api.service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceUnit;
-
 import org.springframework.stereotype.Service;
 
 import com.oreuda.api.domain.dto.SignUpDto;
@@ -31,11 +26,6 @@ public class UserService {
 	private final UserLogRepository userLogRepository;
 	private final FolderRepository folderRepository;
 
-	@PersistenceUnit
-	EntityManagerFactory emf;
-	@PersistenceContext
-	EntityManager em;
-
 	public void signup(SignUpDto signUpDto) {
 		// 사용자
 		User user = User.builder()
@@ -51,7 +41,6 @@ public class UserService {
 			.updateTime(LocalDateTime.now())
 			.build();
 		userRepository.save(user);
-		em.flush();
 		
 		// 로그
 		UserLog userLog = UserLog.builder()
@@ -71,6 +60,7 @@ public class UserService {
 			.date(LocalDateTime.now())
 			.build();
 		folderRepository.save(folder);
+
 	}
 
 	public UserDto getUser(String userId) {
