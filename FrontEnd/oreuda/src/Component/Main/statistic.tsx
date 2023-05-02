@@ -125,12 +125,7 @@ export default async function Statistic() {
               </span>
               <span>{e.language}</span>
             </div>
-            <Image
-              src={`/images/main/${e.imageName}.svg`}
-              alt=""
-              width={80}
-              height={80}
-            />
+            <Image src={`/images/main/${e.imageName}.svg`} alt="" width={80} height={80} />
           </div>
         ))}
       </div>
