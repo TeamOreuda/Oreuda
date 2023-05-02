@@ -1,11 +1,11 @@
 package com.oreuda.oreuda_auth.config;
 
-import com.oreuda.oreuda_auth.filter.JWTAuthFilter;
-import com.oreuda.oreuda_auth.handler.OAuth2AuthenticationFailureHandler;
-import com.oreuda.oreuda_auth.handler.OAuth2AuthenticationSuccessHandler;
-import com.oreuda.oreuda_auth.provider.TokenProvider;
-import com.oreuda.oreuda_auth.service.CustomOAuth2AuthService;
-import com.oreuda.oreuda_auth.service.CustomOidcUserService;
+import com.oreuda.oreuda_auth.common.filter.JWTAuthFilter;
+import com.oreuda.oreuda_auth.api.handler.OAuth2AuthenticationFailureHandler;
+import com.oreuda.oreuda_auth.api.handler.OAuth2AuthenticationSuccessHandler;
+import com.oreuda.oreuda_auth.api.provider.TokenProvider;
+import com.oreuda.oreuda_auth.api.service.CustomOAuth2AuthService;
+import com.oreuda.oreuda_auth.api.service.CustomOidcUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

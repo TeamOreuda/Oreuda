@@ -48,7 +48,7 @@ public class UserService {
 
 		// 깃 api
 		// 닉네임, 총 커밋수, 레포수, 연속 스트릭, 주언어, 업데이트 시간
-		dataClient.setData(user.getId());
+//		dataClient.setData(user.getId());
 		
 		// 로그
 		UserLog userLog = UserLog.builder()

@@ -2,10 +2,7 @@ package com.oreuda.api.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.oreuda.api.service.RepositoryService;
 import com.oreuda.api.service.UserService;
@@ -20,7 +17,7 @@ public class DataController {
 	private final RepositoryService repositoryService;
 	private final UserService userService;
 
-	@GetMapping
+	@PatchMapping()
 	public ResponseEntity<?> data(@RequestHeader String userId) {
 		repositoryService.getAllRepositories(userId);
 		userService.updateUser(userId);
