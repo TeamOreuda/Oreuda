@@ -1,3 +1,5 @@
+@use "../../Style/index.scss" as comm;
+
 .body {
   width: 100vw;
   margin: 50px;
@@ -17,27 +19,8 @@
   display: flex;
   justify-content: end;
 
-  button {
-    margin-left: 16px;
-    color: white;
-    font-size: 16px;
-    border-radius: 8px;
-    border-style: none;
-    padding: {
-      top: 8px;
-      bottom: 8px;
-      left: 16px;
-      right: 16px;
-    }
-  }
+  @include comm.button;
 
-  .img {
-    margin-left: 8px;
-  }
-
-  button:nth-child(1) {
-    background-color: #4bca80;
-  }
   button:nth-child(2) {
     background-color: #836141;
   }

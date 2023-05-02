@@ -1,7 +1,6 @@
 .folders {
-  display: flex;
-  align-items: start;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
   height: calc(100vh - 208px);
   flex-wrap: wrap;
   overflow-y: scroll;
@@ -13,18 +12,15 @@
 }
 
 .folder {
-  width: 20%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-decoration: none;
+  color: black;
 
   div {
     border: #d9d9d9 solid 1px;
     border-radius: 16px;
     padding: 24px;
   }
-}
-
-.fake {
-  width: 222px;
 }
