@@ -6,6 +6,9 @@ import {
   selectReadme,
   setBaekjoonId,
   setBaekjoonTheme,
+  setCurrComponent,
+  setIsReadmeMainPage,
+  setPrevCompMoving,
   setSolvedTheme,
 } from "@/store/modules/readme";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -25,13 +28,11 @@ const bjDesignData: string[] = [
 
 const svDesignData: string[] = ["warm", "cold", "dark"];
 
-// const bjDesignData: bjDesignData[] = [
-//   {
-//     date: "2023-03-01",
-//     value: 330,
-//   },
-
 export default function Baekjoon() {
+  const nextCompData = useAppSelector(selectReadme).nextComp;
+  const prevCompData = useAppSelector(selectReadme).prevComp;
+  console.log(`nextCompData: ${nextCompData}`);
+  console.log(`prevCompData: ${prevCompData}`);
   const [id, setId] = useState("");
 
   const dispatch = useAppDispatch();
@@ -85,7 +86,15 @@ export default function Baekjoon() {
             })}
           </select>
         </div>
-
+        <button
+          onClick={() => {
+            dispatch(setCurrComponent(0));
+            dispatch(setPrevCompMoving(0));
+            dispatch(setIsReadmeMainPage(true));
+          }}
+        >
+          이전
+        </button>
         {/* <button>확인</button> */}
       </div>
     </div>

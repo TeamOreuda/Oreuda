@@ -1,0 +1,17 @@
+@mixin title() {
+  .titleDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    span {
+      font-size: 40px;
+      color: #000000;
+    }
+    p {
+      color: #979696;
+      line-height: 10px;
+    }
+  }
+}
