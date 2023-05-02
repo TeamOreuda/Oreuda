@@ -4,26 +4,24 @@ import { RootState } from "..";
 // state type
 export interface readmeSlice {
   baekjoonId: string;
-  baekjoonTheme: string;
+  githubId: string;
+  githubTheme: string;
   solvedTheme: string;
-  isReadmeMainPage: boolean;
-  choiceStack: number[];
+  nextComp: number[];
   componentArr: boolean[];
   currComponent: number;
-  nextComp: number[];
   prevComp: number[];
 }
 
 // 초기 상태 정의
 const initialState: readmeSlice = {
   baekjoonId: "",
-  baekjoonTheme: "dark",
+  githubId: "",
+  githubTheme: "dark",
   solvedTheme: "warm",
-  isReadmeMainPage: true,
-  choiceStack: [],
-  componentArr: [true, false, false, false, false, false, false, false],
-  currComponent: 1,
   nextComp: [],
+  componentArr: [true, false, false, false, false, false, false, false],
+  currComponent: 0,
   prevComp: [],
 };
 
@@ -31,65 +29,63 @@ const themeSlice = createSlice({
   name: "readme",
   initialState,
   reducers: {
-    // [ALL] 리드미 메인인지 확인
-    setIsReadmeMainPage(state, action) {
-      const temp = state;
-      temp.isReadmeMainPage = action.payload;
-    },
     // [Baekjoon] Baekjoon ID 저장
     setBaekjoonId(state, action) {
       const temp = state;
       temp.baekjoonId = action.payload;
-    },
-    // [Baekjoon] Baekjoon 테마 저장
-    setBaekjoonTheme(state, action) {
-      const temp = state;
-      temp.baekjoonTheme = action.payload;
     },
     // [Baekjoon] solved 테마 저장
     setSolvedTheme(state, action) {
       const temp = state;
       temp.solvedTheme = action.payload;
     },
+    // [Baekjoon] Baekjoon ID 저장
+    setGithubId(state, action) {
+      const temp = state;
+      temp.githubId = action.payload;
+    },
+    // [Github] Github 테마 저장
+    setGithubTheme(state, action) {
+      const temp = state;
+      temp.githubTheme = action.payload;
+    },
     // [Readme Main] 선택한 컴포넌트 추가
     setPushComponent(state, action) {
       if (!state.componentArr[action.payload]) {
-        state.choiceStack.push(action.payload);
+        state.nextComp.push(action.payload);
         state.componentArr[action.payload] = true;
       }
     },
     // [Readme Main] 선택한 컴포넌트 삭제
     setDeleteComponent(state, action) {
       if (state.componentArr[action.payload]) {
-        state.choiceStack.map((el, index) => {
+        state.nextComp.map((el, index) => {
           if (el === action.payload) {
-            state.choiceStack.splice(index, 1);
+            state.nextComp.splice(index, 1);
           }
         });
         state.componentArr[action.payload] = false;
       }
     },
-    // 현재 보여주는 컴포넌트 인덱스
-    setCurrComponent(state, action) {
-      state.currComponent = action.payload;
-    },
-    // main 페이지에서 다음 버튼 눌렀을 때, nextComp배열 생성
-    setCreateNextArr(state, action) {
-      state.nextComp = state.choiceStack;
-    },
-    // 다음 버튼 눌렀을 때, nextComp배열의 앞의 값 하나 빼내서 prev에 넣기
-    setNextCompMoving(state, action) {
-      let tmp = state.nextComp.shift();
-      console.log(tmp);
 
-      setCurrComponent(tmp);
-      state.prevComp.push(tmp ? tmp : 0);
+    // [All] 다음 버튼 눌렀을 때
+    setNextCompMoving(state, action) {
+      // 현재 인덱스를 prev배열에 저장
+      state.prevComp.push(state.currComponent);
+
+      // next 배열의 첫번째 값 빼고 curr 갱신
+      let tmp = state.nextComp.shift();
+      if (tmp === undefined) tmp = 8;
+      state.currComponent = tmp ? tmp : -1;
     },
-    // 이전 버튼을 눌렀을 때,
+    // [All] 이전 버튼을 눌렀을 때,
     setPrevCompMoving(state, action) {
+      // 현재 인덱스를 next배열에 저장
+      state.nextComp.unshift(state.currComponent);
+
       let tmp = state.prevComp.pop();
-      setCurrComponent(tmp);
-      state.nextComp.unshift(tmp ? tmp : 0);
+      state.currComponent = tmp || 0;
+      // state.nextComp.unshift(tmp ? tmp : -1);
     },
   },
 });
@@ -97,14 +93,11 @@ const themeSlice = createSlice({
 // 액션 생성함수
 export const {
   setBaekjoonId,
-  setBaekjoonTheme,
   setSolvedTheme,
-  // setComponentList,
-  setIsReadmeMainPage,
+  setGithubTheme,
+  setGithubId,
   setPushComponent,
   setDeleteComponent,
-  setCurrComponent,
-  setCreateNextArr,
   setNextCompMoving,
   setPrevCompMoving,
 } = themeSlice.actions;

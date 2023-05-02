@@ -8,9 +8,15 @@ import Image from "next/image";
 export default function Preview() {
   const BaekJoonData = useAppSelector(selectReadme).baekjoonId;
   const SolvedThemeData = useAppSelector(selectReadme).solvedTheme;
+  const githubId = useAppSelector(selectReadme).githubId;
+  const githubTheme = useAppSelector(selectReadme).githubTheme;
 
+  // 백준
   const firstImgUrl = `http://mazassumnida.wtf/api/v2/generate_badge?boj=${BaekJoonData}`;
   const secImgUrl = `http://mazandi.herokuapp.com/api?handle=${BaekJoonData}&theme=${SolvedThemeData}`;
+
+  // 깃헙
+  const githubUrl = `https://github-readme-stats.vercel.app/api?username=${githubId}&show_icons=true&theme=${githubTheme};`;
 
   const file = {
     title: "README",
@@ -47,7 +53,7 @@ export default function Preview() {
         </div>
         <div className={st.CopyBtn} onClick={onClickCopy}>
           <Image
-            src={`/images/readme/copy.svg`}
+            src="/images/readme/copy.svg"
             width="30"
             height="30"
             alt="download"
@@ -55,7 +61,7 @@ export default function Preview() {
         </div>
         <div className={st.downloadBtn} onClick={onClickDownload}>
           <Image
-            src={`/images/readme/download.svg`}
+            src="/images/readme/download.svg"
             width="30"
             height="30"
             alt="download"
@@ -67,6 +73,7 @@ export default function Preview() {
         {/* <Link href="http://solved.ac/kyum8562"> */}
         <img src={firstImgUrl} width="280" height="140" alt="baekjoon" />
         <img src={secImgUrl} width="285" height="140" alt="baekjoon" />
+        <img src={githubUrl} width="350" height="150" alt="baekjoon" />
         {/* </Link> */}
       </div>
     </div>

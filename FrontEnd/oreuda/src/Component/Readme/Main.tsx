@@ -1,15 +1,10 @@
 "use client";
 
 import st from "./Main.module.scss";
-import {
-  setCreateNextArr,
-  setCurrComponent,
-  setIsReadmeMainPage,
-  setNextCompMoving,
-  setPushComponent,
-} from "@/store/modules/readme";
-import { useAppDispatch } from "@/store/hooks";
+import { selectReadme, setPushComponent } from "@/store/modules/readme";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import MainSelectBtn from "./MainSelectBtn";
+import NextBtn from "./NextBtn";
 
 export const mainCompChoiceData: any = [
   "선택해주세요",
@@ -34,18 +29,13 @@ export default function Main() {
    * 7. 추가 텍스트(Add Text) - 두개 이상을 넣을 수 있도록
    * 8. (박스 순서 배치)
    */
-  // const [selectArr, setSelectArr] = useState<String[]>([]);
-  // const componentList: any = [false, false, false, false, false, false, false];
-  // const componentMap = new Map<number, boolean>();
   const dispatch = useAppDispatch();
+  const nextComp = useAppSelector(selectReadme).nextComp;
 
   // option select 변경했을 때 동작하는 메서드
   const onChangeCompOption = (e: any) => {
     dispatch(setPushComponent(e.target.value));
   };
-
-  // 다음 버튼 눌렀을 때, 리스트 store에 저장
-  // dispatch(setComponentList(componentList));
 
   return (
     <div className={st.readmeMain}>
@@ -63,19 +53,7 @@ export default function Main() {
         })}
       </select>
       <MainSelectBtn />
-      <button
-        onClick={() => {
-          // 다음 버튼 눌렀을 때,
-          // nextComp 생성하고
-          // nextComp배열의 앞의 값 하나 빼내서 prev에 넣기
-          dispatch(setCreateNextArr(0));
-          dispatch(setNextCompMoving(0));
-          // dispatch(setCurrComponent(1));
-          dispatch(setIsReadmeMainPage(false));
-        }}
-      >
-        다음
-      </button>
+      {nextComp.length > 0 ? <NextBtn /> : ""}
     </div>
   );
 }

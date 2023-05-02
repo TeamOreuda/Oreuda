@@ -9,6 +9,7 @@
 
   @include comm.title;
 }
+
 .selectSV {
   width: 30%;
   height: 10%;
@@ -46,6 +47,6 @@
 
   :hover {
     cursor: pointer;
-    background-color: black;
+    background-color: rgb(110, 236, 163);
   }
 }
