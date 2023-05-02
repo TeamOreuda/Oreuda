@@ -23,7 +23,7 @@ public class FolderRepository {
 	@Id
 	@GeneratedValue
 	@Column(name = "repository_id")
-	private Long id;
+	private String id;
 
 	// 폴더
 	@NotNull
