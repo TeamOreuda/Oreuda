@@ -3,7 +3,6 @@ package com.oreuda.api.domain.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -21,9 +20,8 @@ public class Repository {
 
 	// 기본키
 	@Id
-	@GeneratedValue
 	@Column(name = "repository_id")
-	private Long id;
+	private String id;
 
 	// 폴더
 	@NotNull
