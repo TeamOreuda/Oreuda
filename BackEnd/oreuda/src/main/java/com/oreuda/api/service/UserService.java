@@ -1,6 +1,5 @@
 package com.oreuda.api.service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
@@ -31,7 +30,7 @@ public class UserService {
 		User user = User.builder()
 			.id(signUpDto.getUserId())
 			.image(signUpDto.getImage())
-			.joinDate(LocalDate.now())
+			.joinDate(LocalDateTime.now())
 			.stats(0)
 			.nickname(signUpDto.getNickname())
 			.commitCnt(0)
