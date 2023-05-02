@@ -40,15 +40,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 className={st.img}
                 src="/images/character/oreuda.svg"
                 alt=""
-                width={40}
-                height={40}
+                width={36}
+                height={36}
               />
               O R E U D A
             </header>
             {navList.map((e: NavList) => {
               return (
                 <ul key={e.name}>
-                  <Link href={`${e.moveTo}`} className={st.link}>
+                  <Link href={e.moveTo} className={st.link}>
                     <Image
                       className={st.img}
                       src={`/images/nav/${e.imageName}.svg`}
