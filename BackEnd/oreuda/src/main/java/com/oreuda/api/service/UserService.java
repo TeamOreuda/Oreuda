@@ -53,9 +53,9 @@ public class UserService {
 		// 폴더
 		Folder folder = Folder.builder()
 			.user(user)
-			.name("미분류")
-			.color("black")
-			.status("V")
+			.name("기본 폴더")
+			.color("white")
+			.status("B")
 			.order(0)
 			.date(LocalDateTime.now())
 			.build();

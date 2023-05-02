@@ -29,11 +29,6 @@ public class Repository {
 	@JoinColumn(name = "folder_id")
 	private Folder folder;
 
-	// 레포지토리 url
-	@NotNull
-	@Column(name = "repository_url")
-	private String url;
-
 	public Repository() {
 	}
 
