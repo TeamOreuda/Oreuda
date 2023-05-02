@@ -1,4 +1,4 @@
-package com.oreuda.client;
+package com.oreuda.api.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
