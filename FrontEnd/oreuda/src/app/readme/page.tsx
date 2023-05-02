@@ -9,10 +9,13 @@ import Main from "@/Component/Readme/Main";
 import Comp from "@/Component/Readme/Comp";
 
 export default function Readme() {
-  const nextCompData = useAppSelector(selectReadme).nextComp;
-  const prevCompData = useAppSelector(selectReadme).prevComp;
-  console.log(`nextCompData: ${nextCompData}`);
-  console.log(`prevCompData: ${prevCompData}`);
-  const isReadmeMain = useAppSelector(selectReadme).isReadmeMainPage;
-  return <div className={st.body}>{isReadmeMain ? <Main /> : <Comp />}</div>;
+  const nextComp = useAppSelector(selectReadme).nextComp;
+  const prevComp = useAppSelector(selectReadme).prevComp;
+  const currComponent = useAppSelector(selectReadme).currComponent;
+  console.log(`nextComp: ${nextComp}`);
+  console.log(`prevComp: ${prevComp}`);
+  console.log(`currComponent: ${currComponent}`);
+  return (
+    <div className={st.body}>{currComponent === 0 ? <Main /> : <Comp />}</div>
+  );
 }

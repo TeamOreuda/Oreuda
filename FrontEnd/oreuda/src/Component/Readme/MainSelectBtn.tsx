@@ -4,9 +4,8 @@ import { selectReadme, setDeleteComponent } from "@/store/modules/readme";
 import { mainCompChoiceData } from "./Main";
 
 export default function MainSelectBtn() {
-  const choiceStackData = useAppSelector(selectReadme).choiceStack;
+  const nextComp = useAppSelector(selectReadme).nextComp;
   const dispatch = useAppDispatch();
-  console.log(choiceStackData);
 
   const onClickRemoveComp = (e: any) => {
     console.log(e.target.id);
@@ -14,7 +13,7 @@ export default function MainSelectBtn() {
   };
   return (
     <div className={st.choiceBox}>
-      {choiceStackData.map((el: any, index: number) => {
+      {nextComp.map((el: any, index: number) => {
         return (
           <div
             key={index}
