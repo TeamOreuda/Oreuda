@@ -1,8 +1,8 @@
-query GetCommitByRepository($cursor: String, $userId: ID!, $repoName: String!, $repoOwner: String!) {
+query GetCommitByRepository($cursor: String, $authorId: ID!, $repoName: String!, $repoOwner: String!) {
     repository(name: $repoName, owner: $repoOwner) {
         object(expression: "HEAD") {
             ... on Commit {
-                history(first: 100, after: $cursor, author: {id: $userId}) {
+                history(first: 100, after: $cursor, author: {id: $authorId}) {
                     nodes {
                         id
                         message

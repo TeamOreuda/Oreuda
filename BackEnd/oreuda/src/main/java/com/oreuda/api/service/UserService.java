@@ -1,11 +1,8 @@
 package com.oreuda.api.service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.oreuda.api.domain.dto.SignUpDto;
 import com.oreuda.api.domain.dto.UserDto;
@@ -21,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class UserService {
 
@@ -30,24 +26,21 @@ public class UserService {
 	private final FolderRepository folderRepository;
 
 	public void signup(SignUpDto signUpDto) {
-
-		// 깃 api
-		// 닉네임, 총 커밋수, 레포수, 연속 스트릭, 주언어, 업데이트 시간
-
+		// 사용자
 		User user = User.builder()
 			.id(signUpDto.getUserId())
 			.image(signUpDto.getImage())
-			.joinDate(LocalDate.now())
+			.joinDate(LocalDateTime.now())
 			.stats(0)
 			.nickname(signUpDto.getNickname())
-			.commitCnt(100)
-			.repositoryCnt(10)
-			.streakMax(20)
-			.mostLanguage("java")
+			.commitCnt(0)
+			.repositoryCnt(0)
+			.streakMax(0)
+			.mostLanguage("empty")
 			.updateTime(LocalDateTime.now())
 			.build();
 		userRepository.save(user);
-
+		
 		// 로그
 		UserLog userLog = UserLog.builder()
 			.user(user)
@@ -59,13 +52,14 @@ public class UserService {
 		// 폴더
 		Folder folder = Folder.builder()
 			.user(user)
-			.name("미분류")
-			.color("black")
-			.status("V")
+			.name("기본 폴더")
+			.color("white")
+			.status("B")
 			.order(0)
 			.date(LocalDateTime.now())
 			.build();
 		folderRepository.save(folder);
+
 	}
 
 	public UserDto getUser(String userId) {
@@ -73,6 +67,13 @@ public class UserService {
 		UserDto userDto = UserDto.toEntity(user);
 
 		return userDto;
+	}
+
+	public String getImage(String userId) {
+		User user = userRepository.findById(userId).get();
+		String userImage = user.getImage();
+
+		return userImage;
 	}
 }
 

@@ -6,7 +6,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @EnableEurekaClient
-@EnableFeignClients(basePackages = "com.oreuda.oreuda_auth.client")
+@EnableFeignClients(basePackages = "com.oreuda.oreuda_auth.api.client")
 @SpringBootApplication
 public class OreudaAuthApplication {
 

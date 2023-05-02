@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.oreuda.common.exception.GitHubException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,14 +20,13 @@ public class GitHubClient {
 	private final WebClient webClient;
 
 	public GitHubClient() {
-		System.out.println("GitHubClient!!!");
 		this.webClient = WebClient.builder()
 			.baseUrl(GITHUB_URL)
 			.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 			.build();
 	}
 
-	public JsonNode getRepositories(String accessToken, GraphQLRequest request) {
+	public JsonNode getRepositories(String accessToken, GraphQLRequest request) throws GitHubException {
 		return webClient.post()
 			.uri(GITHUB_URL)
 			.header("Authorization", "Bearer " + accessToken)
@@ -36,24 +36,9 @@ public class GitHubClient {
 			.block()
 			.get("data")
 			.get("viewer");
-
-		// webClient.post()
-		// 	.uri(GITHUB_URL)
-		// 	.header("Authorization", "Bearer " + accessToken)
-		// 	// .body(BodyInserters.fromValue(graphQLRequest))
-		// 	.bodyValue(request.getRequestBody())
-		// 	.retrieve()
-		// 	.bodyToMono(JsonNode.class)
-		// 	.subscribe(response -> {
-		// 		if (response.get("data") == null) {
-		// 			// 예외 처리 로직
-		// 		}
-		// 	}, error -> {
-		// 		System.out.println("error@@@");
-		// 	});
 	}
 
-	public JsonNode getCommitByRepository(String accessToken, GraphQLRequest request) {
+	public JsonNode getCommitByRepository(String accessToken, GraphQLRequest request) throws GitHubException {
 		return webClient.post()
 			.uri(GITHUB_URL)
 			.header("Authorization", "Bearer " + accessToken)
