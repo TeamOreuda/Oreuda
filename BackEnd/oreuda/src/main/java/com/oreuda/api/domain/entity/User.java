@@ -1,11 +1,9 @@
 package com.oreuda.api.domain.entity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -44,7 +42,7 @@ public class User {
 	// 사용자 가입 일자
 	@NotNull
 	@Column(name = "user_join_date")
-	private LocalDate joinDate;
+	private LocalDateTime joinDate;
 
 	// 사용자 총 커밋 수
 	@NotNull
