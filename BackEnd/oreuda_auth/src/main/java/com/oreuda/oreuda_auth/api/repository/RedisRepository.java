@@ -1,6 +1,7 @@
 package com.oreuda.oreuda_auth.api.repository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -9,10 +10,10 @@ import java.util.concurrent.TimeUnit;
 @Repository
 @RequiredArgsConstructor
 public class RedisRepository {
-    private final RedisTemplate<String, String> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     public String get(String key) {
-        return redisTemplate.opsForValue().get(key);
+        return (String) redisTemplate.opsForValue().get(key);
     }
 
     public void set(String key, String value) {
