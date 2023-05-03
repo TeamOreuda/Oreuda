@@ -7,6 +7,14 @@ export interface readmeSlice {
   githubId: string;
   githubTheme: string;
   solvedTheme: string;
+  mulType: number;
+  mulTheme: string;
+  mailId: string;
+  mailDomain: string;
+  blogLink: string;
+  // mulTheme: string;
+  textTitle: string[];
+  textDesc: string[];
   nextComp: number[];
   componentArr: boolean[];
   currComponent: number;
@@ -19,6 +27,13 @@ const initialState: readmeSlice = {
   githubId: "",
   githubTheme: "dark",
   solvedTheme: "warm",
+  mulTheme: "",
+  mulType: 0,
+  mailId: "",
+  mailDomain: "",
+  blogLink: "",
+  textTitle: [],
+  textDesc: [],
   nextComp: [],
   componentArr: [true, false, false, false, false, false, false, false],
   currComponent: 0,
@@ -49,6 +64,42 @@ const themeSlice = createSlice({
       const temp = state;
       temp.githubTheme = action.payload;
     },
+    // [MUL] MUL 타입 저장
+    setMULType(state, action) {
+      const temp = state;
+      temp.mulType = action.payload;
+    },
+    // [MUL] MUL 테마 저장
+    setMULTheme(state, action) {
+      const temp = state;
+      temp.mulTheme = action.payload;
+    },
+    // [contact] contact 메일 아이디 저장
+    setMailId(state, action) {
+      const temp = state;
+      temp.mailId = action.payload;
+    },
+    // [contact] contact 메일 도메인 저장
+    setMailDomain(state, action) {
+      const temp = state;
+      temp.mailDomain = action.payload;
+    },
+    // [contact] contact 기술 블로그 링크 저장
+    setBlogLink(state, action) {
+      const temp = state;
+      temp.blogLink = action.payload;
+    },
+    // [contact] contact 기술 블로그 링크 저장
+    setTextTitle(state, action) {
+      const temp = state;
+      temp.textTitle.push(action.payload);
+    },
+    // [contact] contact 기술 블로그 링크 저장
+    setTextDesc(state, action) {
+      const temp = state;
+      temp.textDesc.push(action.payload);
+    },
+
     // [Readme Main] 선택한 컴포넌트 추가
     setPushComponent(state, action) {
       if (!state.componentArr[action.payload]) {
@@ -81,7 +132,7 @@ const themeSlice = createSlice({
     // [All] 이전 버튼을 눌렀을 때,
     setPrevCompMoving(state, action) {
       // 현재 인덱스를 next배열에 저장
-      state.nextComp.unshift(state.currComponent);
+      if (state.currComponent != 8) state.nextComp.unshift(state.currComponent);
 
       let tmp = state.prevComp.pop();
       state.currComponent = tmp || 0;
@@ -96,6 +147,13 @@ export const {
   setSolvedTheme,
   setGithubTheme,
   setGithubId,
+  setMULType,
+  setMULTheme,
+  setMailId,
+  setMailDomain,
+  setBlogLink,
+  setTextTitle,
+  setTextDesc,
   setPushComponent,
   setDeleteComponent,
   setNextCompMoving,
