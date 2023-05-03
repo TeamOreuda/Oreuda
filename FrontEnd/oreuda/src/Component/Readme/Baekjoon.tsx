@@ -5,10 +5,13 @@ import st from "./Baekjoon.module.scss";
 import {
   selectReadme,
   setBaekjoonId,
-  setBaekjoonTheme,
+  setNextCompMoving,
+  setPrevCompMoving,
   setSolvedTheme,
 } from "@/store/modules/readme";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import NextBtn from "./NextBtn";
+import PrevBtn from "./PrevBtn";
 
 const bjDesignData: string[] = [
   "dark",
@@ -25,26 +28,20 @@ const bjDesignData: string[] = [
 
 const svDesignData: string[] = ["warm", "cold", "dark"];
 
-// const bjDesignData: bjDesignData[] = [
-//   {
-//     date: "2023-03-01",
-//     value: 330,
-//   },
-
 export default function Baekjoon() {
+  const choiceStackData = useAppSelector(selectReadme).nextComp;
+  const prevCompData = useAppSelector(selectReadme).prevComp;
   const [id, setId] = useState("");
 
   const dispatch = useAppDispatch();
-  const baekJoonIdData = useAppSelector(selectReadme);
+  const baekJoonIdData = useAppSelector(selectReadme).baekjoonId;
+  const solvedTheme = useAppSelector(selectReadme).solvedTheme;
+
   const activeEnter = (e: any) => {
     if (e.key === "Enter") {
       // global state에 저장해야 함
       dispatch(setBaekjoonId(id));
     }
-  };
-
-  const onClickBJTheme = (e: any) => {
-    dispatch(setBaekjoonTheme(e.target.value));
   };
 
   const onClickSVTheme = (e: any) => {
@@ -63,6 +60,7 @@ export default function Baekjoon() {
           placeholder="백준 아이디"
           onChange={(e) => setId(e.target.value)}
           onKeyDown={(e) => activeEnter(e)}
+          value={baekJoonIdData.length > 0 ? baekJoonIdData : undefined}
         ></input>
         <div className={st.selectBox}>
           {/* <select className={st.selectBJ} onClick={onClickBJTheme}>
@@ -75,7 +73,11 @@ export default function Baekjoon() {
             })}
           </select> */}
           <span>테마 설정</span>
-          <select className={st.selectSV} onClick={onClickSVTheme}>
+          <select
+            className={st.selectSV}
+            onClick={onClickSVTheme}
+            defaultValue={solvedTheme}
+          >
             {svDesignData.map((data: string, index: number) => {
               return (
                 <option value={data} key={index}>
@@ -85,8 +87,8 @@ export default function Baekjoon() {
             })}
           </select>
         </div>
-
-        {/* <button>확인</button> */}
+        <PrevBtn />
+        <NextBtn />
       </div>
     </div>
   );

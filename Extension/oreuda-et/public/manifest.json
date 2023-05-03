@@ -13,8 +13,13 @@
   },
   "permissions": [
     "scripting",
-    "cookies"
-
+    "cookies",
+    "storage",
+    "tabs"
   ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
   "host_permissions": ["<all_urls>"]
 }

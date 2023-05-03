@@ -1,0 +1,24 @@
+javascript  #f1e05a
+html        #e44b23
+css         #563d7c
+python      #3581ba
+typescript  #31859c
+java        #b07219
+shell       #89e051
+php         #4f5d95
+c#          #f34b7d
+cpp         #f34b7d
+c           #555
+go          #375eab
+rust        #dea584
+dart        #98BAD6
+ruby        #701516
+assembly    #6e4c13
+swift       #ffac45
+r           #198ce7
+matlab      #bb92ac
+scala       #7dd3b0
+objective-c #438eff
+perl        #0298c3
+other       #ededed
+

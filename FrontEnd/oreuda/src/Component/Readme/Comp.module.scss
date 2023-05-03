@@ -1,0 +1,20 @@
+.Comp {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
+
+  .leftBody {
+    width: calc((100vw - 400px) / 2);
+    border: 3px solid tomato;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .rightBody {
+    width: calc((100vw - 400px) / 2);
+    border: 3px solid green;
+  }
+}

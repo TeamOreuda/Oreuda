@@ -1,6 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-
 import Header from "../../components/Main/Header";
 import FolderList from "../../components/Main/FolderList";
 import Footer from "../../components/Main/Footer";
@@ -10,10 +9,17 @@ const Main = () => {
   // const [isLoading, setIsLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // const chrome = window.chrome;
-
   const currentUrl = window.location.href;
   console.log("Main : " + currentUrl);
+
+  useEffect(() => {
+    // 마지막 페이지를 저장하는 부분
+    window.chrome.cookies.set({
+      url: "http://localhost:3000",
+      name: "page",
+      value: "main",
+    });
+  }, []);
 
   // 로그아웃 상태면 landing 페이지로 보내준다.
   // useEffect(() => {
