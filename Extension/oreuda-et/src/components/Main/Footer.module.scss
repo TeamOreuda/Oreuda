@@ -1,10 +1,20 @@
 .Footer {
   box-sizing: border-box;
   border-top: 1px solid #000000;
-  .repoCnt {
-    padding-top: 10px;
+  .repoTitle {
+    padding-top: 8px;
+    font-size: 16px;
+    line-height: 20px;
+  }
+  .repoCnt{
+    padding-top: 5px;
+    font-size: 13px;
+    color: gray;
   }
   .link {
     padding-top: 10px;
+    .git{
+      color:greenyellow
+    }
   }
 }

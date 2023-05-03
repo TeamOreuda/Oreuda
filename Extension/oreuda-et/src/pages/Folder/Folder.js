@@ -8,24 +8,25 @@ import RepoList from "../../components/Folder/RepoList";
 
 const Folder = () => {
   const params = useParams();
-  useEffect(() => {
-    // 마지막 페이지를 저장하는 부분
-    window.chrome.cookies.set({
-      url: "http://localhost:3000",
-      name: "page",
-      value: "folder",
-    });
-  }, []);
+  console.log(params.name)
+  // useEffect(() => {
+  //   // 마지막 페이지를 저장하는 부분
+  //   window.chrome.cookies.set({
+  //     url: "http://localhost:3000",
+  //     name: "page",
+  //     value: "folder",
+  //   });
+  // }, []);
 
 
   return (
     <>
       <Header />
 
-      <FolderHeader />
-      <RepoList />
+      <FolderHeader folderName = {params.name}/>
+      <RepoList folderName = {params.name}/>
 
-      <Footer/>
+      {/* <Footer/> */}
     </>
   );
 };

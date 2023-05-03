@@ -4,18 +4,29 @@ import st from "./RepoList.module.scss";
 import color from "../../styles/color.module.scss";
 import indicator from "../../styles/common.module.scss";
 
-const RepoItem = ({ repo, folderList }) => {
-  const chrome = window.chrome;
+const RepoItem = ({ repo, folderList, dropDownIndex, setDropDownIndex }) => {
+  // const chrome = window.chrome;
 
   const [isClicked, setIsClicked] = useState(false);
   const [radioIndex, setRadioIndex] = useState(-1);
 
-  const dropdownOnClick = (e) => {
-    setIsClicked(!isClicked);
+  const dropdownOnClick = () => {
+    if (isClicked && repo.id === dropDownIndex) {
+      setIsClicked(false);
+      setDropDownIndex(-1);
+      setRadioIndex(-1);
+    } else {
+      setDropDownIndex(repo.id);
+      setIsClicked(true);
+    }
   };
 
   const radioCheck = (e) => {
-    setRadioIndex(e);
+    if (e == radioIndex) {
+      setRadioIndex(-1);
+    } else {
+      setRadioIndex(e);
+    }
   };
 
   const moveConfirm = () => {
@@ -23,39 +34,13 @@ const RepoItem = ({ repo, folderList }) => {
   };
 
   const repoMove = (repoUrl) => {
-    chrome.tabs.create({
-      url: repoUrl,
+    window.chrome.tabs.create({
+      url: "https://github.com/tykimdream",
       // type: "popup",
       // width: 800,
       // height: 600,
     });
   };
-
-  const unClassified = (
-    <div className={st.itemLayout}>
-      <div className={st.itemLayoutLeft}>
-        <div className={`${st.folderTitle} ${st.fontSize}`}>미분류</div>
-        <div
-          className={`${indicator.dropdownIndicator} ${color["black"]}`}
-        ></div>
-      </div>
-      <div className={st.itemLayoutRight}>
-        {-1 === radioIndex ? (
-          <img
-            className={st.radioBtn}
-            onClick={() => radioCheck(-1)}
-            src="/assets/ClickedIcon.svg"
-          ></img>
-        ) : (
-          <img
-            className={st.radioBtn}
-            onClick={() => radioCheck(-1)}
-            src="/assets/UnClickedIcon.svg"
-          ></img>
-        )}
-      </div>
-    </div>
-  );
 
   // console.log(folderList);
   return (
@@ -82,7 +67,7 @@ const RepoItem = ({ repo, folderList }) => {
           </div>
 
           <div className={st.repoDescription}>
-            <span className={st.fontSize}>{repo.description}</span>s
+            <span className={st.fontSize}>{repo.description}</span>
           </div>
         </div>
       </div>
@@ -98,15 +83,21 @@ const RepoItem = ({ repo, folderList }) => {
             className={`${st.dropdownIcon} ${isClicked ? st.reverse : ""}`}
             // src={isClicked ? "/assets/dropdownReverse.svg" : "/assets/dropdown.svg"}
             src="/assets/dropdown.svg"
-            onClick={() => dropdownOnClick(repo.id)}
+            onClick={() => dropdownOnClick()}
           ></img>
           <div
-            className={isClicked ? st.dropdownActivate : st.dropdownDeactivate}
+            className={
+              isClicked && dropDownIndex === repo.id
+                ? st.dropdownActivate
+                : st.dropdownDeactivate
+            }
           >
             {folderList.map((key) => {
               return (
                 <div
-                  className={st.itemLayout}
+                  className={`${
+                    key.id === radioIndex ? st.itemSelected : st.itemNonSelected
+                  } ${st.itemLayout}`}
                   onClick={() => radioCheck(key.id)}
                 >
                   <div className={st.itemLayoutLeft}>
@@ -135,9 +126,13 @@ const RepoItem = ({ repo, folderList }) => {
                 </div>
               );
             })}
-            {unClassified}
 
-            <div className={st.confirmBtn} onClick={moveConfirm}></div>
+            <div
+              className={`${radioIndex !== -1 ? st.confirmBtnOnSelected : ""} ${
+                st.confirmBtn
+              }`}
+              onClick={moveConfirm}
+            ></div>
           </div>
         </div>
         <div className={st.cardFooter}>
