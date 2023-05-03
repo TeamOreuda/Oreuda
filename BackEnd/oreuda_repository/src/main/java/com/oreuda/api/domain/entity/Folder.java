@@ -14,10 +14,12 @@ import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class Folder {
 
@@ -57,8 +59,4 @@ public class Folder {
 	@NotNull
 	@Column(name = "folder_date")
 	private LocalDateTime date;
-
-	public Folder() {
-	}
-
 }

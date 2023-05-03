@@ -7,21 +7,24 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "repository")
 public class FolderRepository {
 
 	// 기본키
 	@Id
-	@GeneratedValue
 	@Column(name = "repository_id")
 	private String id;
 
@@ -30,13 +33,5 @@ public class FolderRepository {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "folder_id")
 	private Folder folder;
-
-	// 레포지토리 url
-	@NotNull
-	@Column(name = "repository_url")
-	private String url;
-
-	public FolderRepository() {
-	}
 
 }
