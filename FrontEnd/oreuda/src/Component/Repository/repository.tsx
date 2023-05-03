@@ -24,7 +24,7 @@ interface Repository {
 }
 
 export default function repository() {
-  const repository: Repository = {
+  const repository: Repository[] = [{
     id: 1,
     name: "레포지토리 이름",
     description:
@@ -86,57 +86,64 @@ export default function repository() {
         count: 4,
       },
     ],
-  };
+  }];
 
-  const formattedDate = repository.updateDate.replace(
-    /^(\d{4})-(\d{2})-(\d{2})$/,
-    (match, year, month, day) => {
-      const months = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ];
-      return `${months[+month - 1]} ${+day}, ${year}`;
-    }
-  );
+  function formattedDate(date: string) {
+    date.replace(
+      /^(\d{4})-(\d{2})-(\d{2})$/,
+      (match, year, month, day) => {
+        const months = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
+        return `${months[+month - 1]} ${+day}, ${year}`;
+      }
+    )
+  }
 
   return (
-    <div className={st.body}>
-      <div className={st.info}>
-        <div className={st.infofirst}>
-          <Link href={repository.url} className={st.link}>
-            {repository.name}
-          </Link>
-          <div>{repository.isPrivate === "Y" ? "Private" : "Public"}</div>
-        </div>
-        <p>{repository.description}</p>
-        <div className={st.infosecond}>
-          <div>
-            <div></div>
-            <span>{repository.language}</span>
-            <Image
-              className={st.img}
-              src="/images/repository/star.svg"
-              alt=""
-              width={16}
-              height={16}
-            />
-            <span>{repository.star}</span>
-          </div>
-          <span>Updated on {formattedDate}</span>
-        </div>
+    <div >
+      {
+        repository?.map((item) => (
+          <div key={item.id } className={st.body}>
+            
+            <div className={st.info}>
+              <div className={st.infofirst}>
+                <Link href={item.url} className={st.link}>
+                  {item.name}
+                </Link>
+                <div>{item.isPrivate === "Y" ? "Private" : "Public"}</div>
+              </div>
+              <p>{item.description}</p>
+              <div className={st.infosecond}>
+                <div>
+                  <div></div>
+                  <span>{item.language}</span>
+                  <Image
+                    className={st.img}
+                    src="/images/repository/star.svg"
+                    alt=""
+                    width={16}
+                    height={16}
+                  />
+                  <span>{item.star}</span>
+                </div>
+                <span>Updated on {formattedDate(item.updateDate)}</span>
+              </div>
+            </div>
+            <div>그래프</div>
+            <Repositorygraph yearlyCommit={item.yearlyCommit} />
+          </div>))}
       </div>
-      <div>그래프</div>
-      <Repositorygraph yearlyCommit={repository.yearlyCommit} />
-    </div>
-  );
+      );
 }
