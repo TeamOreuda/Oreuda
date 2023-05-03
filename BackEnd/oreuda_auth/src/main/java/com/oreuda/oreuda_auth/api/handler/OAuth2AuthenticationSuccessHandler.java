@@ -5,7 +5,7 @@ import com.oreuda.oreuda_auth.api.domain.dto.AuthDto;
 import com.oreuda.oreuda_auth.api.client.UserClient;
 import com.oreuda.oreuda_auth.api.domain.dto.UserDto;
 import com.oreuda.oreuda_auth.api.domain.entity.Auth;
-import com.oreuda.oreuda_auth.api.repository.RedisRepository;
+import com.oreuda.oreuda_auth.api.repository.UserRepository;
 import com.oreuda.oreuda_auth.common.model.Token;
 import com.oreuda.oreuda_auth.common.model.TokenKey;
 import com.oreuda.oreuda_auth.api.provider.JwtCode;
@@ -35,7 +35,7 @@ import java.util.Map;
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final AuthRepository authRepository;
-    private final RedisRepository redisRepository;
+    private final UserRepository redisRepository;
     private final TokenProvider tokenProvider;
     private final UserClient userClient;
 
