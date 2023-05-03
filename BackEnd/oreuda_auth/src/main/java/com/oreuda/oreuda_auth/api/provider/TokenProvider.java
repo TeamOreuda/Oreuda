@@ -1,6 +1,6 @@
 package com.oreuda.oreuda_auth.api.provider;
 
-import com.oreuda.oreuda_auth.api.repository.RedisRepository;
+import com.oreuda.oreuda_auth.api.repository.UserRepository;
 import com.oreuda.oreuda_auth.common.model.Token;
 import com.oreuda.oreuda_auth.common.model.TokenKey;
 import io.jsonwebtoken.*;
@@ -10,14 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -25,14 +22,14 @@ public class TokenProvider implements InitializingBean {
 
     private final String secret;
     private final long tokenValidityInSeconds;
-    private final RedisRepository redisRepository;
+    private final UserRepository redisRepository;
     private Key key;
 
     @Autowired
     public TokenProvider(
             @Value("${jwt.secret}") String secret,
             @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds,
-            RedisRepository redisRepository
+            UserRepository redisRepository
     ) {
         this.secret = secret;
         this.tokenValidityInSeconds = tokenValidityInSeconds * 1000;
