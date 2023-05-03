@@ -13,7 +13,7 @@ spring:
       routes:
         # business-server
         - id: business-server
-          uri: http://localhost:8080/
+          uri: http://172.28.0.22:8080/
           predicates:
             - Path=/api/v1/users/**
           filters:
@@ -63,7 +63,7 @@ spring:
 
         # test-server
         - id: test-server
-          uri: http://localhost:8080/
+          uri: http://172.28.0.22:8080/
           predicates:
             - Path=/api/v1/test/**
 
