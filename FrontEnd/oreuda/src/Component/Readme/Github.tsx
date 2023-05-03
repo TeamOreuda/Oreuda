@@ -13,19 +13,6 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import NextBtn from "./NextBtn";
 import PrevBtn from "./PrevBtn";
 
-const bjDesignData: string[] = [
-  "dark",
-  "radical",
-  "merko",
-  "gruvbox",
-  "tokyonight",
-  "onedark",
-  "cobalt",
-  "synthwave",
-  "highcontrast",
-  "dracula",
-];
-
 const svDesignData: string[] = [
   "dark",
   "radical",
@@ -42,10 +29,12 @@ const svDesignData: string[] = [
 export default function Github() {
   // const nextComp = useAppSelector(selectReadme).nextComp;
   // const prevComp = useAppSelector(selectReadme).prevComp;
-  const [id, setId] = useState("");
-  const dispatch = useAppDispatch();
   const githubTheme = useAppSelector(selectReadme).githubTheme;
   const githubId = useAppSelector(selectReadme).githubId;
+  const [id, setId] = useState(githubId);
+  console.log(id);
+
+  const dispatch = useAppDispatch();
   const activeEnter = (e: any) => {
     if (e.key === "Enter") {
       // global state에 저장해야 함
@@ -69,7 +58,7 @@ export default function Github() {
           placeholder="깃헙 아이디"
           onChange={(e) => setId(e.target.value)}
           onKeyDown={(e) => activeEnter(e)}
-          value={githubId.length > 0 ? githubId : undefined}
+          value={id}
         ></input>
         <div className={st.selectBox}>
           {/* <select className={st.selectBJ} onClick={onClickBJTheme}>

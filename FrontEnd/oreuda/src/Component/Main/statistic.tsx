@@ -21,67 +21,68 @@ export default async function Statistic() {
   const ACCESS_TOKEN = cookieStore.get("Authorization")?.value;
   const REFRESH_TOKEN = cookieStore.get("RefreshToken")?.value;
 
-  const data = await axios
-    .get("http://192.168.31.233:9000/api/v1/users", {
-      headers: {
-        Authorization: ACCESS_TOKEN,
-      },
-    })
-    .then((res) => {
-      return res.data;
-    })
-    .catch(async (err) => {
-      if (err.response.status == 401) {
-        return await axios
-          .post(
-            "http://192.168.31.233:9000/api/v1/auth/refresh",
-            {},
-            {
-              headers: {
-                Authorization: ACCESS_TOKEN,
-                RefreshToken: REFRESH_TOKEN,
-              },
-            }
-          )
+  const data = 0;
+  // const data = await axios
+  //   .get("http://192.168.31.233:9000/api/v1/users", {
+  //     headers: {
+  //       Authorization: ACCESS_TOKEN,
+  //     },
+  //   })
+  //   .then((res) => {
+  //     return res.data;
+  //   })
+  //   .catch(async (err) => {
+  //     if (err.response.status == 401) {
+  //       return await axios
+  //         .post(
+  //           "http://192.168.31.233:9000/api/v1/auth/refresh",
+  //           {},
+  //           {
+  //             headers: {
+  //               Authorization: ACCESS_TOKEN,
+  //               RefreshToken: REFRESH_TOKEN,
+  //             },
+  //           }
+  //         )
 
-          .then(async (res) => {
-            // 토큰 쿠키에 저장하기
-            console.log(111111111);
-            console.log(res.data.Authorization);
-            console.log(res.data.RefreshToken);
+  //         .then(async (res) => {
+  //           // 토큰 쿠키에 저장하기
+  //           console.log(111111111);
+  //           console.log(res.data.Authorization);
+  //           console.log(res.data.RefreshToken);
 
-            if (res.data.Authorization) {
-              setCookie("Authorization", res.data.Authorization, {
-                path: "/",
-                httpOnly: false,
-                secure: false,
-                sameSite: "none",
-              });
-            }
-            if (res.data.RefreshToken) {
-              setCookie("RefreshToken", res.data.RefreshToken, {
-                path: "/",
-                httpOnly: false,
-                secure: false,
-                sameSite: "none",
-              });
-            }
-            return await axios
-              .get("http://192.168.31.233:9000/api/v1/users", {
-                headers: {
-                  Authorization: res.data.Authorization,
-                },
-              })
-              .then((res) => {
-                return res.data;
-              });
-          })
+  //           if (res.data.Authorization) {
+  //             setCookie("Authorization", res.data.Authorization, {
+  //               path: "/",
+  //               httpOnly: false,
+  //               secure: false,
+  //               sameSite: "none",
+  //             });
+  //           }
+  //           if (res.data.RefreshToken) {
+  //             setCookie("RefreshToken", res.data.RefreshToken, {
+  //               path: "/",
+  //               httpOnly: false,
+  //               secure: false,
+  //               sameSite: "none",
+  //             });
+  //           }
+  //           return await axios
+  //             .get("http://192.168.31.233:9000/api/v1/users", {
+  //               headers: {
+  //                 Authorization: res.data.Authorization,
+  //               },
+  //             })
+  //             .then((res) => {
+  //               return res.data;
+  //             });
+  //         })
 
-          .catch(() => {
-            redirect("/login");
-          });
-      }
-    });
+  //         .catch(() => {
+  //           redirect("/login");
+  //         });
+  //     }
+  //   });
 
   const gitHubStatistic: gitHubStatistic[] = [
     {
@@ -125,7 +126,12 @@ export default async function Statistic() {
               </span>
               <span>{e.language}</span>
             </div>
-            <Image src={`/images/main/${e.imageName}.svg`} alt="" width={80} height={80} />
+            <Image
+              src={`/images/main/${e.imageName}.svg`}
+              alt=""
+              width={80}
+              height={80}
+            />
           </div>
         ))}
       </div>

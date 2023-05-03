@@ -31,11 +31,11 @@ const svDesignData: string[] = ["warm", "cold", "dark"];
 export default function Baekjoon() {
   const choiceStackData = useAppSelector(selectReadme).nextComp;
   const prevCompData = useAppSelector(selectReadme).prevComp;
-  const [id, setId] = useState("");
-
-  const dispatch = useAppDispatch();
   const baekJoonIdData = useAppSelector(selectReadme).baekjoonId;
   const solvedTheme = useAppSelector(selectReadme).solvedTheme;
+  const [id, setId] = useState(baekJoonIdData);
+
+  const dispatch = useAppDispatch();
 
   const activeEnter = (e: any) => {
     if (e.key === "Enter") {
@@ -60,7 +60,7 @@ export default function Baekjoon() {
           placeholder="백준 아이디"
           onChange={(e) => setId(e.target.value)}
           onKeyDown={(e) => activeEnter(e)}
-          value={baekJoonIdData.length > 0 ? baekJoonIdData : undefined}
+          value={id}
         ></input>
         <div className={st.selectBox}>
           {/* <select className={st.selectBJ} onClick={onClickBJTheme}>

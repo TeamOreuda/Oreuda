@@ -1,25 +1,12 @@
-// use comm
+@use "../../Style/index.scss" as comm;
 
 .body {
-  // display: flex;
-  // justify-content: center;
-  // align-items: center;
+  @include comm.title;
 
-  & .titleDiv {
+  .contentDiv {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-
-    & span {
-      font-size: 40px;
-      color: #000000;
-    }
-    & p {
-      color: #979696;
-    }
-  }
-
-  & .contentDiv {
     // border: 3px solid tomato;
     margin-top: 30px;
 
@@ -59,4 +46,110 @@
       text-indent: 10px;
     }
   }
+}
+
+// MUL
+.radioBtnDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  // 디폴트 라디오 버튼 표시 X
+  .input_radio {
+    display: none;
+  }
+  // 체크된 라디오 버튼
+  .checked {
+    background: #4bca80;
+    border: 1px solid #4bca80;
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 10px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  // label 내의 텍스트
+  .p {
+    cursor: pointer;
+    margin: 10px 30px;
+  }
+}
+
+.ContactMain {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  @include comm.title;
+
+  .ContentDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .mailDiv {
+      width: 400px;
+      .mailInput {
+        width: 45%;
+        height: 50px;
+        border-radius: 10px;
+        font-family: "GmarketSansMedium";
+        font-size: 16px;
+        border: 3px solid #000000;
+        text-indent: 10px;
+      }
+      .selectSV {
+        width: 40%;
+        height: 56.8px;
+        border-radius: 10px;
+        margin-left: 10px;
+        font-family: "GmarketSansMedium";
+        font-size: 16px;
+        border: 3px solid #000000;
+        text-indent: 10px;
+
+        option {
+          font-size: 14px;
+        }
+      }
+    }
+    .blogInput {
+      width: 88%;
+      height: 50px;
+      border-radius: 10px;
+      font-family: "GmarketSansMedium";
+      font-size: 16px;
+      border: 3px solid #000000;
+      text-indent: 10px;
+    }
+  }
+}
+
+// prev, next 버튼
+.button {
+  @include comm.button;
+  display: inline-block;
+}
+.TextTitleInput {
+  width: 88%;
+  height: 50px;
+  border-radius: 10px;
+  font-family: "GmarketSansMedium";
+  font-size: 16px;
+  border: 3px solid #000000;
+  text-indent: 10px;
+}
+.TextDescInput {
+  width: 88%;
+  height: 200px;
+  border-radius: 10px;
+  font-family: "GmarketSansMedium";
+  font-size: 16px;
+  border: 3px solid #000000;
+  text-indent: 10px;
 }
