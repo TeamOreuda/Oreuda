@@ -78,5 +78,5 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defalutZone: http://localhost:8761/eureka
+      defalutZone: http://172.28.0.20:8761/eureka
 
