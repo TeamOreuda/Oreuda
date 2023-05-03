@@ -1,5 +1,7 @@
 package com.oreuda.api.repository;
 
+import java.util.Set;
+
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -23,8 +25,8 @@ public class UserRepository {
 		return redisTemplate.opsForSet().isMember(getKey(userId), repo);
 	}
 
-	public Long getSize(String userId) {
-		return redisTemplate.opsForSet().size(getKey(userId));
+	public Set<String> members(String userId) {
+		return redisTemplate.opsForSet().members(getKey(userId));
 	}
 
 	public void remove(String key) {

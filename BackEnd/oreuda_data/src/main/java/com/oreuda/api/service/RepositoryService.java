@@ -109,9 +109,9 @@ public class RepositoryService {
 			repository.dateFormatter();
 			repositoryRepository.set(repository.getId(), repository);
 
-			if (userRepository.isMember(userId, repository.getName())) return;
+			if (userRepository.isMember(userId, repository.getId())) return;
 			// 해당 레포지토리가 이미 사용자 레포지토리 목록에 없으면 사용자 레포지토리에 저장
-			userRepository.add(userId, repository.getName());
+			userRepository.add(userId, repository.getId());
 
 			// 레포지토리별 커밋
 			commitService.getCommitByRepository(userId, loadQueryFile("commit.graphql"), repository.getId(), repository.getName());
