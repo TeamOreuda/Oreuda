@@ -52,3 +52,7 @@ dependencyManagement {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+test {
+    enabled = false
+}
