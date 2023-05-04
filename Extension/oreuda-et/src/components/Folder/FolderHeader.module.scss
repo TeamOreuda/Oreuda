@@ -11,8 +11,9 @@
     top: 5px;
     padding-right: 5px;
     .backBtnIcon {
-      width: 9px;
-      height: 14px;
+      width: 8px;
+      height: 12px;
+      padding-left: 4px;
     }
     .backBtnIcon:hover {
       cursor: pointer;
@@ -22,9 +23,9 @@
     position: relative;
     left: 3px;
     top: 6px;
-    padding-right: 5px;
+    padding-right: 8px;
   }
   .folderIndicator {
-    @include indi.folderIndicator;   
+    @include indi.folderIndicator;
   }
 }

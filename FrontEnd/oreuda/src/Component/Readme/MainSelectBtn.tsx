@@ -1,3 +1,5 @@
+"use client";
+
 import st from "./Main.module.scss";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { selectReadme, setDeleteComponent } from "@/store/modules/readme";

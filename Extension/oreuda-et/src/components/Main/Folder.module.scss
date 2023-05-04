@@ -1,0 +1,15 @@
+.focused {
+  background-color: rgba(128, 128, 128, 0.05);
+  border: 1px solid skyblue;
+  border-radius: 15px;
+}
+.unFocused {
+  // background-color: black;
+  border: 1px solid white;
+}
+.folderItem{
+    margin : 2px;
+}
+.blink{
+    font-size: 10px;
+}
