@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-@FeignClient(name = "plant-client", url = "http://localhost:8060/api/v1/plant")
+@FeignClient(name = "plant-client", url = "http://172.28.0.25:8060/api/v1/plant")
 public interface PlantClient {
 
 	@PostMapping(produces = "application/json")

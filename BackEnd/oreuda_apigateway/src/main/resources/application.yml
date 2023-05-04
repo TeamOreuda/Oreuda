@@ -21,7 +21,7 @@ spring:
 
         # data-server
         - id: data-server
-          uri: http://localhost:8050/
+          uri: http://172.28.0.24:8050/
           predicates:
             - Path=/api/v1/data/**
           filters:
@@ -29,7 +29,7 @@ spring:
 
         # plant-server
         - id: plant-server
-          uri: http://localhost:8060/
+          uri: http://172.28.0.25:8060/
           predicates:
             - Path=/api/v1/plant/**
           filters:
@@ -37,14 +37,14 @@ spring:
 
         # repo-server
         - id: repo-server
-          uri: http://localhost:8070/
+          uri: http://172.28.0.26:8070/
           predicates:
             - Path=/api/v1/folder/**
           filters:
             - AuthorizationHeaderFilter
 
         - id: repo-server
-          uri: http://localhost:8070/
+          uri: http://172.28.0.26:8070/
           predicates:
             - Path=/api/v1/repository/**
           filters:
@@ -52,12 +52,12 @@ spring:
 
         # auth-server
         - id: auth-server
-          uri: http://localhost:8090/
+          uri: http://172.28.0.23:8090/
           predicates:
             - Path=/oauth2/**
 
         - id: auth-server
-          uri: http://localhost:8090/
+          uri: http://172.28.0.23:8090/
           predicates:
             - Path=/api/v1/auth/**
 
