@@ -40,7 +40,6 @@ export default function repositorygraph(props: any) {
       },
     ],
   };
-  console.log(data.datasets);
 
   const options = {
     responsive: false,
