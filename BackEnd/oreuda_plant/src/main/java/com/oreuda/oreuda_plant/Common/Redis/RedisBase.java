@@ -39,7 +39,7 @@ public class RedisBase {
 //                    if (LocalDateTime.parse(commit.getDate()).isBefore(dateTime)) continue;
                     LocalDateTime date = LocalDateTime.parse(commit.getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
                     String dateStr = date.toLocalDate().toString();
-                    result.put(dateStr, result.getOrDefault(commit.getDate(), 0) + 1);
+                    result.put(dateStr, result.getOrDefault(dateStr, 0) + 1);
                 }
                 return result;
             }

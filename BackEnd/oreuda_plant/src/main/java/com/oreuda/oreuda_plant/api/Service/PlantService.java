@@ -65,15 +65,15 @@ public class PlantService {
     }
 
     public int getDailyPoint(int commitCnt, int day, int streak) {
-        log.info("commitCnt = {}, day = {}, streak = {}", commitCnt, day, streak);
+//        log.info("commitCnt = {}, day = {}, streak = {}", commitCnt, day, streak);
         final double DECAY_RATE = 0.9748;
         final double STREAK_BONUS_RATE = 0.9;
         int point = Math.min(50 + (commitCnt - 1) * 20, 250);
         double decay = Math.pow(DECAY_RATE, day);
-        int streakBonus = (int) Math.round(50 * (1 - Math.pow(STREAK_BONUS_RATE, streak - 1)));
-        log.info("point = {}, decay = {}, streakBonus = {}", point, decay, streakBonus);
+        int streakBonus = (int) Math.round(300 * (1 - Math.pow(STREAK_BONUS_RATE, streak - 1)));
+//        log.info("point = {}, decay = {}, streakBonus = {}", point, decay, streakBonus);
         int result = (int) Math.round((point + streakBonus) * decay);
-        log.info("result = {}", result);
+//        log.info("result = {}", result);
         return result;
     }
 
@@ -101,14 +101,14 @@ public class PlantService {
     public void setStatus(String userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
         UserLog userLog = userLogRepository.findTopByUserIdOrderByTimeDesc(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저의 로그가 없습니다."));
-        LocalDate today = LocalDate.now().plusMonths(6);
+        LocalDate today = LocalDate.now();
         Map<String, Integer> userCommits = commitRepository.getList(userId, user.getJoinDate());
         userLog = UserLog.builder()
                 .user(user)
                 .time(userLog.getTime().plusDays(1))
                 .val(getPoint(today, userCommits))
                 .build();
-        log.info("userLog = {}", userLog.getVal());
+        log.info("{}: {}",user.getNickname(), userLog.getVal());
 //        while (userLog.getTime().toLocalDate().isBefore(today)) {
 //            userLog = UserLog.builder()
 //                    .user(user)
