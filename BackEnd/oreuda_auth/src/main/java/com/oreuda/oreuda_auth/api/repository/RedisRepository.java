@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 @Repository
 @RequiredArgsConstructor
 public class RedisRepository {
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate redisTemplate;
 
     public String get(String key) {
         return (String) redisTemplate.opsForValue().get(key);
