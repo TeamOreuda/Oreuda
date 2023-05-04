@@ -1,3 +1,6 @@
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Header from "../../components/Main/Header";
@@ -40,7 +43,10 @@ const Main = () => {
     return (
       <>
         <Header></Header>
-        <FolderList></FolderList>
+
+        <DndProvider backend={HTML5Backend}>
+          <FolderList></FolderList>
+        </DndProvider>
       </>
     );
   }
