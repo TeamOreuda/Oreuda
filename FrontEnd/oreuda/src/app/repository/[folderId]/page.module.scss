@@ -18,5 +18,8 @@
 .button {
   display: flex;
   justify-content: end;
-  @include comm.button;
+
+  button {
+    @include comm.button;
+  }
 }

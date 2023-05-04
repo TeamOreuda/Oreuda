@@ -17,84 +17,8 @@ interface gitHubStatistic {
   imageName: string;
 }
 
-export default function Statistic() {
-  // const cookieStore = cookies();
-  const [userData, setUserData] = useState({
-    commitCnt: 0,
-    repositoryCnt: 0,
-    streakMax: 0,
-    mainLanguage: "없음",
-    nickname: "사용자",
-  });
-  // const ACCESS_TOKEN = cookieStore.get("Authorization")?.value;
-  // const REFRESH_TOKEN = cookieStore.get("RefreshToken")?.value;
-
-  // const getUserData = async () => {
-  //   const data = await axios
-  //     .get("http://192.168.31.233:9000/api/v1/users", {
-  //       headers: {
-  //         Authorization: ACCESS_TOKEN,
-  //       },
-  //     })
-  //     .then((res) => {
-  //       return res.data;
-  //     })
-  //     .catch(async (err) => {
-  //       if (err.response.status == 401) {
-  //         return await axios
-  //           .post(
-  //             "http://192.168.31.233:9000/api/v1/auth/refresh",
-  //             {},
-  //             {
-  //               headers: {
-  //                 Authorization: ACCESS_TOKEN,
-  //                 RefreshToken: REFRESH_TOKEN,
-  //               },
-  //             }
-  //           )
-
-  //           .then(async (res) => {
-  //             // 토큰 쿠키에 저장하기
-  //             console.log(111111111);
-  //             console.log(res.data.Authorization);
-  //             console.log(res.data.RefreshToken);
-
-  //             if (res.data.Authorization) {
-  //               setCookie("Authorization", res.data.Authorization, {
-  //                 path: "/",
-  //                 httpOnly: false,
-  //                 secure: false,
-  //                 sameSite: "none",
-  //               });
-  //             }
-  //             if (res.data.RefreshToken) {
-  //               setCookie("RefreshToken", res.data.RefreshToken, {
-  //                 path: "/",
-  //                 httpOnly: false,
-  //                 secure: false,
-  //                 sameSite: "none",
-  //               });
-  //             }
-  //             return await axios
-  //               .get("http://192.168.31.233:9000/api/v1/users", {
-  //                 headers: {
-  //                   Authorization: res.data.Authorization,
-  //                 },
-  //               })
-  //               .then((res) => {
-  //                 return res.data;
-  //               });
-  //           })
-
-  //           .catch(() => {
-  //             redirect("/login");
-  //           });
-  //       }
-  //     });
-  //   setUserData(data);
-  // };
-
-  // getUserData();
+export default function Statistic(props: any) {
+  const { userData } = props;
 
   const gitHubStatistic: gitHubStatistic[] = [
     {
@@ -138,12 +62,7 @@ export default function Statistic() {
               </span>
               <span>{e.language}</span>
             </div>
-            <Image
-              src={`/images/main/${e.imageName}.svg`}
-              alt=""
-              width={80}
-              height={80}
-            />
+            <Image src={`/images/main/${e.imageName}.svg`} alt="" width={80} height={80} />
           </div>
         ))}
       </div>
