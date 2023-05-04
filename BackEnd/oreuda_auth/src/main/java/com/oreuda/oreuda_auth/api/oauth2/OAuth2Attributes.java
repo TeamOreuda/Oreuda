@@ -3,7 +3,6 @@ package com.oreuda.oreuda_auth.api.oauth2;
 import com.oreuda.oreuda_auth.api.provider.Provider;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.ObjectUtils;
 
 import java.util.HashMap;
 import java.util.Map;

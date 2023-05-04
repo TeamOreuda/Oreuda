@@ -1,5 +1,6 @@
 package com.oreuda.oreuda_plant.api.Service;
 
+import com.oreuda.oreuda_plant.Common.Redis.RedisBase;
 import com.oreuda.oreuda_plant.api.Domain.Dto.PlantDto;
 import com.oreuda.oreuda_plant.api.Domain.Dto.StatusDto;
 import com.oreuda.oreuda_plant.api.Domain.Entity.Plant;
@@ -15,9 +16,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -62,17 +64,20 @@ public class PlantService {
         return statusDtoList;
     }
 
-    public long getDailyPoint(int commitCnt, int day, int streak) {
+    public int getDailyPoint(int commitCnt, int day, int streak) {
         log.info("commitCnt = {}, day = {}, streak = {}", commitCnt, day, streak);
-        final double DECAY_RATE = 0.95;
-        int point = Math.min(5 + (commitCnt - 1) * 2, 20);
+        final double DECAY_RATE = 0.9748;
+        final double STREAK_BONUS_RATE = 0.9;
+        int point = Math.min(50 + (commitCnt - 1) * 20, 250);
         double decay = Math.pow(DECAY_RATE, day);
-        double streakBonus = Math.log(streak) / Math.log(2);
+        int streakBonus = (int) Math.round(50 * (1 - Math.pow(STREAK_BONUS_RATE, streak - 1)));
         log.info("point = {}, decay = {}, streakBonus = {}", point, decay, streakBonus);
-        return Math.round(point * decay + streakBonus);
+        int result = (int) Math.round((point + streakBonus) * decay);
+        log.info("result = {}", result);
+        return result;
     }
 
-    public int getPoint(LocalDate joinDate, LocalDate start, Map<String, Integer> userCommits) {
+    public int getPoint(LocalDate start, Map<String, Integer> userCommits) {
         int point = 0;
         int streak = 1;
 
@@ -80,7 +85,6 @@ public class PlantService {
         for (String key : userCommits.keySet()) {
             LocalDate date = LocalDate.parse(key);
             if (date.isAfter(start)) continue;
-            if (date.isEqual(joinDate)) break;
             if (prev != null && prev.minusDays(1).isEqual(date)) {
                 streak++;
             } else {
@@ -97,12 +101,12 @@ public class PlantService {
     public void setStatus(String userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
         UserLog userLog = userLogRepository.findTopByUserIdOrderByTimeDesc(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저의 로그가 없습니다."));
-        LocalDate today = LocalDate.now();
+        LocalDate today = LocalDate.now().plusMonths(6);
         Map<String, Integer> userCommits = commitRepository.getList(userId, user.getJoinDate());
         userLog = UserLog.builder()
                 .user(user)
                 .time(userLog.getTime().plusDays(1))
-                .val(getPoint(user.getJoinDate(), today, userCommits))
+                .val(getPoint(today, userCommits))
                 .build();
         log.info("userLog = {}", userLog.getVal());
 //        while (userLog.getTime().toLocalDate().isBefore(today)) {

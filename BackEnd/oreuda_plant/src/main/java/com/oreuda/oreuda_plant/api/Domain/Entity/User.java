@@ -42,7 +42,7 @@ public class User {
     // 사용자 가입 일자
     @NotNull
     @Column(name = "user_join_date")
-    private LocalDate joinDate;
+    private LocalDateTime joinDate;
 
     // 사용자 총 커밋 수
     @NotNull
