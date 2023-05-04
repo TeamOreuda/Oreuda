@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "..";
 
+interface AddText {
+  titleArr: string;
+  descArr: string;
+  index: number;
+}
 // state type
 export interface readmeSlice {
   baekjoonId: string;
@@ -15,6 +20,8 @@ export interface readmeSlice {
   // mulTheme: string;
   textTitle: string[];
   textDesc: string[];
+  textArr: Array<AddText>;
+  textCnt: number;
   nextComp: number[];
   componentArr: boolean[];
   currComponent: number;
@@ -34,6 +41,8 @@ const initialState: readmeSlice = {
   blogLink: "",
   textTitle: [],
   textDesc: [],
+  textArr: [],
+  textCnt: 0,
   nextComp: [],
   componentArr: [true, false, false, false, false, false, false, false],
   currComponent: 0,
@@ -89,15 +98,33 @@ const themeSlice = createSlice({
       const temp = state;
       temp.blogLink = action.payload;
     },
-    // [contact] contact 기술 블로그 링크 저장
+    // [addText] addText title 저장
     setTextTitle(state, action) {
       const temp = state;
       temp.textTitle.push(action.payload);
     },
-    // [contact] contact 기술 블로그 링크 저장
+    // [addText] addText desc 저장
     setTextDesc(state, action) {
       const temp = state;
       temp.textDesc.push(action.payload);
+    },
+    // [addText] addText arr에 push
+    setAddText(state, action) {
+      const temp = state;
+
+      const data = action.payload;
+      data.index = state.textCnt;
+      state.textCnt++;
+
+      temp.textArr.push(data);
+    },
+    // [addText] addText arr에서 제거
+    setMinusText(state, action) {
+      const newArr = state.textArr.filter(
+        (item) => item.index != action.payload
+      );
+
+      state.textArr = newArr;
     },
 
     // [Readme Main] 선택한 컴포넌트 추가
@@ -154,6 +181,8 @@ export const {
   setBlogLink,
   setTextTitle,
   setTextDesc,
+  setAddText,
+  setMinusText,
   setPushComponent,
   setDeleteComponent,
   setNextCompMoving,

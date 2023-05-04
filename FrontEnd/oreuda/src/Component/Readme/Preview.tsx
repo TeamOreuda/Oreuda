@@ -16,7 +16,7 @@ export default function Preview() {
   const mulType = useAppSelector(selectReadme).mulType;
   const textTitleArr = useAppSelector(selectReadme).textTitle;
   const textDescArr = useAppSelector(selectReadme).textDesc;
-  console.log(textTitleArr, textDescArr);
+  // console.log(textTitleArr, textDescArr);
 
   // 백준
   const firstImgUrl = `http://mazassumnida.wtf/api/v2/generate_badge?boj=${BaekJoonData}`;
