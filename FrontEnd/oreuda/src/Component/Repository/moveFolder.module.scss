@@ -1,0 +1,30 @@
+.dropdown {
+  position: relative;
+
+  .label {
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 144px;
+    overflow-y: auto;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-top: none;
+
+    .option {
+      padding: 8px;
+      cursor: pointer;
+
+      &.active,
+      &:hover {
+        background-color: #eee;
+      }
+    }
+  }
+}
