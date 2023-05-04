@@ -1,21 +1,23 @@
-@use '../../styles/list.scss' as list;
+@use "../../styles/list.scss" as list;
 
 .folderList {
+  position: relative;
+  left: -4px;
+  margin-right: 2px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   flex-direction: row;
   justify-content: space-between;
   @include list.list;
-  
   .folderImg {
-    width: 80px;
-    height: 80px;
+    width: 80.64px;
+    height: 68.14px;
   }
   .folderImg:hover {
     cursor: pointer;
   }
   .folderTitle {
-    width: 80px;
+    width: 80.64px;
     text-align: center;
     margin: 0 auto;
     overflow: hidden;
@@ -24,10 +26,11 @@
   }
   .folderTitle:hover {
     cursor: pointer;
-    white-space: normal;
-    text-overflow: unset;
+    // white-space: normal;
+    // text-overflow: unset;
   }
 }
+
 .folderList::-webkit-scrollbar {
   width: 4px;
 }

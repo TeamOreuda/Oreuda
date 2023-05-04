@@ -39,7 +39,7 @@ const Header = () => {
   return (
     <div className={st.header}>
       <div className={st.layoutLeft}>
-        <div className={st.userName}>tykimdream</div>
+        <div className={st.userName}>User</div>
       </div>
       <div className={st.layoutRight}>
         <div className={st.renewalBtn} onClick={renewalData}>

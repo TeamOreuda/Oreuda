@@ -4,20 +4,40 @@ import st from "./Preview.module.scss";
 import { useAppSelector } from "@/store/hooks";
 import { selectReadme } from "@/store/modules/readme";
 import Image from "next/image";
+import { useEffect } from "react";
 
 export default function Preview() {
   const BaekJoonData = useAppSelector(selectReadme).baekjoonId;
+  const mulTheme = useAppSelector(selectReadme).mulTheme;
+
   const SolvedThemeData = useAppSelector(selectReadme).solvedTheme;
   const githubId = useAppSelector(selectReadme).githubId;
   const githubTheme = useAppSelector(selectReadme).githubTheme;
+  const mulType = useAppSelector(selectReadme).mulType;
+  const textTitleArr = useAppSelector(selectReadme).textTitle;
+  const textDescArr = useAppSelector(selectReadme).textDesc;
+  // console.log(textTitleArr, textDescArr);
 
   // 백준
   const firstImgUrl = `http://mazassumnida.wtf/api/v2/generate_badge?boj=${BaekJoonData}`;
   const secImgUrl = `http://mazandi.herokuapp.com/api?handle=${BaekJoonData}&theme=${SolvedThemeData}`;
 
   // 깃헙
-  const githubUrl = `https://github-readme-stats.vercel.app/api?username=${githubId}&show_icons=true&theme=${githubTheme};`;
+  const githubUrl = `https://github-readme-stats.vercel.app/api?username=${githubId}&show_icons=true&theme=${githubTheme}`;
 
+  // MUL
+  // (1) 디폴트
+  let mulUrl = `https://github-readme-stats.vercel.app/api/top-langs/?username=kyum8562`;
+  // (2) 간략히
+  if (mulType == 2) mulUrl += `&layout=compact`;
+  // (3) 수치 제거
+  else if (mulType == 3) mulUrl += `&hide_progress=true`;
+  // 테마 추가
+  mulUrl += `&theme=${mulTheme}`;
+
+  // 추가 텍스트
+
+  // README.md 파일 다운로드
   const file = {
     title: "README",
     content: "content",
@@ -34,6 +54,7 @@ export default function Preview() {
     window.URL.revokeObjectURL(url);
   };
 
+  // 클립보드 복사
   const onClickCopy = () => {
     try {
       navigator.clipboard.writeText("hi");
@@ -41,6 +62,19 @@ export default function Preview() {
     } catch (error) {
       alert("클립보드 복사에 실패하였습니다.");
     }
+  };
+
+  const showTextArr = () => {
+    const arr = [];
+    for (let i = 0; i < textTitleArr.length; i++) {
+      arr.push(
+        <div key={i}>
+          <h3>{textTitleArr[i]}</h3>
+          <p>{textDescArr[i]}</p>
+        </div>
+      );
+    }
+    return arr;
   };
 
   return (
@@ -72,8 +106,10 @@ export default function Preview() {
       <div className={st.contentDiv}>
         {/* <Link href="http://solved.ac/kyum8562"> */}
         <img src={firstImgUrl} width="280" height="140" alt="baekjoon" />
-        <img src={secImgUrl} width="285" height="140" alt="baekjoon" />
-        <img src={githubUrl} width="350" height="150" alt="baekjoon" />
+        <img src={secImgUrl} width="285" height="140" alt="solved" />
+        <img src={githubUrl} width="350" height="150" alt="githubStats" />
+        <img src={mulUrl} width="280" height="270" alt="MUL" />
+        {showTextArr()}
         {/* </Link> */}
       </div>
     </div>

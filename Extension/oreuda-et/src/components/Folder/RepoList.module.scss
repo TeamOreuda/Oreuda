@@ -6,7 +6,8 @@
 }
 .cardList {
   @include list.list;
-  height: 75%;
+  height: 85%;
+  border-bottom: 1px solid black;
   .card {
     margin: 0 auto;
     padding: 5px;
@@ -30,6 +31,9 @@
         text-align: left;
         font-size: 12px;
         line-height: 20px;
+      }
+      .cardTitle:hover {
+        cursor: pointer;
       }
       .cardContent {
         padding-bottom: 5px;
@@ -69,7 +73,6 @@
             color: #000000;
           }
         }
-
         .repoDescription {
           text-align: left;
           font-size: 8px;
@@ -189,6 +192,14 @@
             transition: all 0.5s ease;
             background-color: #4bca807b;
           }
+          .itemSelected {
+            transition: all 0.5s ease;
+            background-color: #4bca807b;
+          }
+          .itemNonSelected {
+            transition: all 0.5s ease;
+            background-color: #fffff6;
+          }
           .confirmBtn {
             width: 57px;
             height: 20px;
@@ -205,6 +216,11 @@
 
             background-image: url("../../../public/assets/confirmGreen.svg");
             cursor: pointer;
+          }
+          .confirmBtnOnSelected {
+            transition: all 0.5s ease;
+
+            background-image: url("../../../public/assets/confirmGreen.svg");
           }
         }
         .dropdownActivate::-webkit-scrollbar {
@@ -235,6 +251,9 @@
         line-height: 12px;
       }
     }
+  }
+  .card {
+    cursor: default;
   }
 }
 .cardList::-webkit-scrollbar {
