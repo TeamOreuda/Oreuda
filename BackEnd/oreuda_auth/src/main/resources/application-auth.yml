@@ -7,7 +7,7 @@ spring:
           github:
             client-id: Iv1.6f160bb16c36edc5
             client-secret: 6370be4fab5c5636634dbfbe61cf86f771ca8b81
-            scope: user,user:email,read:user,repo
+            scope: user,user:email,read:user,repo,read:org
             client-name: GitHub
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             client-authentication-method: POST

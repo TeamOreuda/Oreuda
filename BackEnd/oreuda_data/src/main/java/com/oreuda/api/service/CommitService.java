@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -28,6 +29,7 @@ import com.oreuda.common.exception.GitHubException;
 import graphql.kickstart.spring.webclient.boot.GraphQLRequest;
 import lombok.RequiredArgsConstructor;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CommitService {
@@ -65,7 +67,7 @@ public class CommitService {
 			// 1. GitHub API 호출
 			data = gitHubClient.getCommitByRepository(accessToken, GraphQLRequest
 				.builder().query(query).variables(variables).build());
-
+			if (data == null) return;
 			try {
 				// 2. 커밋 preprocessing
 				for (JsonNode cmt : data.get("nodes")) {

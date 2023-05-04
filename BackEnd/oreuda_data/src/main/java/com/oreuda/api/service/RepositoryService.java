@@ -65,7 +65,7 @@ public class RepositoryService {
 			data = gitHubClient.getRepositories(accessToken, GraphQLRequest
 					.builder().query(query).variables(variables).build())
 				.get("repositories");
-
+			if (data == null) return;
 			// 2. 레포지토리 preprocessing
 			for (JsonNode repo : data.get("nodes")) {
 				toRepository(userId, repo);
@@ -88,7 +88,7 @@ public class RepositoryService {
 		JsonNode data = gitHubClient.getRepositories(accessToken, GraphQLRequest
 				.builder().query(query).build())
 			.get("organizations").get("nodes");
-
+		if (data == null) return;
 		// 2. 레포지토리 preprocessing
 		for (JsonNode org : data) {
 			for (JsonNode repo : org.get("repositories").get("nodes")) {
