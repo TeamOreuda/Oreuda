@@ -51,7 +51,7 @@
   justify-content: space-between;
 
   & div {
-    div:nth-child(1) {
+    div:nth-of-type(1) {
       width: 16px;
       height: 16px;
       background-color: blue;
