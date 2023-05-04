@@ -19,6 +19,6 @@ public class ValidationUtils {
 
 	// 한국어, 영어, 숫자, 특수문자(-,_,.), 공백 검사
 	public boolean isAllowedFolderName(String str) {
-		return Pattern.matches("^[\\w\\-.가-힣\\s]*$", str);
+		return Pattern.matches("^[\\w\\-.가-힣ㄱ-ㅎㅏ-ㅣ\\s]*$", str);
 	}
 }
