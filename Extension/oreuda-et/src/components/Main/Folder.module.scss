@@ -13,3 +13,16 @@
 .blink{
     font-size: 10px;
 }
+.layout{
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+
+  .leftRef:hover{
+    background-color: black;
+  }
+  .rightRef:hover{
+    background-color: black;
+
+  }
+}
