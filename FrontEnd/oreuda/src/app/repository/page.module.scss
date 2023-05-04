@@ -19,7 +19,9 @@
   display: flex;
   justify-content: end;
 
-  @include comm.button;
+  button {
+    @include comm.button;
+  }
 
   button:nth-child(2) {
     background-color: #836141;
