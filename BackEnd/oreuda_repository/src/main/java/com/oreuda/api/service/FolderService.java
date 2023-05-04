@@ -1,7 +1,6 @@
 package com.oreuda.api.service;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,7 +42,7 @@ public class FolderService {
 
 	public void addFolder(String userId, InputFolderDto inputFolderDto) {
 		// 폴더명 유효성 검사
-		isAllowedFolderName(userId, inputFolderDto.getName());
+		checkFolderName(userId, inputFolderDto.getName());
 
 		User user = userJpaRepository.findById(userId).orElseThrow(NotFoundException::new);
 		Folder folder = Folder.builder()
@@ -65,14 +64,11 @@ public class FolderService {
 	}
 
 	public void deleteFolder(String userId, List<Integer> folders) {
-		// 기본 폴더 삭제 못하게
 		for (int folderId : folders) {
 			Folder folder = folderJpaRepository.findById(Long.valueOf(folderId)).orElseThrow(NotFoundException::new);
 
-			if (folder.getStatus().equals("B"))
-				continue;
 			checkFolderAccessPermission(userId, folder.getUser().getId());
-			folder.deleteFolder();
+			if (folder.getStatus().equals("V")) folder.deleteFolder();
 			folderJpaRepository.save(folder);
 		}
 	}
@@ -128,7 +124,7 @@ public class FolderService {
 	 * @param userId
 	 * @param folderName
 	 */
-	private void isAllowedFolderName(String userId, String folderName) {
+	private void checkFolderName(String userId, String folderName) {
 		// 글자수 최대 20자 제한
 		if (20 < folderName.length())
 			throw new InvalidInputException("폴더명 글자수는 최대 20자로 제한 됩니다.");
