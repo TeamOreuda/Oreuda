@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import st from "./Baekjoon.module.scss";
+import st from "./AddText.module.scss";
 
 import NextBtn from "./NextBtn";
 import PrevBtn from "./PrevBtn";

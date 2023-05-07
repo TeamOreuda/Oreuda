@@ -11,8 +11,8 @@ export default function MinusTextBtn({ idx }: any) {
     dispatch(setMinusText(idx));
   };
   return (
-    <div className={st.button} onClick={deleteTextDiv}>
-      <button>-</button>
-    </div>
+    <button className={st.button} onClick={deleteTextDiv}>
+      -
+    </button>
   );
 }

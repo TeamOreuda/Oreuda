@@ -2,12 +2,10 @@
 
 .body {
   @include comm.title;
-
   .contentDiv {
     display: flex;
     justify-content: center;
     align-items: center;
-    // border: 3px solid tomato;
     margin-top: 30px;
 
     .selectBox {

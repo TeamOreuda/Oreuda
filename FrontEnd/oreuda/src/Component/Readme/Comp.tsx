@@ -18,7 +18,16 @@ import Preview from "./Preview";
 
 export default function Comp() {
   const currComponent: number = useAppSelector(selectReadme).currComponent;
+  const textArr = useAppSelector(selectReadme).textArr;
+  const arr: any = [];
+  const textArrEl = () => {
+    for (let i = 0; i < textArr.length + 1; i++) {
+      arr.push(<AddText />);
+    }
+    console.log(arr);
 
+    return arr;
+  };
   function showComponent() {
     switch (Number(currComponent)) {
       case 0:
@@ -36,7 +45,7 @@ export default function Comp() {
       case 6:
         return <OreCharacter />;
       case 7:
-        return <AddText />;
+        return <div className={st.TextBody}>{textArrEl()}</div>;
       case 8:
         return <Sorting />;
       default:

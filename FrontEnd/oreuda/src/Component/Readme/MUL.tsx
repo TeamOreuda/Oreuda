@@ -49,7 +49,7 @@ export default function MUL() {
             checked={checkedIdx == 1}
             onChange={onChangeRadioBtn}
           />
-          <span className={st.p}>디폴트</span>
+          <span className={st.p}>자세히</span>
         </label>
         <label className={checkedIdx == 2 ? st.checked : undefined}>
           <input
