@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -30,6 +31,7 @@ import com.oreuda.common.exception.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -81,6 +83,7 @@ public class UserService {
 	 * @return
 	 */
 	private int countStreak(List<Commit> commits) {
+		if (commits.size() == 0) return 0;
 		Collections.sort(commits, (o1, o2) -> o1.getDate().compareTo(o2.getDate()));
 
 		int streakCnt = 1, maxStreakCnt = 0;
@@ -122,7 +125,7 @@ public class UserService {
 				.execute();
 			Document googleDocument = response.parse();
 			Element langName = googleDocument.select("text[class=lang-name]").first();
-
+			if (langName == null) return mostLanguage;
 			mostLanguage = langName.text();
 		} catch (IOException e) {
 			e.printStackTrace();

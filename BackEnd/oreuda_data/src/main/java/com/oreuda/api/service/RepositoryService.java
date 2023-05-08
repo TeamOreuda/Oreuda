@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import com.oreuda.common.exception.GitHubException;
 import graphql.kickstart.spring.webclient.boot.GraphQLRequest;
 import lombok.RequiredArgsConstructor;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RepositoryService {
@@ -68,6 +70,7 @@ public class RepositoryService {
 			if (data == null) return;
 			// 2. 레포지토리 preprocessing
 			for (JsonNode repo : data.get("nodes")) {
+//				log.info("repo: {}", repo.get("nameWithOwner"));
 				toRepository(userId, repo);
 			}
 
