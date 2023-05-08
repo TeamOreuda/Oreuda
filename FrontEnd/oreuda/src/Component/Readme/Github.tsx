@@ -53,13 +53,13 @@ export default function Github() {
         <p>깃헙 스택을 보여주는 컴포넌트 입니다.</p>
       </div>
       <div className={st.contentDiv}>
-        <input
+        {/* <input
           type="text"
           placeholder="깃헙 아이디"
           onChange={(e) => setId(e.target.value)}
           onKeyDown={(e) => activeEnter(e)}
           value={id}
-        ></input>
+        ></input> */}
         <div className={st.selectBox}>
           {/* <select className={st.selectBJ} onClick={onClickBJTheme}>
             {bjDesignData.map((data: string, index: number) => {

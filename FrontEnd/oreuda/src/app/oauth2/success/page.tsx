@@ -33,5 +33,5 @@ export default function Token() {
     saveCookiesAndRedirect().then(() => {
       window.location.replace("/");
     });
-  }, []);
+  });
 }

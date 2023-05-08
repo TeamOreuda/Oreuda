@@ -21,12 +21,22 @@ export default function Comp() {
   const textArr = useAppSelector(selectReadme).textArr;
   const arr: any = [];
   const textArrEl = () => {
-    for (let i = 0; i < textArr.length + 1; i++) {
-      arr.push(<AddText />);
-    }
-    console.log(arr);
+    for (let i = 0; i < textArr.length + 1; i++) arr.push(<AddText />);
 
     return arr;
+  };
+  let currentSection = 0;
+  const fuc = (e: any) => {
+    e.preventDefault();
+    let direction = Math.sign(e.deltaY);
+    if (direction > 0 && currentSection < arr.length - 1) {
+      currentSection++;
+    }
+    // else if (direction < 0 && currentSection > 0) {
+    //   currentSection--;
+    // }
+
+    arr[currentSection].scrollIntoView({ behavior: "smooth" });
   };
   function showComponent() {
     switch (Number(currComponent)) {
@@ -45,7 +55,11 @@ export default function Comp() {
       case 6:
         return <OreCharacter />;
       case 7:
-        return <div className={st.TextBody}>{textArrEl()}</div>;
+        return (
+          <div className={st.TextBody} onWheel={fuc}>
+            {textArrEl()}
+          </div>
+        );
       case 8:
         return <Sorting />;
       default:

@@ -23,7 +23,8 @@ export default function Preview() {
   const secImgUrl = `http://mazandi.herokuapp.com/api?handle=${BaekJoonData}&theme=${SolvedThemeData}`;
 
   // 깃헙
-  const githubUrl = `https://github-readme-stats.vercel.app/api?username=${githubId}&show_icons=true&theme=${githubTheme}`;
+  // const githubUrl = `https://github-readme-stats.vercel.app/api?username=${githubId}&show_icons=true&theme=${githubTheme}`;
+  const githubUrl = `https://github-readme-stats.vercel.app/api?username=kyum8562&show_icons=true&theme=${githubTheme}`;
 
   // MUL
   // (1) 디폴트
