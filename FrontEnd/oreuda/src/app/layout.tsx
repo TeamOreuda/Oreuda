@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import Head from "next/head";
 
 import st from "./layout.module.scss";
 import { Providers } from "@/store/provider";
@@ -44,8 +45,16 @@ export default function RootLayout({
       );
   }
 
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="kr">
+      <Head>
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+      </Head>
       <body className={st.body}>
         {/* 로그인이 되어있다면 */}
         <nav className={st.nav}>
@@ -53,7 +62,7 @@ export default function RootLayout({
             <header className={st.header}>
               <Image
                 className={st.img}
-                src="/images/character/oreuda.svg"
+                src="/images/nav/navImg.svg"
                 alt=""
                 width={36}
                 height={36}

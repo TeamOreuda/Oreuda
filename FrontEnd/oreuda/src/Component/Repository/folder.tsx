@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import st from "./folder.module.scss";
+import { useEffect, useState } from "react";
 
 interface FolderList {
   id: number;
@@ -147,23 +148,83 @@ const folderList: FolderList[] = [
   },
 ];
 
-export default function folder() {
+export default function Folder(props: { clickDelete: boolean }) {
+  const [grab, setGrab] = useState({ dataset: { position: null } });
+  const [checkedItems, setCheckedItems] = useState<string[]>([]);
+
+  useEffect(() => {
+    setCheckedItems([]);
+  }, [props.clickDelete]);
+
+  const onDragOver = (e: any) => {
+    e.preventDefault();
+  };
+
+  const onDragStart = (e: any) => {
+    setGrab(e.currentTarget);
+  };
+
+  const onDrop = (e: any) => {
+    let grabPosition = Number(grab.dataset.position);
+    let targetPosition = Number(e.target.dataset.position);
+  };
+
+  const handleClick = (e: any) => {
+    e.preventDefault();
+  };
+
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    const currentIndex = checkedItems.indexOf(value);
+    const newCheckedItems = [...checkedItems];
+
+    if (currentIndex === -1) {
+      newCheckedItems.push(value);
+    } else {
+      newCheckedItems.splice(currentIndex, 1);
+    }
+
+    setCheckedItems(newCheckedItems);
+  };
+
   return (
     <div className={st.folders}>
-      {folderList.map((e: FolderList) => {
+      {folderList?.map((e: FolderList, index: number) => {
         return (
-          <Link
-            href={{
-              pathname: `/repository/${e.id}`,
-            }}
-            key={e.id}
-            className={st.folder}
-          >
-            <div>
-              <Image src={`images/folder/${e.color}.svg`} alt="폴더" width={128} height={128} />
-            </div>
-            <p>{e.name}</p>
-          </Link>
+          <div key={index}>
+            <Link
+              href={`/repository/${e.id}`}
+              {...(props.clickDelete ? { onClick: handleClick } : {})}
+              data-position={index}
+              onDragOver={onDragOver}
+              onDragStart={onDragStart}
+              onDrop={onDrop}
+              draggable={!props.clickDelete}
+            >
+              <div className={st.folder}>
+                {props.clickDelete && (
+                  <input
+                    type="checkbox"
+                    value={e.id}
+                    checked={checkedItems.indexOf(String(e.id)) !== -1}
+                    onChange={handleCheckboxChange}
+                    onClick={(event) => event.stopPropagation()}
+                  />
+                )}
+                <div data-position={index}>
+                  <Image
+                    data-position={index}
+                    src={`images/folder/${e.color}.svg`}
+                    alt="폴더"
+                    width={128}
+                    height={128}
+                    draggable={false}
+                  />
+                </div>
+                <p data-position={index}>{e.name}</p>
+              </div>
+            </Link>
+          </div>
         );
       })}
     </div>
