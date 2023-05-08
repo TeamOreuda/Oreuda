@@ -49,6 +49,8 @@ public class UserService {
 		// 사용자 커밋 정보
 		List<Commit> commits = commitRepository.getList(userId);
 
+		System.out.println("repo cnt: "+repositories.size());
+
 		// 사용자의 GitHub 정보 업데이트
 		User user = userJpaRepository.findById(userId).orElseThrow(NotFoundException::new);
 		user.updateGitHubData(repositories.size(), commits.size(), countStreak(commits),
@@ -83,10 +85,10 @@ public class UserService {
 	 * @return
 	 */
 	private int countStreak(List<Commit> commits) {
-		if (commits.size() == 0) return 0;
-		Collections.sort(commits, (o1, o2) -> o1.getDate().compareTo(o2.getDate()));
+		if(commits.size() == 0) return 0;
 
 		int streakCnt = 1, maxStreakCnt = 0;
+		Collections.sort(commits, (o1, o2) -> o1.getDate().compareTo(o2.getDate()));
 		LocalDate preDate = LocalDate.parse(commits.remove(0).getDate().split(" ")[0], DateTimeFormatter.ISO_DATE);
 
 		for (Commit commit : commits) {

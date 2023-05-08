@@ -67,7 +67,9 @@ public class CommitService {
 			// 1. GitHub API 호출
 			data = gitHubClient.getCommitByRepository(accessToken, GraphQLRequest
 				.builder().query(query).variables(variables).build());
+
 			if (data == null) return;
+
 			try {
 				// 2. 커밋 preprocessing
 				for (JsonNode cmt : data.get("nodes")) {
@@ -102,11 +104,13 @@ public class CommitService {
 		} while (data.get("pageInfo").get("hasNextPage").booleanValue());
 
 		// 일자별 커밋 저장
+		if(dailyCommit.values().size() == 0) return;
 		List<DailyCommit> dailyCommits = new ArrayList<>(dailyCommit.values());
 		Collections.sort(dailyCommits, (o1, o2) -> o1.getDate().compareTo(o2.getDate()));
 		dailyCommitRepository.set(userId + "_" + repoId, dailyCommits);
 
 		// 연도별 커밋 저장
+		if(yearlyCommit.values().size() == 0) return;
 		List<YearlyCommit> yearlyCommits = new ArrayList<>(yearlyCommit.values());
 		Collections.sort(yearlyCommits, (o1, o2) -> o1.getYear() - o2.getYear());
 		yearlyCommitRepository.set(userId + "_" + repoId, yearlyCommits);
