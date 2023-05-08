@@ -28,6 +28,22 @@ const navList: NavList[] = [
     name: "리드미",
   },
 ];
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  if (children && typeof children === "object" && "props" in children) {
+    console.log("현재 페이지 : " + children.props.childProp.segment);
+    if (children.props.childProp.segment === "landing")
+      return (
+        <html lang="kr">
+          <body className={st.body}>
+            <Providers>{children}</Providers>
+          </body>
+        </html>
+      );
+  }
 
 export default function RootLayout({
   children,
