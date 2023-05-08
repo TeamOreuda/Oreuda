@@ -17,7 +17,7 @@ spring:
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    show-sql: true
+#    show-sql: true
     generate-ddl: true
     open-in-view: false
     hibernate:

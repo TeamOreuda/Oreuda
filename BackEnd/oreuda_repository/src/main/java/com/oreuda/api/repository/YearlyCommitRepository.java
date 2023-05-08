@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oreuda.api.domain.dto.YearlyCommitDto;
-import com.oreuda.api.domain.entity.YearlyCommit;
 
 import lombok.RequiredArgsConstructor;
 
