@@ -1,0 +1,45 @@
+.header {
+  display: flex;
+  flex-direction: row;
+
+  box-sizing: border-box;
+
+  width: 324px;
+  height: 30px;
+
+  padding-top: 8px;
+  margin-left: 8px;
+
+  border-bottom: 1px solid #000000;
+
+  .layoutLeft {
+    flex: 7;
+    text-align: left;
+  }
+  .layoutRight {
+    flex: 1;
+    display: flex;
+    .renewalBtn {
+      padding-right: 5%;
+      width: 100%;
+      .renewalIcon {
+        width: 14px;
+        height: 14px;
+      }
+    }
+    .renewalBtn :hover {
+      cursor: pointer;
+    }
+    .settingBtn {
+      width: 100%;
+      padding-right: 5%;
+      .settingIcon {
+        width: 14px;
+        height: 14px;
+      }
+    }
+    .settingBtn :hover {
+      cursor: pointer;
+    }
+  }
+}

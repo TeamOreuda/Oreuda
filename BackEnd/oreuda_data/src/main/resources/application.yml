@@ -5,7 +5,7 @@ spring:
   # MySQL
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/oreuda?useUniCode=yes&characterEncoding=UTF-8
+    url: jdbc:mysql://mysql:3306/oreuda?useUniCode=yes&characterEncoding=UTF-8
     username: oreuda
     password: git0410
   servlet:
@@ -17,7 +17,7 @@ spring:
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-#    generate-ddl: true
+    generate-ddl: true
     hibernate:
       ddl-auto: none
       use-new-id-generator-mappings: false
@@ -26,11 +26,29 @@ spring:
     open-in-view: false
 
   # Redis
-  cache:
-    type: redis
-    redis:
-      host: localhost
-      port: 6379
-#    password: git0410
+  redis:
+    host: redis
+    port: 6379
+    password: 'git0410'
 
+# graphql
+graphql:
+  graphiql:
+    enabled: true
+
+# feign
+feign:
+  hystrix:
+    enabled: true
+
+# eureka
+eureka:
+  instance:
+    prefer-ip-address: true
+    appname: data-server
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://172.28.0.20:8761/eureka
 

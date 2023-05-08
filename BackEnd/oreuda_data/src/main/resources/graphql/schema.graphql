@@ -1,0 +1,70 @@
+type Query {
+    viewer: User!
+    repository(name: String!, owner: String!): RepositoryObject
+}
+
+type User {
+    id: ID!
+    name: String!
+    repositories(first: Int!, after: String, isFork: Boolean, ownerAffiliations: [RepositoryAffiliation]): RepositoryConnection!
+}
+
+enum RepositoryAffiliation {
+    OWNER
+    COLLABORATOR
+    ORGANIZATION_MEMBER
+}
+
+type Repository {
+    id: ID!
+    nameWithOwner: String!
+    description: String
+    isPrivate: Boolean!
+    url: String!
+    stargazerCount: Int!
+    primaryLanguage: Language
+    createdAt: String!
+    updatedAt: String!
+}
+
+type RepositoryConnection {
+    nodes: Repository!
+    pageInfo: PageInfo!
+}
+
+type Language {
+    name: String!
+}
+
+type PageInfo {
+    endCursor: String
+    hasNextPage: Boolean!
+}
+
+type RepositoryObject {
+    object(expression: String!): GitObject
+}
+
+interface GitObject {
+    oid: String!
+}
+
+type Commit implements GitObject {
+    oid: String!
+    history(first: Int!, after: String, author: CommitAuthor): CommitHistoryConnection!
+}
+
+type CommitAuthor {
+    id: String!
+}
+
+type CommitHistoryConnection {
+    nodes: [CommitHistoryNode!]!
+    pageInfo: PageInfo!
+}
+
+type CommitHistoryNode {
+    id: String!
+    message: String!
+    committedDate: String!
+}

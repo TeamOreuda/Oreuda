@@ -1,0 +1,31 @@
+@use "../../styles/indicator.scss" as indi;
+
+.folderHeader {
+  display: flex;
+  width: 295px;
+  height: 26px;
+  .backBtn {
+    // height: 14px;
+    position: relative;
+    left: 3px;
+    top: 5px;
+    padding-right: 5px;
+    .backBtnIcon {
+      width: 8px;
+      height: 12px;
+      padding-left: 4px;
+    }
+    .backBtnIcon:hover {
+      cursor: pointer;
+    }
+  }
+  .folderName {
+    position: relative;
+    left: 3px;
+    top: 6px;
+    padding-right: 8px;
+  }
+  .folderIndicator {
+    @include indi.folderIndicator;
+  }
+}

@@ -1,0 +1,23 @@
+query GetOrgRepositories {
+    viewer {
+        repositories(first: 100, ownerAffiliations: ORGANIZATION_MEMBER) {
+            nodes {
+                id
+                nameWithOwner
+                description
+                isPrivate
+                url
+                stargazerCount
+                primaryLanguage{
+                    name
+                }
+                createdAt
+                updatedAt
+            }
+            pageInfo {
+                endCursor
+                hasNextPage
+            }
+        }
+    }
+}

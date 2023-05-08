@@ -1,6 +1,22 @@
+* {
+  @font-face {
+    font-family: "GmarketSansMedium";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff")
+      format("woff");
+    font-weight: normal;
+    font-style: normal;
+  }
+}
+
 .body {
   display: flex;
+  font-family: "GmarketSansMedium";
   margin: 0px;
+
+  ::selection {
+    background-color: #4bca80;
+    color: white;
+  }
 }
 
 .nav {
@@ -41,6 +57,6 @@
   }
 
   .img {
-    margin-right: 24px;
+    margin-right: 8px;
   }
 }

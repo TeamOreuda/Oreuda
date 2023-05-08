@@ -7,7 +7,7 @@ spring:
   # MySQL
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/oreuda?useUniCode=yes&characterEncoding=UTF-8
+    url: jdbc:mysql://mysql:3306/oreuda?useUniCode=yes&characterEncoding=UTF-8
     username: oreuda
     password: 'git0410'
   servlet:
@@ -37,3 +37,13 @@ logging:
         type:
           descriptor:
             sql: trace
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    appname: business-server
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://172.28.0.20:8761/eureka

@@ -1,0 +1,67 @@
+@use "../../Style/index.scss" as comm;
+
+.body {
+  @include comm.title;
+
+  .contentDiv {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+
+    .radioBtnDiv {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      // 디폴트 라디오 버튼 표시 X
+      .input_radio {
+        display: none;
+      }
+      // 체크된 라디오 버튼
+      .checked {
+        background: #4bca80;
+        border: 1px solid #4bca80;
+        color: #ffffff;
+        font-weight: bold;
+        border-radius: 10px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      // label 내의 텍스트
+      .p {
+        cursor: pointer;
+        margin: 10px 30px;
+      }
+    }
+
+    .selectBox {
+      width: 100%;
+      height: 50px;
+      // border: 3px solid purple;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+
+      .selectSV {
+        width: 40%;
+        height: 70%;
+        margin: 20px;
+        border-radius: 10px;
+        border: 3px solid black;
+        text-indent: 10px;
+      }
+    }
+  }
+}
+.btnDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+  height: 50px;
+}
