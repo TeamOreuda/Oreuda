@@ -31,6 +31,23 @@ export default function AddText() {
 
   return (
     <div className={st.body}>
+      <div className={st.indexBtns}>
+        {textArr?.map((el, index) => {
+          return (
+            <button
+              key={index}
+              onClick={() => {
+                setTitle(el.titleArr);
+                setDesc(el.descArr);
+                setTextIdx(el.index);
+                setCurr(index);
+              }}
+            >
+              {index}
+            </button>
+          );
+        })}
+      </div>
       <div className={st.titleDiv}>
         <span>추가 텍스트(Add Text)</span>
         <p>추가로 작성하고 싶은 텍스트가 있다면 작성해주세요!</p>
@@ -38,21 +55,6 @@ export default function AddText() {
       <div className={st.contentDiv}>
         <div className={st.mailDiv}>
           <span>제목</span>
-          {textArr?.map((el, index) => {
-            return (
-              <button
-                key={index}
-                onClick={() => {
-                  setTitle(el.titleArr);
-                  setDesc(el.descArr);
-                  setTextIdx(el.index);
-                  setCurr(index);
-                }}
-              >
-                {index}
-              </button>
-            );
-          })}
           <input
             className={st.TextTitleInput}
             type="text"
