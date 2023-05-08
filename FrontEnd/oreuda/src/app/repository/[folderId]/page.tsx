@@ -1,30 +1,34 @@
 "use client";
 
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useState } from "react";
 
 import Repository from "@/Component/Repository/repository";
 import st from "./page.module.scss";
 
 export default function RepositoryPage() {
-  const params = useParams();
+  const [moveRepository, setmoveRepository] = useState(false);
+
+  const clickMove = () => {
+    setmoveRepository(!moveRepository);
+  };
 
   return (
     <div className={st.body}>
       <div className={st.button}>
-        <button>
-          폴더 이동
+        <button onClick={clickMove}>
+          {moveRepository ? "확 인" : "폴더 이동"}
           <Image
             className={st.img}
             src="/images/repository/send.svg"
-            alt="send"
+            alt="plus"
             width={16}
             height={16}
           />
         </button>
       </div>
       <hr />
-      <Repository />
+      <Repository clickMove={moveRepository} />
     </div>
   );
 }
