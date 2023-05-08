@@ -71,8 +71,6 @@ public class RepositoryService {
 					.builder().query(query).variables(variables).build())
 				.get("repositories");
 
-			if (data == null) return;
-
 			// 2. 레포지토리 preprocessing
 			for (JsonNode repo : data.get("nodes")) {
 				toRepository(userId, repo);

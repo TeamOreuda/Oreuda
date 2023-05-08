@@ -5,6 +5,9 @@ import java.util.List;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.oreuda.api.domain.dto.DailyCommitDto;
 import com.oreuda.api.domain.entity.DailyCommit;
 
 import lombok.RequiredArgsConstructor;
@@ -14,9 +17,11 @@ import lombok.RequiredArgsConstructor;
 public class DailyCommitRepository {
 
 	private final RedisTemplate redisTemplate;
+	private final ObjectMapper objectMapper;
 
-	public List<DailyCommit> get(String key) {
+	public List<DailyCommitDto> get(String key) {
 		return redisTemplate.opsForList().range(getKey(key), 0, -1);
+			// objectMapper.convertValue(redisTemplate.opsForValue().get(getKey(key)), List.class);
 	}
 
 	private String getKey(String id) {

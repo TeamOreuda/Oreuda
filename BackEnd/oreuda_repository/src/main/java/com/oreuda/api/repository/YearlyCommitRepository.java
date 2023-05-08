@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.oreuda.api.domain.dto.YearlyCommitDto;
 import com.oreuda.api.domain.entity.YearlyCommit;
 
 import lombok.RequiredArgsConstructor;
@@ -14,9 +16,11 @@ import lombok.RequiredArgsConstructor;
 public class YearlyCommitRepository {
 
 	private final RedisTemplate redisTemplate;
+	private final ObjectMapper objectMapper;
 
-	public List<YearlyCommit> get(String key) {
+	public List<YearlyCommitDto> get(String key) {
 		return redisTemplate.opsForList().range(getKey(key), 0, -1);
+		// return objectMapper.convertValue(redisTemplate.opsForValue().get(getKey(key)), List.class);
 	}
 
 	private String getKey(String id) {
