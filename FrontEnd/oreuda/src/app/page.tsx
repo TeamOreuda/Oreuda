@@ -17,7 +17,7 @@ export default async function Home() {
   const REFRESH_TOKEN = cookieStore.get("RefreshToken")?.value;
 
   const data = await axios
-    .get("http://192.168.31.233:9000/api/v1/users", {
+    .get("https://oreuda.kr/api/v1/users", {
       headers: {
         Authorization: ACCESS_TOKEN,
       },
@@ -29,7 +29,7 @@ export default async function Home() {
       if (err.response.status == 401) {
         return await axios
           .post(
-            "http://192.168.31.233:9000/api/v1/auth/refresh",
+            "https://oreuda.kr/api/v1/auth/refresh",
             {},
             {
               headers: {
@@ -62,7 +62,7 @@ export default async function Home() {
               });
             }
             return await axios
-              .get("http://192.168.31.233:9000/api/v1/users", {
+              .get("https://oreuda.kr/api/v1/users", {
                 headers: {
                   Authorization: res.data.Authorization,
                 },
@@ -77,7 +77,6 @@ export default async function Home() {
           });
       }
     });
-
   return (
     // <Provider store={store}>
     <div className={st.body}>

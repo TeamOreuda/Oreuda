@@ -63,15 +63,6 @@ export default function Baekjoon() {
           value={id}
         ></input>
         <div className={st.selectBox}>
-          {/* <select className={st.selectBJ} onClick={onClickBJTheme}>
-            {bjDesignData.map((data: string, index: number) => {
-              return (
-                <option value={data} key={index}>
-                  {data}
-                </option>
-              );
-            })}
-          </select> */}
           <span>테마 설정</span>
           <select
             className={st.selectSV}
@@ -87,6 +78,8 @@ export default function Baekjoon() {
             })}
           </select>
         </div>
+      </div>
+      <div>
         <PrevBtn />
         <NextBtn />
       </div>

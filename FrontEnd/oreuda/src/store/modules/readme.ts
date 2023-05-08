@@ -21,6 +21,8 @@ export interface readmeSlice {
   textTitle: string[];
   textDesc: string[];
   textArr: Array<AddText>;
+  newTextTitle: string;
+  newTextDesc: string;
   textCnt: number;
   nextComp: number[];
   componentArr: boolean[];
@@ -42,6 +44,8 @@ const initialState: readmeSlice = {
   textTitle: [],
   textDesc: [],
   textArr: [],
+  newTextTitle: "",
+  newTextDesc: "",
   textCnt: 0,
   nextComp: [],
   componentArr: [true, false, false, false, false, false, false, false],
@@ -101,12 +105,12 @@ const themeSlice = createSlice({
     // [addText] addText title 저장
     setTextTitle(state, action) {
       const temp = state;
-      temp.textTitle.push(action.payload);
+      temp.newTextTitle = action.payload;
     },
     // [addText] addText desc 저장
     setTextDesc(state, action) {
       const temp = state;
-      temp.textDesc.push(action.payload);
+      temp.newTextDesc = action.payload;
     },
     // [addText] addText arr에 push
     setAddText(state, action) {
