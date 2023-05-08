@@ -29,7 +29,7 @@ const folderList: FolderList[] = [
   {
     id: 3,
     name: "hello",
-    color: "pink",
+    color: "yellow",
     order: 3,
     repositoryCount: 15,
   },
@@ -43,7 +43,7 @@ const folderList: FolderList[] = [
   {
     id: 5,
     name: "몰라요",
-    color: "pink",
+    color: "yellow",
     order: 5,
     repositoryCount: 18,
   },
@@ -57,7 +57,7 @@ const folderList: FolderList[] = [
   {
     id: 7,
     name: "몰라요",
-    color: "pink",
+    color: "yellow",
     order: 5,
     repositoryCount: 18,
   },
@@ -71,7 +71,7 @@ const folderList: FolderList[] = [
   {
     id: 9,
     name: "몰라요",
-    color: "pink",
+    color: "yellow",
     order: 5,
     repositoryCount: 18,
   },
@@ -85,7 +85,7 @@ const folderList: FolderList[] = [
   {
     id: 11,
     name: "몰라요",
-    color: "pink",
+    color: "yellow",
     order: 5,
     repositoryCount: 18,
   },
@@ -99,7 +99,7 @@ const folderList: FolderList[] = [
   {
     id: 13,
     name: "몰라요",
-    color: "pink",
+    color: "yellow",
     order: 5,
     repositoryCount: 18,
   },
@@ -113,7 +113,7 @@ const folderList: FolderList[] = [
   {
     id: 15,
     name: "몰라요",
-    color: "pink",
+    color: "yellow",
     order: 5,
     repositoryCount: 18,
   },
@@ -127,7 +127,7 @@ const folderList: FolderList[] = [
   {
     id: 17,
     name: "몰라요",
-    color: "pink",
+    color: "yellow",
     order: 5,
     repositoryCount: 18,
   },
@@ -141,7 +141,7 @@ const folderList: FolderList[] = [
   {
     id: 19,
     name: "몰라요",
-    color: "pink",
+    color: "yellow",
     order: 5,
     repositoryCount: 18,
   },
@@ -160,7 +160,7 @@ export default function folder() {
             className={st.folder}
           >
             <div>
-              <Image src={`images/repository/${e.color}.svg`} alt="폴더" width={128} height={128} />
+              <Image src={`images/folder/${e.color}.svg`} alt="폴더" width={128} height={128} />
             </div>
             <p>{e.name}</p>
           </Link>
