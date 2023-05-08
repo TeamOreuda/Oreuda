@@ -28,7 +28,6 @@ export default function AddText() {
   const [desc, setDesc] = useState("");
   const [textIdx, setTextIdx] = useState(0);
   const [curr, setCurr] = useState(0);
-  console.log(textIdx);
 
   return (
     <div className={st.body}>

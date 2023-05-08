@@ -15,29 +15,20 @@ import OreCharacter from "./OreCharacter";
 import AddText from "./AddText";
 import Sorting from "./Sorting";
 import Preview from "./Preview";
+import { useEffect, useRef, WheelEvent } from "react";
 
 export default function Comp() {
+  const scrollableDivRef = useRef<any>(null);
   const currComponent: number = useAppSelector(selectReadme).currComponent;
   const textArr = useAppSelector(selectReadme).textArr;
   const arr: any = [];
-  const textArrEl = () => {
-    for (let i = 0; i < textArr.length + 1; i++) arr.push(<AddText />);
 
-    return arr;
-  };
-  let currentSection = 0;
-  const fuc = (e: any) => {
-    e.preventDefault();
-    let direction = Math.sign(e.deltaY);
-    if (direction > 0 && currentSection < arr.length - 1) {
-      currentSection++;
-    }
-    // else if (direction < 0 && currentSection > 0) {
-    //   currentSection--;
-    // }
+  // const textArrEl = () => {
+  //   for (let i = 0; i < textArr.length + 1; i++) arr.push(<AddText key={i} />);
 
-    arr[currentSection].scrollIntoView({ behavior: "smooth" });
-  };
+  //   return arr;
+  // };
+
   function showComponent() {
     switch (Number(currComponent)) {
       case 0:
@@ -54,12 +45,10 @@ export default function Comp() {
         return <Contact />;
       case 6:
         return <OreCharacter />;
+      // case 7:
+      //   return <div className={st.TextBody}>{textArrEl()}</div>;
       case 7:
-        return (
-          <div className={st.TextBody} onWheel={fuc}>
-            {textArrEl()}
-          </div>
-        );
+        return <AddText />;
       case 8:
         return <Sorting />;
       default:
