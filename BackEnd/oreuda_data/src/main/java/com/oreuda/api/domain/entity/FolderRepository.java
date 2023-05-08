@@ -2,6 +2,8 @@ package com.oreuda.api.domain.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -28,12 +30,7 @@ public class FolderRepository {
 
 	// 폴더
 	@NotNull
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "folder_id")
 	private Folder folder;
-
-	public void updateFolder(Folder folder) {
-		System.out.println("in updateFolder");
-		this.folder = folder;
-	}
 }

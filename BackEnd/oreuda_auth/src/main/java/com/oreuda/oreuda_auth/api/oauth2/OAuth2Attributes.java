@@ -3,7 +3,6 @@ package com.oreuda.oreuda_auth.api.oauth2;
 import com.oreuda.oreuda_auth.api.provider.Provider;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.ObjectUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,12 +46,12 @@ public class OAuth2Attributes {
     }
     // Github
     private static OAuth2Attributes ofGithub(String userNameAttributeName, String accessToken, Map<String, Object> attributes) {
-        String nickname = ObjectUtils.isEmpty(attributes.get("name")) ? "login" : "name";
+//        String nickname = ObjectUtils.isEmpty(attributes.get("name")) ? "login" : "name";
         return OAuth2Attributes.builder()
                 .attributeKey(userNameAttributeName)
                 .id(attributes.get(userNameAttributeName).toString())
                 .nodeId((String) attributes.get("node_id"))
-                .nickname((String) attributes.get(nickname))
+                .nickname((String) attributes.get("login"))
                 .image((String) attributes.get("avatar_url"))
                 .provider(Provider.GITHUB)
                 .accessToken(accessToken)

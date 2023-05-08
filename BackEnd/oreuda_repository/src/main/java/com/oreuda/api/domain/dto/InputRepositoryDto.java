@@ -12,20 +12,17 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class InputFolderDto {
+public class InputRepositoryDto {
 
-	// 기본키
-	Long id;
+	// 현재 폴더 기본키
+	int nowFolderId;
 
-	// 폴더명
-	String name;
+	// 필터링
+	String filtering;
 
-	// 폴더 색상
-	String color;
+	// 이동할 폴더 기본키
+	int moveFolderId;
 
-	// 폴더 순서
-	int order;
-
-	// 해당 폴더의 레포지토리
+	// 이동할 레포지토리 목록
 	List<String> repositories = new ArrayList<>();
 }

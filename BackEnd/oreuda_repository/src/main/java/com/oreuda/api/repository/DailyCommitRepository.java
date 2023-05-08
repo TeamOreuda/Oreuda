@@ -15,8 +15,8 @@ public class DailyCommitRepository {
 
 	private final RedisTemplate redisTemplate;
 
-	public void set(String userId, List<DailyCommit> value) {
-		redisTemplate.opsForList().rightPush(getKey(userId), value);
+	public List<DailyCommit> get(String key) {
+		return redisTemplate.opsForList().range(getKey(key), 0, -1);
 	}
 
 	private String getKey(String id) {

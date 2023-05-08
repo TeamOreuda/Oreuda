@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import com.oreuda.common.exception.GitHubException;
 import graphql.kickstart.spring.webclient.boot.GraphQLRequest;
 import lombok.RequiredArgsConstructor;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RepositoryService {
@@ -65,9 +67,10 @@ public class RepositoryService {
 			data = gitHubClient.getRepositories(accessToken, GraphQLRequest
 					.builder().query(query).variables(variables).build())
 				.get("repositories");
-
+			if (data == null) return;
 			// 2. 레포지토리 preprocessing
 			for (JsonNode repo : data.get("nodes")) {
+//				log.info("repo: {}", repo.get("nameWithOwner"));
 				toRepository(userId, repo);
 			}
 
@@ -88,7 +91,7 @@ public class RepositoryService {
 		JsonNode data = gitHubClient.getRepositories(accessToken, GraphQLRequest
 				.builder().query(query).build())
 			.get("organizations").get("nodes");
-
+		if (data == null) return;
 		// 2. 레포지토리 preprocessing
 		for (JsonNode org : data) {
 			for (JsonNode repo : org.get("repositories").get("nodes")) {
@@ -109,9 +112,9 @@ public class RepositoryService {
 			repository.dateFormatter();
 			repositoryRepository.set(repository.getId(), repository);
 
-			if (userRepository.isMember(userId, repository.getName())) return;
+			if (userRepository.isMember(userId, repository.getId())) return;
 			// 해당 레포지토리가 이미 사용자 레포지토리 목록에 없으면 사용자 레포지토리에 저장
-			userRepository.add(userId, repository.getName());
+			userRepository.add(userId, repository.getId());
 
 			// 레포지토리별 커밋
 			commitService.getCommitByRepository(userId, loadQueryFile("commit.graphql"), repository.getId(), repository.getName());

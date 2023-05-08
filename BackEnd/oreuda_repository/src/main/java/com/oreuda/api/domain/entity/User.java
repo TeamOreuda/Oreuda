@@ -13,12 +13,13 @@ import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "USER")
 public class User {
 
 	// 기본키
@@ -70,8 +71,4 @@ public class User {
 	@NotNull
 	@Column(name = "user_update_time")
 	private LocalDateTime updateTime;
-
-	public User() {
-	}
-
 }

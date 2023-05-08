@@ -1,6 +1,7 @@
 package com.oreuda.api.domain.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,39 +15,32 @@ import lombok.NoArgsConstructor;
 public class RepositoryDto {
 
 	// 고유 ID
-	private String id;
+	String id;
 
 	// 이름
-	@JsonProperty("nameWithOwner")
-	private String name;
+	String name;
 
 	// 설명
-	private String description;
+	String description;
 
 	// URL
-	private String url;
+	String url;
 
 	// 주 사용언어
-	@JsonProperty("primaryLanguage.name")
-	private String language;
+	String language;
 
 	// 공개여부
-	private String isPrivate;
+	String isPrivate;
 
 	// star 수
-	@JsonProperty("stargazerCount")
-	private int starCount;
+	int starCount;
 
 	// 수정일시
-	@JsonProperty("updatedAt")
-	private String updateDate;
+	String updateDate;
 
-	// 생성일시
-	@JsonProperty("createdAt")
-	private String createDate;
+	// 연도별 커밋
+	List<YearlyCommitDto> yearlyCommits = new ArrayList<>();
 
-	// YYYY-MM-DDTHH:MM:SSZ to YYYY-MM-DD
-	public void dateFormatter() {
-		this.createDate = this.createDate.split("T")[0];
-	}
+	// 일자별 커밋
+	List<DailyCommitDto> dailyCommits = new ArrayList<>();
 }

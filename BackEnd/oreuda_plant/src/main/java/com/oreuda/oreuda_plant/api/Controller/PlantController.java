@@ -6,6 +6,7 @@ import com.oreuda.oreuda_plant.api.Service.PlantService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,9 +32,9 @@ public class PlantController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> postPlant(@RequestHeader HttpHeaders headers) {
-        String userId = headers.getFirst("userId");
-        return ResponseEntity.ok().body(userId);
+    public ResponseEntity<?> setPlantStatus(@RequestHeader String userId) {
+        plantService.setStatus(userId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/graph")

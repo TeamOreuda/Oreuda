@@ -5,8 +5,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -15,37 +18,63 @@ import org.springframework.stereotype.Service;
 
 import com.oreuda.api.client.PlantClient;
 import com.oreuda.api.domain.entity.Commit;
+import com.oreuda.api.domain.entity.Folder;
+import com.oreuda.api.domain.entity.FolderRepository;
+import com.oreuda.api.domain.entity.Repository;
 import com.oreuda.api.domain.entity.User;
 import com.oreuda.api.repository.CommitRepository;
+import com.oreuda.api.repository.FolderJpaRepository;
+import com.oreuda.api.repository.RepositoryJpaRepository;
 import com.oreuda.api.repository.UserJpaRepository;
 import com.oreuda.api.repository.UserRepository;
 import com.oreuda.common.exception.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
-	private final UserJpaRepository userJpaRepository;
 	private final UserRepository userRepository;
 	private final CommitRepository commitRepository;
 
-	private final PlantClient plantClient;
+	private final UserJpaRepository userJpaRepository;
+	private final FolderJpaRepository folderJpaRepository;
+	private final RepositoryJpaRepository repositoryJpaRepository;
 
 	public void updateUser(String userId) {
-		User user = userJpaRepository.findById(userId).orElseThrow(NotFoundException::new);
-
-		// 사용자 Repository 수
-		int repoCnt = userRepository.getSize(userId).intValue();
-		// 사용자 Commit 정보
+		// 사용자 레포지토리 정보
+		Set<String> repositories = userRepository.members(userId);
+		// 사용자 커밋 정보
 		List<Commit> commits = commitRepository.getList(userId);
 
-		user.updateGitHubData(repoCnt, commits.size(), countStreak(commits), getMostLanguage(user.getNickname()), LocalDateTime.now());
+		// 사용자의 GitHub 정보 업데이트
+		User user = userJpaRepository.findById(userId).orElseThrow(NotFoundException::new);
+		user.updateGitHubData(repositories.size(), commits.size(), countStreak(commits),
+			getMostLanguage(user.getNickname()), LocalDateTime.now());
 		userJpaRepository.save(user);
 
-		// 데이터 전처리 완료 알리기
-		plantClient.notifyCompletion(userId);
+		// 사용자의 폴더 정보
+		List<Folder> folders = folderJpaRepository.findByUser(user);
+		for (Folder folder : folders) {
+			List<FolderRepository> folderRepositories = repositoryJpaRepository.findByFolder(folder);
+
+			// 폴더가 지정되어있는 레포지토리 삭제
+			for (FolderRepository folderRepository : folderRepositories) {
+				repositories.remove(folderRepository.getId());
+			}
+		}
+
+		if (repositories.size() == 0) return;
+		// 해당 사용자의 기본 폴더 정보
+		Folder baseFolder = folderJpaRepository.findByUserAndStatus(user, "B");
+		Iterator<String> it = repositories.iterator();
+		while (it.hasNext()) {
+			// 폴더 미지정 레포지토리는 기본 폴더에 지정
+			FolderRepository folderRepository = FolderRepository.builder().id(it.next()).folder(baseFolder).build();
+			repositoryJpaRepository.save(folderRepository);
+		}
 	}
 
 	/**
@@ -54,15 +83,16 @@ public class UserService {
 	 * @return
 	 */
 	private int countStreak(List<Commit> commits) {
+		if (commits.size() == 0) return 0;
 		Collections.sort(commits, (o1, o2) -> o1.getDate().compareTo(o2.getDate()));
 
 		int streakCnt = 1, maxStreakCnt = 0;
-		LocalDate preDate = LocalDate.parse(commits.remove(0).getDate(), DateTimeFormatter.ISO_DATE);
+		LocalDate preDate = LocalDate.parse(commits.remove(0).getDate().split(" ")[0], DateTimeFormatter.ISO_DATE);
 
 		for (Commit commit : commits) {
-			LocalDate nowDate = LocalDate.parse(commit.getDate(), DateTimeFormatter.ISO_DATE);
+			LocalDate nowDate = LocalDate.parse(commit.getDate().split(" ")[0], DateTimeFormatter.ISO_DATE);
 
-			if(preDate.isEqual(nowDate)) continue;
+			if (preDate.isEqual(nowDate)) continue;
 
 			if (preDate.plusDays(1).isEqual(nowDate)) {
 				// 하루 연속이면 카운팅
@@ -95,7 +125,7 @@ public class UserService {
 				.execute();
 			Document googleDocument = response.parse();
 			Element langName = googleDocument.select("text[class=lang-name]").first();
-
+			if (langName == null) return mostLanguage;
 			mostLanguage = langName.text();
 		} catch (IOException e) {
 			e.printStackTrace();

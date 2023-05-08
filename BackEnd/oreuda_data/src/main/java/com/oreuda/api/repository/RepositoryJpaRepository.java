@@ -6,10 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.oreuda.api.domain.entity.Folder;
-import com.oreuda.api.domain.entity.User;
+import com.oreuda.api.domain.entity.FolderRepository;
 
 @Repository
-public interface FolderJpaRepository extends JpaRepository<Folder, Long> {
+public interface RepositoryJpaRepository extends JpaRepository<FolderRepository, String> {
 
-	List<Folder> findByUserAndStatusNotOrderByOrder(User user, String status);
+	List<FolderRepository> findByFolder(Folder folder);
 }

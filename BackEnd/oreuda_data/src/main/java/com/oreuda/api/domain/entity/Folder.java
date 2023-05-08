@@ -1,8 +1,6 @@
 package com.oreuda.api.domain.entity;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,10 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
-
-import com.oreuda.api.domain.dto.FolderDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -64,32 +59,4 @@ public class Folder {
 	@NotNull
 	@Column(name = "folder_date")
 	private LocalDateTime date;
-
-	// 해당 폴더의 레포지토리 목록
-	@OneToMany(mappedBy = "folder", fetch = FetchType.EAGER)
-	private List<FolderRepository> repositories = new ArrayList<>();
-
-	// Entity to Dto
-	public FolderDto toDto() {
-		return FolderDto.builder()
-			.id(id)
-			.name(name)
-			.color(color)
-			.order(order)
-			.repositoryCount(repositories.size())
-			.build();
-	}
-
-	public void updateFolder(String name, String color) {
-		this.name = name;
-		this.color = color;
-	}
-
-	public void updateOrder(int order) {
-		this.order = order;
-	}
-
-	public void deleteFolder() {
-		this.status = "D";
-	}
 }

@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface UserLogRepository extends JpaRepository<UserLog, String> {
     Optional<UserLog> findTopByUserIdOrderByTimeDesc(String userId);
-    List<UserLog> findAllByUserId(String userId);
+    List<UserLog> findAllByUserIdOrderByTimeDesc(String userId);
 }
