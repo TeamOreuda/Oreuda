@@ -49,8 +49,6 @@ public class UserService {
 		// 사용자 커밋 정보
 		List<Commit> commits = commitRepository.getList(userId);
 
-		System.out.println("repo cnt: "+repositories.size());
-
 		// 사용자의 GitHub 정보 업데이트
 		User user = userJpaRepository.findById(userId).orElseThrow(NotFoundException::new);
 		user.updateGitHubData(repositories.size(), commits.size(), countStreak(commits),

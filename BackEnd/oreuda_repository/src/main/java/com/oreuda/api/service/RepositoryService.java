@@ -55,12 +55,12 @@ public class RepositoryService {
 		// 해당 폴더의 레포지토리 목록
 		List<FolderRepository> folderRepositories = repositoryJpaRepository.findByFolder_Id(Long.valueOf(folderId));
 		List<RepositoryDto> repositories = new ArrayList<>();
+
 		for (FolderRepository folderRepository : folderRepositories) {
 			Repository repository = repositoryRepository.get(folderRepository.getId())
 				.orElseThrow(NotFoundException::new);
 
 			List<DailyCommitDto> dailyCommits = dailyCommitRepository.get(userId + "_" + repository.getId());
-			System.out.println(dailyCommits.size());
 			List<YearlyCommitDto> yearlyCommits = yearlyCommitRepository.get(userId + "_" + repository.getId());
 
 			repositories.add(RepositoryDto.builder()

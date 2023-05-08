@@ -21,7 +21,7 @@ public class DailyCommitRepository {
 
 	public List<DailyCommitDto> get(String key) {
 		return redisTemplate.opsForList().range(getKey(key), 0, -1);
-			// objectMapper.convertValue(redisTemplate.opsForValue().get(getKey(key)), List.class);
+		// return objectMapper.convertValue(redisTemplate.opsForValue().get(getKey(key)), List.class);
 	}
 
 	private String getKey(String id) {
