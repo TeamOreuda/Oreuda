@@ -92,8 +92,7 @@ public class UserService {
 		for (Commit commit : commits) {
 			LocalDate nowDate = LocalDate.parse(commit.getDate().split(" ")[0], DateTimeFormatter.ISO_DATE);
 
-			if (preDate.isEqual(nowDate))
-				continue;
+			if (preDate.isEqual(nowDate)) continue;
 
 			if (preDate.plusDays(1).isEqual(nowDate)) {
 				// 하루 연속이면 카운팅

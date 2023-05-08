@@ -64,8 +64,8 @@ public class CommitService {
 
 		JsonNode data;
 		LocalDate now = LocalDate.now(); // 오늘 날짜
-		Map<String, DailyCommit> dailyCommit = new HashMap<>();
-		Map<Integer, YearlyCommit> yearlyCommit = new HashMap<>();
+		Map<String, DailyCommit> dailyCommit = new HashMap<>(); // 일별 커밋
+		Map<Integer, YearlyCommit> yearlyCommit = new HashMap<>(); // 연도별 커밋
 		do {
 			// 1. GitHub API 호출
 			data = gitHubClient.getCommitByRepository(accessToken, GraphQLRequest
