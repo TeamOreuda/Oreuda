@@ -66,10 +66,14 @@ public class PlantService {
 
     public int getDailyPoint(int commitCnt, int day, int streak) {
 //        log.info("commitCnt = {}, day = {}, streak = {}", commitCnt, day, streak);
+        // decay = 0.9748 ^ day
         final double DECAY_RATE = 0.9748;
-        final double STREAK_BONUS_RATE = 0.9;
+        // streakBonus = 300 * (1 - 0.905 ^ (streak - 1))
+        final double STREAK_BONUS_RATE = 0.905;
+        // 첫 커밋 50, 이후 20, 최대 250
         int point = Math.min(50 + (commitCnt - 1) * 20, 250);
         double decay = Math.pow(DECAY_RATE, day);
+        // 66일간 유지되면 300점 보너스 이후 고정
         int streakBonus = (int) Math.round(300 * (1 - Math.pow(STREAK_BONUS_RATE, streak - 1)));
 //        log.info("point = {}, decay = {}, streakBonus = {}", point, decay, streakBonus);
         int result = (int) Math.round((point + streakBonus) * decay);
@@ -85,13 +89,20 @@ public class PlantService {
         for (String key : userCommits.keySet()) {
             LocalDate date = LocalDate.parse(key);
             if (date.isAfter(start)) continue;
+            // streak 계산
             if (prev != null && prev.minusDays(1).isEqual(date)) {
+                // 연속된 경우
                 streak++;
             } else {
+                // 연속되지 않은 경우
                 streak = 1;
             }
+            // 며칠전 커밋인지 계산
             Period period = Period.between(date, start);
             int day = period.getYears() * 365 + period.getMonths() * 30 + period.getDays();
+            // 6달 이상은 무조건 0점이므로 계산할 필요 없음
+            if (day > 180) break;
+            // 점수 계산
             point += getDailyPoint(userCommits.get(key), day, streak);
             prev = date;
         }
@@ -103,6 +114,9 @@ public class PlantService {
         UserLog userLog = userLogRepository.findTopByUserIdOrderByTimeDesc(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저의 로그가 없습니다."));
         LocalDate today = LocalDate.now();
         Map<String, Integer> userCommits = commitRepository.getList(userId, user.getJoinDate());
+//        for (String key : userCommits.keySet()) {
+//            log.info("{}: {}", key, userCommits.get(key));
+//        }
         userLog = UserLog.builder()
                 .user(user)
                 .time(userLog.getTime().plusDays(1))
