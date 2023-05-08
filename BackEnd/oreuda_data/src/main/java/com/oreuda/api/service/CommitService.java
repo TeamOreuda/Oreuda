@@ -77,7 +77,6 @@ public class CommitService {
 					Commit commit = objectMapper.treeToValue(cmt, Commit.class);
 					commit.dateFormatter();
 					commitRepository.set(userId + "_" + commit.getId(), commit);
-
 					// YYYY-MM-DD HH:MM:SS to YYYY-MM-DD
 					String date = commit.getDate().split(" ")[0];
 					int year = Integer.parseInt(date.split("-")[0]);
