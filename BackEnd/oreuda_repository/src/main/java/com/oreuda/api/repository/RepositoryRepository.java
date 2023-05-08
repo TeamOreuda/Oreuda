@@ -14,12 +14,8 @@ public class RepositoryRepository {
 
 	private final RedisBase redisBase;
 
-	public Optional<Repository> get(String key) {
-		return redisBase.get(getKey(key), Repository.class);
-	}
-
-	public void set(String key, com.oreuda.api.domain.entity.Repository value) {
-		redisBase.set(getKey(key), value);
+	public Optional<com.oreuda.api.domain.entity.Repository> get(String key) {
+		return redisBase.get(getKey(key), com.oreuda.api.domain.entity.Repository.class);
 	}
 
 	private String getKey(String id) {

@@ -39,8 +39,8 @@ public class RepositoryDto {
 	String updateDate;
 
 	// 연도별 커밋
-	List<YearlyCommitDto> yearlyCommit = new ArrayList<>();
+	List<YearlyCommitDto> yearlyCommits = new ArrayList<>();
 
 	// 일자별 커밋
-	List<DailyCommitDto> dailyCommit = new ArrayList<>();
+	List<DailyCommitDto> dailyCommits = new ArrayList<>();
 }
