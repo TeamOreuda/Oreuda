@@ -30,6 +30,7 @@ spring:
   redis:
     host: redis
     port: 6379
+    password: 'git0410'
 
   profiles:
     include: auth
