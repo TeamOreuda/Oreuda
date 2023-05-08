@@ -3,6 +3,7 @@ import Image from "next/image";
 
 import st from "./repository.module.scss";
 import Repositorygraph from "./repositorygraph";
+import { useEffect, useState } from "react";
 
 interface Repository {
   id: number;
@@ -23,7 +24,13 @@ interface Repository {
   }[];
 }
 
-export default function repository() {
+export default function Repository(props: { clickMove: boolean }) {
+  const [checkedItems, setCheckedItems] = useState<string[]>([]);
+
+  useEffect(() => {
+    setCheckedItems([]);
+  }, [props.clickMove]);
+
   const repository: Repository[] = [
     {
       id: 1,
@@ -111,22 +118,45 @@ export default function repository() {
     return date;
   }
 
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    const currentIndex = checkedItems.indexOf(value);
+    const newCheckedItems = [...checkedItems];
+
+    if (currentIndex === -1) {
+      newCheckedItems.push(value);
+    } else {
+      newCheckedItems.splice(currentIndex, 1);
+    }
+
+    setCheckedItems(newCheckedItems);
+  };
+
   return (
     <div>
-      {repository?.map((item) => (
-        <div key={item.id} className={st.body}>
+      {repository?.map((e) => (
+        <div key={e.id} className={st.body}>
           <div className={st.info}>
             <div className={st.infofirst}>
-              <Link href={item.url} className={st.link}>
-                {item.name}
+              {props.clickMove && (
+                <input
+                  type="checkbox"
+                  value={e.id}
+                  checked={checkedItems.indexOf(String(e.id)) !== -1}
+                  onChange={handleCheckboxChange}
+                  onClick={(event) => event.stopPropagation()}
+                />
+              )}
+              <Link href={e.url} className={st.link}>
+                {e.name}
               </Link>
-              <div>{item.isPrivate === "Y" ? "Private" : "Public"}</div>
+              <div>{e.isPrivate === "Y" ? "Private" : "Public"}</div>
             </div>
-            <p>{item.description}</p>
+            <p>{e.description}</p>
             <div className={st.infosecond}>
               <div>
                 <div></div>
-                <span>{item.language}</span>
+                <span>{e.language}</span>
                 <Image
                   className={st.img}
                   src="/images/repository/star.svg"
@@ -134,13 +164,13 @@ export default function repository() {
                   width={16}
                   height={16}
                 />
-                <span>{item.star}</span>
+                <span>{e.star}</span>
               </div>
-              <span>Updated on {formattedDate(item.updateDate)}</span>
+              <span>Updated on {formattedDate(e.updateDate)}</span>
             </div>
           </div>
           <div>그래프</div>
-          <Repositorygraph yearlyCommit={item.yearlyCommit} />
+          <Repositorygraph yearlyCommit={e.yearlyCommit} />
         </div>
       ))}
     </div>
