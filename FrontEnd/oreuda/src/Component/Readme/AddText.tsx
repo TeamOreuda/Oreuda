@@ -29,6 +29,11 @@ export default function AddText() {
   const [textIdx, setTextIdx] = useState(0);
   const [curr, setCurr] = useState(0);
 
+  const cleanInput = () => {
+    setTitle("");
+    setDesc("");
+  };
+
   return (
     <div className={st.body}>
       <div className={st.indexBtns}>
@@ -81,7 +86,9 @@ export default function AddText() {
         </div>
         <div>
           <div className={st.btnDiv}>
-            <PlusTextBtn titleArr={title} descArr={desc} />
+            <div onClick={cleanInput}>
+              <PlusTextBtn titleArr={title} descArr={desc} />
+            </div>
             {textArr.length > 0 ? <MinusTextBtn idx={textIdx} /> : undefined}
             <PrevBtn />
             <NextBtn />
