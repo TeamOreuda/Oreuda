@@ -54,7 +54,7 @@ public class FolderController {
 	 * @return
 	 */
 	@PatchMapping("delete")
-	public ResponseEntity<?> deleteFolder(@RequestHeader String userId, @RequestBody List<FolderDto> folders) {
+	public ResponseEntity<?> deleteFolder(@RequestHeader String userId, @RequestBody List<Integer> folders) {
 		folderService.deleteFolder(userId, folders);
 		return new ResponseEntity(HttpStatus.OK);
 	}

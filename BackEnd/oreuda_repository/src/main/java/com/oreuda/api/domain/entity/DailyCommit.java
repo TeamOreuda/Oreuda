@@ -1,5 +1,7 @@
 package com.oreuda.api.domain.entity;
 
+import com.oreuda.api.domain.dto.DailyCommitDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,4 +18,12 @@ public class DailyCommit {
 
 	// 커밋 수
 	private int count;
+
+	// Entity to Dto
+	public DailyCommitDto toDto() {
+		return DailyCommitDto.builder()
+			.date(date)
+			.count(count)
+			.build();
+	}
 }

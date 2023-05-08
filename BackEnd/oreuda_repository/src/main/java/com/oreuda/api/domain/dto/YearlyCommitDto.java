@@ -9,20 +9,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FolderDto {
+public class YearlyCommitDto {
 
-	// 기본키
-	Long id;
+	// 커밋 연도(YYYY)
+	int year;
 
-	// 폴더명
-	String name;
-
-	// 폴더 색상
-	String color;
-
-	// 폴더 순서
-	int order;
-
-	// 해당 폴도의 레포지토리 수
-	int repositoryCount;
+	// 커밋 수
+	int count;
 }
