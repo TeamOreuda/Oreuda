@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@FeignClient(name = "data-client", url = "http://localhost:8050/api/v1/data")
+@FeignClient(name = "data-client", url = "http://172.28.0.24:8050/api/v1/data")
 public interface DataClient {
 
     @RequestMapping(method = RequestMethod.PATCH)
