@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import st from "./Baekjoon.module.scss";
+import st from "./AddText.module.scss";
 
 import NextBtn from "./NextBtn";
 import PrevBtn from "./PrevBtn";
@@ -28,32 +28,33 @@ export default function AddText() {
   const [desc, setDesc] = useState("");
   const [textIdx, setTextIdx] = useState(0);
   const [curr, setCurr] = useState(0);
-  console.log(textIdx);
 
   return (
     <div className={st.body}>
-      {textArr?.map((el, index) => {
-        return (
-          <button
-            key={index}
-            onClick={() => {
-              setTitle(el.titleArr);
-              setDesc(el.descArr);
-              setTextIdx(el.index);
-              setCurr(index);
-            }}
-          >
-            {index}
-          </button>
-        );
-      })}
+      <div className={st.indexBtns}>
+        {textArr?.map((el, index) => {
+          return (
+            <button
+              key={index}
+              onClick={() => {
+                setTitle(el.titleArr);
+                setDesc(el.descArr);
+                setTextIdx(el.index);
+                setCurr(index);
+              }}
+            >
+              {index}
+            </button>
+          );
+        })}
+      </div>
       <div className={st.titleDiv}>
         <span>추가 텍스트(Add Text)</span>
         <p>추가로 작성하고 싶은 텍스트가 있다면 작성해주세요!</p>
       </div>
-      <div className={st.ContentDiv}>
+      <div className={st.contentDiv}>
         <div className={st.mailDiv}>
-          <p>제목</p>
+          <span>제목</span>
           <input
             className={st.TextTitleInput}
             type="text"
@@ -73,10 +74,12 @@ export default function AddText() {
           ></input>
         </div>
         <div>
-          <PlusTextBtn titleArr={title} descArr={desc} />
-          {textArr.length > 0 ? <MinusTextBtn idx={textIdx} /> : undefined}
-          <PrevBtn />
-          <NextBtn />
+          <div className={st.btnDiv}>
+            <PlusTextBtn titleArr={title} descArr={desc} />
+            {textArr.length > 0 ? <MinusTextBtn idx={textIdx} /> : undefined}
+            <PrevBtn />
+            <NextBtn />
+          </div>
         </div>
       </div>
     </div>

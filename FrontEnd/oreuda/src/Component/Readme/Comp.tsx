@@ -15,9 +15,19 @@ import OreCharacter from "./OreCharacter";
 import AddText from "./AddText";
 import Sorting from "./Sorting";
 import Preview from "./Preview";
+import { useEffect, useRef, WheelEvent } from "react";
 
 export default function Comp() {
+  const scrollableDivRef = useRef<any>(null);
   const currComponent: number = useAppSelector(selectReadme).currComponent;
+  const textArr = useAppSelector(selectReadme).textArr;
+  const arr: any = [];
+
+  // const textArrEl = () => {
+  //   for (let i = 0; i < textArr.length + 1; i++) arr.push(<AddText key={i} />);
+
+  //   return arr;
+  // };
 
   function showComponent() {
     switch (Number(currComponent)) {
@@ -35,8 +45,14 @@ export default function Comp() {
         return <Contact />;
       case 6:
         return <OreCharacter />;
+      // case 7:
+      //   return <div className={st.TextBody}>{textArrEl()}</div>;
       case 7:
-        return <AddText />;
+        return (
+          <div className={st.TextBody}>
+            <AddText />
+          </div>
+        );
       case 8:
         return <Sorting />;
       default:

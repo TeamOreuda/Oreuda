@@ -8,8 +8,11 @@ export default function NextBtn() {
   const dispatch = useAppDispatch();
 
   return (
-    <div className={st.button}>
-      <button onClick={() => dispatch(setNextCompMoving(0))}>다음</button>
-    </div>
+    <button
+      className={st.button}
+      onClick={() => dispatch(setNextCompMoving(0))}
+    >
+      다음
+    </button>
   );
 }

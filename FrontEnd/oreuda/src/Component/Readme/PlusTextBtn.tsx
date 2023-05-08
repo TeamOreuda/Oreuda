@@ -14,8 +14,8 @@ export default function PlusTextBtn({ titleArr, descArr }: any) {
     dispatch(setTextDesc(descArr));
   };
   return (
-    <div className={st.button} onClick={addTextDiv}>
-      <button>+</button>
-    </div>
+    <button className={st.button} onClick={addTextDiv}>
+      +
+    </button>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import st from "./Baekjoon.module.scss";
+import st from "./Contact.module.scss";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   selectReadme,

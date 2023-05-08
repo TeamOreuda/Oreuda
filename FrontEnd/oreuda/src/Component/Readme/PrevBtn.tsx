@@ -8,8 +8,11 @@ export default function PrevBtn() {
   const dispatch = useAppDispatch();
 
   return (
-    <div className={st.button}>
-      <button onClick={() => dispatch(setPrevCompMoving(0))}>이전</button>
-    </div>
+    <button
+      className={st.button}
+      onClick={() => dispatch(setPrevCompMoving(0))}
+    >
+      이전
+    </button>
   );
 }

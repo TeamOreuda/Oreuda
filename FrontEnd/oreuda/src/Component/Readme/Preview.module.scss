@@ -1,5 +1,4 @@
 .body {
-  border: 1px solid #008000;
   position: relative;
   & .headerDiv {
     width: 100%;
@@ -70,6 +69,5 @@
     width: 100%;
     height: calc(95vh - 180px);
     margin-top: 3vh;
-    border: 3px solid #9d1dff;
   }
 }

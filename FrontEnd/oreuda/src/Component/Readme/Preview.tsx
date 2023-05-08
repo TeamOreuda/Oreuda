@@ -16,6 +16,7 @@ export default function Preview() {
   const mulType = useAppSelector(selectReadme).mulType;
   const textTitleArr = useAppSelector(selectReadme).textTitle;
   const textDescArr = useAppSelector(selectReadme).textDesc;
+  const textArr = useAppSelector(selectReadme).textArr;
   // console.log(textTitleArr, textDescArr);
 
   // 백준
@@ -23,7 +24,8 @@ export default function Preview() {
   const secImgUrl = `http://mazandi.herokuapp.com/api?handle=${BaekJoonData}&theme=${SolvedThemeData}`;
 
   // 깃헙
-  const githubUrl = `https://github-readme-stats.vercel.app/api?username=${githubId}&show_icons=true&theme=${githubTheme}`;
+  // const githubUrl = `https://github-readme-stats.vercel.app/api?username=${githubId}&show_icons=true&theme=${githubTheme}`;
+  const githubUrl = `https://github-readme-stats.vercel.app/api?username=kyum8562&show_icons=true&theme=${githubTheme}`;
 
   // MUL
   // (1) 디폴트
@@ -66,14 +68,16 @@ export default function Preview() {
 
   const showTextArr = () => {
     const arr = [];
-    for (let i = 0; i < textTitleArr.length; i++) {
+    for (let i = 0; i < textArr.length; i++) {
       arr.push(
         <div key={i}>
-          <h3>{textTitleArr[i]}</h3>
-          <p>{textDescArr[i]}</p>
+          <h3>{textArr[i].titleArr}</h3>
+          <p>{textArr[i].descArr}</p>
         </div>
       );
     }
+    console.log(arr);
+
     return arr;
   };
 
