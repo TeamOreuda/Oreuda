@@ -59,7 +59,10 @@ export default function AddText() {
             className={st.TextTitleInput}
             type="text"
             placeholder="제목을 입력해주세요."
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+              setTitle(e.target.value);
+              dispatch(setTextTitle(e.target.value));
+            }}
             value={title}
           ></input>
         </div>
@@ -69,7 +72,10 @@ export default function AddText() {
             className={st.TextDescInput}
             type="description"
             placeholder="내용을 입력해주세요."
-            onChange={(e) => setDesc(e.target.value)}
+            onChange={(e) => {
+              setDesc(e.target.value);
+              dispatch(setTextDesc(e.target.value));
+            }}
             value={desc}
           ></input>
         </div>
