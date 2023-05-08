@@ -45,7 +45,7 @@ public class UserService {
 		userJpaRepository.save(user);
 
 		// 데이터 전처리 완료 알리기
-		plantClient.notifyCompletion(userId);
+		// plantClient.notifyCompletion(userId);
 	}
 
 	/**
