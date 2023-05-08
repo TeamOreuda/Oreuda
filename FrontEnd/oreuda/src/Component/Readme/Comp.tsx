@@ -48,7 +48,11 @@ export default function Comp() {
       // case 7:
       //   return <div className={st.TextBody}>{textArrEl()}</div>;
       case 7:
-        return <AddText />;
+        return (
+          <div className={st.TextBody}>
+            <AddText />
+          </div>
+        );
       case 8:
         return <Sorting />;
       default:

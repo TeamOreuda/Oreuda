@@ -49,5 +49,14 @@
 
   button {
     background: comm.$mainGreen;
+    color: comm.$mainWhite;
+    border-radius: 5px;
+    border: 1px solid comm.$mainGreen;
+    margin: 0 5px;
+    cursor: pointer;
+
+    :focus {
+      background-color: rgb(10, 0, 23);
+    }
   }
 }
