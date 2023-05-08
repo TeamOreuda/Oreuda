@@ -11,5 +11,5 @@ import com.oreuda.api.domain.entity.FolderRepository;
 @Repository
 public interface RepositoryJpaRepository extends JpaRepository<FolderRepository, String> {
 
-	List<FolderRepository> findByFolder(Folder folder);
+	List<FolderRepository> findByFolder_Id(Long folderId);
 }

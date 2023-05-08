@@ -33,7 +33,7 @@ public class RepositoryController {
 	 * @return
 	 */
 	@GetMapping("{folderId}")
-	public ResponseEntity<List<RepositoryDto>> getRepositories(@RequestHeader String userId, @PathVariable String folderId, @RequestParam String filtering) {
+	public ResponseEntity<List<RepositoryDto>> getRepositories(@RequestHeader String userId, @PathVariable int folderId, @RequestParam String filtering) {
 		return new ResponseEntity<>(repositoryService.getRepositories(userId, folderId, filtering), HttpStatus.OK);
 	}
 

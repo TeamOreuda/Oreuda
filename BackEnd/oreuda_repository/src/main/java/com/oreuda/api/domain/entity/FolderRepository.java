@@ -33,5 +33,4 @@ public class FolderRepository {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "folder_id")
 	private Folder folder;
-
 }

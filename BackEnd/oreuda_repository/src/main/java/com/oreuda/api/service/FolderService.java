@@ -114,7 +114,7 @@ public class FolderService {
 	 * @param userId
 	 * @param folderUserId
 	 */
-	private void checkFolderAccessPermission(String userId, String folderUserId) {
+	public void checkFolderAccessPermission(String userId, String folderUserId) {
 		if (!userId.equals(folderUserId))
 			throw new UnauthorizedException();
 	}
