@@ -1,7 +1,6 @@
 package com.oreuda.api.service;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -11,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -18,13 +18,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oreuda.api.client.GitHubClient;
 import com.oreuda.api.domain.entity.Commit;
 import com.oreuda.api.domain.entity.DailyCommit;
+import com.oreuda.api.domain.entity.Repository;
 import com.oreuda.api.domain.entity.YearlyCommit;
 import com.oreuda.api.repository.CommitRepository;
-import com.oreuda.api.repository.DailyCommitRepository;
+import com.oreuda.api.repository.RepositoryRepository;
 import com.oreuda.api.repository.UserRepository;
-import com.oreuda.api.repository.YearlyCommitRepository;
 import com.oreuda.common.Model.Auth;
 import com.oreuda.common.exception.GitHubException;
+import com.oreuda.common.exception.NotFoundException;
 
 import graphql.kickstart.spring.webclient.boot.GraphQLRequest;
 import lombok.RequiredArgsConstructor;
@@ -36,8 +37,7 @@ public class CommitService {
 
 	private final UserRepository userRepository;
 	private final CommitRepository commitRepository;
-	private final DailyCommitRepository dailyCommitRepository;
-	private final YearlyCommitRepository yearlyCommitRepository;
+	private final RepositoryRepository repositoryRepository;
 
 	private final GitHubClient gitHubClient;
 
@@ -49,6 +49,9 @@ public class CommitService {
 	 * @param query
 	 */
 	public void getCommitByRepository(String userId, String query, String repoId, String nameWithOwner) {
+		Repository repository = repositoryRepository.get(userId, repoId).orElseThrow(
+			NotFoundException::new);
+
 		String accessToken = userRepository.get(Auth.ACCESS_TOKEN.getKey(), userId);
 
 		// GraphQL query 변수 설정
@@ -68,32 +71,42 @@ public class CommitService {
 			data = gitHubClient.getCommitByRepository(accessToken, GraphQLRequest
 				.builder().query(query).variables(variables).build());
 
-			if (data == null) return;
-
+			// 사용자 커밋 수
+			repository.setCommitCount(data.get("nodes").size());
 			try {
 				// 2. 커밋 preprocessing
 				for (JsonNode cmt : data.get("nodes")) {
 					// JsonNode to Object
 					Commit commit = objectMapper.treeToValue(cmt, Commit.class);
+
+					// YYYY-MM-DDTHH:MM:SSZ to YYYY-MM-DD HH:MM:SS UTC+9
 					commit.dateFormatter();
 					commitRepository.set(userId + "_" + commit.getId(), commit);
+
 					// YYYY-MM-DD HH:MM:SS to YYYY-MM-DD
 					String date = commit.getDate().split(" ")[0];
 					int year = Integer.parseInt(date.split("-")[0]);
 
 					// 연도별 커밋
-					if (yearlyCommit.containsKey(year)) yearlyCommit.put(year, YearlyCommit.builder().year(year).count(yearlyCommit.get(year).getCount() + 1).build());
-					else yearlyCommit.put(year, YearlyCommit.builder().year(year).count(1).build());
+					if (yearlyCommit.containsKey(year))
+						yearlyCommit.put(year,
+							YearlyCommit.builder().year(year).count(yearlyCommit.get(year).getCount() + 1).build());
+					else
+						yearlyCommit.put(year, YearlyCommit.builder().year(year).count(1).build());
 
 					// String to LocalDate
 					LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
 					// 날짜간 차이 계산
 					long days = ChronoUnit.DAYS.between(localDate, now);
-					if (180 < days) continue;
+					if (180 < days)
+						continue;
 
 					// 최근 180일 일자별 커밋
-					if (dailyCommit.containsKey(date)) dailyCommit.put(date, DailyCommit.builder().date(date).count(dailyCommit.get(date).getCount() + 1).build());
-					else dailyCommit.put(date, DailyCommit.builder().date(date).count(1).build());
+					if (dailyCommit.containsKey(date))
+						dailyCommit.put(date,
+							DailyCommit.builder().date(date).count(dailyCommit.get(date).getCount() + 1).build());
+					else
+						dailyCommit.put(date, DailyCommit.builder().date(date).count(1).build());
 				}
 			} catch (Exception e) {
 				throw new GitHubException("Error parsing Commit");
@@ -104,15 +117,19 @@ public class CommitService {
 		} while (data.get("pageInfo").get("hasNextPage").booleanValue());
 
 		// 일자별 커밋 저장
-		if(dailyCommit.values().size() == 0) return;
-		List<DailyCommit> dailyCommits = new ArrayList<>(dailyCommit.values());
-		Collections.sort(dailyCommits, (o1, o2) -> o1.getDate().compareTo(o2.getDate()));
-		dailyCommitRepository.set(userId + "_" + repoId, dailyCommits);
+		if (dailyCommit.values().size() != 0) {
+			List<DailyCommit> dailyCommits = new ArrayList<>(dailyCommit.values());
+			Collections.sort(dailyCommits, (o1, o2) -> o1.getDate().compareTo(o2.getDate()));
+			repository.setDailyCommits(dailyCommits);
+		}
 
 		// 연도별 커밋 저장
-		if(yearlyCommit.values().size() == 0) return;
-		List<YearlyCommit> yearlyCommits = new ArrayList<>(yearlyCommit.values());
-		Collections.sort(yearlyCommits, (o1, o2) -> o1.getYear() - o2.getYear());
-		yearlyCommitRepository.set(userId + "_" + repoId, yearlyCommits);
+		if (yearlyCommit.values().size() != 0) {
+			List<YearlyCommit> yearlyCommits = new ArrayList<>(yearlyCommit.values());
+			Collections.sort(yearlyCommits, (o1, o2) -> o1.getYear() - o2.getYear());
+			repository.setYearlyCommit(yearlyCommits);
+		}
+
+		repositoryRepository.set(userId, repoId, repository);
 	}
 }
