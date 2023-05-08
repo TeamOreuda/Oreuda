@@ -29,6 +29,11 @@ export default function AddText() {
   const [textIdx, setTextIdx] = useState(0);
   const [curr, setCurr] = useState(0);
 
+  const cleanInput = () => {
+    setTitle("");
+    setDesc("");
+  };
+
   return (
     <div className={st.body}>
       <div className={st.indexBtns}>
@@ -59,7 +64,10 @@ export default function AddText() {
             className={st.TextTitleInput}
             type="text"
             placeholder="제목을 입력해주세요."
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+              setTitle(e.target.value);
+              dispatch(setTextTitle(e.target.value));
+            }}
             value={title}
           ></input>
         </div>
@@ -69,13 +77,18 @@ export default function AddText() {
             className={st.TextDescInput}
             type="description"
             placeholder="내용을 입력해주세요."
-            onChange={(e) => setDesc(e.target.value)}
+            onChange={(e) => {
+              setDesc(e.target.value);
+              dispatch(setTextDesc(e.target.value));
+            }}
             value={desc}
           ></input>
         </div>
         <div>
           <div className={st.btnDiv}>
-            <PlusTextBtn titleArr={title} descArr={desc} />
+            <div onClick={cleanInput}>
+              <PlusTextBtn titleArr={title} descArr={desc} />
+            </div>
             {textArr.length > 0 ? <MinusTextBtn idx={textIdx} /> : undefined}
             <PrevBtn />
             <NextBtn />

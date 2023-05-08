@@ -14,8 +14,8 @@ export default function Preview() {
   const githubId = useAppSelector(selectReadme).githubId;
   const githubTheme = useAppSelector(selectReadme).githubTheme;
   const mulType = useAppSelector(selectReadme).mulType;
-  const textTitleArr = useAppSelector(selectReadme).textTitle;
-  const textDescArr = useAppSelector(selectReadme).textDesc;
+  const newTextTitle = useAppSelector(selectReadme).newTextTitle;
+  const newTextDesc = useAppSelector(selectReadme).newTextDesc;
   const textArr = useAppSelector(selectReadme).textArr;
   // console.log(textTitleArr, textDescArr);
 
@@ -114,7 +114,8 @@ export default function Preview() {
         <img src={githubUrl} width="350" height="150" alt="githubStats" />
         <img src={mulUrl} width="280" height="270" alt="MUL" />
         {showTextArr()}
-        {/* </Link> */}
+        <h3>{newTextTitle}</h3>
+        <p>{newTextDesc}</p>
       </div>
     </div>
   );
