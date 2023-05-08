@@ -3,7 +3,9 @@ package com.oreuda.api.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +39,8 @@ public class RepositoryService {
 
 	private final ObjectMapper objectMapper;
 
+	private final static List<String> repositoryTypes = Arrays.asList("repository.graphql", "org-repository.graphql", "collab-repository.graphql");
+
 	/**
 	 * 사용자의 모든 레포지토리 불러오기
 	 * @param userId
@@ -46,17 +50,18 @@ public class RepositoryService {
 		userRepository.remove(userId);
 
 		// 사용자의 모든 레포지토리 조회
-		getRepositories(userId);
-		getOrgRepositories(userId);
+		for(String repositoryType: repositoryTypes) {
+			getRepositories(userId, repositoryType);
+		}
 	}
 
 	/**
 	 * 사용자의 레포지토리 정보 불러오기
 	 * @param userId
 	 */
-	public void getRepositories(String userId) {
+	public void getRepositories(String userId, String graphqlFile) {
 		String accessToken = userRepository.get(Auth.ACCESS_TOKEN.getKey(), userId);
-		String query = loadQueryFile("repository.graphql");
+		String query = loadQueryFile(graphqlFile);
 
 		// GraphQL query 변수 설정
 		Map<String, Object> variables = new HashMap<>();
@@ -67,7 +72,9 @@ public class RepositoryService {
 			data = gitHubClient.getRepositories(accessToken, GraphQLRequest
 					.builder().query(query).variables(variables).build())
 				.get("repositories");
+
 			if (data == null) return;
+
 			// 2. 레포지토리 preprocessing
 			for (JsonNode repo : data.get("nodes")) {
 //				log.info("repo: {}", repo.get("nameWithOwner"));
@@ -77,27 +84,6 @@ public class RepositoryService {
 			// 3. 다음 페이지 불러오기
 			variables.put("cursor", data.get("pageInfo").get("endCursor"));
 		} while (data.get("pageInfo").get("hasNextPage").booleanValue());
-	}
-
-	/**
-	 * 사용자 Organization의 레포지토리 정보 불러오기
-	 * @param userId
-	 */
-	public void getOrgRepositories(String userId) {
-		String accessToken = userRepository.get(Auth.ACCESS_TOKEN.getKey(), userId);
-		String query = loadQueryFile("org-repository.graphql");
-
-		// 1. GitHub API 호출
-		JsonNode data = gitHubClient.getRepositories(accessToken, GraphQLRequest
-				.builder().query(query).build())
-			.get("organizations").get("nodes");
-		if (data == null) return;
-		// 2. 레포지토리 preprocessing
-		for (JsonNode org : data) {
-			for (JsonNode repo : org.get("repositories").get("nodes")) {
-				toRepository(userId, repo);
-			}
-		}
 	}
 
 	/**

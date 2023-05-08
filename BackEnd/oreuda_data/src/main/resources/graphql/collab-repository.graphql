@@ -1,6 +1,6 @@
-query GetRepositories($cursor: String) {
+query GetCollabRepositories {
     viewer {
-        repositories(first: 100, after: $cursor, ownerAffiliations: OWNER) {
+        repositories(first: 100, ownerAffiliations: COLLABORATOR, isFork: false) {
             nodes {
                 id
                 nameWithOwner

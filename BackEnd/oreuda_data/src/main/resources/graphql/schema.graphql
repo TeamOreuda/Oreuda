@@ -6,8 +6,13 @@ type Query {
 type User {
     id: ID!
     name: String!
-    repositories(first: Int!, after: String, isFork: Boolean): RepositoryConnection!
-    organizations(first: Int!): OrganizationConnection!
+    repositories(first: Int!, after: String, isFork: Boolean, ownerAffiliations: [RepositoryAffiliation]): RepositoryConnection!
+}
+
+enum RepositoryAffiliation {
+    OWNER
+    COLLABORATOR
+    ORGANIZATION_MEMBER
 }
 
 type Repository {
@@ -22,14 +27,6 @@ type Repository {
     updatedAt: String!
 }
 
-type Organization {
-    id: ID!
-    name: String!
-    description: String
-    url: String!
-    repositories(first: Int!, after: String): RepositoryConnection!
-}
-
 type RepositoryConnection {
     nodes: Repository!
     pageInfo: PageInfo!
@@ -42,11 +39,6 @@ type Language {
 type PageInfo {
     endCursor: String
     hasNextPage: Boolean!
-}
-
-type OrganizationConnection {
-    nodes: Organization!
-    pageInfo: PageInfo!
 }
 
 type RepositoryObject {

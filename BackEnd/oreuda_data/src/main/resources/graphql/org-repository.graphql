@@ -1,22 +1,22 @@
 query GetOrgRepositories {
     viewer {
-        organizations(first: 100) {
+        repositories(first: 100, ownerAffiliations: ORGANIZATION_MEMBER) {
             nodes {
-                repositories(first: 100) {
-                    nodes {
-                        id
-                        nameWithOwner
-                        description
-                        isPrivate
-                        url
-                        stargazerCount
-                        primaryLanguage{
-                            name
-                        }
-                        createdAt
-                        updatedAt
-                    }
+                id
+                nameWithOwner
+                description
+                isPrivate
+                url
+                stargazerCount
+                primaryLanguage{
+                    name
                 }
+                createdAt
+                updatedAt
+            }
+            pageInfo {
+                endCursor
+                hasNextPage
             }
         }
     }
