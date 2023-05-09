@@ -78,7 +78,8 @@ public class FolderController {
 	 * @return
 	 */
 	@PatchMapping("rearrange")
-	public ResponseEntity<List<FolderDto>> rearrangeFolder(@RequestHeader String userId, @RequestBody FolderDto folderDto) {
+	public ResponseEntity<List<FolderDto>> rearrangeFolder(@RequestHeader String userId,
+		@RequestBody FolderDto folderDto) {
 		return new ResponseEntity(folderService.rearrangeFolder(userId, folderDto), HttpStatus.OK);
 	}
 }
