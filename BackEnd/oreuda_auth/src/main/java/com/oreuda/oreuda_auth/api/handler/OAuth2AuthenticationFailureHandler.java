@@ -23,6 +23,8 @@ public class OAuth2AuthenticationFailureHandler implements AuthenticationFailure
         log.info("로그인 실패");
         log.info("exception = {}", exception.getMessage());
         log.info("request = {}", request.getRequestURL());
+        log.info("redirectURL = {}", request.getParameterMap().keySet());
+        log.info("redirectURL = {}", request);
         redirectStrategy.sendRedirect(request, response, "/oauth2/failure");
     }
 }
