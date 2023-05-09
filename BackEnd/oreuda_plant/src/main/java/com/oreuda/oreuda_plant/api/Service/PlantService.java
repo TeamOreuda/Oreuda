@@ -128,12 +128,19 @@ public class PlantService {
 
     public void setStatus(String userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
-        UserLog userLog = userLogRepository.findTopByUserIdOrderByTimeDesc(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저의 로그가 없습니다."));
-        LocalDate today = LocalDate.now();
-        Map<String, Integer> userCommits = commitRepository.getList(userId, user.getJoinDate());
-        for (String key : userCommits.keySet()) {
-            log.info("{}: {}", key, userCommits.get(key));
+        UserLog userLog = userLogRepository.findTopByUserIdOrderByTimeDesc(userId).orElse(null);
+        if (userLog == null) {
+            userLog = UserLog.builder()
+                    .user(user)
+                    .time(user.getJoinDate().minusMonths(1))
+                    .val(0)
+                    .build();
         }
+        LocalDate today = LocalDate.now();
+        Map<String, Integer> userCommits = commitRepository.getList(userId, userLog.getTime().minusMonths(6));
+//        for (String key : userCommits.keySet()) {
+//            log.info("{}: {}", key, userCommits.get(key));
+//        }
         userLog = UserLog.builder()
                 .user(user)
                 .time(userLog.getTime().plusDays(1))
