@@ -72,7 +72,7 @@ public class Repository {
 	}
 
 	public void setLanguage() {
-		this.language = primaryLanguage.getName();
+		this.language = primaryLanguage == null ? "" : primaryLanguage.getName();
 	}
 
 	// YYYY-MM-DDTHH:MM:SSZ to YYYY-MM-DD
