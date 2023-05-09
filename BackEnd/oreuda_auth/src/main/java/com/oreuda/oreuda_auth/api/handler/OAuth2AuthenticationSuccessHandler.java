@@ -1,6 +1,5 @@
 package com.oreuda.oreuda_auth.api.handler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oreuda.oreuda_auth.api.domain.dto.AuthDto;
 import com.oreuda.oreuda_auth.api.client.UserClient;
 import com.oreuda.oreuda_auth.api.domain.dto.UserDto;
@@ -21,11 +20,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Map;
 
 @Slf4j
@@ -89,6 +90,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             if (refresh != null && tokenProvider.validateToken(refresh) == JwtCode.ACCESS) {
                 // refresh token 그대로 사용
                 token = Token.builder().accessToken(access).refreshToken(refresh).build();
+//                log.info("refresh token1: {}", refresh);
             } else {
                 // refresh token 재발급
                 token = tokenProvider.generateToken(userDto.getUserId(), Role.USER.getKey());
@@ -97,12 +99,13 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                         token.getRefreshToken(),
                         tokenProvider.getExpiration(TokenKey.REFRESH)
                 );
+//                log.info("refresh token2: {}", token.getRefreshToken());
             }
             saveGitHubTokenAndNodeId(String.valueOf(auth.getAuthId()), String.valueOf(attributes.get("nodeId")), String.valueOf(attributes.get("accessToken")));
         }
         // 리다이렉트
-        String redirectUrl = "http://localhost:3000/oauth2/success";
-        String targetUrl = UriComponentsBuilder.fromUriString(redirectUrl)
+        String redirectUrl = "http://localhost:3000";
+        String targetUrl = UriComponentsBuilder.fromUriString(redirectUrl + "/oauth2/success")
                 .queryParam(TokenKey.ACCESS.getKey(), "Bearer-" + token.getAccessToken())
                 .queryParam(TokenKey.REFRESH.getKey(), "Bearer-" + token.getRefreshToken())
                 .build().toUriString();

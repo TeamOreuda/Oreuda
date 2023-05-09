@@ -3,25 +3,17 @@ package com.oreuda.api.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.oreuda.api.domain.dto.DailyCommitDto;
 import com.oreuda.api.domain.dto.InputRepositoryDto;
-import com.oreuda.api.domain.dto.YearlyCommitDto;
-import com.oreuda.api.domain.entity.DailyCommit;
 import com.oreuda.api.domain.entity.Folder;
 import com.oreuda.api.domain.entity.FolderRepository;
 import com.oreuda.api.domain.entity.Repository;
 import com.oreuda.api.domain.dto.RepositoryDto;
-import com.oreuda.api.domain.entity.YearlyCommit;
-import com.oreuda.api.repository.DailyCommitRepository;
 import com.oreuda.api.repository.FolderJpaRepository;
 import com.oreuda.api.repository.RepositoryJpaRepository;
 import com.oreuda.api.repository.RepositoryRepository;
-import com.oreuda.api.repository.UserJpaRepository;
-import com.oreuda.api.repository.YearlyCommitRepository;
 import com.oreuda.common.exception.InvalidInputException;
 import com.oreuda.common.exception.NotFoundException;
 import com.oreuda.common.exception.UnauthorizedException;
@@ -36,8 +28,6 @@ public class RepositoryService {
 	private final RepositoryJpaRepository repositoryJpaRepository;
 
 	private final RepositoryRepository repositoryRepository;
-	private final DailyCommitRepository dailyCommitRepository;
-	private final YearlyCommitRepository yearlyCommitRepository;
 
 	private final FolderService folderService;
 
@@ -52,42 +42,37 @@ public class RepositoryService {
 		// 사용자 접근 권한 확인
 		folderService.checkFolderAccessPermission(userId, folder.getUser().getId());
 
-		// 해당 폴더의 레포지토리 목록
+		// 해당 폴더의 레포지토리ID 목록
 		List<FolderRepository> folderRepositories = repositoryJpaRepository.findByFolder_Id(Long.valueOf(folderId));
 		List<RepositoryDto> repositories = new ArrayList<>();
-		// for (FolderRepository folderRepository : folderRepositories) {
-		// 	Repository repository = repositoryRepository.get(folderRepository.getId())
-		// 		.orElseThrow(NotFoundException::new);
-		// 	List<DailyCommitDto> dailyCommits = dailyCommitRepository.get(userId + "_" + repository.getId())
-		// 		.stream()
-		// 		.map(DailyCommit::toDto)
-		// 		.collect(Collectors.toList());
-		// 	List<YearlyCommitDto> yearlyCommits = yearlyCommitRepository.get(userId + "_" + repository.getId())
-		// 		.stream()
-		// 		.map(YearlyCommit::toDto)
-		// 		.collect(Collectors.toList());
-		//
-		// 	repositories.add(RepositoryDto.builder()
-		// 		.id(repository.getId())
-		// 		.name(repository.getName())
-		// 		.description(repository.getDescription())
-		// 		.url(repository.getUrl())
-		// 		.isPrivate(repository.getIsPrivate())
-		// 		.language(repository.getLanguage())
-		// 		.starCount(repository.getStarCount())
-		// 		.updateDate(repository.getUpdateDate())
-		// 		.dailyCommits(dailyCommits)
-		// 		.yearlyCommits(yearlyCommits)
-		// 		.build());
-		// }
+
+		for (FolderRepository folderRepository : folderRepositories) {
+			// 레포지토리ID로 Redis에 있는 레포지토리 정보 불러오기
+			Repository repository = repositoryRepository.get(userId, folderRepository.getId())
+				.orElseThrow(NotFoundException::new);
+
+			repositories.add(RepositoryDto.builder()
+				.id(repository.getId())
+				.name(repository.getName())
+				.description(repository.getDescription())
+				.url(repository.getUrl())
+				.isPrivate(repository.getIsPrivate())
+				.language(repository.getLanguage())
+				.starCount(repository.getStarCount())
+				.commitCount(repository.getCommitCount())
+				.updateDate(repository.getUpdateDate())
+				.dailyCommits(repository.getDailyCommits())
+				.yearlyCommits(repository.getYearlyCommits())
+				.build());
+		}
 
 		// recent(최신순), commit(커밋순), name(이름순), star(별점순)
 		switch (filtering) {
 			case "recent":
-				Collections.sort(repositories, (o1, o2) -> o1.getUpdateDate().compareTo(o2.getUpdateDate()));
+				Collections.sort(repositories, (o1, o2) -> o2.getUpdateDate().compareTo(o1.getUpdateDate()));
 				break;
 			case "commit":
-				// Collections.sort(repositories, (o1, o2) -> o1.getUpdateDate().compareTo(o2.getUpdateDate()));
+				Collections.sort(repositories, (o1, o2) -> o2.getCommitCount() - o1.getCommitCount());
 				break;
 			case "name":
 				Collections.sort(repositories, (o1, o2) -> o1.getName().compareTo(o2.getName()));
@@ -103,32 +88,23 @@ public class RepositoryService {
 	}
 
 	public List<RepositoryDto> moveRepository(String userId, InputRepositoryDto inputRepositoryDto) {
+		// 레포지토리를 이동할 폴더 정보 불러오기
 		Folder folder = folderJpaRepository.findById(Long.valueOf(inputRepositoryDto.getMoveFolderId()))
 			.orElseThrow(NotFoundException::new);
+
 		// 사용자 접근 권한 확인
 		folderService.checkFolderAccessPermission(userId, folder.getUser().getId());
 
 		for (String repositoryId : inputRepositoryDto.getRepositories()) {
-			System.out.println("call repo: "+repositoryId);
-			FolderRepository folderRepository = repositoryJpaRepository.findById(repositoryId).orElseThrow(NotFoundException::new);
+			FolderRepository folderRepository = repositoryJpaRepository.findById(repositoryId)
+				.orElseThrow(NotFoundException::new);
 
-			System.out.println("res repo: "+folderRepository.getId());
-			// System.out.println("res folder: "+folderRepository.getFolder().getName());
-			// System.out.println("res folder: "+folder.getName());
+			// 선택된 레포지토리들의 지정된 폴더 변경
 			folderRepository.updateFolder(folder);
 			repositoryJpaRepository.save(folderRepository);
 		}
 
+		// 현재 있는 폴더의 레포지토리 목록 반환
 		return getRepositories(userId, inputRepositoryDto.getNowFolderId(), inputRepositoryDto.getFiltering());
-	}
-
-	/**
-	 * 해당 폴더에 대한 사용자 권한 확인
-	 * @param userId
-	 * @param folderUserId
-	 */
-	private void checkFolderAccessPermission(String userId, String folderUserId) {
-		if (!userId.equals(folderUserId))
-			throw new UnauthorizedException();
 	}
 }

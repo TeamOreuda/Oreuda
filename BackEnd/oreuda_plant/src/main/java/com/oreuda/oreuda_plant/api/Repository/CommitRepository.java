@@ -4,7 +4,7 @@ import com.oreuda.oreuda_plant.Common.Redis.RedisBase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Map;
 
 @Repository
@@ -13,8 +13,8 @@ public class CommitRepository {
 
     private final RedisBase redisBase;
 
-    public Map<String, Integer> getList(String userId, LocalDateTime dateTime) {
-        return redisBase.getDailyCommitCount(getKey(userId), dateTime);
+    public Map<String, Integer> getList(String userId, LocalDate date) {
+        return redisBase.getDailyCommitCount(getKey(userId), date);
     }
 
     private String getKey(String id) {
