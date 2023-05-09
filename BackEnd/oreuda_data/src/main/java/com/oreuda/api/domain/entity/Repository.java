@@ -1,5 +1,8 @@
 package com.oreuda.api.domain.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -44,6 +47,27 @@ public class Repository {
 	// 생성일시
 	@JsonProperty("createdAt")
 	private String createDate;
+
+	// 사용자 커밋 수
+	private int commitCount;
+
+	// 일별 커밋
+	private List<DailyCommit> dailyCommits = new ArrayList<>();
+
+	// 연도별 커밋
+	private List<YearlyCommit> yearlyCommits = new ArrayList<>();
+
+	public void setCommitCount(int commitCount) {
+		this.commitCount = commitCount;
+	}
+
+	public void setDailyCommits(List<DailyCommit> dailyCommits) {
+		this.dailyCommits = dailyCommits;
+	}
+
+	public void setYearlyCommit(List<YearlyCommit> yearlyCommits) {
+		this.yearlyCommits = yearlyCommits;
+	}
 
 	// YYYY-MM-DDTHH:MM:SSZ to YYYY-MM-DD
 	public void dateFormatter() {

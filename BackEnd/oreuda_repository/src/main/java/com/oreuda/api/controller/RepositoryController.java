@@ -34,7 +34,8 @@ public class RepositoryController {
 	 * @return
 	 */
 	@GetMapping("{folderId}")
-	public ResponseEntity<List<RepositoryDto>> getRepositories(@RequestHeader String userId, @PathVariable int folderId, @RequestParam String filtering) {
+	public ResponseEntity<List<RepositoryDto>> getRepositories(@RequestHeader String userId, @PathVariable int folderId,
+		@RequestParam String filtering) {
 		return new ResponseEntity<>(repositoryService.getRepositories(userId, folderId, filtering), HttpStatus.OK);
 	}
 
@@ -45,7 +46,8 @@ public class RepositoryController {
 	 * @return
 	 */
 	@PatchMapping
-	public ResponseEntity<List<RepositoryDto>> moveRepository(@RequestHeader String userId, @RequestBody InputRepositoryDto inputRepositoryDto) {
+	public ResponseEntity<List<RepositoryDto>> moveRepository(@RequestHeader String userId,
+		@RequestBody InputRepositoryDto inputRepositoryDto) {
 		return new ResponseEntity<>(repositoryService.moveRepository(userId, inputRepositoryDto), HttpStatus.OK);
 	}
 }

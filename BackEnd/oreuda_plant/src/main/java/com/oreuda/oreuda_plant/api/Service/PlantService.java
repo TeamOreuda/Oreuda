@@ -1,6 +1,5 @@
 package com.oreuda.oreuda_plant.api.Service;
 
-import com.oreuda.oreuda_plant.Common.Redis.RedisBase;
 import com.oreuda.oreuda_plant.api.Domain.Dto.PlantDto;
 import com.oreuda.oreuda_plant.api.Domain.Dto.StatusDto;
 import com.oreuda.oreuda_plant.api.Domain.Entity.Plant;
@@ -17,9 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -71,10 +68,10 @@ public class PlantService {
         // streakBonus = 300 * (1 - 0.905 ^ (streak - 1))
         final double STREAK_BONUS_RATE = 0.905;
         // 첫 커밋 50, 이후 20, 최대 250
-        int point = Math.min(50 + (commitCnt - 1) * 20, 250);
+        int point = Math.min(75 + (commitCnt - 1) * 25, 250);
         double decay = Math.pow(DECAY_RATE, day);
         // 66일간 유지되면 300점 보너스 이후 고정
-        int streakBonus = (int) Math.round(300 * (1 - Math.pow(STREAK_BONUS_RATE, streak - 1)));
+        int streakBonus = (int) Math.round(200 * (1 - Math.pow(STREAK_BONUS_RATE, streak - 1)));
 //        log.info("point = {}, decay = {}, streakBonus = {}", point, decay, streakBonus);
         int result = (int) Math.round((point + streakBonus) * decay);
 //        log.info("result = {}", result);
@@ -88,9 +85,9 @@ public class PlantService {
         LocalDate prev = null;
         for (String key : userCommits.keySet()) {
             LocalDate date = LocalDate.parse(key);
-            if (date.isAfter(start)) continue;
+            if (date.isAfter(start)) break;
             // streak 계산
-            if (prev != null && prev.minusDays(1).isEqual(date)) {
+            if (prev != null && prev.plusDays(1).isEqual(date)) {
                 // 연속된 경우
                 streak++;
             } else {
@@ -101,10 +98,30 @@ public class PlantService {
             Period period = Period.between(date, start);
             int day = period.getYears() * 365 + period.getMonths() * 30 + period.getDays();
             // 6달 이상은 무조건 0점이므로 계산할 필요 없음
-            if (day > 180) break;
+            if (day > 180) continue;
             // 점수 계산
             point += getDailyPoint(userCommits.get(key), day, streak);
             prev = date;
+        }
+        return point;
+    }
+
+    public int maxPoint(Map<String, Integer> userCommits) {
+        int point = 0;
+
+        for (int i = 180; i >= 0; i--) {
+            point += getDailyPoint(8, i, 66);
+        }
+        return point;
+    }
+
+    public int max2Point(Map<String, Integer> userCommits) {
+        int point = 0;
+        int streak = 1;
+
+        for (int i = 180; i >= 0; i--) {
+            streak++;
+            point += getDailyPoint(1, i, streak);
         }
         return point;
     }
@@ -114,15 +131,17 @@ public class PlantService {
         UserLog userLog = userLogRepository.findTopByUserIdOrderByTimeDesc(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저의 로그가 없습니다."));
         LocalDate today = LocalDate.now();
         Map<String, Integer> userCommits = commitRepository.getList(userId, user.getJoinDate());
-//        for (String key : userCommits.keySet()) {
-//            log.info("{}: {}", key, userCommits.get(key));
-//        }
+        for (String key : userCommits.keySet()) {
+            log.info("{}: {}", key, userCommits.get(key));
+        }
         userLog = UserLog.builder()
                 .user(user)
                 .time(userLog.getTime().plusDays(1))
                 .val(getPoint(today, userCommits))
                 .build();
         log.info("{}: {}",user.getNickname(), userLog.getVal());
+        log.info("maxPoint = {}", maxPoint(userCommits));
+        log.info("max2Point = {}", max2Point(userCommits));
 //        while (userLog.getTime().toLocalDate().isBefore(today)) {
 //            userLog = UserLog.builder()
 //                    .user(user)

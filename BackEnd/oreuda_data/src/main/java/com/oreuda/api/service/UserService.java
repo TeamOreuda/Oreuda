@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import lombok.extern.slf4j.Slf4j;
+
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,6 +26,7 @@ import com.oreuda.api.domain.entity.User;
 import com.oreuda.api.repository.CommitRepository;
 import com.oreuda.api.repository.FolderJpaRepository;
 import com.oreuda.api.repository.RepositoryJpaRepository;
+import com.oreuda.api.repository.RepositoryRepository;
 import com.oreuda.api.repository.UserJpaRepository;
 import com.oreuda.api.repository.UserRepository;
 import com.oreuda.common.exception.NotFoundException;
@@ -36,7 +38,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
 
-	private final UserRepository userRepository;
+	private final RepositoryRepository repositoryRepository;
 	private final CommitRepository commitRepository;
 
 	private final UserJpaRepository userJpaRepository;
@@ -45,7 +47,7 @@ public class UserService {
 
 	public void updateUser(String userId) {
 		// 사용자 레포지토리 정보
-		Set<String> repositories = userRepository.members(userId);
+		List<Repository> repositories = repositoryRepository.getList(userId);
 		// 사용자 커밋 정보
 		List<Commit> commits = commitRepository.getList(userId);
 
@@ -55,26 +57,8 @@ public class UserService {
 			getMostLanguage(user.getNickname()), LocalDateTime.now());
 		userJpaRepository.save(user);
 
-		// 사용자의 폴더 정보
-		List<Folder> folders = folderJpaRepository.findByUser(user);
-		for (Folder folder : folders) {
-			List<FolderRepository> folderRepositories = repositoryJpaRepository.findByFolder(folder);
-
-			// 폴더가 지정되어있는 레포지토리 삭제
-			for (FolderRepository folderRepository : folderRepositories) {
-				repositories.remove(folderRepository.getId());
-			}
-		}
-
-		if (repositories.size() == 0) return;
-		// 해당 사용자의 기본 폴더 정보
-		Folder baseFolder = folderJpaRepository.findByUserAndStatus(user, "B");
-		Iterator<String> it = repositories.iterator();
-		while (it.hasNext()) {
-			// 폴더 미지정 레포지토리는 기본 폴더에 지정
-			FolderRepository folderRepository = FolderRepository.builder().id(it.next()).folder(baseFolder).build();
-			repositoryJpaRepository.save(folderRepository);
-		}
+		// 지정된 폴더가 없는 레포지토리를 기본 폴더에 매핑
+		baseFolderMapping(user, repositories);
 	}
 
 	/**
@@ -84,9 +68,11 @@ public class UserService {
 	 */
 	private int countStreak(List<Commit> commits) {
 		if (commits.size() == 0) return 0;
-		Collections.sort(commits, (o1, o2) -> o1.getDate().compareTo(o2.getDate()));
 
 		int streakCnt = 1, maxStreakCnt = 0;
+		Collections.sort(commits, (o1, o2) -> o1.getDate().compareTo(o2.getDate()));
+
+		// 처음 커밋 일시
 		LocalDate preDate = LocalDate.parse(commits.remove(0).getDate().split(" ")[0], DateTimeFormatter.ISO_DATE);
 
 		for (Commit commit : commits) {
@@ -126,10 +112,40 @@ public class UserService {
 			Document googleDocument = response.parse();
 			Element langName = googleDocument.select("text[class=lang-name]").first();
 			if (langName == null) return mostLanguage;
+
 			mostLanguage = langName.text();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return mostLanguage;
+	}
+
+	/**
+	 * 지정된 폴더가 없는 레포지토리를 기본 폴더에 매핑
+	 * @param user
+	 * @param repositories
+	 */
+	private void baseFolderMapping(User user, List<Repository> repositories) {
+		// 사용자의 폴더 정보
+		List<Folder> folders = folderJpaRepository.findByUser(user);
+		for (Folder folder : folders) {
+			List<FolderRepository> folderRepositories = repositoryJpaRepository.findByFolder(folder);
+
+			// 폴더가 지정되어있는 레포지토리 삭제
+			for (FolderRepository folderRepository : folderRepositories) {
+				repositories.remove(folderRepository.getId());
+			}
+		}
+
+		// 해당 사용자의 기본 폴더 정보
+		Folder baseFolder = folderJpaRepository.findByUserAndStatus(user, "B");
+		for (Repository repository : repositories) {
+			// 폴더 미지정 레포지토리는 기본 폴더에 지정
+			FolderRepository folderRepository = FolderRepository.builder()
+				.id(repository.getId())
+				.folder(baseFolder)
+				.build();
+			repositoryJpaRepository.save(folderRepository);
+		}
 	}
 }
