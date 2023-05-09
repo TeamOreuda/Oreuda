@@ -93,9 +93,6 @@ public class RepositoryService {
 			// JsonNode to Object
 			Repository repository = objectMapper.treeToValue(repo, Repository.class);
 
-			// 해당 레포지토리가 이미 사용자 레포지토리에 있으면 리턴
-			if (!repositoryRepository.get(userId, repository.getId()).isEmpty()) return;
-
 			// YYYY-MM-DDTHH:MM:SSZ to YYYY-MM-DD
 			repository.dateFormatter();
 			repositoryRepository.set(userId, repository.getId(), repository);

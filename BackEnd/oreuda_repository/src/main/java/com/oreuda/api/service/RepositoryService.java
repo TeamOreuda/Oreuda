@@ -58,6 +58,7 @@ public class RepositoryService {
 				.isPrivate(repository.getIsPrivate())
 				.language(repository.getLanguage())
 				.starCount(repository.getStarCount())
+				.commitCount(repository.getCommitCount())
 				.updateDate(repository.getUpdateDate())
 				.dailyCommits(repository.getDailyCommits())
 				.yearlyCommits(repository.getYearlyCommits())
@@ -92,7 +93,8 @@ public class RepositoryService {
 		folderService.checkFolderAccessPermission(userId, folder.getUser().getId());
 
 		for (String repositoryId : inputRepositoryDto.getRepositories()) {
-			FolderRepository folderRepository = repositoryJpaRepository.findById(repositoryId).orElseThrow(NotFoundException::new);
+			FolderRepository folderRepository = repositoryJpaRepository.findById(repositoryId)
+				.orElseThrow(NotFoundException::new);
 
 			folderRepository.updateFolder(folder);
 			repositoryJpaRepository.save(folderRepository);
