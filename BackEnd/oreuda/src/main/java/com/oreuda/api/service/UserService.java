@@ -8,7 +8,6 @@ import com.oreuda.api.domain.dto.SignUpDto;
 import com.oreuda.api.domain.dto.UserDto;
 import com.oreuda.api.domain.entity.Folder;
 import com.oreuda.api.domain.entity.User;
-import com.oreuda.api.domain.entity.UserLog;
 import com.oreuda.api.repository.FolderRepository;
 import com.oreuda.api.repository.UserLogRepository;
 import com.oreuda.api.repository.UserRepository;
@@ -40,14 +39,6 @@ public class UserService {
 			.updateTime(LocalDateTime.now())
 			.build();
 		userRepository.save(user);
-		
-		// 로그
-		UserLog userLog = UserLog.builder()
-			.user(user)
-			.time(LocalDateTime.now())
-			.val(user.getStats())
-			.build();
-		userLogRepository.save(userLog);
 
 		// 폴더
 		Folder folder = Folder.builder()
