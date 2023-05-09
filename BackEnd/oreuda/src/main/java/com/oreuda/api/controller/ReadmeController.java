@@ -1,17 +1,18 @@
 package com.oreuda.api.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.oreuda.api.client.DataClient;
-import com.oreuda.api.domain.dto.SignUpDto;
-import com.oreuda.api.domain.dto.UserDto;
+import com.oreuda.api.domain.dto.ReadmeDto;
+import com.oreuda.api.service.ReadmeService;
 import com.oreuda.api.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -20,31 +21,17 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/users")
-public class UserController {
+@RequestMapping("/api/v1/readme")
+public class ReadmeController {
 
 	private final UserService userService;
-	private final DataClient dataClient;
+	private final ReadmeService readmeService;
 
-	// 첫 로그인 -> 회원가입
-	@PostMapping()
-	// 인증서버로부터 받는 값
-	public ResponseEntity<?> firstLogin(@RequestBody SignUpDto signUpDto) {
-		userService.signup(signUpDto);
-
-		// 깃 api
-		// 닉네임, 총 커밋수, 레포수, 연속 스트릭, 주언어, 업데이트 시간
-		dataClient.setData(signUpDto.getUserId());
+	// 사용자 리드미 저장
+	@PatchMapping()
+	public ResponseEntity<?> saveReadme(@RequestHeader String userId, @RequestBody List<ReadmeDto> readmes) {
+		readmeService.saveReadme(readmes, userId);
 		return new ResponseEntity<>(HttpStatus.OK);
-	}
-
-	// 사용자 정보 조회
-	@GetMapping()
-	public ResponseEntity<?> getUser(@RequestHeader String userId) throws Exception {
-		log.info(userId);
-
-		UserDto userDto = userService.getUser(userId);
-		return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
 	}
 
 	// 사용자 프로필 이미지 조회
