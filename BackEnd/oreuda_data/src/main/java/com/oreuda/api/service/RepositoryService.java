@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import com.oreuda.api.repository.RepositoryRepository;
 import com.oreuda.api.repository.UserRepository;
 import com.oreuda.common.Model.Auth;
 import com.oreuda.common.exception.GitHubException;
+import com.oreuda.common.exception.NotFoundException;
 
 import graphql.kickstart.spring.webclient.boot.GraphQLRequest;
 import lombok.RequiredArgsConstructor;
@@ -30,27 +32,25 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RepositoryService {
 
-	private final CommitService commitService;
-
 	private final RepositoryRepository repositoryRepository;
 	private final UserRepository userRepository;
+
+	private final CommitService commitService;
 
 	private final GitHubClient gitHubClient;
 
 	private final ObjectMapper objectMapper;
-
-	private final static List<String> repositoryTypes = Arrays.asList("repository.graphql", "org-repository.graphql", "collab-repository.graphql");
 
 	/**
 	 * 사용자의 모든 레포지토리 불러오기
 	 * @param userId
 	 */
 	public void getAllRepositories(String userId) {
-		// 사용자 레포지토리 정보 초기화
-		userRepository.remove(userId);
+		List<String> repositoryTypes = Arrays.asList("repository.graphql", "org-repository.graphql",
+			"collab-repository.graphql");
 
 		// 사용자의 모든 레포지토리 조회
-		for(String repositoryType: repositoryTypes) {
+		for (String repositoryType : repositoryTypes) {
 			getRepositories(userId, repositoryType);
 		}
 	}
@@ -69,15 +69,11 @@ public class RepositoryService {
 		JsonNode data;
 		do {
 			// 1. GitHub API 호출
-			data = gitHubClient.getRepositories(accessToken, GraphQLRequest
-					.builder().query(query).variables(variables).build())
-				.get("repositories");
-
-			if (data == null) return;
+			data = gitHubClient.getRepositories(accessToken,
+				GraphQLRequest.builder().query(query).variables(variables).build()).get("repositories");
 
 			// 2. 레포지토리 preprocessing
 			for (JsonNode repo : data.get("nodes")) {
-//				log.info("repo: {}", repo.get("nameWithOwner"));
 				toRepository(userId, repo);
 			}
 
@@ -95,15 +91,14 @@ public class RepositoryService {
 		try {
 			// JsonNode to Object
 			Repository repository = objectMapper.treeToValue(repo, Repository.class);
-			repository.dateFormatter();
-			repositoryRepository.set(repository.getId(), repository);
 
-			if (userRepository.isMember(userId, repository.getId())) return;
-			// 해당 레포지토리가 이미 사용자 레포지토리 목록에 없으면 사용자 레포지토리에 저장
-			userRepository.add(userId, repository.getId());
+			// YYYY-MM-DDTHH:MM:SSZ to YYYY-MM-DD
+			repository.dateFormatter();
+			repositoryRepository.set(userId, repository.getId(), repository);
 
 			// 레포지토리별 커밋
-			commitService.getCommitByRepository(userId, loadQueryFile("commit.graphql"), repository.getId(), repository.getName());
+			commitService.getCommitByRepository(userId, loadQueryFile("commit.graphql"), repository.getId(),
+				repository.getName());
 		} catch (Exception e) {
 			throw new GitHubException("Error parsing Repository");
 		}

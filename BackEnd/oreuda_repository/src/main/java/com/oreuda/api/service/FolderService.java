@@ -57,7 +57,7 @@ public class FolderService {
 		// 생성된 폴더 저장
 		folderJpaRepository.save(folder);
 
-		// 레포지토리를 해당 폴더에 지정
+		// 선택된 레포지토리를 해당 폴더에 지정
 		for (String id : inputFolderDto.getRepositories()) {
 			repositoryJpaRepository.save(FolderRepository.builder().id(id).folder(folder).build());
 		}
@@ -65,29 +65,58 @@ public class FolderService {
 
 	public void deleteFolder(String userId, List<Integer> folders) {
 		for (int folderId : folders) {
+			// 삭제될 폴더 불러오기
 			Folder folder = folderJpaRepository.findById(Long.valueOf(folderId)).orElseThrow(NotFoundException::new);
 
+			// 해당 폴더에 대한 사용자 권한 확인
 			checkFolderAccessPermission(userId, folder.getUser().getId());
+
+			// 삭제될 폴더에 있는 레포지토리들 불러오기
+			List<FolderRepository> folderRepositories = repositoryJpaRepository.findByFolder_Id(Long.valueOf(folderId));
+
+			// 해당 레포지토리들 기본폴더로 매핑
+			User user = userJpaRepository.findById(userId).orElseThrow(NotFoundException::new);
+			Folder baseFolder = folderJpaRepository.findByUserAndStatus(user, "B");
+			for (FolderRepository repository : folderRepositories) {
+				repository.updateFolder(baseFolder);
+				repositoryJpaRepository.save(repository);
+			}
+
+			// 폴더 상태값 삭제로 변경
 			if (folder.getStatus().equals("V")) folder.deleteFolder();
 			folderJpaRepository.save(folder);
+
+			// 사용자의 폴더 목록 불러오기
+			List<Folder> myFolders = folderJpaRepository.findByUserAndStatusNotOrderByOrder(user, "D");
+			for (int i = folder.getOrder(), size = myFolders.size(); i < size; i++) {
+				// 폴더 순서 재정렬
+				myFolders.get(i).updateOrder(i);
+				folderJpaRepository.save(myFolders.get(i));
+			}
 		}
 	}
 
 	public void updateFolder(String userId, FolderDto folderDto) {
+		// 수정할 폴더 불러오기
 		Folder folder = folderJpaRepository.findById(Long.valueOf(folderDto.getId()))
 			.orElseThrow(NotFoundException::new);
 
+		// 해당 폴더에 대한 사용자 권한 확인
 		checkFolderAccessPermission(userId, folder.getUser().getId());
+
 		folder.updateFolder(folderDto.getName(), folderDto.getColor());
 	}
 
 	public List<FolderDto> rearrangeFolder(String userId, FolderDto folderDto) {
 		User user = userJpaRepository.findById(userId).orElseThrow(NotFoundException::new);
+		// 순서를 변경할 폴더 불러오기
 		Folder folder = folderJpaRepository.findById(Long.valueOf(folderDto.getId()))
 			.orElseThrow(NotFoundException::new);
 
-		int orgOrder = folder.getOrder();
-		int newOrder = folderDto.getOrder();
+		int orgOrder = folder.getOrder(); // 원래 순서
+		int newOrder = folderDto.getOrder(); // 이동할 순서
+
+		// 사용자의 폴더 목록 불러오기
 		List<Folder> folders = folderJpaRepository.findByUserAndStatusNotOrderByOrder(user, "D");
 		if (orgOrder < newOrder) {
 			// 뒤로 순서를 이동하는 경우
@@ -103,10 +132,7 @@ public class FolderService {
 			}
 		}
 
-		return folders
-			.stream()
-			.map(Folder::toDto)
-			.collect(Collectors.toList());
+		return folders.stream().map(Folder::toDto).collect(Collectors.toList());
 	}
 
 	/**
@@ -115,8 +141,7 @@ public class FolderService {
 	 * @param folderUserId
 	 */
 	public void checkFolderAccessPermission(String userId, String folderUserId) {
-		if (!userId.equals(folderUserId))
-			throw new UnauthorizedException();
+		if (!userId.equals(folderUserId)) throw new UnauthorizedException();
 	}
 
 	/**

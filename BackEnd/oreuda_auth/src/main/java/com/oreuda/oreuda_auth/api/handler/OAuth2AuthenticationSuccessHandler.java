@@ -1,6 +1,5 @@
 package com.oreuda.oreuda_auth.api.handler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oreuda.oreuda_auth.api.domain.dto.AuthDto;
 import com.oreuda.oreuda_auth.api.client.UserClient;
 import com.oreuda.oreuda_auth.api.domain.dto.UserDto;
@@ -91,6 +90,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             if (refresh != null && tokenProvider.validateToken(refresh) == JwtCode.ACCESS) {
                 // refresh token 그대로 사용
                 token = Token.builder().accessToken(access).refreshToken(refresh).build();
+                log.info("refresh token1: {}", refresh);
             } else {
                 // refresh token 재발급
                 token = tokenProvider.generateToken(userDto.getUserId(), Role.USER.getKey());
@@ -99,6 +99,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                         token.getRefreshToken(),
                         tokenProvider.getExpiration(TokenKey.REFRESH)
                 );
+                log.info("refresh token2: {}", token.getRefreshToken());
             }
             saveGitHubTokenAndNodeId(String.valueOf(auth.getAuthId()), String.valueOf(attributes.get("nodeId")), String.valueOf(attributes.get("accessToken")));
         }

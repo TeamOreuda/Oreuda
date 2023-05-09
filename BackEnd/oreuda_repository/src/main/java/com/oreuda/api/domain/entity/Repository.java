@@ -1,6 +1,12 @@
 package com.oreuda.api.domain.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.oreuda.api.domain.dto.DailyCommitDto;
+import com.oreuda.api.domain.dto.RepositoryDto;
+import com.oreuda.api.domain.dto.YearlyCommitDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,8 +51,29 @@ public class Repository {
 	@JsonProperty("createdAt")
 	private String createDate;
 
-	// YYYY-MM-DDTHH:MM:SSZ to YYYY-MM-DD
-	public void dateFormatter() {
-		this.createDate = this.createDate.split("T")[0];
+	// 사용자 커밋 수
+	private int commitCount;
+
+	// 일별 커밋
+	private List<DailyCommitDto> dailyCommits = new ArrayList<>();
+
+	// 연도별 커밋
+	private List<YearlyCommitDto> yearlyCommits = new ArrayList<>();
+
+	// Entity to Dto
+	public RepositoryDto toDto() {
+		return RepositoryDto.builder()
+			.id(id)
+			.name(name)
+			.description(description)
+			.url(url)
+			.language(language)
+			.isPrivate(isPrivate)
+			.starCount(starCount)
+			.updateDate(updateDate)
+			.commitCount(commitCount)
+			.dailyCommits(dailyCommits)
+			.yearlyCommits(yearlyCommits)
+			.build();
 	}
 }

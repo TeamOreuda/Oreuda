@@ -12,7 +12,9 @@ public class UserRepository {
     private final RedisTemplate<String, String> redisTemplate;
 
     public String get(String key) {
-        return redisTemplate.opsForValue().get(key);
+        String value = redisTemplate.opsForValue().get(key);
+        if (value == null) return null;
+        return value.replace("\"", "");
     }
 
     public void set(String key, String value) {
