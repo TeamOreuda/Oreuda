@@ -71,3 +71,13 @@
     margin-top: 3vh;
   }
 }
+
+.techBadgeDiv {
+  display: flex;
+  flex-wrap: wrap;
+  width: 300px;
+
+  .techBadge {
+    margin: 5px 5px;
+  }
+}

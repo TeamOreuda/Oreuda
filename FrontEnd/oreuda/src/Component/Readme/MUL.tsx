@@ -5,8 +5,6 @@ import st from "./MUL.module.scss";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 
 import { selectReadme, setMULTheme, setMULType } from "@/store/modules/readme";
-import PrevBtn from "./PrevBtn";
-import NextBtn from "./NextBtn";
 
 const MULThemeData: string[] = [
   "dark",
@@ -74,6 +72,7 @@ export default function MUL() {
           </label>
         </div>
         <div className={st.selectBox}>
+          <span>테마 설정</span>
           <select
             className={st.selectSV}
             onClick={onClickSVTheme}
@@ -87,10 +86,6 @@ export default function MUL() {
               );
             })}
           </select>
-        </div>
-        <div className={st.btnDiv}>
-          <PrevBtn />
-          <NextBtn />
         </div>
       </div>
     </div>

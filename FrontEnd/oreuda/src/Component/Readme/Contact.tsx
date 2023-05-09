@@ -68,10 +68,6 @@ export default function Contact() {
           ></input>
         </div>
       </div>
-      <div>
-        <PrevBtn />
-        <NextBtn />
-      </div>
     </div>
   );
 }

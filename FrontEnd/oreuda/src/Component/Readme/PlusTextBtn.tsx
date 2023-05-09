@@ -1,7 +1,7 @@
 "use client";
 
 import { setAddText, setTextDesc, setTextTitle } from "@/store/modules/readme";
-import st from "./Baekjoon.module.scss";
+import st from "./AddText.module.scss";
 
 import { useAppDispatch } from "@/store/hooks";
 
@@ -14,8 +14,8 @@ export default function PlusTextBtn({ titleArr, descArr }: any) {
     dispatch(setTextDesc(descArr));
   };
   return (
-    <button className={st.button} onClick={addTextDiv}>
-      +
+    <button className={st.buttonDefault} onClick={addTextDiv}>
+      추가
     </button>
   );
 }

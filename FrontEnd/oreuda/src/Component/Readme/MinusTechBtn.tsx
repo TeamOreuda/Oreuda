@@ -1,14 +1,14 @@
 "use client";
-import st from "./AddText.module.scss";
+import st from "./Tech.module.scss";
 
-import { setMinusText } from "@/store/modules/readme";
+import { setMinusTechWhole, setMinusText } from "@/store/modules/readme";
 import { useDispatch } from "react-redux";
 
-export default function MinusTextBtn({ idx }: any) {
+export default function MinusTechBtn({ idx, onStateChange }: any) {
   const dispatch = useDispatch();
   const deleteTextDiv = () => {
-    // console.log(idx);
-    dispatch(setMinusText(idx));
+    dispatch(setMinusTechWhole(idx));
+    onStateChange(0);
   };
   return (
     <button className={st.buttonDefault} onClick={deleteTextDiv}>
