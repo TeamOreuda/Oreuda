@@ -6,7 +6,6 @@ const initialState = {
   repositoryCnt: 0,
   streakMax: 0,
   mainLanguage: "",
-  image: "",
 };
 
 export const userSlice = createSlice({
@@ -19,7 +18,6 @@ export const userSlice = createSlice({
       state.repositoryCnt = action.payload.repositoryCnt;
       state.streakMax = action.payload.streakMax;
       state.mainLanguage = action.payload.mainLanguage;
-      state.image = action.payload.image;
     },
   },
 });

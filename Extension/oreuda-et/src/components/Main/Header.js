@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import st from "./Header.module.scss";
 
 import { getUserInfo } from "../../api/user";
+import { renewalData } from "../../api/data";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -32,8 +33,12 @@ const Header = () => {
     });
   }, [atk]);
 
-  // 쿠키 값을 삭제한다. 삭제하면 랜딩페이지로 이동
   const renewalData = () => {
+    renewalData(atk);
+  };
+  
+  // 쿠키 값을 삭제한다. 삭제하면 랜딩페이지로 이동
+  const logout = () => {
     window.chrome.cookies.remove({
       url: process.env.REACT_APP_DOMAIN,
       name: "Authorization",
@@ -51,15 +56,6 @@ const Header = () => {
     );
   };
 
-  const setting = () => {
-    console.log("setting");
-    cookie.remove("atk");
-
-    if (!cookie.load("atk")) {
-      window.location.replace(`/main`);
-    }
-  };
-
   if (isLoading && user) {
     return (
       <div className={st.header}>
@@ -70,8 +66,8 @@ const Header = () => {
           <div className={st.renewalBtn} onClick={renewalData}>
             <img className={st.renewalIcon} src="/assets/renewal.svg"></img>
           </div>
-          <div className={st.settingBtn} onClick={setting}>
-            <img className={st.settingIcon} src="/assets/setting.svg"></img>
+          <div className={st.settingBtn} onClick={logout}>
+            <img className={st.settingIcon} src="/assets/logout.svg"></img>
           </div>
         </div>
       </div>
