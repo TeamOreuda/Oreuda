@@ -9,7 +9,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Getter
 @Builder
 @NoArgsConstructor
@@ -72,7 +74,7 @@ public class Repository {
 	}
 
 	public void setLanguage() {
-		this.language = primaryLanguage.getName();
+		this.language = primaryLanguage == null ? "" : primaryLanguage.getName();
 	}
 
 	// YYYY-MM-DDTHH:MM:SSZ to YYYY-MM-DD

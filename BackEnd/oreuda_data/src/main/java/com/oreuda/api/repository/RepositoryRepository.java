@@ -3,6 +3,7 @@ package com.oreuda.api.repository;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import com.oreuda.common.redis.RedisBase;
