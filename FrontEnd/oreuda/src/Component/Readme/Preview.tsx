@@ -17,6 +17,9 @@ export default function Preview() {
   const newTextTitle = useAppSelector(selectReadme).newTextTitle;
   const newTextDesc = useAppSelector(selectReadme).newTextDesc;
   const textArr = useAppSelector(selectReadme).textArr;
+  const techTitle = useAppSelector(selectReadme).techTitle;
+  const techPlusArr = useAppSelector(selectReadme).techPlusArr;
+  const techPlusWhole = useAppSelector(selectReadme).techPlusWhole;
   // console.log(textTitleArr, textDescArr);
 
   // 백준
@@ -76,9 +79,59 @@ export default function Preview() {
         </div>
       );
     }
-    console.log(arr);
 
     return arr;
+  };
+  const showTechArr = () => {
+    const arr = [];
+    for (let i = 0; i < techPlusArr.length; i++) {
+      arr.push(
+        <img
+          key={i}
+          className={st.techBadge}
+          src={`https://img.shields.io/badge/${techPlusArr[i].name}-${techPlusArr[i].color}?style=flat-square&logo=${techPlusArr[i].name}&logoColor=white`}
+          alt=""
+        />
+      );
+    }
+
+    return arr;
+  };
+  const showTechWhole = () => {
+    const arr: any = [];
+
+    techPlusWhole.map((el, index) => {
+      arr.push(<h3 key={index}>{el.name}</h3>);
+
+      el.techArray.map((elel: any, idx: any) => {
+        arr.push(
+          <img
+            key={elel.index}
+            className={st.techBadge}
+            src={`https://img.shields.io/badge/${elel.name}-${elel.color}?style=flat-square&logo=${elel.name}&logoColor=white`}
+            alt=""
+          />
+        );
+      });
+    });
+    return arr;
+    // for (let i = 0; i < techPlusWhole.length; i++) {
+    //   const len = techPlusWhole[i].techArray.length;
+    //   console.log(len);
+
+    //   for (let j = 0; j < len; j++) {
+    //     arr.push(
+    //       <img
+    //         // key={j}
+    //         className={st.techBadge}
+    //         src={`https://img.shields.io/badge/${techPlusWhole[i].techArray.name}-${techPlusWhole[i].techArray.color}?style=flat-square&logo=${techPlusWhole[i].techArray.name}&logoColor=white`}
+    //         alt=""
+    //       />
+    //     );
+    //   }
+
+    //   return arr;
+    // }
   };
 
   return (
@@ -113,6 +166,9 @@ export default function Preview() {
         <img src={secImgUrl} width="285" height="140" alt="solved" />
         <img src={githubUrl} width="350" height="150" alt="githubStats" />
         <img src={mulUrl} width="280" height="270" alt="MUL" />
+        {showTechWhole()}
+        <h3>{techTitle}</h3>
+        <div className={st.techBadgeDiv}>{showTechArr()}</div>
         {showTextArr()}
         <h3>{newTextTitle}</h3>
         <p>{newTextDesc}</p>

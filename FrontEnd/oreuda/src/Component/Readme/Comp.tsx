@@ -16,6 +16,8 @@ import AddText from "./AddText";
 import Sorting from "./Sorting";
 import Preview from "./Preview";
 import { useEffect, useRef, WheelEvent } from "react";
+import PrevBtn from "./PrevBtn";
+import NextBtn from "./NextBtn";
 
 export default function Comp() {
   const scrollableDivRef = useRef<any>(null);
@@ -65,6 +67,8 @@ export default function Comp() {
       <div className={st.rightBody}>
         <Preview />
       </div>
+      <PrevBtn />
+      {Number(currComponent) != 8 ? <NextBtn /> : undefined}
     </div>
   );
 }

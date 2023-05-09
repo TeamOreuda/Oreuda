@@ -10,21 +10,6 @@ import {
   setSolvedTheme,
 } from "@/store/modules/readme";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import NextBtn from "./NextBtn";
-import PrevBtn from "./PrevBtn";
-
-const bjDesignData: string[] = [
-  "dark",
-  "radical",
-  "merko",
-  "gruvbox",
-  "tokyonight",
-  "onedark",
-  "cobalt",
-  "synthwave",
-  "highcontrast",
-  "dracula",
-];
 
 const svDesignData: string[] = ["warm", "cold", "dark"];
 
@@ -60,6 +45,7 @@ export default function Baekjoon() {
           placeholder="백준 아이디"
           onChange={(e) => setId(e.target.value)}
           onKeyDown={(e) => activeEnter(e)}
+          onKeyUp={() => dispatch(setBaekjoonId(id))}
           value={id}
         ></input>
         <div className={st.selectBox}>
@@ -78,10 +64,6 @@ export default function Baekjoon() {
             })}
           </select>
         </div>
-      </div>
-      <div>
-        <PrevBtn />
-        <NextBtn />
       </div>
     </div>
   );

@@ -28,6 +28,7 @@ const navList: NavList[] = [
     name: "리드미",
   },
 ];
+
 export default function RootLayout({
   children,
 }: {
@@ -43,76 +44,75 @@ export default function RootLayout({
           </body>
         </html>
       );
-  }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="kr">
-      <Head>
-        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-      </Head>
-      <body className={st.body}>
-        {/* 로그인이 되어있다면 */}
-        <nav className={st.nav}>
-          <div>
-            <header className={st.header}>
-              <Image
-                className={st.img}
-                src="/images/nav/navImg.svg"
-                alt=""
-                width={36}
-                height={36}
-              />
-              O R E U D A
-            </header>
-            {navList.map((e: NavList) => {
-              return (
-                <ul key={e.name}>
-                  <Link href={e.moveTo} className={st.link}>
-                    <Image
-                      className={st.img}
-                      src={`/images/nav/${e.imageName}.svg`}
-                      alt=""
-                      width={24}
-                      height={24}
-                    />
-                    {e.name}
-                  </Link>
-                </ul>
-              );
-            })}
-            <ul>
-              <Link href="/login" className={st.link}>
+    return (
+      <html lang="kr">
+        <Head>
+          <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        </Head>
+        <body className={st.body}>
+          {/* 로그인이 되어있다면 */}
+          <nav className={st.nav}>
+            <div>
+              <header className={st.header}>
                 <Image
                   className={st.img}
-                  src={`/images/nav/logout.svg`}
+                  src="/images/nav/navImg.svg"
                   alt=""
-                  width={24}
-                  height={24}
+                  width={36}
+                  height={36}
                 />
-                로그인
-              </Link>
-            </ul>
-            <ul>
-              <Link href="" className={st.link}>
-                <Image
-                  className={st.img}
-                  src="/images/nav/logout.svg"
-                  alt=""
-                  width={24}
-                  height={24}
-                />
-                로그아웃
-              </Link>
-            </ul>
-          </div>
-        </nav>
-        <Providers>{children}</Providers>
-      </body>
-    </html>
-  );
+                O R E U D A
+              </header>
+              {navList.map((e: NavList) => {
+                return (
+                  <ul key={e.name}>
+                    <Link href={e.moveTo} className={st.link}>
+                      <Image
+                        className={st.img}
+                        src={`/images/nav/${e.imageName}.svg`}
+                        alt=""
+                        width={24}
+                        height={24}
+                      />
+                      {e.name}
+                    </Link>
+                  </ul>
+                );
+              })}
+              <ul>
+                <Link
+                  // href="http://192.168.31.233:8090/oauth2/authorization/github"
+                  href="http://52.79.221.133:8090/oauth2/authorization/github"
+                  className={st.link}
+                >
+                  <Image
+                    className={st.img}
+                    src={`/images/nav/logout.svg`}
+                    alt=""
+                    width={24}
+                    height={24}
+                  />
+                  로그인
+                </Link>
+              </ul>
+              <ul>
+                <Link href="" className={st.link}>
+                  <Image
+                    className={st.img}
+                    src="/images/nav/logout.svg"
+                    alt=""
+                    width={24}
+                    height={24}
+                  />
+                  로그아웃
+                </Link>
+              </ul>
+            </div>
+          </nav>
+          <Providers>{children}</Providers>
+        </body>
+      </html>
+    );
+  }
 }

@@ -9,7 +9,7 @@ export default function PrevBtn() {
 
   return (
     <button
-      className={st.button}
+      className={st.buttonPrev}
       onClick={() => dispatch(setPrevCompMoving(0))}
     >
       이전

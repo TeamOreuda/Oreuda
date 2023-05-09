@@ -6,6 +6,16 @@ interface AddText {
   descArr: string;
   index: number;
 }
+interface AddTech {
+  name: string;
+  color: string;
+  index: number;
+}
+interface AddTechWhole {
+  name: string;
+  techArray: any;
+  index: number;
+}
 // state type
 export interface readmeSlice {
   baekjoonId: string;
@@ -24,7 +34,14 @@ export interface readmeSlice {
   newTextTitle: string;
   newTextDesc: string;
   textCnt: number;
+  techTitle: string;
+  techCnt: number;
   nextComp: number[];
+  techPlusArr: Array<AddTech>;
+  techPlusModifyArr: Array<AddTech>;
+  techArr: boolean[];
+  techModifyArr: boolean[];
+  techPlusWhole: Array<AddTechWhole>;
   componentArr: boolean[];
   currComponent: number;
   prevComp: number[];
@@ -47,8 +64,65 @@ const initialState: readmeSlice = {
   newTextTitle: "",
   newTextDesc: "",
   textCnt: 0,
+  techTitle: "",
   nextComp: [],
-  componentArr: [true, false, false, false, false, false, false, false],
+  techPlusArr: [],
+  techPlusModifyArr: [],
+  techPlusWhole: [],
+  techCnt: 0,
+  techArr: [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ],
+  techModifyArr: [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ],
+  componentArr: [true, false, false, false, false, false, false],
   currComponent: 0,
   prevComp: [],
 };
@@ -130,7 +204,89 @@ const themeSlice = createSlice({
 
       state.textArr = newArr;
     },
+    // [Tech] Tech 기술 제목 저장
+    setTechTitle(state, action) {
+      const temp = state;
+      temp.techTitle = action.payload;
+    },
+    // [Tech] 선택한 기술 클리어
+    setChoiceTechClear(state, action) {
+      for (let i = 1; i < state.techArr.length; i++) {
+        state.techArr[i] = false;
+      }
+      state.techPlusArr = [];
+    },
+    // [Tech] 선택한 기술 매핑
+    setChoiceTechIndexChange(state, action) {
+      state.techPlusModifyArr = action.payload;
+      const data = action.payload;
+      data.map((el: any) => {
+        state.techModifyArr[el.index] = true;
+      });
+    },
+    // [Tech] 작성한 기술 변경
+    setModifyTech(state, action) {
+      state.techPlusWhole[action.payload.idx - 1].name = action.payload.data;
+      // state.techPlusArr = action.payload;
+    },
+    // [Tech] 선택한 기술 추가
+    setPushTech(state, action) {
+      let curr = action.payload.curr;
+      let tmp = curr === 0 ? state.techArr : state.techModifyArr;
+      if (!tmp[action.payload.index]) {
+        if (curr === 0) {
+          state.techPlusArr.push(action.payload.data);
+          tmp[action.payload.data.index] = true;
+        } else {
+          state.techPlusModifyArr.push(action.payload.data);
+          tmp[action.payload.data.index] = true;
 
+          // whole에서 변경을 해주어야 함
+          state.techPlusWhole[curr - 1].techArray = state.techPlusModifyArr;
+        }
+      }
+    },
+    // [Tech] 선택한 기술 삭제
+    setDeleteTech(state, action) {
+      let curr = action.payload.curr;
+      let tmp = curr === 0 ? state.techArr : state.techModifyArr;
+      if (tmp[action.payload.data.index]) {
+        if (curr === 0) {
+          state.techPlusArr.map((el: any, index: any) => {
+            if (el.index === action.payload.data.index) {
+              state.techPlusArr.splice(index, 1);
+            }
+          });
+        } else {
+          state.techPlusModifyArr.map((el: any, index: any) => {
+            if (el.index === action.payload.data.index) {
+              state.techPlusModifyArr.splice(index, 1);
+            }
+          });
+          // whole에서 변경을 해주어야 함
+          state.techPlusWhole[curr - 1].techArray = state.techPlusModifyArr;
+        }
+        tmp[action.payload.data.index] = false;
+      }
+    },
+    // [Tech] TechWhole arr에 push
+    setAddTechWhole(state, action) {
+      const temp = state;
+      const data: any = {};
+      data.index = state.techCnt++;
+      data.techArray = state.techPlusArr;
+      data.name = action.payload.title;
+
+      // console.log(data);
+      temp.techPlusWhole.push(data);
+    },
+    // // [Tech] TechWhole arr에서 제거
+    setMinusTechWhole(state, action) {
+      const newArr = state.techPlusWhole.filter(
+        (item) => item.index != action.payload
+      );
+      state.techPlusWhole = newArr;
+    },
     // [Readme Main] 선택한 컴포넌트 추가
     setPushComponent(state, action) {
       if (!state.componentArr[action.payload]) {
@@ -149,7 +305,6 @@ const themeSlice = createSlice({
         state.componentArr[action.payload] = false;
       }
     },
-
     // [All] 다음 버튼 눌렀을 때
     setNextCompMoving(state, action) {
       // 현재 인덱스를 prev배열에 저장
@@ -185,8 +340,16 @@ export const {
   setBlogLink,
   setTextTitle,
   setTextDesc,
+  setTechTitle,
+  setAddTechWhole,
   setAddText,
   setMinusText,
+  setPushTech,
+  setModifyTech,
+  setChoiceTechIndexChange,
+  setMinusTechWhole,
+  setDeleteTech,
+  setChoiceTechClear,
   setPushComponent,
   setDeleteComponent,
   setNextCompMoving,
