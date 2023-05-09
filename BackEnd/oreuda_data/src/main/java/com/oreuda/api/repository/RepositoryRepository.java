@@ -14,9 +14,10 @@ import lombok.RequiredArgsConstructor;
 public class RepositoryRepository {
 
 	private final RedisBase redisBase;
+	private final static String KEY = "repository_";
 
 	public List<com.oreuda.api.domain.entity.Repository> getList(String userId) {
-		return redisBase.getList("repository_" + userId, com.oreuda.api.domain.entity.Repository.class);
+		return redisBase.getList(KEY + userId, com.oreuda.api.domain.entity.Repository.class);
 	}
 
 	public Optional<com.oreuda.api.domain.entity.Repository> get(String userId, String repoId) {
@@ -28,6 +29,6 @@ public class RepositoryRepository {
 	}
 
 	private String getKey(String userId, String repoId) {
-		return "repository_" + userId + "_" + repoId;
+		return KEY + userId + "_" + repoId;
 	}
 }

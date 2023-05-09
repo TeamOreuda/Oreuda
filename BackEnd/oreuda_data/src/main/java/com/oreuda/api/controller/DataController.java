@@ -24,7 +24,7 @@ public class DataController {
 	public ResponseEntity<?> data(@RequestHeader String userId) {
 		repositoryService.getAllRepositories(userId);
 		userService.updateUser(userId);
-//		plantClient.notifyCompletion(userId); // 데이터 전처리 완료 알림
+		plantClient.notifyCompletion(userId); // 데이터 전처리 완료 알림
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

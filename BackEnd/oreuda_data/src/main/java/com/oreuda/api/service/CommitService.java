@@ -49,16 +49,15 @@ public class CommitService {
 	 * @param query
 	 */
 	public void getCommitByRepository(String userId, String query, String repoId, String nameWithOwner) {
-		Repository repository = repositoryRepository.get(userId, repoId).orElseThrow(
-			NotFoundException::new);
-
 		String accessToken = userRepository.get(Auth.ACCESS_TOKEN.getKey(), userId);
 
 		// GraphQL query 변수 설정
 		Map<String, Object> variables = new HashMap<>();
+		// 사용자 커밋 목록을 불러오기 위한 작성자ID
 		variables.put("authorId", userRepository.get(Auth.AUTHOR_ID.getKey(), userId));
 
 		// 해당 레포지토리별
+		Repository repository = repositoryRepository.get(userId, repoId).orElseThrow(NotFoundException::new);
 		variables.put("repoOwner", nameWithOwner.split("/")[0]);
 		variables.put("repoName", nameWithOwner.split("/")[1]);
 
@@ -68,8 +67,8 @@ public class CommitService {
 		Map<Integer, YearlyCommit> yearlyCommit = new HashMap<>(); // 연도별 커밋
 		do {
 			// 1. GitHub API 호출
-			data = gitHubClient.getCommitByRepository(accessToken, GraphQLRequest
-				.builder().query(query).variables(variables).build());
+			data = gitHubClient.getCommitByRepository(accessToken,
+				GraphQLRequest.builder().query(query).variables(variables).build());
 
 			// 사용자 커밋 수
 			repository.setCommitCount(data.get("nodes").size());
@@ -81,16 +80,15 @@ public class CommitService {
 
 					// YYYY-MM-DDTHH:MM:SSZ to YYYY-MM-DD HH:MM:SS UTC+9
 					commit.dateFormatter();
-					commitRepository.set(userId + "_" + commit.getId(), commit);
+					commitRepository.set(userId, commit.getId(), commit);
 
-					// YYYY-MM-DD HH:MM:SS to YYYY-MM-DD
+					// YYYY-MM-DD HH:MM:SS to YYYY-MM-DD to YYYY
 					String date = commit.getDate().split(" ")[0];
 					int year = Integer.parseInt(date.split("-")[0]);
 
 					// 연도별 커밋
 					if (yearlyCommit.containsKey(year))
-						yearlyCommit.put(year,
-							YearlyCommit.builder().year(year).count(yearlyCommit.get(year).getCount() + 1).build());
+						yearlyCommit.put(year, YearlyCommit.builder().year(year).count(yearlyCommit.get(year).getCount() + 1).build());
 					else
 						yearlyCommit.put(year, YearlyCommit.builder().year(year).count(1).build());
 
@@ -98,13 +96,11 @@ public class CommitService {
 					LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
 					// 날짜간 차이 계산
 					long days = ChronoUnit.DAYS.between(localDate, now);
-					if (180 < days)
-						continue;
+					if (180 < days) continue;
 
 					// 최근 180일 일자별 커밋
 					if (dailyCommit.containsKey(date))
-						dailyCommit.put(date,
-							DailyCommit.builder().date(date).count(dailyCommit.get(date).getCount() + 1).build());
+						dailyCommit.put(date, DailyCommit.builder().date(date).count(dailyCommit.get(date).getCount() + 1).build());
 					else
 						dailyCommit.put(date, DailyCommit.builder().date(date).count(1).build());
 				}
