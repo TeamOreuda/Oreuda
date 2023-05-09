@@ -9,7 +9,7 @@ spring:
             client-secret: 6370be4fab5c5636634dbfbe61cf86f771ca8b81
             scope: user,user:email,read:user,repo,read:org
             client-name: GitHub
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            redirect-uri: "https://oreuda.kr/login/oauth2/code/{registrationId}"
             client-authentication-method: POST
             authorization-grant-type: authorization_code
             provider: github
