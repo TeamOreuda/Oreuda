@@ -25,10 +25,8 @@ public class DataController {
 	@PatchMapping()
 	public ResponseEntity<?> data(@RequestHeader String userId) {
 		log.info("userId: {}", userId);
-		
 		log.info("data_in_controller");
 		repositoryService.getAllRepositories(userId);
-		log.info("userId: {}", userId);
 		userService.updateUser(userId);
 		log.info("update ok");
 		// plantClient.notifyCompletion(userId); // 데이터 전처리 완료 알림
