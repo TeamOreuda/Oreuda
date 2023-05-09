@@ -67,7 +67,19 @@ public class FolderService {
 		for (int folderId : folders) {
 			Folder folder = folderJpaRepository.findById(Long.valueOf(folderId)).orElseThrow(NotFoundException::new);
 
+			// 해당 폴더에 대한 사용자 권한 확인
 			checkFolderAccessPermission(userId, folder.getUser().getId());
+
+			// 해당 폴더에 있는 레포지토리를 기본 폴더로 이동
+			List<FolderRepository> folderRepositories = repositoryJpaRepository.findByFolder_Id(Long.valueOf(folderId));
+			User user = userJpaRepository.findById(userId).orElseThrow(NotFoundException::new);
+			Folder baseFolder = folderJpaRepository.findByUserAndStatus(user, "B");
+			for(FolderRepository repository : folderRepositories) {
+				repository.updateFolder(baseFolder);
+				repositoryJpaRepository.save(repository);
+			}
+
+			// 폴더 상태값 삭제로 변경
 			if (folder.getStatus().equals("V")) folder.deleteFolder();
 			folderJpaRepository.save(folder);
 		}
@@ -77,7 +89,9 @@ public class FolderService {
 		Folder folder = folderJpaRepository.findById(Long.valueOf(folderDto.getId()))
 			.orElseThrow(NotFoundException::new);
 
+		// 해당 폴더에 대한 사용자 권한 확인
 		checkFolderAccessPermission(userId, folder.getUser().getId());
+
 		folder.updateFolder(folderDto.getName(), folderDto.getColor());
 	}
 

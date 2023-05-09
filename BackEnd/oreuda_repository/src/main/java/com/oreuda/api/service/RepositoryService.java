@@ -11,11 +11,9 @@ import com.oreuda.api.domain.entity.Folder;
 import com.oreuda.api.domain.entity.FolderRepository;
 import com.oreuda.api.domain.entity.Repository;
 import com.oreuda.api.domain.dto.RepositoryDto;
-import com.oreuda.api.repository.DailyCommitRepository;
 import com.oreuda.api.repository.FolderJpaRepository;
 import com.oreuda.api.repository.RepositoryJpaRepository;
 import com.oreuda.api.repository.RepositoryRepository;
-import com.oreuda.api.repository.YearlyCommitRepository;
 import com.oreuda.common.exception.InvalidInputException;
 import com.oreuda.common.exception.NotFoundException;
 import com.oreuda.common.exception.UnauthorizedException;
@@ -30,8 +28,6 @@ public class RepositoryService {
 	private final RepositoryJpaRepository repositoryJpaRepository;
 
 	private final RepositoryRepository repositoryRepository;
-	private final DailyCommitRepository dailyCommitRepository;
-	private final YearlyCommitRepository yearlyCommitRepository;
 
 	private final FolderService folderService;
 
