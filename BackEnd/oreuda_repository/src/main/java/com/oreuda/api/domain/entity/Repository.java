@@ -33,7 +33,6 @@ public class Repository {
 	private String url;
 
 	// 주 사용언어
-	@JsonProperty("primaryLanguage.name")
 	private String language;
 
 	// 공개여부
