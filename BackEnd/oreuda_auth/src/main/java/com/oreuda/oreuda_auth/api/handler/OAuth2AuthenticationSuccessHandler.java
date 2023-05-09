@@ -1,6 +1,5 @@
 package com.oreuda.oreuda_auth.api.handler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oreuda.oreuda_auth.api.domain.dto.AuthDto;
 import com.oreuda.oreuda_auth.api.client.UserClient;
 import com.oreuda.oreuda_auth.api.domain.dto.UserDto;
@@ -42,8 +41,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         log.info("로그인 성공");
-        log.info("request = {}", request.getRequestURL());
-        log.info("redirectURL = {}", request.getParameterMap().keySet());
         // 사용자 정보
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         Map<String, Object> attributes = oAuth2User.getAttributes();
