@@ -107,28 +107,6 @@ public class PlantService {
         return point;
     }
 
-    public int maxPoint(Map<String, Integer> userCommits) {
-        int point = 0;
-
-        for (int i = 180; i >= 0; i--) {
-            point += getDailyPoint(8, i, 66);
-        }
-        return point;
-    }
-
-    public int max2Point(Map<String, Integer> userCommits) {
-        int point = 0;
-        int streak = 1;
-
-        for (int i = 180; i >= 0; i--) {
-            streak++;
-            point += getDailyPoint(1, i, streak);
-        }
-        return point;
-    }
-
-
-
     public void setStatus(String userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
         UserLog userLog = userLogRepository.findTopByUserIdOrderByTimeDesc(userId).orElse(null);
@@ -144,12 +122,6 @@ public class PlantService {
         log.info("now = {}", LocalDateTime.now());
         LocalDate today = LocalDate.now();
         Map<String, Integer> userCommits = commitRepository.getList(userId, userLog.getTime().minusMonths(6).toLocalDate());
-//        for (String key : userCommits.keySet()) {
-//            log.info("{}: {}", key, userCommits.get(key));
-//        }
-//        log.info("{}: {}",user.getNickname(), userLog.getVal());
-//        log.info("maxPoint = {}", maxPoint(userCommits));
-//        log.info("max2Point = {}", max2Point(userCommits));
         // 현재 포인트 저장
         user.setStats(getPoint(today, userCommits));
         log.info("{}: {}", user.getNickname(), user.getStats());
