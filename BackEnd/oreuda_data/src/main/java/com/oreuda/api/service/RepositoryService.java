@@ -32,10 +32,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RepositoryService {
 
-	private final CommitService commitService;
-
 	private final RepositoryRepository repositoryRepository;
 	private final UserRepository userRepository;
+
+	private final CommitService commitService;
 
 	private final GitHubClient gitHubClient;
 
@@ -69,9 +69,8 @@ public class RepositoryService {
 		JsonNode data;
 		do {
 			// 1. GitHub API 호출
-			data = gitHubClient.getRepositories(accessToken, GraphQLRequest
-					.builder().query(query).variables(variables).build())
-				.get("repositories");
+			data = gitHubClient.getRepositories(accessToken,
+				GraphQLRequest.builder().query(query).variables(variables).build()).get("repositories");
 
 			// 2. 레포지토리 preprocessing
 			for (JsonNode repo : data.get("nodes")) {

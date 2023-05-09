@@ -26,12 +26,10 @@ spring:
     open-in-view: false
 
   # Redis
-  cache:
-    type: redis
-    redis:
-      host: localhost
-      port: 6379
-#    password: git0410
+  redis:
+    host: localhost
+    port: 6379
+#   password: git0410
 
 # graphql
 graphql:
