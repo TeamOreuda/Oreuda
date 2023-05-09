@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 
 import st from "./RepoList.module.scss";
 import color from "../../styles/color.module.scss";
+import langCol from "../../styles/language.module.scss";
 import indicator from "../../styles/common.module.scss";
 
 import { moveFolder } from "../../api/repo";
@@ -81,7 +82,15 @@ const RepoItem = ({
                 {repo.isPrivate == "false" ? "Public" : "Private"}
               </span>
             </div>
-            <div className={st.repoIndicator}></div>
+            {repo.language ? (
+              <div
+                className={`${st.repoIndicator} ${langCol["Other"]} ${
+                  langCol[repo.language]
+                }`}
+              ></div>
+            ) : (
+              ""
+            )}
             <div className={st.repoLanguage}>
               <span className={st.fontSize}>{repo.language}</span>
             </div>

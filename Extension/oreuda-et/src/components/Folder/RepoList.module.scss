@@ -67,7 +67,6 @@
           }
           .repoIndicator {
             @include indi.smallIndicator;
-            background-color: #64b4ff;
           }
           .repoLanguage {
             color: #000000;
@@ -102,8 +101,6 @@
       flex-direction: column;
       justify-content: space-between;
       .dropdownBtn {
-        position: relative;
-        left: 8px;
         box-sizing: border-box;
         width: 63px;
         height: 16px;

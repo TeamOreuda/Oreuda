@@ -5,7 +5,7 @@ import { useDrag, useDrop } from "react-dnd";
 import st from "./FolderList.module.scss";
 import folderSt from "./Folder.module.scss";
 
-const Folder = ({ folder, id, order, focusIdx, SetFocusIdx, moveFolder }) => {
+const FolderItem = ({ folder, id, order, focusIdx, SetFocusIdx, moveFolder }) => {
   const navigate = useNavigate();
   const [isFocused, setIsFocused] = useState(false);
 
@@ -128,4 +128,4 @@ const Folder = ({ folder, id, order, focusIdx, SetFocusIdx, moveFolder }) => {
   // }
 };
 
-export default Folder;
+export default FolderItem;
