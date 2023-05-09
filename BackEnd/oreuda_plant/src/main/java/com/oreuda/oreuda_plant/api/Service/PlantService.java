@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
@@ -106,50 +107,34 @@ public class PlantService {
         return point;
     }
 
-    public int maxPoint(Map<String, Integer> userCommits) {
-        int point = 0;
-
-        for (int i = 180; i >= 0; i--) {
-            point += getDailyPoint(8, i, 66);
-        }
-        return point;
-    }
-
-    public int max2Point(Map<String, Integer> userCommits) {
-        int point = 0;
-        int streak = 1;
-
-        for (int i = 180; i >= 0; i--) {
-            streak++;
-            point += getDailyPoint(1, i, streak);
-        }
-        return point;
-    }
-
     public void setStatus(String userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
-        UserLog userLog = userLogRepository.findTopByUserIdOrderByTimeDesc(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저의 로그가 없습니다."));
-        LocalDate today = LocalDate.now();
-        Map<String, Integer> userCommits = commitRepository.getList(userId, user.getJoinDate());
-        for (String key : userCommits.keySet()) {
-            log.info("{}: {}", key, userCommits.get(key));
+        UserLog userLog = userLogRepository.findTopByUserIdOrderByTimeDesc(userId).orElse(null);
+        if (userLog == null) {
+            LocalDateTime startTime = user.getJoinDate().minusMonths(1).withHour(0).withMinute(0).withSecond(0);
+            userLog = UserLog.builder()
+                    .user(user)
+                    .time(startTime)
+                    .val(0)
+                    .build();
         }
-        userLog = UserLog.builder()
-                .user(user)
-                .time(userLog.getTime().plusDays(1))
-                .val(getPoint(today, userCommits))
-                .build();
-        log.info("{}: {}",user.getNickname(), userLog.getVal());
-        log.info("maxPoint = {}", maxPoint(userCommits));
-        log.info("max2Point = {}", max2Point(userCommits));
-//        while (userLog.getTime().toLocalDate().isBefore(today)) {
-//            userLog = UserLog.builder()
-//                    .user(user)
-//                    .time(userLog.getTime().plusDays(1))
-//                    .val(getPoint(user.getJoinDate(), userLog.getTime().toLocalDate(), userCommits))
-//                    .build();
-//            log.info("userLog = {}", userLog.getVal());
-////            userLogRepository.save(userLog);
-//        }
+        log.info("userLog = {}", userLog.getTime());
+        log.info("now = {}", LocalDateTime.now());
+        LocalDate today = LocalDate.now();
+        Map<String, Integer> userCommits = commitRepository.getList(userId, userLog.getTime().minusMonths(6).toLocalDate());
+        // 현재 포인트 저장
+        user.setStats(getPoint(today, userCommits));
+        log.info("{}: {}", user.getNickname(), user.getStats());
+        userRepository.save(user);
+        // 그래프 채우기
+        while (userLog.getTime().toLocalDate().isBefore(today)) {
+            userLog = UserLog.builder()
+                    .user(user)
+                    .time(userLog.getTime().plusDays(1))
+                    .val(getPoint(userLog.getTime().toLocalDate(), userCommits))
+                    .build();
+            log.info("{}: {}", userLog.getTime(), userLog.getVal());
+            userLogRepository.save(userLog);
+        }
     }
 }

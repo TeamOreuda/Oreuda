@@ -69,7 +69,7 @@ public class CommitService {
 			// 1. GitHub API 호출
 			data = gitHubClient.getCommitByRepository(accessToken,
 				GraphQLRequest.builder().query(query).variables(variables).build());
-
+			if (data == null) return;
 			// 사용자 커밋 수
 			repository.setCommitCount(data.get("nodes").size());
 			try {
