@@ -24,7 +24,6 @@ public class FolderController {
 	 * @param userId
 	 * @return
 	 */
-	@CrossOrigin(origins = "*")
 	@GetMapping
 	public ResponseEntity<List<FolderDto>> getFolders(@RequestHeader String userId) {
 		return new ResponseEntity<>(folderService.getFolders(userId), HttpStatus.OK);
