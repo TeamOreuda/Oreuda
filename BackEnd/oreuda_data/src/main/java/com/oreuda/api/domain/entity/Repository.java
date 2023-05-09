@@ -29,8 +29,10 @@ public class Repository {
 	// URL
 	private String url;
 
+	// 주 사용언어 객체
+	private PrimaryLanguage primaryLanguage;
+
 	// 주 사용언어
-	@JsonProperty("primaryLanguage.name")
 	private String language;
 
 	// 공개여부
@@ -69,8 +71,13 @@ public class Repository {
 		this.yearlyCommits = yearlyCommits;
 	}
 
+	public void setLanguage() {
+		this.language = primaryLanguage.getName();
+	}
+
 	// YYYY-MM-DDTHH:MM:SSZ to YYYY-MM-DD
 	public void dateFormatter() {
 		this.createDate = this.createDate.split("T")[0];
+		this.updateDate = this.updateDate.split("T")[0];
 	}
 }

@@ -94,6 +94,7 @@ public class RepositoryService {
 
 			// YYYY-MM-DDTHH:MM:SSZ to YYYY-MM-DD
 			repository.dateFormatter();
+			repository.setLanguage();
 			repositoryRepository.set(userId, repository.getId(), repository);
 
 			// 레포지토리별 커밋
