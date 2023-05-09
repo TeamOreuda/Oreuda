@@ -6,13 +6,11 @@ import java.time.LocalDateTime;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -68,6 +66,5 @@ public class User {
     @NotNull
     @Column(name = "user_update_time")
     private LocalDateTime updateTime;
-
 }
 

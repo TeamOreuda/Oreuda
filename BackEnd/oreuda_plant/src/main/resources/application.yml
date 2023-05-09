@@ -15,6 +15,8 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: update
+      jdbc:
+        time_zone: Asia/Seoul
     open-in-view: false
   #Redis
   redis:
