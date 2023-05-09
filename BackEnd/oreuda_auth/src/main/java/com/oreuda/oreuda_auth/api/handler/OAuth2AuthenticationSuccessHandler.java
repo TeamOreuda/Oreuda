@@ -105,11 +105,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
         // 리다이렉트
         String redirectUrl = "http://localhost:3000";
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie: cookies) {
-            log.info("cookie!!");
-            log.info("{}: {}", cookie.getName(), cookie.getValue());
-        }
         String targetUrl = UriComponentsBuilder.fromUriString(redirectUrl + "/oauth2/success")
                 .queryParam(TokenKey.ACCESS.getKey(), "Bearer-" + token.getAccessToken())
                 .queryParam(TokenKey.REFRESH.getKey(), "Bearer-" + token.getRefreshToken())
