@@ -11,4 +11,20 @@ const getFolderList = async (atk) => {
   return response.data;
 };
 
-export {getFolderList}
+const rearrangeFolder = async (atk, id, order) => {
+  const response = await axios.patch(
+    `${url}/api/v1/folder/rearrange`,
+    {
+      id: id,
+      order: order,
+    },
+    {
+      headers: {
+        Authorization: atk,
+      },
+    }
+  );
+  return response.data;
+};
+
+export { getFolderList, rearrangeFolder };
