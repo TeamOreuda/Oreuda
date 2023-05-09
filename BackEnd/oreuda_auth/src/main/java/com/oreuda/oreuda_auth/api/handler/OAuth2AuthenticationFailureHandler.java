@@ -22,7 +22,7 @@ public class OAuth2AuthenticationFailureHandler implements AuthenticationFailure
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         log.info("로그인 실패");
         log.info("exception = {}", exception.getMessage());
-        log.info("request = {}", request.getRemoteHost());
+        log.info("request = {}", request.getRequestURL());
         redirectStrategy.sendRedirect(request, response, "/oauth2/failure");
     }
 }
