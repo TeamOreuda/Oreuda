@@ -52,7 +52,7 @@ spring:
 
         # auth-server
         - id: auth-server
-          uri: http://172.28.0.23:8090/
+          uri: http://52.79.221.133:8090/
           predicates:
             - Path=/oauth2/**
 
