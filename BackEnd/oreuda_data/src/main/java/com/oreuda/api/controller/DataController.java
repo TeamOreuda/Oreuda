@@ -1,5 +1,6 @@
 package com.oreuda.api.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import com.oreuda.api.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/data")
 @RequiredArgsConstructor
@@ -24,6 +26,7 @@ public class DataController {
 	public ResponseEntity<?> data(@RequestHeader String userId) {
 		repositoryService.getAllRepositories(userId);
 		userService.updateUser(userId);
+		log.info("userId: {}", userId);
 		// plantClient.notifyCompletion(userId); // 데이터 전처리 완료 알림
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

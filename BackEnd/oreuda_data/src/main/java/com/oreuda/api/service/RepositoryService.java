@@ -74,6 +74,7 @@ public class RepositoryService {
 
 			// 2. 레포지토리 preprocessing
 			for (JsonNode repo : data.get("nodes")) {
+				log.info("repo: {}", repo);
 				toRepository(userId, repo);
 			}
 
