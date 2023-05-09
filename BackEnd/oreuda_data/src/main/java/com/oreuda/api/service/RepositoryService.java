@@ -71,9 +71,10 @@ public class RepositoryService {
 			// 1. GitHub API 호출
 			data = gitHubClient.getRepositories(accessToken,
 				GraphQLRequest.builder().query(query).variables(variables).build()).get("repositories");
-
+			if (data == null) return;
 			// 2. 레포지토리 preprocessing
 			for (JsonNode repo : data.get("nodes")) {
+				log.info("repo: {}", repo.get("nameWithOwner"));
 				toRepository(userId, repo);
 			}
 
