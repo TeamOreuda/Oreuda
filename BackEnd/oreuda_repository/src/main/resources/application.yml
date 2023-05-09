@@ -17,7 +17,7 @@ spring:
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    show-sql: true
+#    show-sql: true
     generate-ddl: true
     open-in-view: false
     hibernate:
@@ -28,12 +28,10 @@ spring:
         format_sql: true
         use_sql_comments: true
   # Redis
-  cache:
-    type: redis
-    redis:
-      host: localhost
-      port: 6379
-  #   password: git0410
+  redis:
+    host: localhost
+    port: 6379
+#   password: git0410
 
 logging:
   level:

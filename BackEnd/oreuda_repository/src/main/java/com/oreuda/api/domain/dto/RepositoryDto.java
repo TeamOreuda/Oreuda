@@ -38,9 +38,14 @@ public class RepositoryDto {
 	// 수정일시
 	String updateDate;
 
+	// 사용자 커밋 수
+	int commitCount;
+
 	// 연도별 커밋
+	@Builder.Default
 	List<YearlyCommitDto> yearlyCommits = new ArrayList<>();
 
 	// 일자별 커밋
+	@Builder.Default
 	List<DailyCommitDto> dailyCommits = new ArrayList<>();
 }
