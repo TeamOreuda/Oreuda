@@ -27,13 +27,13 @@ public class CustomOAuth2AuthService implements OAuth2UserService<OAuth2UserRequ
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         log.info("CustomOAuth2AuthService");
-//        log.info("userRequest = {}", new ObjectMapper().registerModule(new JavaTimeModule()).writerWithDefaultPrettyPrinter().writeValueAsString(userRequest));
+        log.info("userRequest = {}", new ObjectMapper().registerModule(new JavaTimeModule()).writerWithDefaultPrettyPrinter().writeValueAsString(userRequest));
         OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
         String accessToken = userRequest.getAccessToken().getTokenValue();
-//        log.info("serviceAttributes = {}", new ObjectMapper().registerModule(new JavaTimeModule()).writerWithDefaultPrettyPrinter().writeValueAsString(oAuth2User.getAttributes()));
+        log.info("serviceAttributes = {}", new ObjectMapper().registerModule(new JavaTimeModule()).writerWithDefaultPrettyPrinter().writeValueAsString(oAuth2User.getAttributes()));
         OAuth2Attributes attributes = OAuth2Attributes.of(registrationId, userNameAttributeName, accessToken, oAuth2User.getAttributes());
         Map<String, Object> attributesMap = attributes.convertToMap();
         return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("USER")), attributesMap, userNameAttributeName);

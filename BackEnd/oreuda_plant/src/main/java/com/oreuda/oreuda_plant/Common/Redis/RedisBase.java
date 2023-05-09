@@ -26,7 +26,7 @@ public class RedisBase {
 
     public Map<String, Integer> getDailyCommitCount(String key, LocalDateTime dateTime) {
 
-        Map<String, Integer> result = new TreeMap<>(Collections.reverseOrder());
+        Map<String, Integer> result = new TreeMap<>();
 
         redisTemplate.execute(new RedisCallback() {
             @Override
