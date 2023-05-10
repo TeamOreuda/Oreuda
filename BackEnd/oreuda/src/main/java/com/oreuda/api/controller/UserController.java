@@ -22,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController {
 
 	private final UserService userService;
@@ -31,6 +30,7 @@ public class UserController {
 	// 첫 로그인 -> 회원가입
 	@PostMapping()
 	// 인증서버로부터 받는 값
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	public ResponseEntity<?> firstLogin(@RequestBody SignUpDto signUpDto) {
 		userService.signup(signUpDto);
 
@@ -42,6 +42,7 @@ public class UserController {
 
 	// 사용자 정보 조회
 	@GetMapping()
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	public ResponseEntity<?> getUser(@RequestHeader String userId) throws Exception {
 		log.info(userId);
 
@@ -51,6 +52,7 @@ public class UserController {
 
 	// 사용자 프로필 이미지 조회
 	@GetMapping("/profile")
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	public ResponseEntity<?> getImage(@RequestHeader String userId) throws Exception {
 		log.info(userId);
 

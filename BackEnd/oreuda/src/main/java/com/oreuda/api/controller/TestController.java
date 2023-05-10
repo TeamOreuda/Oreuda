@@ -12,20 +12,22 @@ import org.springframework.web.bind.annotation.RestController;
 import com.oreuda.api.domain.dto.ReadmeDto;
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class TestController {
 
 	@GetMapping("/api/v1/business-service")
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	public String springCloudService() {
 		return "business-service 호출!";
 	}
 
 	@GetMapping("/api/v1/test")
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	public String test(@RequestHeader String userId) {
 		return "test 호출!";
 	}
 
 	@PatchMapping("/api/v1/test/readme")
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	public ResponseEntity<?> testReadme(@RequestBody ReadmeDto read) {
 
 		System.out.println(read.toString());

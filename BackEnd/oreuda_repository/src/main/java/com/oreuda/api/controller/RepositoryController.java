@@ -23,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v1/repository")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class RepositoryController {
 
 	private final RepositoryService repositoryService;
@@ -36,6 +35,7 @@ public class RepositoryController {
 	 * @return
 	 */
 	@GetMapping("{folderId}")
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	public ResponseEntity<List<RepositoryDto>> getRepositories(@RequestHeader String userId, @PathVariable int folderId,
 		@RequestParam String filtering) {
 		return new ResponseEntity<>(repositoryService.getRepositories(userId, folderId, filtering), HttpStatus.OK);
@@ -48,6 +48,7 @@ public class RepositoryController {
 	 * @return
 	 */
 	@PatchMapping
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	public ResponseEntity<List<RepositoryDto>> moveRepository(@RequestHeader String userId,
 		@RequestBody InputRepositoryDto inputRepositoryDto) {
 		return new ResponseEntity<>(repositoryService.moveRepository(userId, inputRepositoryDto), HttpStatus.OK);
