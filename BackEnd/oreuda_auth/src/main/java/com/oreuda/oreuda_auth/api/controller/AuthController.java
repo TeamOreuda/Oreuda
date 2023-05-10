@@ -20,11 +20,11 @@ import java.util.Map;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping(path="/api/v1/auth")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Transactional
 public class AuthController {
 
     @PostMapping(path="/refresh")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> reissue(ServletRequest request, ServletResponse response) {
         log.info("Token Refreshed");
         String accessToken = ((HttpServletResponse) response).getHeader(TokenKey.ACCESS.getKey());
