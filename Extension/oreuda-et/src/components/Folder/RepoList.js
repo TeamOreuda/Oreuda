@@ -17,8 +17,6 @@ const RepoList = ({ folderId }) => {
   const atk = useSelector((state) => state.accessToken.token);
 
   useEffect(() => {
-    // console.log(folderId);
-    // folderName을 기반으로 axios해온다.
     getFolderList(atk).then((response) => {
       setFolderList(response);
     });
@@ -29,7 +27,6 @@ const RepoList = ({ folderId }) => {
 
   // 폴더가 이동하면 화면을 다시 렌더링한다.
   useEffect(() => {
-    // console.log("화면이 바뀜 isMoved : ", isMoved);
     getFolderList(atk).then((response) => {
       setFolderList(response);
     });

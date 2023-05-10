@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import st from "./FolderList.module.scss";
@@ -12,7 +11,6 @@ import { getFolderList } from "../../api/folder";
 import { rearrangeFolder } from "../../api/folder";
 
 const FolderList = () => {
-  const navigate = useNavigate();
 
   const [focusIdx, SetFocusIdx] = useState(-1);
   const [folders, setFolders] = useState();
@@ -21,29 +19,25 @@ const FolderList = () => {
 
   const atk = useSelector((state) => state.accessToken.token);
 
+  
   useEffect(() => {
     getFolderList(atk).then((response) => {
-      // console.log(response);
       setFolders(response);
       setIsLoading(true);
     });
   }, [atk]);
 
+
   useEffect(() => {
     getFolderList(atk).then((response) => {
-      // console.log(response);
       setFolders(response);
       setIsLoading(true);
     });
   }, [isChanged]);
 
   const moveFolder = (id, order) => {
-    console.log("id : " + id);
-    console.log("order : " + order);
-
     // 여기서 axios 호출 한 다음 변환 값 화면에 적용
     rearrangeFolder(atk, id, order).then((response) => {
-      console.log(response);
       setIsChanged(!isChanged);
     });
   };
