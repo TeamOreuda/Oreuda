@@ -223,24 +223,26 @@ const themeSlice = createSlice({
       }
       state.techPlusArr = [];
     },
-    // [Tech] 선택한 기술 매핑
+    // [Tech] 선택한 덩어리 기술 선택
     setChoiceTechIndexChange(state, action) {
+      // [curr != 0] 추가한 기술이 담기는 임시배열
       state.techPlusModifyArr = action.payload;
       const data = action.payload;
       data.map((el: any) => {
         state.techModifyArr[el.index] = true;
       });
     },
-    // [Tech] 작성한 기술 변경
+    // [Tech] 선택한 덩어리 제목 변경
     setModifyTech(state, action) {
       state.techPlusWhole[action.payload.idx - 1].name = action.payload.data;
       // state.techPlusArr = action.payload;
     },
-    // [Tech] 선택한 기술 추가
+    // [Tech] select 박스 선택시 기술 추가 메서드
     setPushTech(state, action) {
       let curr = action.payload.curr;
       let tmp = curr === 0 ? state.techArr : state.techModifyArr;
-      if (!tmp[action.payload.index]) {
+
+      if (!tmp[action.payload.data.index]) {
         if (curr === 0) {
           state.techPlusArr.push(action.payload.data);
           tmp[action.payload.data.index] = true;
@@ -268,23 +270,54 @@ const themeSlice = createSlice({
           state.techPlusModifyArr.map((el: any, index: any) => {
             if (el.index === action.payload.data.index) {
               state.techPlusModifyArr.splice(index, 1);
+
+              // whole에서 변경을 해주어야 함
+              state.techPlusWhole[curr - 1].techArray = state.techPlusModifyArr;
             }
           });
-          // whole에서 변경을 해주어야 함
-          state.techPlusWhole[curr - 1].techArray = state.techPlusModifyArr;
         }
         tmp[action.payload.data.index] = false;
       }
     },
     // [Tech] TechWhole arr에 push
     setAddTechWhole(state, action) {
+      // data에 덩어리 인덱스, 덩어리 테크배열, 덩어리 이름, 덩어리 테크boolean배열 담음
       const temp = state;
       const data: any = {};
       data.index = state.techCnt++;
       data.techArray = state.techPlusArr;
       data.name = action.payload.title;
+      data.tmp = state.techArr;
 
-      // console.log(data);
+      // 추가버튼을 눌렀을 때,
+      // techArr 초기화
+      state.techArr = [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ];
+      // tech 전체를 담당하는 techPlusWhole에 넣어줌
       temp.techPlusWhole.push(data);
     },
     // // [Tech] TechWhole arr에서 제거

@@ -32,7 +32,7 @@ export const techData: any = [
   { name: "swift", color: "ffac45", index: 12 },
   { name: "c", color: "555", index: 13 },
   { name: "cpp", color: "f34b7d", index: 14 },
-  { name: "html", color: "e44b23", index: 15 },
+  { name: "html5", color: "e44b23", index: 15 },
   { name: "rust", color: "dea584", index: 16 },
   { name: "assembly", color: "6e4c13", index: 17 },
   { name: "css", color: "563d7c", index: 18 },
@@ -45,6 +45,13 @@ export const techData: any = [
 
 export default function Tech() {
   const techPlusWhole = useAppSelector(selectReadme).techPlusWhole;
+  const techArr = useAppSelector(selectReadme).techArr;
+  const techModifyArr = useAppSelector(selectReadme).techModifyArr;
+  const techPlusModifyArr = useAppSelector(selectReadme).techPlusModifyArr;
+  console.log("techArr : ", techArr);
+  console.log("techPlusWhole : ", techPlusWhole);
+  console.log("techModifyArr : ", techModifyArr);
+  console.log("techPlusModifyArr : ", techPlusModifyArr);
 
   const dispatch = useAppDispatch();
   const [title, setTitle] = useState("");
@@ -61,6 +68,7 @@ export default function Tech() {
     if (curr === 0)
       dispatch(setPushTech({ data: techData[e.target.value], curr: curr }));
     else {
+      console.log(techData[e.target.value]);
       dispatch(setPushTech({ data: techData[e.target.value], curr: curr }));
     }
     setOptionVal("선택해주세요");
@@ -75,6 +83,7 @@ export default function Tech() {
     dispatch(setTechTitle(""));
     dispatch(setChoiceTechClear(0));
   };
+  const rNum = Math.floor(Math.random() * (1000000 - 1));
 
   return (
     <div className={st.body}>
@@ -150,7 +159,7 @@ export default function Tech() {
           >
             {techData.map((data: any, index: number) => {
               return (
-                <option value={index} key={index}>
+                <option value={index} key={Math.random() * (1000000 - 1)}>
                   {data.name}
                 </option>
               );

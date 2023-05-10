@@ -16,14 +16,19 @@ export default function TechSelectBtn({ curr }: any) {
   const dispatch = useAppDispatch();
 
   const onClickRemoveComp = (e: any) => {
+    console.log(techData[e.target.id]);
+
     dispatch(setDeleteTech({ data: techData[e.target.id], curr: curr }));
   };
+
+  const rNum = Math.floor(Math.random() * (1000000 - 1));
+
   return (
     <div className={st.choiceBox}>
       {data.map((el: any, index: number) => {
         return (
           <div
-            key={index}
+            key={index + rNum}
             id={el.index}
             onClick={onClickRemoveComp}
             className={lang[el.name]}
