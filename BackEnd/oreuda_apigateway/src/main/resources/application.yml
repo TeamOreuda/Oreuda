@@ -39,19 +39,12 @@ spring:
         - id: repo-server
           uri: http://localhost:8070/
           predicates:
-            - Path=/api/v1/folder/**
-          filters:
-            - AuthorizationHeaderFilter
-
-        - id: repo-server
-          uri: http://localhost:8070/
-          predicates:
-            - Path=/api/v1/repository/**
+            - Path=/api/v1/folder/**, /api/v1/repository/**
           filters:
             - AuthorizationHeaderFilter
 
         # auth-server
-        - id: auth-server
+        - id: login-server
           uri: http://localhost:8090/
           predicates:
             - Path=/oauth2/**
