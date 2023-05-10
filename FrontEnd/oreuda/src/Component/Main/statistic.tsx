@@ -1,13 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import axios from "axios";
-// import { cookies } from "next/headers";
-import { setCookie } from "cookies-next";
-import { redirect } from "next/navigation";
 
 import st from "./statistic.module.scss";
-import { useState } from "react";
 
 interface gitHubStatistic {
   title: string;
