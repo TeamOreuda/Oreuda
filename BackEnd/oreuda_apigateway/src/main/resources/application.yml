@@ -49,7 +49,8 @@ spring:
         #   predicates:
         #     - Path=/oauth2/**
 
-        - id: auth-server
+        # auth-server
+        - id: oreuda-auth-server
           uri: http://172.28.0.23:8090/
           predicates:
             - Path=/api/v1/auth/**
