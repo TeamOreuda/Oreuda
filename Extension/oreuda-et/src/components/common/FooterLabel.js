@@ -3,14 +3,10 @@ import st from "./FooterLabel.module.scss";
 const FooterLabel = () => {
   return (
     <div className={st.link}>
-      powered by{" "}
-      <a
-        href="https://www.notion.so/a1184fd74f9142b8ad5880e41a1e590d"
-        target="_blank"
-        className={st.git}
-      >
+      더 많은 기능을 {" "}
+      <a href="https://oreuda.kr/" target="_blank" className={st.git}>
         햣
-      </a>
+      </a>에서 경험해보세요!
     </div>
   );
 };

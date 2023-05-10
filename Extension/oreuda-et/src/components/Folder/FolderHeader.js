@@ -1,13 +1,22 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 
 import st from "./FolderHeader.module.scss";
 import col from "../../styles/color.module.scss";
+
+import {
+  removeFolderIdCookie,
+  removeColorCookie,
+  removeFolderNameCookie,
+} from "../../api/cookie";
 
 const FolderHeader = ({ folderName, folderColor }) => {
   const navigate = useNavigate();
 
   const back = () => {
+    removeFolderIdCookie();
+    removeColorCookie();
+    removeFolderNameCookie();
+
     navigate(-1);
   };
 

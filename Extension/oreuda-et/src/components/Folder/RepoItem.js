@@ -43,13 +43,13 @@ const RepoItem = ({
   };
 
   const moveConfirm = () => {
-    console.log(radioIndex);
-    console.log(atk);
+    // console.log(radioIndex);
+    // console.log(atk);
     const repos = [repo.id];
 
     console.log("repoId : " + params.name + "targetFolderId : " + radioIndex);
     moveFolder(atk, params.name, radioIndex, repos).then((response) => {
-      console.log(response);
+      // console.log(response);
       setIsMoved(!isMoved);
       setDropDownIndex(-1);
       setRadioIndex(-1);
@@ -62,7 +62,6 @@ const RepoItem = ({
     });
   };
 
-  // console.log(folderList);
   return (
     <div className={st.card}>
       <div className={st.layoutLeft}>
@@ -123,9 +122,7 @@ const RepoItem = ({
             }
           >
             {folderList.map((key) => {
-              if (folderId === key.id) {
-                return <></>;
-              } else {
+              if (folderId !== key.id) {
                 return (
                   <div
                     className={`${
