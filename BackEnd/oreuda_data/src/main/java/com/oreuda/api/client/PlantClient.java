@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@FeignClient(name = "plant-client", url = "http://localhost:8060/api/v1/plant")
+@FeignClient(name = "plant-client", url = "http://172.28.0.25:8060/api/v1/plant")
 public interface PlantClient {
 
 	@RequestMapping(method = RequestMethod.POST)
