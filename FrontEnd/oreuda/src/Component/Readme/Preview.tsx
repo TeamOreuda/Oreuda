@@ -25,7 +25,7 @@ export default function Preview() {
   const mailDomain = useAppSelector(selectReadme).mailDomain;
   const blogLink = useAppSelector(selectReadme).blogLink;
   const notionLink = useAppSelector(selectReadme).notionLink;
-  console.log(componentArr);
+  // console.log(componentArr);
 
   // 연락처
   // const mailURL = `https://mail.${mailDomain}/mail/?view=cm&amp;fs=1&amp;to=${mailId}@${mailDomain}/`;
@@ -41,11 +41,20 @@ export default function Preview() {
 
   // MUL
   // (1) 디폴트
-  let mulUrl = `https://github-readme-stats.vercel.app/api/top-langs/?username=kyum8562&layout=compact`;
+  let mulUrl = `https://github-readme-stats.vercel.app/api/top-langs/?username=kyum8562`;
+  let mulHeight = 270;
   // (2) 간략히
-  if (mulType == 2) mulUrl += `&layout=compact`;
+  if (mulType == 2) {
+    mulUrl += `&layout=compact`;
+    mulHeight = 180;
+  }
   // (3) 수치 제거
-  else if (mulType == 3) mulUrl += `&hide_progress=true`;
+  else if (mulType == 3) {
+    mulUrl += `&hide_progress=true`;
+    mulHeight = 156;
+  } else {
+    mulHeight = 270;
+  }
   // 테마 추가
   mulUrl += `&theme=${mulTheme}`;
 
@@ -182,7 +191,7 @@ export default function Preview() {
             <img src={githubUrl} width="350" height="150" alt="githubStats" />
           ) : undefined}
           {componentArr[3] ? (
-            <img src={mulUrl} width="280" height="270" alt="MUL" />
+            <img src={mulUrl} width="280" height={mulHeight} alt="MUL" />
           ) : undefined}
           {componentArr[4] ? (
             <>
