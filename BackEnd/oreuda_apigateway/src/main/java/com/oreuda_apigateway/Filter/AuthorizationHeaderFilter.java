@@ -39,7 +39,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
             String token = exchange.getRequest().getHeaders().get("Authorization").get(0).substring(7);   // 헤더의 토큰 파싱 (Bearer 제거)
-
+            log.info(token);
             String userId = jwtUtil.getUid(token);
 
             addAuthorizationHeaders(exchange.getRequest(), userId);
