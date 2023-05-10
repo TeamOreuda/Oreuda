@@ -2,6 +2,7 @@ package com.oreuda.api.client;
 
 import graphql.kickstart.spring.webclient.boot.GraphQLRequest;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,7 @@ import com.oreuda.common.exception.GitHubException;
 
 import lombok.RequiredArgsConstructor;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class GitHubClient {

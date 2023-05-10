@@ -20,11 +20,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Map;
 
 @Slf4j
@@ -102,8 +104,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             saveGitHubTokenAndNodeId(String.valueOf(auth.getAuthId()), String.valueOf(attributes.get("nodeId")), String.valueOf(attributes.get("accessToken")));
         }
         // 리다이렉트
-        String redirectUrl = "http://localhost:3000/oauth2/success";
-        String targetUrl = UriComponentsBuilder.fromUriString(redirectUrl)
+        String redirectUrl = "http://localhost:3000";
+        String targetUrl = UriComponentsBuilder.fromUriString(redirectUrl + "/oauth2/success")
                 .queryParam(TokenKey.ACCESS.getKey(), "Bearer-" + token.getAccessToken())
                 .queryParam(TokenKey.REFRESH.getKey(), "Bearer-" + token.getRefreshToken())
                 .build().toUriString();
