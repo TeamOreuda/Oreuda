@@ -118,13 +118,11 @@ public class PlantService {
                     .val(0)
                     .build();
         }
-        log.info("userLog = {}", userLog.getTime());
-        log.info("now = {}", LocalDateTime.now());
         LocalDate today = LocalDate.now();
         Map<String, Integer> userCommits = commitRepository.getList(userId, userLog.getTime().minusMonths(6).toLocalDate());
         // 현재 포인트 저장
         user.setStats(getPoint(today, userCommits));
-        log.info("{}: {}", user.getNickname(), user.getStats());
+//        log.info("{}: {}", user.getNickname(), user.getStats());
         userRepository.save(user);
         // 그래프 채우기
         while (userLog.getTime().toLocalDate().isBefore(today)) {
@@ -133,7 +131,7 @@ public class PlantService {
                     .time(userLog.getTime().plusDays(1))
                     .val(getPoint(userLog.getTime().toLocalDate(), userCommits))
                     .build();
-            log.info("{}: {}", userLog.getTime(), userLog.getVal());
+//            log.info("{}: {}", userLog.getTime(), userLog.getVal());
             userLogRepository.save(userLog);
         }
     }
