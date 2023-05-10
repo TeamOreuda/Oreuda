@@ -23,7 +23,7 @@ export default function MainSelectBtn() {
             onClick={onClickRemoveComp}
             className={st.choiceComp}
           >
-            {mainCompChoiceData[el]}
+            {mainCompChoiceData[el].split("(")[0]}
           </div>
         );
       })}

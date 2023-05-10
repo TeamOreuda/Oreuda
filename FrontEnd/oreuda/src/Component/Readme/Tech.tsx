@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import TechSelectBtn from "./TechSelectBtn";
 import PlusTechBtn from "./PlusTechBtn";
 import MinusTechBtn from "./MinusTechBtn";
+import Image from "next/image";
 
 export const techData: any = [
   { name: "선택해주세요", color: "0", index: 0 },
@@ -50,6 +51,7 @@ export default function Tech() {
   const [techIdx, setTechIdx] = useState(0);
   const [curr, setCurr] = useState(0);
   const [modifyText, setModifyText] = useState("");
+  const [optionVal, setOptionVal] = useState("선택해주세요");
 
   let currTitle = "";
   const techTitle = useAppSelector(selectReadme).techTitle;
@@ -61,6 +63,7 @@ export default function Tech() {
     else {
       dispatch(setPushTech({ data: techData[e.target.value], curr: curr }));
     }
+    setOptionVal("선택해주세요");
   };
 
   const handleStateChange = (newState: number) => {
@@ -76,15 +79,27 @@ export default function Tech() {
   return (
     <div className={st.body}>
       <div className={st.indexBtns}>
-        <button
+        {/* <button
           onClick={() => {
             setCurr(0);
             setTitle("");
             dispatch(setChoiceTechClear(0));
           }}
+          className={st.btnDefault}
         >
-          기본
-        </button>
+        </button> */}
+        <Image
+          src="/images/readme/notebook.gif"
+          alt=""
+          className={st.btnDefault}
+          width={40}
+          height={40}
+          onClick={() => {
+            setCurr(0);
+            setTitle("");
+            dispatch(setChoiceTechClear(0));
+          }}
+        />
         {techPlusWhole?.map((el, index) => {
           return (
             <button
@@ -128,7 +143,11 @@ export default function Tech() {
         </div>
         <div className={st.selectBox}>
           <span>기술 설정</span>
-          <select className={st.selectSV} onChange={onChangeTechOption}>
+          <select
+            className={st.selectSV}
+            onChange={onChangeTechOption}
+            value={optionVal}
+          >
             {techData.map((data: any, index: number) => {
               return (
                 <option value={index} key={index}>

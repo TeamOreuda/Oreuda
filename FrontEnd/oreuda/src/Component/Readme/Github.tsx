@@ -49,7 +49,7 @@ export default function Github() {
   return (
     <div className={st.body}>
       <div className={st.titleDiv}>
-        <span>깃헙 스택(Github Stats)</span>
+        <span>깃헙 스탯(Stats)</span>
         <p>깃헙 스택을 보여주는 컴포넌트 입니다.</p>
       </div>
       <div className={st.contentDiv}>

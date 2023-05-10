@@ -27,6 +27,7 @@ export interface readmeSlice {
   mailId: string;
   mailDomain: string;
   blogLink: string;
+  notionLink: string;
   // mulTheme: string;
   textTitle: string[];
   textDesc: string[];
@@ -58,6 +59,7 @@ const initialState: readmeSlice = {
   mailId: "",
   mailDomain: "",
   blogLink: "",
+  notionLink: "",
   textTitle: [],
   textDesc: [],
   textArr: [],
@@ -175,6 +177,11 @@ const themeSlice = createSlice({
     setBlogLink(state, action) {
       const temp = state;
       temp.blogLink = action.payload;
+    },
+    // [contact] contact 기술 블로그 링크 저장
+    setNotionLink(state, action) {
+      const temp = state;
+      temp.notionLink = action.payload;
     },
     // [addText] addText title 저장
     setTextTitle(state, action) {
@@ -338,6 +345,7 @@ export const {
   setMailId,
   setMailDomain,
   setBlogLink,
+  setNotionLink,
   setTextTitle,
   setTextDesc,
   setTechTitle,

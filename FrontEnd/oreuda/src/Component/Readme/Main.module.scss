@@ -31,22 +31,31 @@
 }
 
 .choiceBox {
-  width: 30%;
+  width: 400px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 
   .choiceComp {
     margin: 10px;
-    border-radius: 5px;
-    height: 50px;
-    background-color: comm.$mainGreen;
+    border-radius: 30px;
+    height: 30px;
+    width: 80px;
+    background: comm.$mainGreen;
     color: comm.$mainWhite;
+    border: 3px solid comm.$mainGreen;
     display: flex;
+    justify-content: center;
     align-items: center;
-    padding-left: 10px;
-    font-size: 14px;
+    font-size: 12px;
   }
-
   :hover {
     cursor: pointer;
-    background-color: rgb(110, 236, 163);
+    background: comm.$mainGreen;
+    color: comm.$mainWhite;
+    border: 3px solid comm.$mainGreen;
+    filter: blur(2px);
   }
 }

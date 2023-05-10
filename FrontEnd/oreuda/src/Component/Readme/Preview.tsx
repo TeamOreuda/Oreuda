@@ -20,7 +20,16 @@ export default function Preview() {
   const techTitle = useAppSelector(selectReadme).techTitle;
   const techPlusArr = useAppSelector(selectReadme).techPlusArr;
   const techPlusWhole = useAppSelector(selectReadme).techPlusWhole;
-  // console.log(textTitleArr, textDescArr);
+  const componentArr = useAppSelector(selectReadme).componentArr;
+  const mailId = useAppSelector(selectReadme).mailId;
+  const mailDomain = useAppSelector(selectReadme).mailDomain;
+  const blogLink = useAppSelector(selectReadme).blogLink;
+  const notionLink = useAppSelector(selectReadme).notionLink;
+  console.log(componentArr);
+
+  // 연락처
+  // const mailURL = `https://mail.${mailDomain}/mail/?view=cm&amp;fs=1&amp;to=${mailId}@${mailDomain}/`;
+  const mailURL = `mailto:${mailId}@${mailDomain}`;
 
   // 백준
   const firstImgUrl = `http://mazassumnida.wtf/api/v2/generate_badge?boj=${BaekJoonData}`;
@@ -89,7 +98,7 @@ export default function Preview() {
         <img
           key={i}
           className={st.techBadge}
-          src={`https://img.shields.io/badge/${techPlusArr[i].name}-${techPlusArr[i].color}?style=flat-square&logo=${techPlusArr[i].name}&logoColor=white`}
+          src={`https://img.shields.io/badge/${techPlusArr[i].name}-${techPlusArr[i].color}?style=flat&logo=${techPlusArr[i].name}&logoColor=white`}
           alt=""
         />
       );
@@ -108,7 +117,7 @@ export default function Preview() {
           <img
             key={elel.index}
             className={st.techBadge}
-            src={`https://img.shields.io/badge/${elel.name}-${elel.color}?style=flat-square&logo=${elel.name}&logoColor=white`}
+            src={`https://img.shields.io/badge/${elel.name}-${elel.color}?style=flat&logo=${elel.name}&logoColor=white`}
             alt=""
           />
         );
@@ -124,7 +133,7 @@ export default function Preview() {
     //       <img
     //         // key={j}
     //         className={st.techBadge}
-    //         src={`https://img.shields.io/badge/${techPlusWhole[i].techArray.name}-${techPlusWhole[i].techArray.color}?style=flat-square&logo=${techPlusWhole[i].techArray.name}&logoColor=white`}
+    //         src={`https://img.shields.io/badge/${techPlusWhole[i].techArray.name}-${techPlusWhole[i].techArray.color}?style=flat&logo=${techPlusWhole[i].techArray.name}&logoColor=white`}
     //         alt=""
     //       />
     //     );
@@ -162,16 +171,63 @@ export default function Preview() {
       </div>
       <div className={st.contentDiv}>
         {/* <Link href="http://solved.ac/kyum8562"> */}
-        <img src={firstImgUrl} width="280" height="140" alt="baekjoon" />
-        <img src={secImgUrl} width="285" height="140" alt="solved" />
-        <img src={githubUrl} width="350" height="150" alt="githubStats" />
-        <img src={mulUrl} width="280" height="270" alt="MUL" />
-        {showTechWhole()}
-        <h3>{techTitle}</h3>
-        <div className={st.techBadgeDiv}>{showTechArr()}</div>
-        {showTextArr()}
-        <h3>{newTextTitle}</h3>
-        <p>{newTextDesc}</p>
+        {componentArr[1] ? (
+          <>
+            <img src={firstImgUrl} width="280" height="140" alt="baekjoon" />
+            <img src={secImgUrl} width="285" height="140" alt="solved" />
+          </>
+        ) : undefined}
+        {componentArr[2] ? (
+          <img src={githubUrl} width="350" height="150" alt="githubStats" />
+        ) : undefined}
+        {componentArr[3] ? (
+          <img src={mulUrl} width="280" height="270" alt="MUL" />
+        ) : undefined}
+        {componentArr[4] ? (
+          <>
+            {showTechWhole()}
+            <h3>{techTitle}</h3>
+            <div className={st.techBadgeDiv}>{showTechArr()}</div>
+          </>
+        ) : undefined}
+        {componentArr[5] ? (
+          <>
+            <h3>Contact</h3>
+            <div className={st.contactBadgeDiv}>
+              {mailId.length > 0 ? (
+                <a href={mailURL} target="_blank">
+                  <img
+                    src="https://img.shields.io/badge/Mail-6667AB?style=flat&logo=Gmail&logoColor=white"
+                    alt="Mail"
+                  />
+                </a>
+              ) : undefined}
+              {blogLink.length > 0 ? (
+                <a href={blogLink} target="_blank">
+                  <img
+                    src={`https://img.shields.io/badge/Tech Blog-7FD2F5?style=flat&logo=Hoppscotch&logoColor=white&link=${blogLink}/`}
+                    alt="blog"
+                  />
+                </a>
+              ) : undefined}
+              {notionLink.length > 0 ? (
+                <a href={notionLink} target="_blank">
+                  <img
+                    src={`https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white&link=${notionLink}/`}
+                    alt="notion"
+                  />
+                </a>
+              ) : undefined}
+            </div>
+          </>
+        ) : undefined}
+        {componentArr[7] ? (
+          <>
+            {showTextArr()}
+            <h3>{newTextTitle}</h3>
+            <p>{newTextDesc}</p>
+          </>
+        ) : undefined}
       </div>
     </div>
   );

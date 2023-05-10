@@ -8,22 +8,24 @@ import {
   setBlogLink,
   setMailDomain,
   setMailId,
+  setNotionLink,
 } from "@/store/modules/readme";
-import PrevBtn from "./PrevBtn";
-import NextBtn from "./NextBtn";
 
 export const emailChoiceData: any = ["naver.com", "nate.com", "daum.com"];
 export default function Contact() {
   const mailId: string = useAppSelector(selectReadme).mailId;
   const blogLink: string = useAppSelector(selectReadme).blogLink;
+  const notionLink = useAppSelector(selectReadme).notionLink;
   const dispatch = useAppDispatch();
   const [id, setId] = useState(mailId);
   const [blog, setBlog] = useState(blogLink);
+  const [notion, setNotion] = useState(notionLink);
   const activeEnter = (e: any) => {
     if (e.key === "Enter") {
       // global state에 저장해야 함
       dispatch(setMailId(id));
       dispatch(setBlogLink(blog));
+      dispatch(setNotionLink(notion));
     }
   };
   const onChangeEmailOption = (e: any) => {
@@ -42,7 +44,10 @@ export default function Contact() {
             className={st.mailInput}
             type="text"
             placeholder="이메일 아이디"
-            onChange={(e) => setId(e.target.value)}
+            onChange={(e) => {
+              setId(e.target.value);
+              dispatch(setMailId(e.target.value));
+            }}
             onKeyDown={(e) => activeEnter(e)}
             value={id}
           ></input>
@@ -62,9 +67,26 @@ export default function Contact() {
             className={st.blogInput}
             type="text"
             placeholder="블로그 링크"
-            onChange={(e) => setBlog(e.target.value)}
+            onChange={(e) => {
+              setBlog(e.target.value);
+              dispatch(setBlogLink(e.target.value));
+            }}
             onKeyDown={(e) => activeEnter(e)}
             value={blog}
+          ></input>
+        </div>
+        <div className={st.mailDiv}>
+          <p>노션 링크</p>
+          <input
+            className={st.blogInput}
+            type="text"
+            placeholder="노션 링크"
+            onChange={(e) => {
+              setNotion(e.target.value);
+              dispatch(setNotionLink(e.target.value));
+            }}
+            onKeyDown={(e) => activeEnter(e)}
+            value={notion}
           ></input>
         </div>
       </div>
