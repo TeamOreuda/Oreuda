@@ -18,11 +18,11 @@ import java.util.Objects;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("api/v1/plant")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PlantController {
     private final PlantService plantService;
 
     @GetMapping()
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> getPlant(@RequestHeader HttpHeaders headers) {
         String userId = headers.getFirst("userId");
         PlantDto plantDto = plantService.getPlant(userId);
@@ -30,14 +30,12 @@ public class PlantController {
     }
 
     @PostMapping()
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> setPlantStatus(@RequestHeader String userId) {
         plantService.setStatus(userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/graph")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> getGraph(@RequestHeader HttpHeaders headers) {
         String userId = headers.getFirst("userId");
         List<StatusDto> statusDtoList = plantService.getStatus(userId);
@@ -45,8 +43,12 @@ public class PlantController {
     }
 
     @GetMapping("/card")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public String getCard(@RequestHeader HttpHeaders headers) {
-        return "card";
+    public ResponseEntity<?> getCard(@RequestHeader HttpHeaders headers) {
+        log.info("getCard");
+        String svg =
+                "<svg width=\"100\" height=\"100\">\n" +
+                "  <circle cx=\"50\" cy=\"50\" r=\"40\" stroke=\"green\" stroke-width=\"4\" fill=\"yellow\" />\n" +
+                "</svg>";
+        return ResponseEntity.ok().body(svg);
     }
 }
