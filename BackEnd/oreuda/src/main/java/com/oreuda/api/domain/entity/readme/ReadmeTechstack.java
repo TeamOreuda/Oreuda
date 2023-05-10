@@ -1,13 +1,16 @@
 package com.oreuda.api.domain.entity.readme;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+
+import com.oreuda.api.domain.entity.Readme;
+import com.oreuda.api.domain.entity.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,10 +28,22 @@ public class ReadmeTechstack {
 	@Column(name = "readme_techstack_id")
 	private Long id;
 
-	// 기술 스택
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "techstack_id")
-	private Techstack techstack;
+	// 사용자
+	@NotNull
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User user;
+
+	// 리드미
+	@NotNull
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "readme_id")
+	private Readme readme;
+
+	// 순서
+	@NotNull
+	@Column(name = "readme_order")
+	private int order;
 
 	public ReadmeTechstack() {
 	}

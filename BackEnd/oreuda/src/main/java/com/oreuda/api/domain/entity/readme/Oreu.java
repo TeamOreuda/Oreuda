@@ -21,12 +21,12 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class Contact {
+public class Oreu {
 
 	// 기본키
 	@Id
 	@GeneratedValue
-	@Column(name = "contact_id")
+	@Column(name = "oreu_id")
 	private Long id;
 
 	// 사용자
@@ -46,19 +46,7 @@ public class Contact {
 	@Column(name = "readme_order")
 	private int order;
 
-	// 블로그
-	@Column(name = "contact_blog")
-	private String blog;
-
-	// 메일
-	@Column(name = "contact_mail")
-	private String mail;
-
-	// 노션
-	@Column(name = "contact_notion")
-	private String notion;
-
-	public Contact() {
+	public Oreu() {
 	}
 
 }
