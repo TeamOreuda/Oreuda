@@ -16,6 +16,7 @@ export default async function Home() {
   const cookieStore = cookies();
   const ACCESS_TOKEN = cookieStore.get("Authorization")?.value;
   const REFRESH_TOKEN = cookieStore.get("RefreshToken")?.value;
+  console.log("ACCESS_TOKEN in page", ACCESS_TOKEN);
 
   const userData = await GetUser(ACCESS_TOKEN)
     .then((res) => {
@@ -25,7 +26,10 @@ export default async function Home() {
       if (err.response?.status == 401) {
         return await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
           .then(async (res) => {
-            saveCookiesAndRedirect(res.data.Authorization, res.data.RefreshToken);
+            saveCookiesAndRedirect(
+              res.data.Authorization,
+              res.data.RefreshToken
+            );
             return await GetUser(res.data.Authorization).then((res) => {
               return res.data;
             });
@@ -36,6 +40,7 @@ export default async function Home() {
           });
       }
     });
+  console.log("userData in page", userData);
 
   const characterData = await GetCharacter(ACCESS_TOKEN)
     .then((res) => {
@@ -45,7 +50,10 @@ export default async function Home() {
       if (err.response?.status == 401) {
         return await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
           .then(async (res) => {
-            await saveCookiesAndRedirect(res.data.Authorization, res.data.RefreshToken);
+            await saveCookiesAndRedirect(
+              res.data.Authorization,
+              res.data.RefreshToken
+            );
             return await GetCharacter(ACCESS_TOKEN).then((res) => {
               return res.data;
             });
@@ -56,7 +64,6 @@ export default async function Home() {
           });
       }
     });
-  console.log(characterData);
 
   const charactergraph = await GetCharacterGraph(ACCESS_TOKEN)
     .then((res) => {
@@ -66,7 +73,10 @@ export default async function Home() {
       if (err.response?.status == 401) {
         return await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
           .then(async (res) => {
-            await saveCookiesAndRedirect(res.data.Authorization, res.data.RefreshToken);
+            await saveCookiesAndRedirect(
+              res.data.Authorization,
+              res.data.RefreshToken
+            );
             return await GetCharacterGraph(ACCESS_TOKEN).then((res) => {
               return res.data;
             });
@@ -83,7 +93,7 @@ export default async function Home() {
       <Statistic userData={userData} />
       <div className={st.character}>
         <Character characterData={characterData} />
-        {/* <CharacterGraph charactergraph={charactergraph} /> */}
+        <CharacterGraph charactergraph={charactergraph} />
       </div>
     </div>
   );
