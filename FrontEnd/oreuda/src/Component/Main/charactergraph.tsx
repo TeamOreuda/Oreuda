@@ -21,7 +21,8 @@ interface Charactergraph {
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip);
 
-export default function Character(charactergraph: any) {
+export default function Character(props: { charactergraph: Charactergraph[] }) {
+  const { charactergraph } = props;
   const data = {
     datasets: [
       {

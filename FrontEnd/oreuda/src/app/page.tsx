@@ -56,7 +56,6 @@ export default async function Home() {
           });
       }
     });
-  console.log(characterData);
 
   const charactergraph = await GetCharacterGraph(ACCESS_TOKEN)
     .then((res) => {
@@ -78,12 +77,14 @@ export default async function Home() {
       }
     });
 
+  console.log(charactergraph);
+
   return (
     <div className={st.body}>
       <Statistic userData={userData} />
       <div className={st.character}>
         <Character characterData={characterData} />
-        {/* <CharacterGraph charactergraph={charactergraph} /> */}
+        <CharacterGraph charactergraph={charactergraph} />
       </div>
     </div>
   );
