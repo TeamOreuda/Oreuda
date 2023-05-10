@@ -14,14 +14,14 @@
       padding-top: 3%;
       font-weight: 400;
       font-size: 20px;
-      line-height: 20px;
+      line-height: 40px;
       align-items: center;
     }
   }
 
   .loginBtn {
     margin: 0 auto;
-    margin-top: 20%;
+    margin-top: 10%;
 
     width: 200px;
     height: 40px;
@@ -36,6 +36,15 @@
     align-items: center;
     justify-content: center;
     text-align: center;
+    img{
+      width : 153px;
+      height : 31px;
+      padding-top : 5px;
+      margin: 0 auto;
+    }
+  }
+  .loginBtn:hover{
+    cursor: pointer;
   }
 
   .footer {

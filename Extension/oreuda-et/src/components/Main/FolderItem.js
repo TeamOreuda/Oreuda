@@ -2,12 +2,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDrag, useDrop } from "react-dnd";
 
+
 import st from "./FolderList.module.scss";
 import folderSt from "./Folder.module.scss";
 
 const FolderItem = ({ folder, id, order, focusIdx, SetFocusIdx, moveFolder }) => {
   const navigate = useNavigate();
   const [isFocused, setIsFocused] = useState(false);
+ 
 
   const [{ isDragging }, dragRef, previewRef] = useDrag(
     //isDragging은 아이템이 드래깅 중일때 true, 아닐때 false를 리턴 받는다. 드래깅 중인 아이템을 스타일링 할때 사용했다.
@@ -43,19 +45,12 @@ const FolderItem = ({ folder, id, order, focusIdx, SetFocusIdx, moveFolder }) =>
     [id, order, moveFolder]
   );
 
-  // 드랍 *공식사이트 예시에서는 하나의 dropRef로 구현되어있지만
-  // 시행착오와 고민 끝에 dropRef를 두가지로 만들어 네모상자의 양쪽에 배치하였다.
+  // dropRef를 두가지로 만들어 네모상자의 양쪽에 배치하였다.
   // 왼쪽에 드랍하면 드래그한 상자를 드랍한 상자 왼쪽 인덱스로 이동.
   // 오른쪽에 드랍하면 index + 1 하여 오른쪽 인덱스로 이동하도록 구현했다.
   const [, dropLeft] = useDrop(
     () => ({
       accept: "folder",
-      // canDrop: () => false,
-      // hover({ id: draggedId, order: orgIndex }) {
-      //   if (draggedId !== id) {
-      //     moveFolder(draggedId, order);
-      //   }
-      // },
       drop({ id: draggedId, order: orgIndex }) {
         if (draggedId !== id) {
           moveFolder(draggedId, order);
@@ -68,12 +63,6 @@ const FolderItem = ({ folder, id, order, focusIdx, SetFocusIdx, moveFolder }) =>
   const [, dropRight] = useDrop(
     () => ({
       accept: "folder",
-      // canDrop: () => false,
-      // hover({ id: draggedId, order: orgIndex }) {
-      //   if (draggedId !== id) {
-      //     orgIndex !== order + 1 && moveFolder(draggedId, order + 1);
-      //   }
-      // },
       drop({ id: draggedId, order: orgIndex }) {
         if (draggedId !== id) {
           orgIndex !== order + 1 && moveFolder(draggedId, order + 1);
@@ -100,7 +89,6 @@ const FolderItem = ({ folder, id, order, focusIdx, SetFocusIdx, moveFolder }) =>
   return (
     <div className = {folderSt.layout}>
       <div className = {folderSt.leftRef} ref={dropLeft}>&nbsp;</div>
-
       <div
         ref={previewRef}
         onDoubleClick={() => doubleClick(folder)}
@@ -115,7 +103,7 @@ const FolderItem = ({ folder, id, order, focusIdx, SetFocusIdx, moveFolder }) =>
         <div className={st.folderDiv}>
           <img
             ref={dragRef}
-            title="드래그해서 위치를 변경합니다."
+            title="드래그해서 위치를 변경할 수 있습니다."
             className={st.folderImg}
             src={`/assets/folders/${folder.color}.svg`}
           ></img>
@@ -125,7 +113,6 @@ const FolderItem = ({ folder, id, order, focusIdx, SetFocusIdx, moveFolder }) =>
       <div className = {folderSt.rightRef} ref={dropRight}>&nbsp;</div>
     </div>
   );
-  // }
 };
 
 export default FolderItem;

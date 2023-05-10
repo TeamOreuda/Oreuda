@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import cookie from "react-cookies";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import st from "./Header.module.scss";
 
 import { getUserInfo } from "../../api/user";
-import { renewalData } from "../../api/data";
+import { renewalDataFromGit } from "../../api/data";
+
+import {
+  removeFolderIdCookie,
+  removeColorCookie,
+  removeFolderNameCookie,
+  removeATKCookie,
+  removeRTKCookie,
+} from "../../api/cookie";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -15,45 +22,28 @@ const Header = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    window.chrome.cookies.get(
-      { url: process.env.REACT_APP_API_URL, name: "Authorization" },
-      function (cookie) {
-        if (cookie) {
-          console.log(cookie.value);
-        }
-      }
-    );
-  }, []);
-
-  useEffect(() => {
     getUserInfo(atk).then((response) => {
-      console.log(response);
       SetUser(response);
       setIsLoading(true);
     });
   }, [atk]);
 
   const renewalData = () => {
-    renewalData(atk);
+    if (atk) {
+      renewalDataFromGit(atk).then((response)=>{
+        console.log(response)
+      });
+    }
   };
-  
+
   // 쿠키 값을 삭제한다. 삭제하면 랜딩페이지로 이동
   const logout = () => {
-    window.chrome.cookies.remove({
-      url: process.env.REACT_APP_DOMAIN,
-      name: "Authorization",
-    });
-    window.chrome.cookies.remove(
-      { url: process.env.REACT_APP_DOMAIN, name: "RefreshToken" },
-      function (cookie) {
-        if (!cookie.value) {
-          console.log("The cookie Deleted");
-          navigate("/");
-        } else {
-          console.log(cookie.value);
-        }
-      }
-    );
+    removeFolderIdCookie();
+    removeColorCookie();
+    removeFolderNameCookie();
+    removeATKCookie();
+    removeRTKCookie();
+    navigate("/");
   };
 
   if (isLoading && user) {

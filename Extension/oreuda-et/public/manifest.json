@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Oreuda",
-  "description": "프로젝트 햣의 오르다 확장 프로그램입니다.",
+  "description": "프로젝트 햣의 오르다 확장 프로그램입니다. 오르다 확장 프로그램을 활용하여 깃을 조금 더 풍성하게 활용해보세요!",
   "version": "1.0.1",
   "action": {
     "default_popup": "index.html",
