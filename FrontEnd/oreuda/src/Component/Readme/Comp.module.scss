@@ -1,0 +1,32 @@
+.Comp {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+
+  .leftBody {
+    width: calc((100vw - 340px) / 2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // overflow: scroll;
+    // overflow-x: hidden;
+    // overflow-y: scroll;
+    height: calc((100vh - 100px));
+  }
+
+  .rightBody {
+    width: calc((100vw - 280px) / 2);
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+}
+
+.TextBody {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}

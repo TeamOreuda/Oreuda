@@ -1,0 +1,11 @@
+.App {
+  text-align: center;
+  font-family: "Gmarket Sans";
+  font-style: normal;
+  width: 340px;
+  height: 550px;
+  /* border: 1px solid red;
+  border-radius: 5px;
+  margin: 0; */
+  border-radius: 15px;
+}

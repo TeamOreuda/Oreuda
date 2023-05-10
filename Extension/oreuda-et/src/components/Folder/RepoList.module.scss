@@ -1,0 +1,275 @@
+@use "../../styles/list.scss" as list;
+@use "../../styles/indicator.scss" as indi;
+
+.fontSize {
+  zoom: 0.8;
+}
+.cardList {
+  @include list.list;
+  height: 85%;
+  border-bottom: 1px solid black;
+  .card {
+    margin: 0 auto;
+    padding: 5px;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+
+    width: 295px;
+    height: 82px;
+
+    border: 1px solid #aeaeae;
+    border-radius: 10px;
+    display: flex;
+    // flex-direction: row;
+    justify-content: space-between;
+    .layoutLeft {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 70%;
+      .cardTitle {
+        text-align: left;
+        font-size: 12px;
+        line-height: 20px;
+      }
+      .cardTitle:hover {
+        cursor: pointer;
+      }
+      .cardContent {
+        padding-bottom: 5px;
+        font-size: 7px;
+        line-height: 14px;
+        color: #ffffff;
+        .cardSummary {
+          display: flex;
+          flex-direction: row;
+          .repoVisibilityPublic {
+            background: #0596ff;
+            width: 50px;
+            height: 12px;
+            margin-right: 8px;
+            border-radius: 5px;
+            font-size: 7px;
+            line-height: 12px;
+            align-items: center;
+            text-align: center;
+          }
+          .repoVisibilityPrivate {
+            width: 50px;
+            height: 12px;
+            margin-right: 8px;
+            background: #ff0505;
+            border-radius: 5px;
+            font-size: 10px;
+            line-height: 12px;
+            align-items: center;
+            text-align: center;
+          }
+          .repoIndicator {
+            @include indi.smallIndicator;
+            background-color: #64b4ff;
+          }
+          .repoLanguage {
+            color: #000000;
+          }
+        }
+        .repoDescription {
+          text-align: left;
+          font-size: 8px;
+          line-height: 12px;
+
+          color: #858181;
+          width: 100%;
+
+          height: 36px;
+          padding-top: 3px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
+          /* 여러 줄 자르기 추가 스타일 */
+          white-space: normal;
+          text-align: left;
+          word-wrap: break-word;
+          -webkit-line-clamp: 3;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+        }
+      }
+    }
+
+    .layoutRight {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      .dropdownBtn {
+        box-sizing: border-box;
+        width: 63px;
+        height: 16px;
+
+        background: #fffff6;
+        border: 1px solid #000000;
+        border-radius: 5px;
+        text-align: right;
+        font-size: 8px;
+        line-height: 16px;
+        text-align: center;
+        .dropdownTitle {
+          padding-right: 6px;
+        }
+        .dropdownTitle:hover {
+          cursor: pointer;
+        }
+        .dropdownIcon {
+          position: relative;
+          top: 1px;
+          width: 8px;
+          height: 8px;
+
+          transition: all 0.5s ease;
+        }
+        .dropdownIcon:hover {
+          cursor: pointer;
+        }
+        .reverse {
+          transform: rotate(180deg);
+          // transform-origin: center center;
+          // transform: skew(90deg);
+        }
+        .dropdownActivate {
+          display: flex;
+          flex-direction: column;
+          position: relative;
+          left: -0.8px;
+          background-color: #fffff6;
+          width: 61.2px;
+
+          border: 1px solid black;
+          border-radius: 5px;
+
+          box-shadow: 0.5px 0.5px 0.5px 0.5px gray;
+
+          z-index: 999;
+          max-height: 200px;
+          overflow-x: hidden;
+          overflow-y: scroll;
+          .itemLayout {
+            display: flex;
+            flex-direction: row;
+            height: 14px;
+            border-bottom: 0.1px solid rgba(128, 128, 128, 0.37);
+            // margin-top: 1px;
+            padding-top: 1px;
+            .itemLayoutLeft {
+              display: flex;
+              flex-direction: row;
+              .folderTitle {
+                text-align: left;
+                padding-left: 4px;
+                padding-right: 4px;
+                height: 14px;
+                max-width: 40px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+              }
+            }
+            .itemLayoutRight {
+              position: absolute;
+              right: 0;
+              .radioBtn {
+                padding-top: 2px;
+                width: 10px;
+                height: 10px;
+                padding-right: 2px;
+              }
+            }
+            .itemLayoutRight :hover {
+              cursor: pointer;
+            }
+          }
+          .itemLayout:hover {
+            cursor: pointer;
+            transition: all 0.5s ease;
+            background-color: #4bca807b;
+          }
+          .itemSelected {
+            transition: all 0.5s ease;
+            background-color: #4bca807b;
+          }
+          .itemNonSelected {
+            transition: all 0.5s ease;
+            background-color: #fffff6;
+          }
+          .confirmBtn {
+            width: 57px;
+            height: 20px;
+            background-image: url("../../../public/assets/confirmGray.svg");
+            background-size: cover;
+            margin: auto;
+            margin-bottom: 3px;
+            margin-top: 3px;
+            zoom: 0.95;
+            transition: all 0.5s ease;
+          }
+          .confirmBtn:hover {
+            transition: all 0.5s ease;
+
+            background-image: url("../../../public/assets/confirmGreen.svg");
+            cursor: pointer;
+          }
+          .confirmBtnOnSelected {
+            transition: all 0.5s ease;
+
+            background-image: url("../../../public/assets/confirmGreen.svg");
+          }
+        }
+        .dropdownActivate::-webkit-scrollbar {
+          width: 1px;
+          opacity: 0;
+          transition: opacity 0.5s ease-in-out;
+        }
+
+        .dropdownActivate::-webkit-scrollbar-thumb {
+          background-color: #000000;
+        }
+
+        .dropdownActivate::-webkit-scrollbar-track {
+          background-color: grey;
+        }
+
+        .dropdownActivate:hover::-webkit-scrollbar {
+          opacity: 1;
+        }
+
+        .dropdownDeactivate {
+          display: none;
+        }
+      }
+      .cardFooter {
+        text-align: right;
+        font-size: 8px;
+        line-height: 12px;
+      }
+    }
+  }
+  .card {
+    cursor: default;
+  }
+}
+.cardList::-webkit-scrollbar {
+  width: 4px;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.cardList::-webkit-scrollbar-thumb {
+  background-color: #000000;
+}
+
+.cardList::-webkit-scrollbar-track {
+  background-color: grey;
+}
+
+.cardList:hover::-webkit-scrollbar {
+  opacity: 1;
+}

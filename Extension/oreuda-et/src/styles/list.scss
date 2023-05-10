@@ -1,0 +1,13 @@
+@mixin list {
+    text-align: center;
+    margin: 0 auto;
+  
+    width: 330px;
+    height: 80vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  
+    // padding-top: 1%;
+    margin-top: 1%;
+    margin-bottom : 2%;
+}

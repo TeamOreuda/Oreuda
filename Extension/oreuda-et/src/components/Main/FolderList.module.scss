@@ -1,0 +1,42 @@
+@use "../../styles/list.scss" as list;
+
+.folderList {
+  position: relative;
+  left: -4px;
+  margin-right: 2px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  flex-direction: row;
+  justify-content: space-between;
+  @include list.list;
+  .folderImg {
+    width: 80.64px;
+    height: 68.14px;
+  }
+  .folderImg:hover {
+    cursor: pointer;
+  }
+  .folderTitle {
+    width: 80.64px;
+    text-align: center;
+    margin: 0 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .folderTitle:hover {
+    cursor: pointer;
+    // white-space: normal;
+    // text-overflow: unset;
+  }
+}
+
+.folderList::-webkit-scrollbar {
+  width: 4px;
+}
+.folderList::-webkit-scrollbar-thumb {
+  background-color: #000000;
+}
+.folderList::-webkit-scrollbar-track {
+  background-color: grey;
+}
