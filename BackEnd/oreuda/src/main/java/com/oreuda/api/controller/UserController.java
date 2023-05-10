@@ -30,7 +30,7 @@ public class UserController {
 
 		// 깃 api
 		// 닉네임, 총 커밋수, 레포수, 연속 스트릭, 주언어, 업데이트 시간
-//		dataClient.setData(signUpDto.getUserId());
+		dataClient.setData(signUpDto.getUserId());
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
