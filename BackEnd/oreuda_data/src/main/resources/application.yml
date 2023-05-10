@@ -1,0 +1,54 @@
+server:
+  port: 8050
+
+spring:
+  # MySQL
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mysql:3306/oreuda?useUniCode=yes&characterEncoding=UTF-8
+    username: oreuda
+    password: git0410
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+  # JPA Properties
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: none
+      use-new-id-generator-mappings: false
+      jdbc:
+        time_zone: Asia/Seoul
+    open-in-view: false
+
+  # Redis
+  redis:
+    host: redis
+    port: 6379
+    password: 'git0410'
+
+# graphql
+graphql:
+  graphiql:
+    enabled: true
+
+# feign
+feign:
+  hystrix:
+    enabled: true
+
+# eureka
+eureka:
+  instance:
+    prefer-ip-address: true
+    appname: data-server
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://172.28.0.20:8761/eureka
+

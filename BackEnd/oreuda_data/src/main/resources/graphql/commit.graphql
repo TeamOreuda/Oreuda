@@ -1,0 +1,19 @@
+query GetCommitByRepository($cursor: String, $authorId: ID!, $repoName: String!, $repoOwner: String!) {
+    repository(name: $repoName, owner: $repoOwner) {
+        object(expression: "HEAD") {
+            ... on Commit {
+                history(first: 100, after: $cursor, author: {id: $authorId}) {
+                    nodes {
+                        id
+                        message
+                        committedDate
+                    }
+                    pageInfo{
+                        endCursor
+                        hasNextPage
+                    }
+                }
+            }
+        }
+    }
+}
