@@ -71,6 +71,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
             } else if (errorCode == 200) {
                 str = "토큰이 만료됐습니다.";
             }
+            log.info(str+" ");
             return "{\"errorCode\":" + str + "}";
         }
 
