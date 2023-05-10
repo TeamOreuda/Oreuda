@@ -13,13 +13,13 @@ export default function Token() {
   const saveCookiesAndRedirect = useCallback(() => {
     if (ACCESS_TOKEN && REFRESH_TOKEN) {
       Cookies.set("Authorization", ACCESS_TOKEN, {
-        path: "/",
+        path: `${process.env.NEXT_PUBLIC_API_URL}`,
         httpOnly: false,
         secure: true,
         sameSite: "None",
       });
       Cookies.set("RefreshToken", REFRESH_TOKEN, {
-        path: "/",
+        path: `${process.env.NEXT_PUBLIC_API_URL}`,
         httpOnly: false,
         secure: true,
         sameSite: "None",
@@ -29,6 +29,6 @@ export default function Token() {
 
   useEffect(() => {
     saveCookiesAndRedirect();
-    window.location.replace("/");
+    window.location.replace(`${process.env.NEXT_PUBLIC_API_URL}`);
   }, [saveCookiesAndRedirect]);
 }
