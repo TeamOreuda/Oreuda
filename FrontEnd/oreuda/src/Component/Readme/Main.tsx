@@ -5,11 +5,12 @@ import { selectReadme, setPushComponent } from "@/store/modules/readme";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import MainSelectBtn from "./MainSelectBtn";
 import NextBtn from "./NextBtn";
+import { useState } from "react";
 
 export const mainCompChoiceData: any = [
   "선택해주세요",
   "백준(Baek Joon)",
-  "깃헙 스택(Github stats)",
+  "깃헙 스탯(Stats)",
   "주 사용 언어(Most Used Language)",
   "기술(Tech)",
   "연락처(Contacts)",
@@ -31,10 +32,12 @@ export default function Main() {
    */
   const dispatch = useAppDispatch();
   const nextComp = useAppSelector(selectReadme).nextComp;
+  const [optionVal, setOptionVal] = useState("선택해주세요");
 
   // option select 변경했을 때 동작하는 메서드
   const onChangeCompOption = (e: any) => {
     dispatch(setPushComponent(e.target.value));
+    setOptionVal("선택해주세요");
   };
 
   return (
@@ -43,7 +46,11 @@ export default function Main() {
         <span>컴포넌트 요소 정하기</span>
         <p>리드미에 어떤 내용을 담을지 정해보세요.</p>
       </div>
-      <select className={st.selectSV} onChange={onChangeCompOption}>
+      <select
+        className={st.selectSV}
+        onChange={onChangeCompOption}
+        value={optionVal}
+      >
         {mainCompChoiceData.map((data: string, index: number) => {
           return (
             <option value={index} key={index}>
