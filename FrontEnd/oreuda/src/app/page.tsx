@@ -16,7 +16,6 @@ export default async function Home() {
   const cookieStore = cookies();
   const ACCESS_TOKEN = cookieStore.get("Authorization")?.value;
   const REFRESH_TOKEN = cookieStore.get("RefreshToken")?.value;
-  console.log("ACCESS_TOKEN in page", ACCESS_TOKEN);
 
   const userData = await GetUser(ACCESS_TOKEN)
     .then((res) => {
@@ -40,7 +39,6 @@ export default async function Home() {
           });
       }
     });
-  console.log("userData in page", userData);
 
   const characterData = await GetCharacter(ACCESS_TOKEN)
     .then((res) => {
