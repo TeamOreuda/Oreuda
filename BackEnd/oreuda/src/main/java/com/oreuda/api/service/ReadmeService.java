@@ -53,38 +53,6 @@ public class ReadmeService {
 			.build();
 		readmeRepository.save(readme);
 
-
-			/*switch (readmes.getReadmeType()) {
-				case "BOJ":
-					saveBoj(readmes, user, readme, 0);
-					break;
-
-				case "GIT":
-					saveGit(readmes, user, readme, 0);
-					break;
-
-				case "WRITING":
-					saveWriting(readmes, user, readme, 0);
-					break;
-
-				case "CONTACT":
-					saveContact(readmes, user, readme, 0);
-					break;
-
-				case "LANGUAGE":
-					saveLanguage(readmes, user, readme, 0);
-					break;
-
-				case "TECH":
-					saveTech(readmes, user, readme, 0);
-					break;
-
-				case "PLANT":
-					saveOreu(user, readme, 0);
-					break;
-			}*/
-
-
 		for (int i = 0; i< readmes.size(); i++) {
 			switch (readmes.get(i).getReadmeType()) {
 				case "BOJ":
