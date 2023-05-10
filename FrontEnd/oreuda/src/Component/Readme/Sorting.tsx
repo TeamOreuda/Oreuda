@@ -6,7 +6,6 @@ export default function Sorting() {
   return (
     <>
       <div>소팅 페이지</div>
-      <PrevBtn />
     </>
   );
 }

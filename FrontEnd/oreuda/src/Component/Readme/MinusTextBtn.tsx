@@ -1,5 +1,5 @@
 "use client";
-import st from "./Baekjoon.module.scss";
+import st from "./AddText.module.scss";
 
 import { setMinusText } from "@/store/modules/readme";
 import { useDispatch } from "react-redux";
@@ -11,8 +11,8 @@ export default function MinusTextBtn({ idx }: any) {
     dispatch(setMinusText(idx));
   };
   return (
-    <button className={st.button} onClick={deleteTextDiv}>
-      -
+    <button className={st.buttonDefault} onClick={deleteTextDiv}>
+      제거
     </button>
   );
 }

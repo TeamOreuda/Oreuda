@@ -1,14 +1,27 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 import st from "./RepoList.module.scss";
 import color from "../../styles/color.module.scss";
+import langCol from "../../styles/language.module.scss";
 import indicator from "../../styles/common.module.scss";
 
-const RepoItem = ({ repo, folderList, dropDownIndex, setDropDownIndex }) => {
-  // const chrome = window.chrome;
+import { moveFolder } from "../../api/repo";
 
+const RepoItem = ({
+  repo,
+  folderList,
+  folderId,
+  dropDownIndex,
+  setDropDownIndex,
+  isMoved,
+  setIsMoved,
+}) => {
+  const params = useParams();
   const [isClicked, setIsClicked] = useState(false);
   const [radioIndex, setRadioIndex] = useState(-1);
+  const atk = useSelector((state) => state.accessToken.token);
 
   const dropdownOnClick = () => {
     if (isClicked && repo.id === dropDownIndex) {
@@ -31,14 +44,21 @@ const RepoItem = ({ repo, folderList, dropDownIndex, setDropDownIndex }) => {
 
   const moveConfirm = () => {
     console.log(radioIndex);
+    console.log(atk);
+    const repos = [repo.id];
+
+    console.log("repoId : " + params.name + "targetFolderId : " + radioIndex);
+    moveFolder(atk, params.name, radioIndex, repos).then((response) => {
+      console.log(response);
+      setIsMoved(!isMoved);
+      setDropDownIndex(-1);
+      setRadioIndex(-1);
+    });
   };
 
   const repoMove = (repoUrl) => {
     window.chrome.tabs.create({
-      url: "https://github.com/tykimdream",
-      // type: "popup",
-      // width: 800,
-      // height: 600,
+      url: repoUrl,
     });
   };
 
@@ -53,14 +73,24 @@ const RepoItem = ({ repo, folderList, dropDownIndex, setDropDownIndex }) => {
           <div className={st.cardSummary}>
             <div
               className={
-                repo.visibility === "public"
+                repo.isPrivate == "false"
                   ? st.repoVisibilityPublic
                   : st.repoVisibilityPrivate
               }
             >
-              <span className={st.fontSize}>{repo.visibility}</span>
+              <span className={st.fontSize}>
+                {repo.isPrivate == "false" ? "Public" : "Private"}
+              </span>
             </div>
-            <div className={st.repoIndicator}></div>
+            {repo.language ? (
+              <div
+                className={`${st.repoIndicator} ${langCol["Other"]} ${
+                  langCol[repo.language]
+                }`}
+              ></div>
+            ) : (
+              ""
+            )}
             <div className={st.repoLanguage}>
               <span className={st.fontSize}>{repo.language}</span>
             </div>
@@ -93,38 +123,44 @@ const RepoItem = ({ repo, folderList, dropDownIndex, setDropDownIndex }) => {
             }
           >
             {folderList.map((key) => {
-              return (
-                <div
-                  className={`${
-                    key.id === radioIndex ? st.itemSelected : st.itemNonSelected
-                  } ${st.itemLayout}`}
-                  onClick={() => radioCheck(key.id)}
-                >
-                  <div className={st.itemLayoutLeft}>
-                    <div className={`${st.folderTitle} ${st.fontSize}`}>
-                      {key.name}
+              if (folderId === key.id) {
+                return <></>;
+              } else {
+                return (
+                  <div
+                    className={`${
+                      key.id === radioIndex
+                        ? st.itemSelected
+                        : st.itemNonSelected
+                    } ${st.itemLayout}`}
+                    onClick={() => radioCheck(key.id)}
+                  >
+                    <div className={st.itemLayoutLeft}>
+                      <div className={`${st.folderTitle} ${st.fontSize}`}>
+                        {key.name}
+                      </div>
+                      <div
+                        className={`${indicator.dropdownIndicator} ${
+                          color[key.color]
+                        }`}
+                      ></div>
                     </div>
-                    <div
-                      className={`${indicator.dropdownIndicator} ${
-                        color[key.color]
-                      }`}
-                    ></div>
+                    <div className={st.itemLayoutRight}>
+                      {key.id === radioIndex ? (
+                        <img
+                          className={st.radioBtn}
+                          src="/assets/ClickedIcon.svg"
+                        ></img>
+                      ) : (
+                        <img
+                          className={st.radioBtn}
+                          src="/assets/UnClickedIcon.svg"
+                        ></img>
+                      )}
+                    </div>
                   </div>
-                  <div className={st.itemLayoutRight}>
-                    {key.id === radioIndex ? (
-                      <img
-                        className={st.radioBtn}
-                        src="/assets/ClickedIcon.svg"
-                      ></img>
-                    ) : (
-                      <img
-                        className={st.radioBtn}
-                        src="/assets/UnClickedIcon.svg"
-                      ></img>
-                    )}
-                  </div>
-                </div>
-              );
+                );
+              }
             })}
 
             <div

@@ -14,7 +14,7 @@ const Footer = ({ focusIdx, folders }) => {
     return (
       <div className={st.Footer}>
         <div className={st.repoTitle}>
-          Total {sum} Repositories in {cnt} Folders
+          Total {sum} Repositories, {cnt} Folders
         </div>
       </div>
     );
@@ -23,13 +23,13 @@ const Footer = ({ focusIdx, folders }) => {
       <div className={st.Footer}>
         <div
           className={`${st.repoTitle} ${
-            fontColor[folders[focusIdx - 1].color]
+            fontColor[folders[focusIdx].color]
           }`}
         >
-          {folders[focusIdx - 1].name}
+          {folders[focusIdx].name}
         </div>
         <div className={st.repoCnt}>
-          {folders[focusIdx - 1].repositoryCount} Repositories in This Folder
+          {folders[focusIdx].repositoryCount} Repositories in This Folder
         </div>
       </div>
     );
