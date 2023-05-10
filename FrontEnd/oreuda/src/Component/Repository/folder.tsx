@@ -1,8 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
+import Cookies from "js-cookie";
+import { redirect } from "next/navigation";
 
 import st from "./folder.module.scss";
 import { useEffect, useState } from "react";
+
+import { getUserRefresh } from "@/Api/Oauth/getUserRefresh";
+import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
+import { DeleteFolderList } from "@/Api/Folders/deleteFolderList";
 
 interface FolderList {
   id: number;
@@ -12,149 +18,42 @@ interface FolderList {
   repositoryCount: number;
 }
 
-const folderList: FolderList[] = [
-  {
-    id: 1,
-    name: "FE",
-    color: "blue",
-    order: 1,
-    repositoryCount: 23,
-  },
-  {
-    id: 2,
-    name: "BE",
-    color: "green",
-    order: 2,
-    repositoryCount: 3,
-  },
-  {
-    id: 3,
-    name: "hello",
-    color: "yellow",
-    order: 3,
-    repositoryCount: 15,
-  },
-  {
-    id: 4,
-    name: "Algo",
-    color: "blue",
-    order: 4,
-    repositoryCount: 18,
-  },
-  {
-    id: 5,
-    name: "몰라요",
-    color: "yellow",
-    order: 5,
-    repositoryCount: 18,
-  },
-  {
-    id: 6,
-    name: "알려줘",
-    color: "green",
-    order: 6,
-    repositoryCount: 18,
-  },
-  {
-    id: 7,
-    name: "몰라요",
-    color: "yellow",
-    order: 5,
-    repositoryCount: 18,
-  },
-  {
-    id: 8,
-    name: "알려줘",
-    color: "green",
-    order: 6,
-    repositoryCount: 18,
-  },
-  {
-    id: 9,
-    name: "몰라요",
-    color: "yellow",
-    order: 5,
-    repositoryCount: 18,
-  },
-  {
-    id: 10,
-    name: "알려줘",
-    color: "green",
-    order: 6,
-    repositoryCount: 18,
-  },
-  {
-    id: 11,
-    name: "몰라요",
-    color: "yellow",
-    order: 5,
-    repositoryCount: 18,
-  },
-  {
-    id: 12,
-    name: "알려줘",
-    color: "green",
-    order: 6,
-    repositoryCount: 18,
-  },
-  {
-    id: 13,
-    name: "몰라요",
-    color: "yellow",
-    order: 5,
-    repositoryCount: 18,
-  },
-  {
-    id: 14,
-    name: "알려줘",
-    color: "green",
-    order: 6,
-    repositoryCount: 18,
-  },
-  {
-    id: 15,
-    name: "몰라요",
-    color: "yellow",
-    order: 5,
-    repositoryCount: 18,
-  },
-  {
-    id: 16,
-    name: "알려줘",
-    color: "green",
-    order: 6,
-    repositoryCount: 18,
-  },
-  {
-    id: 17,
-    name: "몰라요",
-    color: "yellow",
-    order: 5,
-    repositoryCount: 18,
-  },
-  {
-    id: 18,
-    name: "알려줘",
-    color: "green",
-    order: 6,
-    repositoryCount: 18,
-  },
-  {
-    id: 19,
-    name: "몰라요",
-    color: "yellow",
-    order: 5,
-    repositoryCount: 18,
-  },
-];
-
-export default function Folder(props: { clickDelete: boolean }) {
+export default function Folder(props: {
+  clickDelete: boolean;
+  folderListData: FolderList[];
+  checkedItems: number[];
+  setCheckedItems: React.Dispatch<React.SetStateAction<number[]>>;
+}) {
+  const { clickDelete, folderListData, checkedItems, setCheckedItems } = props;
   const [grab, setGrab] = useState({ dataset: { position: null } });
-  const [checkedItems, setCheckedItems] = useState<string[]>([]);
+  const ACCESS_TOKEN = Cookies.get("Authorization");
+  const REFRESH_TOKEN = Cookies.get("RefreshToken");
 
   useEffect(() => {
     setCheckedItems([]);
-  }, [props.clickDelete]);
+  }, [clickDelete]);
+
+  const deleteFolder = (folders: Array<number>) => {
+    DeleteFolderList(ACCESS_TOKEN, { folders: folders })
+      .then((res) => {
+        return res.data;
+      })
+      .catch(async (err) => {
+        if (err.response?.status == 401) {
+          return await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
+            .then(async (res) => {
+              await saveCookiesAndRedirect(res.data.Authorization, res.data.RefreshToken);
+              return await DeleteFolderList(ACCESS_TOKEN, { folders: checkedItems }).then((res) => {
+                return res.data;
+              });
+            })
+
+            .catch(() => {
+              redirect("/");
+            });
+        }
+      });
+  };
 
   const onDragOver = (e: any) => {
     e.preventDefault();
@@ -175,11 +74,11 @@ export default function Folder(props: { clickDelete: boolean }) {
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    const currentIndex = checkedItems.indexOf(value);
+    const currentIndex = checkedItems.indexOf(Number(value));
     const newCheckedItems = [...checkedItems];
 
     if (currentIndex === -1) {
-      newCheckedItems.push(value);
+      newCheckedItems.push(Number(value));
     } else {
       newCheckedItems.splice(currentIndex, 1);
     }
@@ -189,24 +88,24 @@ export default function Folder(props: { clickDelete: boolean }) {
 
   return (
     <div className={st.folders}>
-      {folderList?.map((e: FolderList, index: number) => {
+      {folderListData?.map((e: FolderList, index: number) => {
         return (
           <div key={index}>
             <Link
               href={`/repository/${e.id}`}
-              {...(props.clickDelete ? { onClick: handleClick } : {})}
+              {...(clickDelete ? { onClick: handleClick } : {})}
               data-position={index}
               onDragOver={onDragOver}
               onDragStart={onDragStart}
               onDrop={onDrop}
-              draggable={!props.clickDelete}
+              draggable={!clickDelete}
             >
               <div className={st.folder}>
-                {props.clickDelete && (
+                {clickDelete && (
                   <input
                     type="checkbox"
                     value={e.id}
-                    checked={checkedItems.indexOf(String(e.id)) !== -1}
+                    checked={checkedItems.indexOf(e.id) !== -1}
                     onChange={handleCheckboxChange}
                     onClick={(event) => event.stopPropagation()}
                   />
