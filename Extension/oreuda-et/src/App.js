@@ -19,10 +19,10 @@ function App() {
     <div className="App">
       <Router>
         <Routes>
-          {/* <Route path="/" element={<Main />}></Route> */}
+          <Route path="/" element={<Landing />}></Route>
 
           {/* Drag and Drop 구현된 페이지 */}
-          <Route path="/" element={<Main />}></Route>
+          <Route path="/main" element={<Main />}></Route>
           <Route path="/folder/:name" element={<Folder />}></Route>
           <Route path="/oauth2/success" element={<Oauth />}></Route>
         </Routes>

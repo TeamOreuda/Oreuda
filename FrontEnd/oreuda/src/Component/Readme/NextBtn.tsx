@@ -9,7 +9,7 @@ export default function NextBtn() {
 
   return (
     <button
-      className={st.button}
+      className={st.buttonNext}
       onClick={() => dispatch(setNextCompMoving(0))}
     >
       다음
