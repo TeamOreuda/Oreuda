@@ -5,12 +5,14 @@ import com.oreuda.oreuda_plant.api.Domain.Dto.StatusDto;
 import com.oreuda.oreuda_plant.api.Service.PlantService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Objects;
 
@@ -46,7 +48,12 @@ public class PlantController {
 
     @GetMapping("/card")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public String getCard(@RequestHeader HttpHeaders headers) {
-        return "card";
+    public ResponseEntity<?> getCard(@RequestHeader HttpHeaders headers) {
+        log.info("getCard");
+        String svg =
+                "<svg width=\"100\" height=\"100\">\n" +
+                "  <circle cx=\"50\" cy=\"50\" r=\"40\" stroke=\"green\" stroke-width=\"4\" fill=\"yellow\" />\n" +
+                "</svg>";
+        return ResponseEntity.ok().body(svg);
     }
 }

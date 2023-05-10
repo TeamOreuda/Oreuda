@@ -50,7 +50,7 @@ public class PlantService {
     }
 
     public List<StatusDto> getStatus(String userId) {
-        List<UserLog> userLogs = userLogRepository.findAllByUserIdOrderByTimeDesc(userId);
+        List<UserLog> userLogs = userLogRepository.findAllByUserIdOrderByTime(userId);
         List<StatusDto> statusDtoList = new ArrayList<>();
         for (UserLog userLog : userLogs) {
             statusDtoList.add(StatusDto.builder()
