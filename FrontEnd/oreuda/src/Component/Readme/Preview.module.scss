@@ -69,5 +69,44 @@
     width: 100%;
     height: calc(95vh - 180px);
     margin-top: 3vh;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+  }
+}
+
+.techBadgeDiv {
+  display: flex;
+  flex-wrap: wrap;
+  width: 300px;
+
+  .techBadge {
+    margin: 5px 5px;
+  }
+}
+
+.card {
+  display: flex;
+  position: absolute;
+  width: 280px;
+  height: 140px;
+  border-radius: 10px;
+  background: #4bca80;
+  color: white;
+
+  span {
+    font-size: 14px;
+    right: 5px;
+    top: 0px;
+  }
+}
+.contactBadgeDiv {
+  display: flex;
+  justify-content: flex-start;
+  width: 220px;
+
+  a {
+    margin: 0 5px;
   }
 }

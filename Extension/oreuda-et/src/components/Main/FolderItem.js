@@ -5,7 +5,7 @@ import { useDrag, useDrop } from "react-dnd";
 import st from "./FolderList.module.scss";
 import folderSt from "./Folder.module.scss";
 
-const Folder = ({ folder, id, order, focusIdx, SetFocusIdx, moveFolder }) => {
+const FolderItem = ({ folder, id, order, focusIdx, SetFocusIdx, moveFolder }) => {
   const navigate = useNavigate();
   const [isFocused, setIsFocused] = useState(false);
 
@@ -84,17 +84,17 @@ const Folder = ({ folder, id, order, focusIdx, SetFocusIdx, moveFolder }) => {
   );
 
   const doubleClick = (key) => {
-    console.log(key.name);
-    navigate(`/folder/${key.name}`);
+    console.log(key.id);
+    navigate(`/folder/${key.id}`, {state : {color : key.color, name : key.name}});
   };
 
   const focusHandler = () => {
-    if (isFocused && folder.id === focusIdx) {
+    if (isFocused && folder.order === focusIdx) {
       setIsFocused(false);
       SetFocusIdx(-1);
     } else {
       setIsFocused(true);
-      SetFocusIdx(folder.id);
+      SetFocusIdx(folder.order);
     }
   };
   return (
@@ -106,7 +106,7 @@ const Folder = ({ folder, id, order, focusIdx, SetFocusIdx, moveFolder }) => {
         onDoubleClick={() => doubleClick(folder)}
         onClick={() => focusHandler()}
         className={`${
-          isFocused && focusIdx === folder.id
+          isFocused && focusIdx === folder.order
             ? folderSt.focused
             : folderSt.unFocused
         } ${folderSt.folderItem}`}
@@ -115,7 +115,7 @@ const Folder = ({ folder, id, order, focusIdx, SetFocusIdx, moveFolder }) => {
         <div className={st.folderDiv}>
           <img
             ref={dragRef}
-            title="다른 카드 옆으로 드래그해서 위치를 변경합니다."
+            title="드래그해서 위치를 변경합니다."
             className={st.folderImg}
             src={`/assets/folders/${folder.color}.svg`}
           ></img>
@@ -128,4 +128,4 @@ const Folder = ({ folder, id, order, focusIdx, SetFocusIdx, moveFolder }) => {
   // }
 };
 
-export default Folder;
+export default FolderItem;

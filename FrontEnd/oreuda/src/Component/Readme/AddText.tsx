@@ -3,8 +3,6 @@
 import { useState } from "react";
 import st from "./AddText.module.scss";
 
-import NextBtn from "./NextBtn";
-import PrevBtn from "./PrevBtn";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   selectReadme,
@@ -32,6 +30,8 @@ export default function AddText() {
   const cleanInput = () => {
     setTitle("");
     setDesc("");
+    dispatch(setTextTitle(""));
+    dispatch(setTextDesc(""));
   };
 
   return (
@@ -59,7 +59,7 @@ export default function AddText() {
       </div>
       <div className={st.contentDiv}>
         <div className={st.mailDiv}>
-          <span>제목</span>
+          <p>제목</p>
           <input
             className={st.TextTitleInput}
             type="text"
@@ -90,8 +90,6 @@ export default function AddText() {
               <PlusTextBtn titleArr={title} descArr={desc} />
             </div>
             {textArr.length > 0 ? <MinusTextBtn idx={textIdx} /> : undefined}
-            <PrevBtn />
-            <NextBtn />
           </div>
         </div>
       </div>

@@ -1,8 +1,8 @@
 "use client";
 
-import { useCallback, useEffect } from "react";
-import { setCookie } from "cookies-next";
+import Cookies from "js-cookie";
 import { useSearchParams } from "next/navigation";
+import { useCallback, useEffect } from "react";
 
 export default function Token() {
   const searchparams = useSearchParams();
@@ -10,28 +10,25 @@ export default function Token() {
   const ACCESS_TOKEN = searchparams.get("Authorization");
   const REFRESH_TOKEN = searchparams.get("RefreshToken");
 
-  const saveCookiesAndRedirect = useCallback(async () => {
-    if (ACCESS_TOKEN) {
-      setCookie("Authorization", ACCESS_TOKEN, {
+  const saveCookiesAndRedirect = useCallback(() => {
+    if (ACCESS_TOKEN && REFRESH_TOKEN) {
+      Cookies.set("Authorization", ACCESS_TOKEN, {
         path: "/",
         httpOnly: false,
         secure: true,
-        sameSite: "none",
+        sameSite: "None",
       });
-    }
-    if (REFRESH_TOKEN) {
-      setCookie("RefreshToken", REFRESH_TOKEN, {
+      Cookies.set("RefreshToken", REFRESH_TOKEN, {
         path: "/",
         httpOnly: false,
         secure: true,
-        sameSite: "none",
+        sameSite: "None",
       });
     }
   }, [ACCESS_TOKEN, REFRESH_TOKEN]);
 
   useEffect(() => {
-    saveCookiesAndRedirect().then(() => {
-      window.location.replace("/");
-    });
+    saveCookiesAndRedirect();
+    window.location.replace("/");
   }, [saveCookiesAndRedirect]);
 }

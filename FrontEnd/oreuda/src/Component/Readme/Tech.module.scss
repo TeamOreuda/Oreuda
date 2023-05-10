@@ -1,0 +1,135 @@
+@use "../../Style/index.scss" as comm;
+
+.body {
+  @include comm.title;
+
+  .contentDiv {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+
+    .mailDiv {
+      width: 350px;
+      .TextTitleInput {
+        width: 100%;
+        height: 50px;
+        border-radius: 10px;
+        font-family: "GmarketSansMedium";
+        font-size: 16px;
+        border: 3px solid #000000;
+        text-indent: 10px;
+      }
+      .TextDescInput {
+        width: 100%;
+        height: 200px;
+        border-radius: 10px;
+        font-family: "GmarketSansMedium";
+        font-size: 16px;
+        border: 3px solid #000000;
+        text-indent: 10px;
+        display: flex;
+        justify-content: left;
+      }
+    }
+
+    .selectBox {
+      width: 100%;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+
+      .selectSV {
+        width: 200px;
+        height: 50px;
+        margin: 20px;
+        border-radius: 10px;
+        border: 3px solid black;
+        text-indent: 10px;
+        font-size: 16px;
+        font-family: "GmarketSansMedium";
+      }
+    }
+  }
+}
+
+.choiceBox {
+  width: 400px;
+  height: 100px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 20px;
+
+  .choiceComp {
+    margin: 10px 5px;
+    border-radius: 5px;
+    height: 20px;
+    background-color: comm.$mainGreen;
+    color: comm.$mainWhite;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    font-size: 8px;
+  }
+
+  :hover {
+    cursor: pointer;
+    background-color: rgb(110, 236, 163);
+  }
+}
+
+// 추가되는 버튼
+.indexBtns {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  button {
+    background: comm.$mainGreen;
+    color: comm.$mainWhite;
+    border-radius: 5px;
+    border: 1px solid comm.$mainGreen;
+    margin: 10px 5px;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    line-height: 36px;
+
+    button:hover {
+      background: rgb(10, 0, 23);
+    }
+  }
+
+  .btnDefault {
+    background-color: #ffffff;
+    margin: 10px 5px;
+    cursor: pointer;
+  }
+}
+.btnDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 180px;
+  height: 50px;
+  margin-top: 10px;
+
+  .buttonDefault {
+    margin: 10px;
+    width: 60px;
+    height: 40px;
+    background: #4bca80;
+    border-radius: 8px;
+    border: none;
+    color: #ffffff;
+    font-family: "GmarketSansMedium";
+    cursor: pointer;
+    line-height: 40px;
+    font-size: 16px;
+  }
+}

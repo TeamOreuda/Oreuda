@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import st from "./Baekjoon.module.scss";
+import st from "./Github.module.scss";
 import {
   selectReadme,
   setBaekjoonId,
@@ -49,7 +49,7 @@ export default function Github() {
   return (
     <div className={st.body}>
       <div className={st.titleDiv}>
-        <span>깃헙 스택(Github Stats)</span>
+        <span>깃헙 스탯(Stats)</span>
         <p>깃헙 스택을 보여주는 컴포넌트 입니다.</p>
       </div>
       <div className={st.contentDiv}>
@@ -61,15 +61,6 @@ export default function Github() {
           value={id}
         ></input> */}
         <div className={st.selectBox}>
-          {/* <select className={st.selectBJ} onClick={onClickBJTheme}>
-            {bjDesignData.map((data: string, index: number) => {
-              return (
-                <option value={data} key={index}>
-                  {data}
-                </option>
-              );
-            })}
-          </select> */}
           <span>테마 설정</span>
           <select
             className={st.selectSV}
@@ -85,8 +76,6 @@ export default function Github() {
             })}
           </select>
         </div>
-        <PrevBtn />
-        <NextBtn />
       </div>
     </div>
   );

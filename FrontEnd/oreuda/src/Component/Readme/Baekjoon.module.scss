@@ -18,21 +18,16 @@
       justify-content: left;
       align-items: center;
       margin-top: 20px;
+      padding-left: 40px;
 
-      .selectBJ {
-        width: 40%;
-        height: 70%;
-        margin: 20px;
-        border-radius: 10px;
-        border: 3px solid black;
-      }
       .selectSV {
-        width: 40%;
-        height: 70%;
+        width: 200px;
+        height: 50px;
         margin: 20px;
         border-radius: 10px;
         border: 3px solid black;
         text-indent: 10px;
+        font-size: 20px;
       }
     }
 
@@ -49,7 +44,35 @@
 }
 
 // prev, next 버튼
-.button {
-  @include comm.button;
-  display: inline-block;
+
+.buttonPrev {
+  margin: 10px;
+  width: 90px;
+  height: 40px;
+  background: #4bca80;
+  border-radius: 8px;
+  border: none;
+  color: #ffffff;
+  font-family: "GmarketSansMedium";
+  cursor: pointer;
+  line-height: 40px;
+  font-size: 16px;
+  position: fixed;
+  bottom: 30px;
+}
+.buttonNext {
+  margin: 10px;
+  width: 90px;
+  height: 40px;
+  background: #4bca80;
+  border-radius: 8px;
+  border: none;
+  color: #ffffff;
+  font-family: "GmarketSansMedium";
+  cursor: pointer;
+  line-height: 40px;
+  font-size: 16px;
+  position: fixed;
+  right: 40px;
+  bottom: 30px;
 }
