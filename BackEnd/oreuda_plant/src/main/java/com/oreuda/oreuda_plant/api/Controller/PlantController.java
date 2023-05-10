@@ -9,10 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,6 +22,7 @@ public class PlantController {
     private final PlantService plantService;
 
     @GetMapping()
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> getPlant(@RequestHeader HttpHeaders headers) {
         String userId = headers.getFirst("userId");
         PlantDto plantDto = plantService.getPlant(userId);
@@ -32,12 +30,14 @@ public class PlantController {
     }
 
     @PostMapping()
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> setPlantStatus(@RequestHeader String userId) {
         plantService.setStatus(userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/graph")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> getGraph(@RequestHeader HttpHeaders headers) {
         String userId = headers.getFirst("userId");
         List<StatusDto> statusDtoList = plantService.getStatus(userId);
@@ -45,6 +45,7 @@ public class PlantController {
     }
 
     @GetMapping("/card")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public String getCard(@RequestHeader HttpHeaders headers) {
         return "card";
     }
