@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v1/data")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class DataController {
 
 	private final RepositoryService repositoryService;
@@ -22,6 +21,7 @@ public class DataController {
 	private final PlantClient plantClient;
 
 	@PatchMapping()
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	public ResponseEntity<?> data(@RequestHeader String userId) {
 		repositoryService.getAllRepositories(userId);
 		userService.updateUser(userId);
