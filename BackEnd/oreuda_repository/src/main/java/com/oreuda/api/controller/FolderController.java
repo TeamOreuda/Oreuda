@@ -22,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v1/folder")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class FolderController {
 
 	private final FolderService folderService;
@@ -33,6 +32,7 @@ public class FolderController {
 	 * @return
 	 */
 	@GetMapping
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	public ResponseEntity<List<FolderDto>> getFolders(@RequestHeader String userId) {
 		return new ResponseEntity<>(folderService.getFolders(userId), HttpStatus.OK);
 	}
@@ -44,6 +44,7 @@ public class FolderController {
 	 * @return
 	 */
 	@PostMapping
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	public ResponseEntity<?> addFolder(@RequestHeader String userId, @RequestBody InputFolderDto inputFolderDto) {
 		folderService.addFolder(userId, inputFolderDto);
 		return new ResponseEntity(HttpStatus.OK);
@@ -56,6 +57,7 @@ public class FolderController {
 	 * @return
 	 */
 	@PatchMapping("delete")
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	public ResponseEntity<?> deleteFolder(@RequestHeader String userId, @RequestBody List<Integer> folders) {
 		folderService.deleteFolder(userId, folders);
 		return new ResponseEntity(HttpStatus.OK);
@@ -68,6 +70,7 @@ public class FolderController {
 	 * @return
 	 */
 	@PatchMapping
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	public ResponseEntity<?> updateFolder(@RequestHeader String userId, @RequestBody FolderDto folderDto) {
 		folderService.updateFolder(userId, folderDto);
 		return new ResponseEntity(HttpStatus.OK);
@@ -80,6 +83,7 @@ public class FolderController {
 	 * @return
 	 */
 	@PatchMapping("rearrange")
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	public ResponseEntity<List<FolderDto>> rearrangeFolder(@RequestHeader String userId,
 		@RequestBody FolderDto folderDto) {
 		return new ResponseEntity(folderService.rearrangeFolder(userId, folderDto), HttpStatus.OK);
