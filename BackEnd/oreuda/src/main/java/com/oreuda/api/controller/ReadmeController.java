@@ -36,14 +36,12 @@ public class ReadmeController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	// 사용자 프로필 이미지 조회
-	@GetMapping("/profile")
+	// 사용자 리드미 조회
+	@GetMapping()
 	@CrossOrigin(origins = "*", allowedHeaders = "*")
-	public ResponseEntity<?> getImage(@RequestHeader String userId) throws Exception {
-		log.info(userId);
-
+	public ResponseEntity<?> getReadme(@RequestHeader String userId) throws Exception {
 		String userImage = userService.getImage(userId);
-		return new ResponseEntity<String>(userImage, HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 }

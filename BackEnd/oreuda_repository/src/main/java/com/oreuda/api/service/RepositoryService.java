@@ -7,16 +7,18 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.oreuda.api.domain.dto.InputRepositoryDto;
+import com.oreuda.api.domain.dto.OutputRepositoryDto;
 import com.oreuda.api.domain.entity.Folder;
 import com.oreuda.api.domain.entity.FolderRepository;
 import com.oreuda.api.domain.entity.Repository;
 import com.oreuda.api.domain.dto.RepositoryDto;
+import com.oreuda.api.domain.entity.User;
 import com.oreuda.api.repository.FolderJpaRepository;
 import com.oreuda.api.repository.RepositoryJpaRepository;
 import com.oreuda.api.repository.RepositoryRepository;
+import com.oreuda.api.repository.UserJpaRepository;
 import com.oreuda.common.exception.InvalidInputException;
 import com.oreuda.common.exception.NotFoundException;
-import com.oreuda.common.exception.UnauthorizedException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RepositoryService {
 
+	private final UserJpaRepository userJpaRepository;
 	private final FolderJpaRepository folderJpaRepository;
 	private final RepositoryJpaRepository repositoryJpaRepository;
 
@@ -75,7 +78,7 @@ public class RepositoryService {
 				Collections.sort(repositories, (o1, o2) -> o2.getCommitCount() - o1.getCommitCount());
 				break;
 			case "name":
-				Collections.sort(repositories, (o1, o2) -> o1.getName().compareTo(o2.getName()));
+				Collections.sort(repositories, (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()));
 				break;
 			case "star":
 				Collections.sort(repositories, (o1, o2) -> o2.getStarCount() - o2.getStarCount());
@@ -83,6 +86,32 @@ public class RepositoryService {
 			default:
 				throw new InvalidInputException();
 		}
+
+		return repositories;
+	}
+
+	public List<OutputRepositoryDto> getRepositoriesByBaseFolder(String userId) {
+		// 사용자의 기본 폴더 불러오기
+		User user = userJpaRepository.findById(userId).orElseThrow(NotFoundException::new);
+		Folder baseFolder = folderJpaRepository.findByUserAndStatus(user, "B");
+
+		// 기본 폴더의 레포지토리ID 목록
+		List<FolderRepository> folderRepositories = repositoryJpaRepository.findByFolder_Id(Long.valueOf(baseFolder.getId()));
+		List<OutputRepositoryDto> repositories = new ArrayList<>();
+
+		for (FolderRepository folderRepository : folderRepositories) {
+			// 레포지토리ID로 Redis에 있는 레포지토리 정보 불러오기
+			Repository repository = repositoryRepository.get(userId, folderRepository.getId())
+				.orElseThrow(NotFoundException::new);
+
+			repositories.add(OutputRepositoryDto.builder()
+				.id(repository.getId())
+				.name(repository.getName())
+				.build());
+		}
+
+		// 이름순 정렬
+		Collections.sort(repositories, (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()));
 
 		return repositories;
 	}

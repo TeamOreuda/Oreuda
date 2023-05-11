@@ -46,11 +46,6 @@ public class MostLanguage {
 	@Column(name = "readme_order")
 	private int order;
 
-	// 깃 아이디
-	@NotNull
-	@Column(name = "most_language_val")
-	private String val;
-
 	// 테마
 	@NotNull
 	@Column(name = "most_language_theme")
