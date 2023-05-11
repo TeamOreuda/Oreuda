@@ -4,6 +4,7 @@ import Image from "next/image";
 import st from "./repository.module.scss";
 import Repositorygraph from "./repositorygraph";
 import { useEffect, useState } from "react";
+import RepositoryGrassGraph from "./repositoryGrassGraph";
 
 interface Repository {
   id: string;
@@ -125,7 +126,7 @@ export default function Repository(props: { clickMove: boolean; repositoryList: 
               <span>Updated on {formattedDate(e.updateDate)}</span>
             </div>
           </div>
-          <div>그래프</div>
+          <RepositoryGrassGraph />
           <Repositorygraph yearlyCommits={e.yearlyCommits} />
         </div>
       ))}
