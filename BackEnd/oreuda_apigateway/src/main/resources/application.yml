@@ -10,6 +10,22 @@ spring:
     name: spring-cloud-gateway
   cloud:
     gateway:
+      default-filters:
+      - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials 
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: 'http://localhost:3000'
+            allow-credentials: true
+            allowedHeaders: '*'
+            allowedMethods:
+            - PUT
+            - GET
+            - POST
+            - PATCH
+            - DELETE
+            - OPTIONS
+
       routes:
         # business-server
         - id: business-server
@@ -42,19 +58,6 @@ spring:
             - Path=/api/v1/folder/**, /api/v1/repository/**
           filters:
             - AuthorizationHeaderFilter
-
-        # - id: repo-server
-        #   uri: http://172.28.0.26:8070/
-        #   predicates:
-        #     - Path=/api/v1/repository/**
-        #   filters:
-        #     - AuthorizationHeaderFilter
-
-        # auth-server
-        - id: login-server
-          uri: http://52.79.221.133:8090/
-          predicates:
-            - Path=/oauth2/**
 
         - id: auth-server
           uri: http://172.28.0.23:8090/
