@@ -104,7 +104,6 @@ public class ReadmeService {
 			.user(user)
 			.readme(readme)
 			.order(order)
-			.val(readmeDto.getGitValue())
 			.theme(readmeDto.getGitTheme())
 			.build();
 		gitstatsRepository.save(gitstats);
@@ -138,7 +137,6 @@ public class ReadmeService {
 			.user(user)
 			.readme(readme)
 			.order(order)
-			.val(readmeDto.getGitValue())
 			.theme(readmeDto.getLanguageTheme())
 			.type(readmeDto.getLanguageType())
 			.build();
