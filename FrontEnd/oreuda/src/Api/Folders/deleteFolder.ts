@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export const DeleteFolderList = async (ACCESS_TOKEN: any, data: { folders: Array<number> }) => {
-  return await axios.patch(
+export const DeleteFolder = (ACCESS_TOKEN: any, data: { folders: Array<number> }) => {
+  return axios.patch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/v1/folder/delete`,
     { data },
     {

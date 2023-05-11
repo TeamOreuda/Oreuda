@@ -1,10 +1,12 @@
 .body {
   display: grid;
   grid-template-columns: 2fr 2fr 1fr;
+  height: 200px;
 
   margin: {
     left: 32px;
     right: 16px;
+    bottom: 16px;
   }
 }
 
@@ -35,6 +37,12 @@
     margin-right: 16px;
     text-decoration: none;
     color: black;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   div {
     font-size: 8px;
@@ -60,8 +68,11 @@
       margin-right: 8px;
     }
 
+    span:nth-of-type(1) {
+      margin-right: 16px;
+    }
+
     .img {
-      margin-left: 16px;
       margin-right: 8px;
     }
   }
