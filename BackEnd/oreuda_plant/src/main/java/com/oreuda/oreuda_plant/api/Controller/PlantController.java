@@ -29,7 +29,6 @@ public class PlantController {
     }
 
     @PostMapping()
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> setPlantStatus(@RequestHeader String userId) {
         plantService.setStatus(userId);
         return new ResponseEntity<>(HttpStatus.OK);
