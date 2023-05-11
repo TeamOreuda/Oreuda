@@ -33,6 +33,11 @@ public class PlantService {
     private final UserLogRepository userLogRepository;
     private final CommitRepository commitRepository;
 
+    public String getUserId(String nickname) {
+        User user = userRepository.findByNickname(nickname).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+        return user.getId();
+    }
+
     public PlantDto getPlant(String userId) {
 //        log.info("userId = {}", userId);
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
