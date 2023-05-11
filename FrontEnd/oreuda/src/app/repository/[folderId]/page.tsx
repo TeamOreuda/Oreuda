@@ -11,8 +11,9 @@ import Repository from "@/Component/Repository/repository";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
 import { GetRepositoryLst } from "@/Api/Repository/getRepositoryList";
 import { getUserRefresh } from "@/Api/Oauth/getUserRefresh";
-
 export default function RepositoryPage() {
+  const params = useParams();
+  const folderId = Number(params.folderId);
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
   const [moveRepository, setmoveRepository] = useState(false);
@@ -35,8 +36,6 @@ export default function RepositoryPage() {
   // const toggleDropdown = () => {
   //   setIsOpen(!isOpen);
   // };
-  const params = useParams();
-  const folderId = Number(params.folderId);
 
   // const clickMove = () => {
   //   setmoveRepository(!moveRepository);
