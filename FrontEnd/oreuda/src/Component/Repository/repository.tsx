@@ -28,6 +28,27 @@ export default function Repository(props: { clickMove: boolean; repositoryList: 
   const { clickMove, repositoryList } = props;
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
 
+  const options = [
+    { id: 1, value: "hello" },
+    { id: 2, value: "111" },
+    { id: 3, value: "2222" },
+    { id: 1, value: "hello" },
+    { id: 2, value: "111" },
+    { id: 3, value: "2222" },
+    { id: 1, value: "hello" },
+    { id: 2, value: "111" },
+    { id: 3, value: "2222" },
+    { id: 1, value: "hello" },
+    { id: 2, value: "111" },
+    { id: 3, value: "2222" },
+    { id: 1, value: "hello" },
+    { id: 2, value: "111" },
+    { id: 3, value: "2222" },
+    { id: 1, value: "hello" },
+    { id: 2, value: "111" },
+    { id: 3, value: "2222" },
+  ];
+
   // useEffect(() => {
   //   setCheckedItems([]);
   // }, [clickMove]);
@@ -67,8 +88,6 @@ export default function Repository(props: { clickMove: boolean; repositoryList: 
   //   setCheckedItems(newCheckedItems);
   // };
 
-  console.log(repositoryList);
-
   return (
     <div>
       {repositoryList?.map((e, index) => (
@@ -80,7 +99,7 @@ export default function Repository(props: { clickMove: boolean; repositoryList: 
                   type="checkbox"
                   value={e.id}
                   checked={checkedItems.indexOf(String(e.id)) !== -1}
-                  onChange={handleCheckboxChange}
+                  // onChange={handleCheckboxChange}
                   onClick={(event) => event.stopPropagation()}
                 />
               )} */}

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { redirect, useParams } from "next/navigation";
 
@@ -12,45 +12,58 @@ import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
 import { GetRepositoryLst } from "@/Api/Repository/getRepositoryList";
 import { getUserRefresh } from "@/Api/Oauth/getUserRefresh";
 
-export default async function RepositoryPage() {
+export default function RepositoryPage() {
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
-  // const [moveRepository, setmoveRepository] = useState(false);
+  const [moveRepository, setmoveRepository] = useState(false);
+  const [repositoryListData, setRepositoryListData] = useState([]);
   // const [filtering, setFiltering] = useState("recent");
+  const options = [
+    { id: 1, value: "recent", name: "최신순" },
+    { id: 2, value: "commit", name: "커밋순" },
+    { id: 3, value: "name", name: "이름순" },
+    { id: 4, value: "star", name: "별점순" },
+  ];
 
-  const folderId = 22;
+  // const [isOpen, setIsOpen] = useState(true);
+  // const [selectedOption, setSelectedOption] = useState(options[0]);
 
-  console.log();
+  // const handleOptionClick = (option: any) => {
+  //   setSelectedOption(option);
+  //   setIsOpen(!isOpen);
+  // };
+  // const toggleDropdown = () => {
+  //   setIsOpen(!isOpen);
+  // };
+  const params = useParams();
+  const folderId = Number(params.folderId);
 
   // const clickMove = () => {
   //   setmoveRepository(!moveRepository);
   // };
 
-  const repositoryList = await GetRepositoryLst(ACCESS_TOKEN, folderId, "recent")
-    .then((res) => {
-      return res.data;
-    })
-    .catch(async (err) => {
-      if (err.response?.status == 401) {
-        return await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
-          .then(async (res) => {
-            await saveCookiesAndRedirect(res.data.Authorization, res.data.RefreshToken);
-            return await GetRepositoryLst(ACCESS_TOKEN, folderId, "recent").then((res) => {
-              return res.data;
-            });
-          })
-
-          .catch(() => {
-            redirect("/");
-          });
+  useEffect(() => {
+    const loadRepositoryList = async () => {
+      try {
+        const res = await GetRepositoryLst(ACCESS_TOKEN, folderId, "recent");
+        setRepositoryListData(res.data);
+      } catch (err: any) {
+        if (err.response?.status == 401) {
+          const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+          saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+          const res = await GetRepositoryLst(ACCESS_TOKEN, folderId, "recent");
+          setRepositoryListData(res.data);
+        }
       }
-    });
+    };
+    loadRepositoryList();
+  }, [ACCESS_TOKEN, REFRESH_TOKEN, folderId]);
 
   return (
     <div className={st.body}>
       <div className={st.button}>
-        {/* <button onClick={clickMove}>
-          {moveRepository ? "확 인" : "폴더 이동"}
+        <button>
+          {false ? "확 인" : "폴더 이동"}
           <Image
             className={st.img}
             src="/images/repository/send.svg"
@@ -58,10 +71,34 @@ export default async function RepositoryPage() {
             width={16}
             height={16}
           />
-        </button> */}
+        </button>
       </div>
+      {/* <div onClick={(e) => e.stopPropagation()}>
+        <div className={st.dropdown} onClick={toggleDropdown}>
+          {selectedOption.name}
+        </div>
+        <div className={st.dropdown}>
+          {isOpen && (
+            <div className={st.options}>
+              {options.map((option) => (
+                <div
+                  key={option.id}
+                  className={`${st.option} ${
+                    option.value === selectedOption.value ? st.active : ""
+                  }`}
+                  onClick={() => handleOptionClick(option)}
+                >
+                  {option.name}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div> */}
       <hr />
-      <Repository clickMove={false} repositoryList={repositoryList} />
+      <div className={st.repository}>
+        <Repository clickMove={false} repositoryList={repositoryListData} />
+      </div>
     </div>
   );
 }

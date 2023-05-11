@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Cookies from "js-cookie";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { redirect } from "next/navigation";
 
 import st from "./page.module.scss";
@@ -13,11 +13,12 @@ import { GetFolderList } from "@/Api/Folders/getFolderList";
 import { getUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
 
-export default async function Repository() {
+export default function Repository() {
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
   const [showModal, setShowModal] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
+  const [folderListData, setFolderListData] = useState([]);
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
 
   // const clickModal = () => {
@@ -28,25 +29,22 @@ export default async function Repository() {
   //   setShowDelete(!showDelete);
   // };
 
-  const folderListData = await GetFolderList(ACCESS_TOKEN)
-    .then((res) => {
-      return res.data;
-    })
-    .catch(async (err) => {
-      if (err.response?.status == 401) {
-        return await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
-          .then(async (res) => {
-            await saveCookiesAndRedirect(res.data.Authorization, res.data.RefreshToken);
-            return await GetFolderList(res.data.Authorization).then((res) => {
-              return res.data;
-            });
-          })
-
-          .catch(() => {
-            redirect("/");
-          });
+  useEffect(() => {
+    const loadFolderList = async () => {
+      try {
+        const res = await GetFolderList(ACCESS_TOKEN);
+        setFolderListData(res.data);
+      } catch (err: any) {
+        if (err.response?.status == 401) {
+          const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+          saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+          const res = await GetFolderList(token.data.Authorization);
+          setFolderListData(res.data);
+        }
       }
-    });
+    };
+    loadFolderList();
+  }, [ACCESS_TOKEN, REFRESH_TOKEN]);
 
   return (
     <div className={st.body}>

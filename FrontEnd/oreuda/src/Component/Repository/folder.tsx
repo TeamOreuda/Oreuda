@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 import { getUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
-import { DeleteFolderList } from "@/Api/Folders/deleteFolderList";
+import { DeleteFolder } from "@/Api/Folders/deleteFolder";
 import { GetRepositoryLst } from "@/Api/Repository/getRepositoryList";
 
 interface FolderList {
