@@ -33,11 +33,11 @@ public class RepositoryController {
 	 * @param userId
 	 * @return
 	 */
-	@GetMapping("/base")
-	@CrossOrigin(origins = "*", allowedHeaders = "*")
-	public ResponseEntity<List<OutputRepositoryDto>> getRepositoriesByBaseFolder(@RequestHeader String userId) {
-		return new ResponseEntity<>(repositoryService.getRepositoriesByBaseFolder(userId), HttpStatus.OK);
-	}
+	// @GetMapping("/base")
+	// @CrossOrigin(origins = "*", allowedHeaders = "*")
+	// public ResponseEntity<List<OutputRepositoryDto>> getRepositoriesByBaseFolder(@RequestHeader String userId) {
+	// 	return new ResponseEntity<>(repositoryService.getRepositoriesByBaseFolder(userId), HttpStatus.OK);
+	// }
 
 	/**
 	 * 레포지토리 목록 조회
