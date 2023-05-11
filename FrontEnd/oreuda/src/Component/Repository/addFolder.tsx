@@ -32,8 +32,6 @@ export default function AddFolder(props: { clickModal: any }) {
         const res = await GetBasicFolder(ACCESS_TOKEN);
         setRepositoryListData(res.data);
       } catch (err: any) {
-        console.log(err);
-
         if (err.response?.status == 401) {
           const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
           saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
@@ -43,7 +41,7 @@ export default function AddFolder(props: { clickModal: any }) {
       }
     };
     loadRepositoryList();
-  }, [ACCESS_TOKEN, REFRESH_TOKEN, folderId]);
+  }, [ACCESS_TOKEN, REFRESH_TOKEN]);
 
   const addFolderList = async () => {
     try {
@@ -86,8 +84,6 @@ export default function AddFolder(props: { clickModal: any }) {
       clickModal();
     }
   };
-
-  console.log(repositoryListData);
 
   return (
     <div className={st.modalBox} onClick={clickModal}>
