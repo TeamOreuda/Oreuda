@@ -10,6 +10,7 @@ import { getUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
 import { DeleteFolder } from "@/Api/Folders/deleteFolder";
 import { GetRepositoryLst } from "@/Api/Repository/getRepositoryList";
+import RepositoryGrassGraph from "./repositoryGrassGraph";
 
 interface FolderList {
   id: number;
@@ -71,19 +72,19 @@ export default function Folder(props: {
   //   e.preventDefault();
   // };
 
-  // const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { value } = event.target;
-  //   const currentIndex = checkedItems.indexOf(Number(value));
-  //   const newCheckedItems = [...checkedItems];
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    const currentIndex = checkedItems.indexOf(Number(value));
+    const newCheckedItems = [...checkedItems];
 
-  //   if (currentIndex === -1) {
-  //     newCheckedItems.push(Number(value));
-  //   } else {
-  //     newCheckedItems.splice(currentIndex, 1);
-  //   }
+    if (currentIndex === -1) {
+      newCheckedItems.push(Number(value));
+    } else {
+      newCheckedItems.splice(currentIndex, 1);
+    }
 
-  //   setCheckedItems(newCheckedItems);
-  // };
+    setCheckedItems(newCheckedItems);
+  };
 
   return (
     <div className={st.folders}>
@@ -100,7 +101,7 @@ export default function Folder(props: {
               // draggable={!clickDelete}
             >
               <div className={st.folder}>
-                {/* {clickDelete && (
+                {clickDelete && (
                   <input
                     type="checkbox"
                     value={e.id}
@@ -108,7 +109,7 @@ export default function Folder(props: {
                     onChange={handleCheckboxChange}
                     onClick={(event) => event.stopPropagation()}
                   />
-                )} */}
+                )}
                 <div data-position={index}>
                   <Image
                     data-position={index}

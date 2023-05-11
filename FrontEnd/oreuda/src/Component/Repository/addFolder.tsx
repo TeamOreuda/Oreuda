@@ -11,6 +11,7 @@ import { useParams } from "next/navigation";
 import { getUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
 import { AddFolderAxios } from "@/Api/Folders/addFolder";
+import { GetBasicFolder } from "@/Api/Folders/getBasicFolder";
 
 export default function AddFolder(props: { clickModal: any }) {
   const { clickModal } = props;
@@ -18,7 +19,7 @@ export default function AddFolder(props: { clickModal: any }) {
   const folderId = Number(params.folderId);
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
-  const [repositoryListData, setRepositoryListData] = useState([{ name: "hello" }]);
+  const [repositoryListData, setRepositoryListData] = useState<{ id: number; name: string }[]>();
   const [folderName, setFolderName] = useState("");
   const [folderColor, setFolderColor] = useState("");
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
@@ -28,13 +29,15 @@ export default function AddFolder(props: { clickModal: any }) {
   useEffect(() => {
     const loadRepositoryList = async () => {
       try {
-        const res = await GetRepositoryLst(ACCESS_TOKEN, 12, "recent");
+        const res = await GetBasicFolder(ACCESS_TOKEN);
         setRepositoryListData(res.data);
       } catch (err: any) {
+        console.log(err);
+
         if (err.response?.status == 401) {
           const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
           saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
-          const res = await GetRepositoryLst(ACCESS_TOKEN, 12, "recent");
+          const res = await GetBasicFolder(ACCESS_TOKEN);
           setRepositoryListData(res.data);
         }
       }
@@ -44,10 +47,8 @@ export default function AddFolder(props: { clickModal: any }) {
 
   const addFolderList = async () => {
     try {
-      const res = await AddFolderAxios(ACCESS_TOKEN, folderName, folderColor, checkedItems);
-      console.log(res.data);
+      await AddFolderAxios(ACCESS_TOKEN, folderName, folderColor, checkedItems);
     } catch (err: any) {
-      console.log(err.response);
       if (err.response?.status == 401) {
         const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
         saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
@@ -86,6 +87,8 @@ export default function AddFolder(props: { clickModal: any }) {
     }
   };
 
+  console.log(repositoryListData);
+
   return (
     <div className={st.modalBox} onClick={clickModal}>
       <div className={st.modalContent} onClick={(e) => e.stopPropagation()}>
@@ -112,14 +115,16 @@ export default function AddFolder(props: { clickModal: any }) {
             );
           })}
         </div>
-        <p>추가할 레포지토리</p>
+        <p>
+          추가할 레포지토리 ({checkedItems.length}/{repositoryListData?.length})
+        </p>
         <div className={st.checkItem}>
           {repositoryListData?.map((item, index) => (
             <div key={index}>
               <input
                 type="checkbox"
-                value={item.name}
-                checked={checkedItems.indexOf(item.name) !== -1}
+                value={item.id}
+                checked={checkedItems.indexOf(String(item.id)) !== -1}
                 onChange={handleCheckboxChange}
               />
               {item.name}

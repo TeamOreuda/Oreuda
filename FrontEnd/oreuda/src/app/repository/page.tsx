@@ -12,6 +12,7 @@ import AddFolder from "@/Component/Repository/addFolder";
 import { GetFolderList } from "@/Api/Folders/getFolderList";
 import { getUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
+import { DeleteFolder } from "@/Api/Folders/deleteFolder";
 
 export default function Repository() {
   const ACCESS_TOKEN = Cookies.get("Authorization");
@@ -20,14 +21,6 @@ export default function Repository() {
   const [showDelete, setShowDelete] = useState(false);
   const [folderListData, setFolderListData] = useState([]);
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
-
-  const clickModal = () => {
-    setShowModal(!showModal);
-  };
-
-  const clickDelete = () => {
-    setShowDelete(!showDelete);
-  };
 
   useEffect(() => {
     const loadFolderList = async () => {
@@ -46,6 +39,34 @@ export default function Repository() {
     loadFolderList();
   }, [ACCESS_TOKEN, REFRESH_TOKEN]);
 
+  const deleteFolderList = async () => {
+    try {
+      const res = await DeleteFolder(ACCESS_TOKEN, checkedItems);
+      setFolderListData(res.data);
+    } catch (err: any) {
+      if (err.response?.status == 401) {
+        const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+        const res = await DeleteFolder(token.data.Authorization, checkedItems);
+      }
+    }
+  };
+
+  const clickModal = () => {
+    if (false) {
+      alert("기본 폴더에 레포지토리가 없어 폴더를 만들 수 없습니다.");
+    } else {
+      setShowModal(!showModal);
+    }
+  };
+
+  const clickDelete = () => {
+    if (showDelete == true) {
+      deleteFolderList();
+      setCheckedItems([]);
+    }
+    setShowDelete(!showDelete);
+  };
   return (
     <div className={st.body}>
       <div className={st.button}>
