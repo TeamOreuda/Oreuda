@@ -53,7 +53,7 @@ const FolderItem = ({ folder, id, order, focusIdx, SetFocusIdx, moveFolder }) =>
       accept: "folder",
       drop({ id: draggedId, order: orgIndex }) {
         if (draggedId !== id) {
-          moveFolder(draggedId, order);
+          moveFolder(draggedId, order-1);
         }
       },
 
@@ -65,7 +65,7 @@ const FolderItem = ({ folder, id, order, focusIdx, SetFocusIdx, moveFolder }) =>
       accept: "folder",
       drop({ id: draggedId, order: orgIndex }) {
         if (draggedId !== id) {
-          orgIndex !== order + 1 && moveFolder(draggedId, order + 1);
+          orgIndex !== order && moveFolder(draggedId, order);
         }
       },
     }),
