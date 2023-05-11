@@ -37,6 +37,7 @@ const FolderList = () => {
 
   const moveFolder = (id, order) => {
     // 여기서 axios 호출 한 다음 변환 값 화면에 적용
+    // console.log(order)
     rearrangeFolder(atk, id, order).then((response) => {
       setIsChanged(!isChanged);
     });
