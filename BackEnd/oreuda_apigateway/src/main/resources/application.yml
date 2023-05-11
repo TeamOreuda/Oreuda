@@ -59,12 +59,6 @@ spring:
           filters:
             - AuthorizationHeaderFilter
 
-        # auth-server
-        - id: login-server
-          uri: http://localhost:8090/
-          predicates:
-            - Path=/oauth2/**
-
         - id: auth-server
           uri: http://localhost:8090/
           predicates:
