@@ -1,9 +1,11 @@
 package com.oreuda.api.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.oreuda.api.domain.dto.RDMDto;
 import com.oreuda.api.domain.dto.ReadmeDto;
 import com.oreuda.api.domain.entity.Readme;
 import com.oreuda.api.domain.entity.User;
@@ -46,8 +48,8 @@ public class ReadmeService {
 	private final ReadmeTechstackRepository readmeTechstackRepository;
 
 	public void saveReadme(List<ReadmeDto> readmes, String userId) {
-		// 사용자
-		User user = userRepository.findById(userId).get();
+		// 사용자 유무 검증
+		User user = userRepository.findById(userId).orElseThrow();
 		Readme readme = Readme.builder()
 			.user(user)
 			.build();
@@ -168,6 +170,17 @@ public class ReadmeService {
 			.order(order)
 			.build();
 		oreuRepository.save(oreu);
+	}
+
+	// 리드미 조회
+	public void getReadme(String userId) {
+		// 사용자 유무 검증
+		User user = userRepository.findById(userId).orElseThrow();
+
+		// 리드미 유무 검증
+		Long readmeId = readmeRepository.findByUser_Id(userId).orElseThrow().getId();
+
+		List<RDMDto> rdmDtoList = new ArrayList<>();
 	}
 }
 

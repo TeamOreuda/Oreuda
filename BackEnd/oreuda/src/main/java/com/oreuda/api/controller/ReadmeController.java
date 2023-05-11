@@ -40,7 +40,7 @@ public class ReadmeController {
 	@GetMapping()
 	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	public ResponseEntity<?> getReadme(@RequestHeader String userId) throws Exception {
-		String userImage = userService.getImage(userId);
+		readmeService.getReadme(userId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
