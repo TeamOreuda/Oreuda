@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.oreuda.api.domain.dto.RDMDto;
 import com.oreuda.api.domain.dto.ReadmeDto;
 import com.oreuda.api.service.ReadmeService;
 import com.oreuda.api.service.UserService;
@@ -40,8 +41,11 @@ public class ReadmeController {
 	@GetMapping()
 	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	public ResponseEntity<?> getReadme(@RequestHeader String userId) throws Exception {
-		readmeService.getReadme(userId);
-		return new ResponseEntity<>(HttpStatus.OK);
+		List<RDMDto> rdmDtoList = readmeService.getReadme(userId);
+		for (RDMDto r:rdmDtoList) {
+			System.out.println(r.toString());
+		}
+		return new ResponseEntity<List<RDMDto>>(rdmDtoList, HttpStatus.OK);
 	}
 
 }
