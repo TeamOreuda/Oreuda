@@ -6,11 +6,11 @@ import Statistic from "@/Component/Main/statistic";
 import Character from "@/Component/Main/character";
 import CharacterGraph from "@/Component/Main/charactergraph";
 
-import { getUserRefresh } from "@/Api/Oauth/getUserRefresh";
-import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
 import { GetUser } from "@/Api/Users/getUsers";
 import { GetCharacter } from "@/Api/Plant/getCharacter";
+import { getUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { GetCharacterGraph } from "@/Api/Plant/getCharacterGraph";
+import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
 
 export default async function Home() {
   const cookieStore = cookies();
@@ -33,9 +33,8 @@ export default async function Home() {
               return res.data;
             });
           })
-
           .catch(() => {
-            redirect("/");
+            redirect("/landing");
           });
       }
     });
@@ -56,9 +55,8 @@ export default async function Home() {
               return res.data;
             });
           })
-
           .catch(() => {
-            redirect("/");
+            redirect("/landing");
           });
       }
     });
@@ -79,9 +77,8 @@ export default async function Home() {
               return res.data;
             });
           })
-
           .catch(() => {
-            redirect("/");
+            redirect("/landing");
           });
       }
     });
