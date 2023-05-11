@@ -8,6 +8,7 @@ const nextConfig = {
       { protocol: "http", hostname: "mazassumnida.wtf" },
       { protocol: "http", hostname: "*.herokuapp.com" },
     ],
+    domains: ["avatars.githubusercontent.com"],
   },
 };
 
