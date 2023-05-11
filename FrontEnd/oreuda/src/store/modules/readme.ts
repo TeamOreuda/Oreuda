@@ -381,16 +381,18 @@ const themeSlice = createSlice({
       console.log(start, end);
 
       const arr: any = state.prevComp;
-      arr[start] = state.prevComp.splice(end, 1, state.prevComp[start]);
+      state.prevComp[start] = state.prevComp.splice(
+        end,
+        1,
+        state.prevComp[start]
+      )[0];
 
       // const arr2: any = state.componentArr;
-      // arr2[start] = state.componentArr.splice(
-      //   end,
-      //   1,
-      //   state.componentArr[start]
-      // );
-
-      console.log(arr);
+      // state.componentArr.splice(end, 1, state.componentArr[start]);
+    },
+    setPrevCompChange(state, action) {
+      console.log(action.payload);
+      // state.prevComp = action.payload;
     },
   },
 });
@@ -426,6 +428,7 @@ export const {
   setNextCompMoving,
   setPrevCompMoving,
   setMovingComponent,
+  setPrevCompChange,
 } = themeSlice.actions;
 export const selectReadme = (state: RootState) => state.readme;
 // 리듀서

@@ -25,6 +25,25 @@ export default function Preview() {
   const mailDomain = useAppSelector(selectReadme).mailDomain;
   const blogLink = useAppSelector(selectReadme).blogLink;
   const notionLink = useAppSelector(selectReadme).notionLink;
+  const currComponent = useAppSelector(selectReadme).currComponent;
+  const prevComp = useAppSelector(selectReadme).prevComp;
+
+  console.log(textArr);
+
+  const tt: any = [];
+  const newPrevComp = prevComp.filter((el, index) => {
+    if (Number(el) !== 0) {
+      if (Number(el) == 7) {
+        textArr.filter((el, index) => {
+          tt.push(7 + `${el.index}`);
+        });
+      } else {
+        tt.push(el);
+      }
+    }
+  });
+  console.log(tt);
+
   // console.log(componentArr);
 
   // 연락처
@@ -152,6 +171,71 @@ export default function Preview() {
     // }
   };
 
+  const tmp = [
+    "",
+    <>
+      <img src={firstImgUrl} width="280" height="140" alt="baekjoon" />
+      <img src={secImgUrl} width="285" height="140" alt="solved" />
+    </>,
+    <>
+      <img src={githubUrl} width="350" height="150" alt="githubStats" />
+    </>,
+    <>
+      <img src={mulUrl} width="280" height={mulHeight} alt="MUL" />
+    </>,
+    <>
+      {showTechWhole()}
+      <h3>{techTitle}</h3>
+      <div className={st.techBadgeDiv}>{showTechArr()}</div>
+    </>,
+    <>
+      <h3>Contact</h3>
+      <div className={st.contactBadgeDiv}>
+        {mailId.length > 0 ? (
+          <a href={mailURL} target="_blank">
+            <img
+              src="https://img.shields.io/badge/Mail-6667AB?style=flat&logo=Gmail&logoColor=white"
+              alt="Mail"
+            />
+          </a>
+        ) : undefined}
+        {blogLink.length > 0 ? (
+          <a href={blogLink} target="_blank">
+            <img
+              src={`https://img.shields.io/badge/Tech Blog-7FD2F5?style=flat&logo=Hoppscotch&logoColor=white&link=${blogLink}/`}
+              alt="blog"
+            />
+          </a>
+        ) : undefined}
+        {notionLink.length > 0 ? (
+          <a href={notionLink} target="_blank">
+            <img
+              src={`https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white&link=${notionLink}/`}
+              alt="notion"
+            />
+          </a>
+        ) : undefined}
+      </div>
+    </>,
+    "오르",
+    <>
+      {showTextArr()}
+      {/* <h3>{newTextTitle}</h3>
+      <p>{newTextDesc}</p> */}
+    </>,
+  ];
+
+  const aa = () => {
+    const arr: any = [];
+    prevComp.map((el: any, index) => {
+      if (index !== 0) {
+        arr.push(tmp[el]);
+      }
+    });
+
+    return arr;
+  };
+
   return (
     <div className={st.body}>
       <div className={st.headerDiv}>
@@ -180,64 +264,80 @@ export default function Preview() {
       </div>
       <div className={st.contentDiv}>
         <div>
+          {currComponent !== 8 ? (
+            <>
+              {componentArr[1] ? (
+                <div>
+                  <img
+                    src={firstImgUrl}
+                    width="280"
+                    height="140"
+                    alt="baekjoon"
+                  />
+                  <img src={secImgUrl} width="285" height="140" alt="solved" />
+                </div>
+              ) : undefined}
+              {componentArr[2] ? (
+                <img
+                  src={githubUrl}
+                  width="350"
+                  height="150"
+                  alt="githubStats"
+                />
+              ) : undefined}
+              {componentArr[3] ? (
+                <img src={mulUrl} width="280" height={mulHeight} alt="MUL" />
+              ) : undefined}
+              {componentArr[4] ? (
+                <>
+                  {showTechWhole()}
+                  <h3>{techTitle}</h3>
+                  <div className={st.techBadgeDiv}>{showTechArr()}</div>
+                </>
+              ) : undefined}
+              {componentArr[5] ? (
+                <>
+                  <h3>Contact</h3>
+                  <div className={st.contactBadgeDiv}>
+                    {mailId.length > 0 ? (
+                      <a href={mailURL} target="_blank">
+                        <img
+                          src="https://img.shields.io/badge/Mail-6667AB?style=flat&logo=Gmail&logoColor=white"
+                          alt="Mail"
+                        />
+                      </a>
+                    ) : undefined}
+                    {blogLink.length > 0 ? (
+                      <a href={blogLink} target="_blank">
+                        <img
+                          src={`https://img.shields.io/badge/Tech Blog-7FD2F5?style=flat&logo=Hoppscotch&logoColor=white&link=${blogLink}/`}
+                          alt="blog"
+                        />
+                      </a>
+                    ) : undefined}
+                    {notionLink.length > 0 ? (
+                      <a href={notionLink} target="_blank">
+                        <img
+                          src={`https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white&link=${notionLink}/`}
+                          alt="notion"
+                        />
+                      </a>
+                    ) : undefined}
+                  </div>
+                </>
+              ) : undefined}
+              {componentArr[7] ? (
+                <>
+                  {showTextArr()}
+                  <h3>{newTextTitle}</h3>
+                  <p>{newTextDesc}</p>
+                </>
+              ) : undefined}
+            </>
+          ) : (
+            aa()
+          )}
           {/* <Link href="http://solved.ac/kyum8562"> */}
-          {componentArr[1] ? (
-            <div>
-              <img src={firstImgUrl} width="280" height="140" alt="baekjoon" />
-              <img src={secImgUrl} width="285" height="140" alt="solved" />
-            </div>
-          ) : undefined}
-          {componentArr[2] ? (
-            <img src={githubUrl} width="350" height="150" alt="githubStats" />
-          ) : undefined}
-          {componentArr[3] ? (
-            <img src={mulUrl} width="280" height={mulHeight} alt="MUL" />
-          ) : undefined}
-          {componentArr[4] ? (
-            <>
-              {showTechWhole()}
-              <h3>{techTitle}</h3>
-              <div className={st.techBadgeDiv}>{showTechArr()}</div>
-            </>
-          ) : undefined}
-          {componentArr[5] ? (
-            <>
-              <h3>Contact</h3>
-              <div className={st.contactBadgeDiv}>
-                {mailId.length > 0 ? (
-                  <a href={mailURL} target="_blank">
-                    <img
-                      src="https://img.shields.io/badge/Mail-6667AB?style=flat&logo=Gmail&logoColor=white"
-                      alt="Mail"
-                    />
-                  </a>
-                ) : undefined}
-                {blogLink.length > 0 ? (
-                  <a href={blogLink} target="_blank">
-                    <img
-                      src={`https://img.shields.io/badge/Tech Blog-7FD2F5?style=flat&logo=Hoppscotch&logoColor=white&link=${blogLink}/`}
-                      alt="blog"
-                    />
-                  </a>
-                ) : undefined}
-                {notionLink.length > 0 ? (
-                  <a href={notionLink} target="_blank">
-                    <img
-                      src={`https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white&link=${notionLink}/`}
-                      alt="notion"
-                    />
-                  </a>
-                ) : undefined}
-              </div>
-            </>
-          ) : undefined}
-          {componentArr[7] ? (
-            <>
-              {showTextArr()}
-              <h3>{newTextTitle}</h3>
-              <p>{newTextDesc}</p>
-            </>
-          ) : undefined}
         </div>
       </div>
     </div>
