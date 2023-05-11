@@ -21,13 +21,13 @@ export default function Repository() {
   const [folderListData, setFolderListData] = useState([]);
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
 
-  // const clickModal = () => {
-  //   setShowModal(!showModal);
-  // };
+  const clickModal = () => {
+    setShowModal(!showModal);
+  };
 
-  // const clickDelete = () => {
-  //   setShowDelete(!showDelete);
-  // };
+  const clickDelete = () => {
+    setShowDelete(!showDelete);
+  };
 
   useEffect(() => {
     const loadFolderList = async () => {
@@ -48,7 +48,7 @@ export default function Repository() {
 
   return (
     <div className={st.body}>
-      {/* <div className={st.button}>
+      <div className={st.button}>
         {showDelete ? null : (
           <button onClick={clickModal}>
             폴더 추가
@@ -71,9 +71,9 @@ export default function Repository() {
             height={16}
           />
         </button>
-      </div> */}
+      </div>
       <hr />
-      {/* {showModal && <AddFolder clickModal={clickModal} />} */}
+      {showModal && <AddFolder clickModal={clickModal} />}
       <Folder
         clickDelete={showDelete}
         folderListData={folderListData}

@@ -1,12 +1,14 @@
 import axios from "axios";
 
-export const AddFolder = (
+export const AddFolderAxios = (
   ACCESS_TOKEN: any,
-  data: { name: String; color: String; repositories: Array<String> }
+  name: String,
+  color: String,
+  repositories: Array<String>
 ) => {
-  return axios.patch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/folder/delete`,
-    { data },
+  return axios.post(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/folder`,
+    { name: name, color: color, repositories: repositories },
     {
       headers: {
         Authorization: ACCESS_TOKEN,
