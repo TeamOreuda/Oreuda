@@ -3,6 +3,9 @@
 .body {
   width: 100vw;
   margin: 50px;
+  height: calc(100vh - 208px);
+  flex-wrap: wrap;
+  overflow-y: scroll;
 
   hr {
     height: 0.5px;

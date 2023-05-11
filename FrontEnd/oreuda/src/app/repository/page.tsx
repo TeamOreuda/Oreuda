@@ -20,19 +20,16 @@ export default async function Repository() {
   const [showDelete, setShowDelete] = useState(false);
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
 
-  console.log("page access", ACCESS_TOKEN);
+  // const clickModal = () => {
+  //   setShowModal(!showModal);
+  // };
 
-  const clickModal = () => {
-    setShowModal(!showModal);
-  };
-
-  const clickDelete = () => {
-    setShowDelete(!showDelete);
-  };
+  // const clickDelete = () => {
+  //   setShowDelete(!showDelete);
+  // };
 
   const folderListData = await GetFolderList(ACCESS_TOKEN)
     .then((res) => {
-      console.log("res.date", res.data);
       return res.data;
     })
     .catch(async (err) => {
@@ -51,11 +48,9 @@ export default async function Repository() {
       }
     });
 
-  console.log("folderListData", folderListData);
-
   return (
     <div className={st.body}>
-      <div className={st.button}>
+      {/* <div className={st.button}>
         {showDelete ? null : (
           <button onClick={clickModal}>
             폴더 추가
@@ -78,15 +73,15 @@ export default async function Repository() {
             height={16}
           />
         </button>
-      </div>
+      </div> */}
       <hr />
       {/* {showModal && <AddFolder clickModal={clickModal} />} */}
-      {/* <Folder
+      <Folder
         clickDelete={showDelete}
         folderListData={folderListData}
         checkedItems={checkedItems}
         setCheckedItems={setCheckedItems}
-      /> */}
+      />
     </div>
   );
 }

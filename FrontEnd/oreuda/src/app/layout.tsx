@@ -78,7 +78,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               })}
               <ul>
                 <Link
-                  // href="http://192.168.31.233:8090/oauth2/authorization/github"
                   href="http://52.79.221.133:8090/oauth2/authorization/github"
                   className={st.link}
                 >

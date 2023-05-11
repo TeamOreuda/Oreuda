@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { getUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
 import { DeleteFolderList } from "@/Api/Folders/deleteFolderList";
+import { GetRepositoryLst } from "@/Api/Repository/getRepositoryList";
 
 interface FolderList {
   id: number;
@@ -26,65 +27,63 @@ export default function Folder(props: {
 }) {
   const { clickDelete, folderListData, checkedItems, setCheckedItems } = props;
   const [grab, setGrab] = useState({ dataset: { position: null } });
+  const [grabPosition, setGrabPosition] = useState(0);
+  const [targetPosition, setTargetPosition] = useState(0);
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
 
-  useEffect(() => {
-    setCheckedItems([]);
-  }, [clickDelete]);
+  // const deleteFolder = (folders: Array<number>) => {
+  //   DeleteFolderList(ACCESS_TOKEN, { folders: folders })
+  //     .then((res) => {
+  //       return res.data;
+  //     })
+  //     .catch(async (err) => {
+  //       if (err.response?.status == 401) {
+  //         return await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
+  //           .then(async (res) => {
+  //             await saveCookiesAndRedirect(res.data.Authorization, res.data.RefreshToken);
+  //             return await DeleteFolderList(ACCESS_TOKEN, { folders: checkedItems }).then((res) => {
+  //               return res.data;
+  //             });
+  //           })
 
-  const deleteFolder = (folders: Array<number>) => {
-    DeleteFolderList(ACCESS_TOKEN, { folders: folders })
-      .then((res) => {
-        return res.data;
-      })
-      .catch(async (err) => {
-        if (err.response?.status == 401) {
-          return await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
-            .then(async (res) => {
-              await saveCookiesAndRedirect(res.data.Authorization, res.data.RefreshToken);
-              return await DeleteFolderList(ACCESS_TOKEN, { folders: checkedItems }).then((res) => {
-                return res.data;
-              });
-            })
+  //           .catch(() => {
+  //             redirect("/");
+  //           });
+  //       }
+  //     });
+  // };
 
-            .catch(() => {
-              redirect("/");
-            });
-        }
-      });
-  };
+  // const onDragOver = (e: any) => {
+  //   e.preventDefault();
+  // };
 
-  const onDragOver = (e: any) => {
-    e.preventDefault();
-  };
+  // const onDragStart = (e: any) => {
+  //   setGrab(e.currentTarget);
+  // };
 
-  const onDragStart = (e: any) => {
-    setGrab(e.currentTarget);
-  };
+  // const onDrop = (e: any) => {
+  //   setGrabPosition(Number(grab.dataset.position));
+  //   setTargetPosition(Number(e.target.dataset.position));
+  // };
 
-  const onDrop = (e: any) => {
-    let grabPosition = Number(grab.dataset.position);
-    let targetPosition = Number(e.target.dataset.position);
-  };
+  // const handleClick = (e: any) => {
+  //   e.preventDefault();
+  // };
 
-  const handleClick = (e: any) => {
-    e.preventDefault();
-  };
+  // const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { value } = event.target;
+  //   const currentIndex = checkedItems.indexOf(Number(value));
+  //   const newCheckedItems = [...checkedItems];
 
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    const currentIndex = checkedItems.indexOf(Number(value));
-    const newCheckedItems = [...checkedItems];
+  //   if (currentIndex === -1) {
+  //     newCheckedItems.push(Number(value));
+  //   } else {
+  //     newCheckedItems.splice(currentIndex, 1);
+  //   }
 
-    if (currentIndex === -1) {
-      newCheckedItems.push(Number(value));
-    } else {
-      newCheckedItems.splice(currentIndex, 1);
-    }
-
-    setCheckedItems(newCheckedItems);
-  };
+  //   setCheckedItems(newCheckedItems);
+  // };
 
   return (
     <div className={st.folders}>
@@ -93,15 +92,15 @@ export default function Folder(props: {
           <div key={index}>
             <Link
               href={`/repository/${e.id}`}
-              {...(clickDelete ? { onClick: handleClick } : {})}
-              data-position={index}
-              onDragOver={onDragOver}
-              onDragStart={onDragStart}
-              onDrop={onDrop}
-              draggable={!clickDelete}
+              // {...(clickDelete ? { onClick: handleClick } : {})}
+              // data-position={index}
+              // onDragOver={onDragOver}
+              // onDragStart={onDragStart}
+              // onDrop={onDrop}
+              // draggable={!clickDelete}
             >
               <div className={st.folder}>
-                {clickDelete && (
+                {/* {clickDelete && (
                   <input
                     type="checkbox"
                     value={e.id}
@@ -109,7 +108,7 @@ export default function Folder(props: {
                     onChange={handleCheckboxChange}
                     onClick={(event) => event.stopPropagation()}
                   />
-                )}
+                )} */}
                 <div data-position={index}>
                   <Image
                     data-position={index}
