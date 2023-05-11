@@ -78,8 +78,7 @@ public class RepositoryService {
 				Collections.sort(repositories, (o1, o2) -> o2.getCommitCount() - o1.getCommitCount());
 				break;
 			case "name":
-				// Collections.sort(repositories, (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()));
-				Collections.sort(repositories, (o1, o2) -> o1.getName().compareTo(o2.getName()));
+				Collections.sort(repositories, (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()));
 				break;
 			case "star":
 				Collections.sort(repositories, (o1, o2) -> o2.getStarCount() - o2.getStarCount());
