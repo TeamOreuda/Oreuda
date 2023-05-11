@@ -48,10 +48,10 @@ export default function Tech() {
   const techArr = useAppSelector(selectReadme).techArr;
   const techModifyArr = useAppSelector(selectReadme).techModifyArr;
   const techPlusModifyArr = useAppSelector(selectReadme).techPlusModifyArr;
-  console.log("techArr : ", techArr);
-  console.log("techPlusWhole : ", techPlusWhole);
-  console.log("techModifyArr : ", techModifyArr);
-  console.log("techPlusModifyArr : ", techPlusModifyArr);
+  // console.log("techArr : ", techArr);
+  // console.log("techPlusWhole : ", techPlusWhole);
+  // console.log("techModifyArr : ", techModifyArr);
+  // console.log("techPlusModifyArr : ", techPlusModifyArr);
 
   const dispatch = useAppDispatch();
   const [title, setTitle] = useState("");
@@ -88,15 +88,6 @@ export default function Tech() {
   return (
     <div className={st.body}>
       <div className={st.indexBtns}>
-        {/* <button
-          onClick={() => {
-            setCurr(0);
-            setTitle("");
-            dispatch(setChoiceTechClear(0));
-          }}
-          className={st.btnDefault}
-        >
-        </button> */}
         <Image
           src="/images/readme/notebook.gif"
           alt=""
@@ -171,9 +162,7 @@ export default function Tech() {
         </div>
         <div className={st.btnDiv}>
           {curr == 0 ? (
-            <div onClick={cleanInput}>
-              <PlusTechBtn title={title} />
-            </div>
+            <PlusTechBtn title={title} onStateChange={cleanInput} />
           ) : undefined}
           {techPlusWhole.length > 0 && curr !== 0 ? (
             <MinusTechBtn idx={techIdx} onStateChange={handleStateChange} />

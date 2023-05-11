@@ -51,13 +51,13 @@ export interface readmeSlice {
 // 초기 상태 정의
 const initialState: readmeSlice = {
   baekjoonId: "",
+  solvedTheme: "warm",
   githubId: "",
   githubTheme: "dark",
-  solvedTheme: "warm",
   mulTheme: "",
   mulType: 0,
   mailId: "",
-  mailDomain: "",
+  mailDomain: "naver.com",
   blogLink: "",
   notionLink: "",
   textTitle: [],
@@ -124,7 +124,7 @@ const initialState: readmeSlice = {
     false,
     false,
   ],
-  componentArr: [true, false, false, false, false, false, false],
+  componentArr: [true, false, false, false, false, false, false, false],
   currComponent: 0,
   prevComp: [],
 };
@@ -192,6 +192,14 @@ const themeSlice = createSlice({
     setTextDesc(state, action) {
       const temp = state;
       temp.newTextDesc = action.payload;
+    },
+    // [Add Text] 선택한 덩어리 title 변경
+    setModifyTitle(state, action) {
+      state.textArr[action.payload.idx - 1].titleArr = action.payload.data;
+    },
+    // [Add Text] 선택한 덩어리 desc 변경
+    setModifyDesc(state, action) {
+      state.textArr[action.payload.idx - 1].descArr = action.payload.data;
     },
     // [addText] addText arr에 push
     setAddText(state, action) {
@@ -338,7 +346,9 @@ const themeSlice = createSlice({
     setDeleteComponent(state, action) {
       if (state.componentArr[action.payload]) {
         state.nextComp.map((el, index) => {
-          if (el === action.payload) {
+          if (String(el) === action.payload) {
+            console.log(index);
+
             state.nextComp.splice(index, 1);
           }
         });
@@ -364,6 +374,24 @@ const themeSlice = createSlice({
       state.currComponent = tmp || 0;
       // state.nextComp.unshift(tmp ? tmp : -1);
     },
+    // [Sorting] 리드미 컴포넌트 이동(prevArr 변경)
+    setMovingComponent(state, action) {
+      const start = action.payload.start;
+      const end = action.payload.end;
+      console.log(start, end);
+
+      const arr: any = state.prevComp;
+      arr[start] = state.prevComp.splice(end, 1, state.prevComp[start]);
+
+      // const arr2: any = state.componentArr;
+      // arr2[start] = state.componentArr.splice(
+      //   end,
+      //   1,
+      //   state.componentArr[start]
+      // );
+
+      console.log(arr);
+    },
   },
 });
 
@@ -382,6 +410,8 @@ export const {
   setTextTitle,
   setTextDesc,
   setTechTitle,
+  setModifyTitle,
+  setModifyDesc,
   setAddTechWhole,
   setAddText,
   setMinusText,
@@ -395,6 +425,7 @@ export const {
   setDeleteComponent,
   setNextCompMoving,
   setPrevCompMoving,
+  setMovingComponent,
 } = themeSlice.actions;
 export const selectReadme = (state: RootState) => state.readme;
 // 리듀서
