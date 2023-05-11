@@ -43,8 +43,8 @@ export default function Main() {
   return (
     <div className={st.readmeMain}>
       <div className={st.titleDiv}>
-        <span>컴포넌트 요소 정하기</span>
-        <p>리드미에 어떤 내용을 담을지 정해보세요.</p>
+        <span>리드미 요소 정하기</span>
+        <p>리드미에 어떤 내용을 담을지 선택해보세요.</p>
       </div>
       <select
         className={st.selectSV}
