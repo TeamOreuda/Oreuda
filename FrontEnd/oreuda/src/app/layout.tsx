@@ -1,9 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
 import Head from "next/head";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 import st from "./layout.module.scss";
 import { Providers } from "@/store/provider";
+
+import { GetProfile } from "@/Api/Users/getProfile";
+import { getUserRefresh } from "@/Api/Oauth/getUserRefresh";
+import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
 
 interface NavList {
   moveTo: string;
@@ -29,9 +35,13 @@ const navList: NavList[] = [
   },
 ];
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   if (children && typeof children === "object" && "props" in children) {
-    console.log("현재 페이지 : " + children.props.childProp.segment);
+    // 로그인이 되어있지 않다면
     if (children.props.childProp.segment === "landing")
       return (
         <html lang="kr">
@@ -41,13 +51,41 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </html>
       );
 
+    {
+      /* 로그인이 되어있다면 */
+    }
+
+    const cookieStore = cookies();
+    const ACCESS_TOKEN = cookieStore.get("Authorization")?.value;
+    const REFRESH_TOKEN = cookieStore.get("RefreshToken")?.value;
+    const userProfile = await GetProfile(ACCESS_TOKEN)
+      .then((res) => {
+        return res.data;
+      })
+      .catch(async (err) => {
+        if (err.response?.status == 401) {
+          return await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
+            .then(async (res) => {
+              saveCookiesAndRedirect(
+                res.data.Authorization,
+                res.data.RefreshToken
+              );
+              return await GetProfile(res.data.Authorization).then((res) => {
+                return res.data;
+              });
+            })
+            .catch(() => {
+              redirect("/landing");
+            });
+        }
+      });
+
     return (
       <html lang="kr">
         <Head>
           <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         </Head>
         <body className={st.body}>
-          {/* 로그인이 되어있다면 */}
           <nav className={st.nav}>
             <div>
               <header className={st.header}>
@@ -76,34 +114,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   </ul>
                 );
               })}
-              <ul>
-                <Link
-                  href="http://52.79.221.133:8090/oauth2/authorization/github"
-                  className={st.link}
-                >
-                  <Image
-                    className={st.img}
-                    src={`/images/nav/logout.svg`}
-                    alt=""
-                    width={24}
-                    height={24}
-                  />
-                  로그인
-                </Link>
-              </ul>
-              <ul>
-                <Link href="" className={st.link}>
-                  <Image
-                    className={st.img}
-                    src="/images/nav/logout.svg"
-                    alt=""
-                    width={24}
-                    height={24}
-                  />
-                  로그아웃
-                </Link>
-              </ul>
             </div>
+            <ul>
+              <Link href="/landing" className={st.link}>
+                <Image
+                  className={st.img}
+                  src={userProfile}
+                  alt=""
+                  width={24}
+                  height={24}
+                />
+                로그아웃
+              </Link>
+            </ul>
           </nav>
           <Providers>{children}</Providers>
         </body>
