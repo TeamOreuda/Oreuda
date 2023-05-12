@@ -145,7 +145,7 @@ const themeSlice = createSlice({
       const temp = state;
       temp.solvedTheme = action.payload;
     },
-    // [Baekjoon] Baekjoon ID 저장
+    // [Github] Github ID 저장
     setGithubId(state, action) {
       const temp = state;
       temp.githubId = action.payload;
@@ -177,23 +177,19 @@ const themeSlice = createSlice({
     },
     // [contact] contact 기술 블로그 링크 저장
     setBlogLink(state, action) {
-      const temp = state;
-      temp.blogLink = action.payload;
+      state.blogLink = action.payload;
     },
     // [contact] contact 기술 블로그 링크 저장
     setNotionLink(state, action) {
-      const temp = state;
-      temp.notionLink = action.payload;
+      state.notionLink = action.payload;
     },
     // [addText] addText title 저장
     setTextTitle(state, action) {
-      const temp = state;
-      temp.newTextTitle = action.payload;
+      state.newTextTitle = action.payload;
     },
     // [addText] addText desc 저장
     setTextDesc(state, action) {
-      const temp = state;
-      temp.newTextDesc = action.payload;
+      state.newTextDesc = action.payload;
     },
     // [Add Text] 선택한 덩어리 title 변경
     setModifyTitle(state, action) {
@@ -205,13 +201,11 @@ const themeSlice = createSlice({
     },
     // [addText] addText arr에 push
     setAddText(state, action) {
-      const temp = state;
-
       const data = action.payload;
       data.index = state.textCnt;
       state.textCnt++;
 
-      temp.textArr.push(data);
+      state.textArr.push(data);
     },
     // [addText] addText arr에서 제거
     setMinusText(state, action) {
@@ -349,8 +343,6 @@ const themeSlice = createSlice({
       if (state.componentArr[action.payload]) {
         state.nextComp.map((el, index) => {
           if (String(el) === action.payload) {
-            console.log(index);
-
             state.nextComp.splice(index, 1);
           }
         });
@@ -380,7 +372,6 @@ const themeSlice = createSlice({
     setMovingComponent(state, action) {
       const start = action.payload.start;
       const end = action.payload.end;
-      console.log(start, end);
 
       const arr: any = state.prevComp;
       state.nPrevComp[start] = state.nPrevComp.splice(
@@ -399,7 +390,7 @@ const themeSlice = createSlice({
     },
     // ㅇㅇㅇ
     setNewPrevComp(state, action) {
-      console.log(action.payload);
+      // console.log(action.payload);
       state.nPrevComp = action.payload;
     },
   },

@@ -54,6 +54,8 @@ export default function Sorting() {
         }
       }
     });
+    console.log("newPrevComp: ", newPrevComp);
+
     dispatch(setNewPrevComp(newPrevComp));
   };
   useEffect(() => {
