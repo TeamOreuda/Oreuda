@@ -171,7 +171,12 @@ export default function Preview() {
         ) : undefined}
       </div>
     </div>,
-    "오르",
+    <div key="6">
+      <img
+        src={`https://oreuda.kr/api/v1/plant/card?nickname=${githubId}`}
+        alt="oreuda"
+      />
+    </div>,
     <div key="7" className={st.TextArr}>
       {showTextArr()}
       <h3>{newTextTitle}</h3>
