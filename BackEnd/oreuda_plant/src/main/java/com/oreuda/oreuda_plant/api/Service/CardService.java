@@ -65,8 +65,8 @@ public class CardService {
             gaugeLayout = "255, 255, 255";
         }
 
-        String png = getBase64String("classes/static/" + plantName + ".png", "png");
-        String gif = getBase64String("classes/static/" + plantName + ".gif", "gif");
+        String png = getBase64String("src/main/resources/static/" + plantName + ".png", "png");
+        String gif = getBase64String("src/main/resources/static/" + plantName + ".gif", "gif");
         return "<!DOCTYPE svg PUBLIC\n" +
                 "        \"-//W3C//DTD SVG 1.1//EN\"\n" +
                 "        \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n" +
