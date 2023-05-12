@@ -8,8 +8,7 @@ export default function Landing() {
   return (
     <div className={st.page}>
       <LandingHeader />
-      <PageFormat/>
-
+      <PageFormat />
     </div>
   );
 }

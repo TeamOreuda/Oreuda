@@ -28,7 +28,7 @@ export default function TechSelectBtn({ curr }: any) {
       {data.map((el: any, index: number) => {
         return (
           <div
-            key={index + rNum}
+            key={Math.random() * (1000000 - 1)}
             id={el.index}
             onClick={onClickRemoveComp}
             className={lang[el.name]}
