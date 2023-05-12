@@ -197,7 +197,6 @@ export default function Preview() {
       });
       arr.push(`<div className=${st.techBadgeDiv}>${arr2.join(" ")}</div>`);
     });
-    console.log(arr);
     return arr.join("");
   };
 
@@ -226,16 +225,26 @@ export default function Preview() {
     for (let i = 0; i < textArr.length; i++) {
       arr.push(
         `<div key=${i} className=${st.TextArr}>
-          <h3>${textArr[i].titleArr}</h3>
-          <p>${textArr[i].descArr}</p>
+          <h3>${textArr[i].titleArr} 12</h3>
+          <p>${textArr[i].descArr} 12</p>
         </div>`
       );
     }
-    console.log(newTextTitle)
     return arr.join("");
   };
 
-  const x = `https://img.shields.io/badge/Tech Blog-7FD2F5?style=flat&logo=Hoppscotch&logoColor=white&link=${blogLink}/`;
+const AdditionalTextMD =(id : number)=>{
+  return `
+  <div key="7" className=${st.TextArr}>
+    <div key=${id-1} className=${st.TextArr}>
+          <h3>${textArr[id-1].titleArr}</h3>
+          <p>${textArr[id-1].descArr}</p>
+    </div>
+  </div>
+  `
+}
+
+  const x = `https://img.shields.io/badge/TechBlog-7FD2F5?style=flat&logo=Hoppscotch&logoColor=white&link=${blogLink}/`;
   const y = `https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white&link=${notionLink}/`;
 
   const selected: String[] = [
@@ -301,19 +310,17 @@ export default function Preview() {
   `,
     `
   오르
-  `,
-    `
-  <div key="7" className=${st.TextArr}>
-    ${showTextArrMD()}
-    <h3>${newTextTitle}</h3>
-    <p>${newTextDesc}</p>
-  </div>
-  `,
+  `
   ];
 
   let toMD = `<div>\n`;
   nPrevComp.map((key: any) => {
-    toMD += selected[key - 1];
+    if(key > 10){
+      // text arr 인 경우
+      toMD += AdditionalTextMD((key)%10);
+    }else{
+      toMD += selected[key - 1];
+    }
   });
   toMD += `\n</div>`;
 
@@ -323,8 +330,6 @@ export default function Preview() {
     const arr: any = [];
     textArr.map((el: any, index: any) => {
       if (idx - 1 == index) {
-        console.log(el.titleArr);
-
         arr.push(
           <div key={index}>
             <h3>{el.titleArr}</h3>
@@ -348,9 +353,6 @@ export default function Preview() {
         arr.push(tmp);
       }
     });
-    console.log("ho");
-    console.log(toMD);
-
     return arr;
   };
 
@@ -376,6 +378,7 @@ export default function Preview() {
 
   // 다운로드 메서드
   const onClickDownload = () => {
+    console.log(nPrevComp)
     console.log(toMD);
     const blob = new Blob([file.content], { type: "text/plain" });
     const url = window.URL.createObjectURL(blob);
