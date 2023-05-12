@@ -69,7 +69,7 @@ export default function Preview() {
     const arr = [];
     for (let i = 0; i < textArr.length; i++) {
       arr.push(
-        <div key={i} className={st.TextArr}>
+        <div key={Math.random() * (1000000 - 1)} className={st.TextArr}>
           <h3>{textArr[i].titleArr}</h3>
           <p>{textArr[i].descArr}</p>
         </div>
@@ -83,7 +83,7 @@ export default function Preview() {
     const arr = [];
     for (let i = 0; i < techPlusArr.length; i++) {
       arr.push(
-        <div key={i} className={st.TextArr}>
+        <div key={Math.random() * (1000000 - 1)} className={st.TextArr}>
           <img
             key={Math.random() * (1000000 - 1)}
             className={st.techBadge}
@@ -115,7 +115,11 @@ export default function Preview() {
           />
         );
       });
-      arr.push(<div className={st.techBadgeDiv}>{arr2}</div>);
+      arr.push(
+        <div className={st.techBadgeDiv} key={Math.random() * (1000000 - 1)}>
+          {arr2}
+        </div>
+      );
     });
     return arr;
   };
@@ -167,7 +171,12 @@ export default function Preview() {
         ) : undefined}
       </div>
     </div>,
-    "오르",
+    <div key="6">
+      <img
+        src={`https://oreuda.kr/api/v1/plant/card?nickname=${githubId}`}
+        alt="oreuda"
+      />
+    </div>,
     <div key="7" className={st.TextArr}>
       {showTextArr()}
       <h3>{newTextTitle}</h3>
@@ -220,7 +229,7 @@ export default function Preview() {
   };
 
   const showTextArrMD = () => {
-    console.log(textArr)
+    console.log(textArr);
     const arr = [];
     for (let i = 0; i < textArr.length; i++) {
       arr.push(
@@ -233,16 +242,16 @@ export default function Preview() {
     return arr.join("");
   };
 
-const AdditionalTextMD =(id : number)=>{
-  return `
+  const AdditionalTextMD = (id: number) => {
+    return `
   <div key="7" className=${st.TextArr}>
-    <div key=${id-1} className=${st.TextArr}>
-          <h3>${textArr[id-1].titleArr}</h3>
-          <p>${textArr[id-1].descArr}</p>
+    <div key=${id - 1} className=${st.TextArr}>
+          <h3>${textArr[id - 1].titleArr}</h3>
+          <p>${textArr[id - 1].descArr}</p>
     </div>
   </div>
-  `
-}
+  `;
+  };
 
   const x = `https://img.shields.io/badge/TechBlog-7FD2F5?style=flat&logo=Hoppscotch&logoColor=white&link=${blogLink}/`;
   const y = `https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white&link=${notionLink}/`;
@@ -276,49 +285,43 @@ const AdditionalTextMD =(id : number)=>{
     <h3>Contact</h3>
     <div className=${st.contactBadgeDiv}>
       ${
-        mailId.length > 0 ? (
-          `<a href=${mailURL} target="_blank">
+        mailId.length > 0
+          ? `<a href=${mailURL} target="_blank">
             <img
               src="https://img.shields.io/badge/Mail-6667AB?style=flat&logo=Gmail&logoColor=white"
               alt="Mail"
             />
           </a>`
-        ) : (
-          ""
-        )
+          : ""
       }
       ${
-        blogLink.length > 0 ? (
-          `<a href=${blogLink} target="_blank">
+        blogLink.length > 0
+          ? `<a href=${blogLink} target="_blank">
             <img src=${x} alt="blog" />
           </a>`
-        ) : (
-          ""
-        )
+          : ""
       }
       ${
-        notionLink.length > 0 ? (
-          `<a href=${notionLink} target="_blank">
+        notionLink.length > 0
+          ? `<a href=${notionLink} target="_blank">
             <img src=${y} alt="notion" />
           </a>`
-        ) : (
-          ""
-        )
+          : ""
       }
     </div>
   </div>
   `,
     `
   오르
-  `
+  `,
   ];
 
   let toMD = `<div>\n`;
   nPrevComp.map((key: any) => {
-    if(key > 10){
+    if (key > 10) {
       // text arr 인 경우
-      toMD += AdditionalTextMD((key)%10);
-    }else{
+      toMD += AdditionalTextMD(key % 10);
+    } else {
       toMD += selected[key - 1];
     }
   });
@@ -378,7 +381,7 @@ const AdditionalTextMD =(id : number)=>{
 
   // 다운로드 메서드
   const onClickDownload = () => {
-    console.log(nPrevComp)
+    console.log(nPrevComp);
     console.log(toMD);
     const blob = new Blob([file.content], { type: "text/plain" });
     const url = window.URL.createObjectURL(blob);
@@ -393,11 +396,19 @@ const AdditionalTextMD =(id : number)=>{
   // 클립보드 복사 메서드
   const onClickCopy = () => {
     try {
-      navigator.clipboard.writeText("hi");
+      navigator.clipboard.writeText(toMD);
       alert("클립보드에 복사되었습니다.");
     } catch (error) {
       alert("클립보드 복사에 실패하였습니다.");
     }
+  };
+
+  // 저장 버튼 클릭시 readme 저장 axios 요청
+  const saveReadme = async () => {
+    // try {
+    //   const res = await GetBasicFolder(ACCESS_TOKEN);
+    //   setRepositoryListData(res.data);
+    // }
   };
   return (
     <div className={st.body}>
@@ -423,7 +434,10 @@ const AdditionalTextMD =(id : number)=>{
             alt="download"
           />
         </div>
-        <button className={st.btnDiv}>초기화</button>
+        <button className={st.btnReset}>초기화</button>
+        <button className={st.btnSave} onClick={saveReadme}>
+          저장
+        </button>
       </div>
       <div className={st.contentDiv}>
         {Number(currComponent) == 8
