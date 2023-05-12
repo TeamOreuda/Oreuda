@@ -2,8 +2,19 @@ import Link from "next/link";
 import Image from "next/image";
 
 import st from "./repository.module.scss";
+import fontColor from "../../Style/repository/languageColor.module.scss";
 import Repositorygraph from "./repositorygraph";
 import RepositoryGrassGraph from "./repositoryGrassGraph";
+
+export interface DailyCommit {
+  date: string;
+  count: number;
+}
+
+export interface YearlyCommit {
+  year: number;
+  count: number;
+}
 
 interface Repository {
   id: string;
@@ -14,14 +25,8 @@ interface Repository {
   starCount: number;
   isPrivate: string;
   updateDate: string;
-  yearlyCommits: {
-    year: number;
-    count: number;
-  }[];
-  dailyCommit: {
-    date: string;
-    count: number;
-  }[];
+  yearlyCommits: YearlyCommit[];
+  dailyCommits: DailyCommit[];
 }
 
 export default function Repository(props: {
@@ -87,10 +92,12 @@ export default function Repository(props: {
               </Link>
               <div>{e.isPrivate === "Y" ? "Private" : "Public"}</div>
             </div>
+
             <p>{e.description}</p>
+
             <div className={st.infosecond}>
               <div>
-                {e.language && <div></div>}
+                {e.language && <div className={fontColor[e.language]}></div>}
                 {e.language && <span>{e.language}</span>}
                 <Image
                   className={st.img}
@@ -104,9 +111,7 @@ export default function Repository(props: {
               <span>Updated on {formattedDate(e.updateDate)}</span>
             </div>
           </div>
-          <div className={st.repositoryGrass}>
-            <RepositoryGrassGraph />
-          </div>
+          <RepositoryGrassGraph dailyCommits={e.dailyCommits} />
           <Repositorygraph yearlyCommits={e.yearlyCommits} />
         </div>
       ))}

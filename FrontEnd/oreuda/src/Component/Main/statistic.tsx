@@ -12,7 +12,7 @@ interface gitHubStatistic {
   count?: number;
   language?: string;
   howCount?: string;
-  imageName: string;
+  imageName?: string;
 }
 
 export default function Statistic(props: any) {
@@ -47,7 +47,7 @@ export default function Statistic(props: any) {
     {
       title: "주 언어",
       language: userData?.mainLanguage,
-      imageName: "typescript",
+      imageName: "language",
     },
   ];
 
@@ -69,7 +69,7 @@ export default function Statistic(props: any) {
             </div>
             <Image
               src={`/images/main/${e.imageName}.svg`}
-              alt=""
+              alt="주언어"
               width={80}
               height={80}
             />

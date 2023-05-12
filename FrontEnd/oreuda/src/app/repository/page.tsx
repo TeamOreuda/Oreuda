@@ -42,10 +42,10 @@ export default function Repository() {
           try {
             await GetFolderList(ACCESS_TOKEN);
           } catch (error) {
-            // redirect("/landing");
+            // redirect("/landing")
           }
         } else {
-          // redirect("/landing");
+          // redirect("/landing")
         }
       }
     };
@@ -67,10 +67,10 @@ export default function Repository() {
         try {
           await DeleteFolder(token.data.Authorization, checkedItems);
         } catch (error) {
-          // redirect("/landing");
+          // redirect("/landing")
         }
       } else {
-        // redirect("/landing");
+        // redirect("/landing")
       }
     }
   };
@@ -91,10 +91,10 @@ export default function Repository() {
             const res = await GetBasicFolder(ACCESS_TOKEN);
             setRepositoryListData(res.data);
           } catch (error) {
-            // redirect("/landing");
+            // redirect("/landing")
           }
         } else {
-          // redirect("/landing");
+          // redirect("/landing")
         }
       }
     };

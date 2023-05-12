@@ -34,10 +34,10 @@ export default async function Home() {
             });
           })
           .catch(() => {
-            // redirect("/landing");
+            // redirect("/landing")
           });
       } else {
-        // redirect("/landing");
+        // redirect("/landing")
       }
     });
 
@@ -58,10 +58,10 @@ export default async function Home() {
             });
           })
           .catch(() => {
-            // redirect("/landing");
+            // redirect("/landing")
           });
       } else {
-        // redirect("/landing");
+        // redirect("/landing")
       }
     });
 
@@ -82,10 +82,10 @@ export default async function Home() {
             });
           })
           .catch(() => {
-            // redirect("/landing");
+            // redirect("/landing")
           });
       } else {
-        // redirect("/landing");
+        // redirect("/landing")
       }
     });
 
