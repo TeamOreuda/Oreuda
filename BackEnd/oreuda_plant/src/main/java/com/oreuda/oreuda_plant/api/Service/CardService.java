@@ -8,7 +8,6 @@ import com.oreuda.oreuda_plant.api.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourcePatternUtils;
@@ -30,11 +29,17 @@ public class CardService {
         Resource[] resources = ResourcePatternUtils
                 .getResourcePatternResolver(new DefaultResourceLoader())
                 .getResources("classpath*:static/*");
-        for (Resource resource : resources) {
-            log.info("resource: {}", resource.getFilename());
+        Resource resource = null;
+        for (Resource r : resources) {
+            if (Objects.equals(r.getFilename(), imageUrl)) {
+                resource = r;
+                break;
+            }
         }
-        File imageFile = File.createTempFile("temp", ".png");
-        FileInputStream imageInFile = new FileInputStream(imageFile);
+        assert resource != null;
+        InputStream imageInFile = resource.getInputStream();
+//        File imageFile = File.createTempFile("temp", ".png");
+//        FileInputStream imageInFile = new FileInputStream(imageFile);
 //        FileInputStream imageInFile = new FileInputStream(imageUrl);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         byte[] imageData = new byte[1024];
@@ -75,8 +80,8 @@ public class CardService {
             gaugeLayout = "255, 255, 255";
         }
 
-        String png = getBase64String("src/main/resources/static/" + plantName + ".png", "png");
-        String gif = getBase64String("src/main/resources/static/" + plantName + ".gif", "gif");
+        String png = getBase64String(plantName + ".png", "png");
+        String gif = getBase64String(plantName + ".gif", "gif");
         return "<!DOCTYPE svg PUBLIC\n" +
                 "        \"-//W3C//DTD SVG 1.1//EN\"\n" +
                 "        \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n" +
