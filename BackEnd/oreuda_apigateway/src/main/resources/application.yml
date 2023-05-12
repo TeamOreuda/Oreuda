@@ -31,7 +31,7 @@ spring:
         - id: business-server
           uri: http://172.28.0.22:8080/
           predicates:
-            - Path=/api/v1/users/**
+            - Path=/api/v1/users/**, /api/v1/readme/**
           filters:
             - AuthorizationHeaderFilter
 
