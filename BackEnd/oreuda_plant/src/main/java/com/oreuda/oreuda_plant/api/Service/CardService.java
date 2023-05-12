@@ -36,6 +36,7 @@ public class CardService {
                 break;
             }
         }
+        log.info("resource: {}", resource);
         assert resource != null;
         InputStream imageInFile = resource.getInputStream();
 //        File imageFile = File.createTempFile("temp", ".png");
