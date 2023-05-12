@@ -11,7 +11,7 @@ import {
   setNotionLink,
 } from "@/store/modules/readme";
 
-export const emailChoiceData: any = ["naver.com", "nate.com", "daum.com"];
+export const emailChoiceData: any = ["naver.com", "nate.com", "gmail.com"];
 export default function Contact() {
   const mailId: string = useAppSelector(selectReadme).mailId;
   const blogLink: string = useAppSelector(selectReadme).blogLink;
