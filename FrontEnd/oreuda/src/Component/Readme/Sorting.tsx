@@ -5,10 +5,11 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   selectReadme,
   setMovingComponent,
+  setNewPrevComp,
   setPrevCompChange,
 } from "@/store/modules/readme";
 import { mainCompChoiceData } from "./Main";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const initGrabData: Data = {
   target: null,
@@ -31,12 +32,34 @@ export default function Sorting() {
   const prevComp = useAppSelector(selectReadme).prevComp;
   const nextComp = useAppSelector(selectReadme).nextComp;
   const currComponent = useAppSelector(selectReadme).currComponent;
+  const textArr = useAppSelector(selectReadme).textArr;
+  const nPrevComp = useAppSelector(selectReadme).nPrevComp;
   // console.log(currComponent);
   // console.log(prevComp);
   // console.log(nextComp);
 
   const [grab, setGrab] = useState(initGrabData);
   const [isDrag, setIsDrag] = useState(false);
+
+  const newPrevComp: any = [];
+  const createNewPrevComp = () => {
+    prevComp.filter((el, index) => {
+      if (Number(el) !== 0) {
+        if (Number(el) == 7) {
+          textArr.filter((el, index) => {
+            newPrevComp.push(7 + `${el.index + 1}`);
+          });
+        } else {
+          newPrevComp.push(el);
+        }
+      }
+    });
+    dispatch(setNewPrevComp(newPrevComp));
+  };
+  useEffect(() => {
+    createNewPrevComp();
+    // dispatch(setNewPrevComp(newPrevComp));
+  }, []);
 
   const onDragOver = (e: any) => {
     // e.stopPropagation();
@@ -124,8 +147,8 @@ export default function Sorting() {
 
   const createContents = () => {
     const arr: any = [];
-    prevComp.map((el, index: number) => {
-      if (index !== 0 && el) {
+    nPrevComp.map((el: any, index: number) => {
+      if (el) {
         let classNames = "";
 
         grab.move_up.includes(index) && (classNames = "move_up");
@@ -152,7 +175,13 @@ export default function Sorting() {
             onDragLeave={_onDragLeave}
             draggable
           >
-            💚 {mainCompChoiceData[el]}
+            💚{" "}
+            {el < 10
+              ? mainCompChoiceData[el]
+              : `${mainCompChoiceData[el.substring(0, 1)]} - ${el.substring(
+                  1,
+                  2
+                )}`}
           </div>
         );
       }

@@ -21,7 +21,7 @@ export default function Readme() {
   const currComponent = useAppSelector(selectReadme).currComponent;
   // console.log(`currComponent: ${currComponent}`);
   console.log(`prevComp: ${prevComp}`);
-  // console.log(`nextComp: ${nextComp}`);
+  console.log(`nextComp: ${nextComp}`);
   console.log(`componentArr: ${componentArr}`);
   return (
     <div className={st.body}>{currComponent === 0 ? <Main /> : <Comp />}</div>

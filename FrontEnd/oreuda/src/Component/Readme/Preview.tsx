@@ -27,24 +27,9 @@ export default function Preview() {
   const notionLink = useAppSelector(selectReadme).notionLink;
   const currComponent = useAppSelector(selectReadme).currComponent;
   const prevComp = useAppSelector(selectReadme).prevComp;
-
-  console.log(textArr);
-
-  const tt: any = [];
-  const newPrevComp = prevComp.filter((el, index) => {
-    if (Number(el) !== 0) {
-      if (Number(el) == 7) {
-        textArr.filter((el, index) => {
-          tt.push(7 + `${el.index}`);
-        });
-      } else {
-        tt.push(el);
-      }
-    }
-  });
-  console.log(tt);
-
-  // console.log(componentArr);
+  const nextComp = useAppSelector(selectReadme).nextComp;
+  const nPrevComp = useAppSelector(selectReadme).nPrevComp;
+  const techArr = useAppSelector(selectReadme).techArr;
 
   // 연락처
   // const mailURL = `https://mail.${mailDomain}/mail/?view=cm&amp;fs=1&amp;to=${mailId}@${mailDomain}/`;
@@ -56,11 +41,11 @@ export default function Preview() {
 
   // 깃헙
   // const githubUrl = `https://github-readme-stats.vercel.app/api?username=${githubId}&show_icons=true&theme=${githubTheme}`;
-  const githubUrl = `https://github-readme-stats.vercel.app/api?username=kyum8562&show_icons=true&theme=${githubTheme}`;
+  const githubUrl = `https://github-readme-stats.vercel.app/api?username=${githubId}&show_icons=true&theme=${githubTheme}`;
 
   // MUL
   // (1) 디폴트
-  let mulUrl = `https://github-readme-stats.vercel.app/api/top-langs/?username=kyum8562`;
+  let mulUrl = `https://github-readme-stats.vercel.app/api/top-langs/?username=${githubId}`;
   let mulHeight = 270;
   // (2) 간략히
   if (mulType == 2) {
@@ -85,6 +70,7 @@ export default function Preview() {
     content: "content",
   };
 
+  // 다운로드 메서드
   const onClickDownload = () => {
     const blob = new Blob([file.content], { type: "text/plain" });
     const url = window.URL.createObjectURL(blob);
@@ -96,7 +82,7 @@ export default function Preview() {
     window.URL.revokeObjectURL(url);
   };
 
-  // 클립보드 복사
+  // 클립보드 복사 메서드
   const onClickCopy = () => {
     try {
       navigator.clipboard.writeText("hi");
@@ -106,11 +92,12 @@ export default function Preview() {
     }
   };
 
+  // Text 배열 한번에 뿌려주는 메서드
   const showTextArr = () => {
     const arr = [];
     for (let i = 0; i < textArr.length; i++) {
       arr.push(
-        <div key={i}>
+        <div key={i} className={st.TextArr}>
           <h3>{textArr[i].titleArr}</h3>
           <p>{textArr[i].descArr}</p>
         </div>
@@ -119,29 +106,36 @@ export default function Preview() {
 
     return arr;
   };
+
+  // 작성중인(추가하지 않은) 테크 컴포넌트 렌더링
   const showTechArr = () => {
     const arr = [];
     for (let i = 0; i < techPlusArr.length; i++) {
       arr.push(
-        <img
-          key={Math.random() * (1000000 - 1)}
-          className={st.techBadge}
-          src={`https://img.shields.io/badge/${techPlusArr[i].name}-${techPlusArr[i].color}?style=flat&logo=${techPlusArr[i].name}&logoColor=white`}
-          alt=""
-        />
+        <div key={i} className={st.TextArr}>
+          <img
+            key={Math.random() * (1000000 - 1)}
+            className={st.techBadge}
+            src={`https://img.shields.io/badge/${techPlusArr[i].name}-${techPlusArr[i].color}?style=flat&logo=${techPlusArr[i].name}&logoColor=white`}
+            alt=""
+          />
+        </div>
       );
     }
 
     return arr;
   };
+
+  // 완성된 테크 컴포넌트 렌더링
   const showTechWhole = () => {
     const arr: any = [];
 
     techPlusWhole.map((el, index) => {
       arr.push(<h3 key={index}>{el.name}</h3>);
+      const arr2: any = [];
 
       el.techArray.map((elel: any, idx: any) => {
-        arr.push(
+        arr2.push(
           <img
             key={Math.random() * (1000000 - 1)}
             className={st.techBadge}
@@ -150,45 +144,30 @@ export default function Preview() {
           />
         );
       });
+      arr.push(<div className={st.techBadgeDiv}>{arr2}</div>);
     });
     return arr;
-    // for (let i = 0; i < techPlusWhole.length; i++) {
-    //   const len = techPlusWhole[i].techArray.length;
-    //   console.log(len);
-
-    //   for (let j = 0; j < len; j++) {
-    //     arr.push(
-    //       <img
-    //         // key={j}
-    //         className={st.techBadge}
-    //         src={`https://img.shields.io/badge/${techPlusWhole[i].techArray.name}-${techPlusWhole[i].techArray.color}?style=flat&logo=${techPlusWhole[i].techArray.name}&logoColor=white`}
-    //         alt=""
-    //       />
-    //     );
-    //   }
-
-    //   return arr;
-    // }
   };
 
+  // 컴포넌트 별 jsx (1 ~ 7)
   const tmp = [
     "",
-    <>
+    <div key="1">
       <img src={firstImgUrl} width="280" height="140" alt="baekjoon" />
       <img src={secImgUrl} width="285" height="140" alt="solved" />
-    </>,
-    <>
+    </div>,
+    <div key="2">
       <img src={githubUrl} width="350" height="150" alt="githubStats" />
-    </>,
-    <>
+    </div>,
+    <div key="3">
       <img src={mulUrl} width="280" height={mulHeight} alt="MUL" />
-    </>,
-    <>
-      {showTechWhole()}
+    </div>,
+    <div key="4" className={st.TextArr}>
+      <div className={st.TextArr}>{showTechWhole()}</div>
       <h3>{techTitle}</h3>
       <div className={st.techBadgeDiv}>{showTechArr()}</div>
-    </>,
-    <>
+    </div>,
+    <div key="5">
       <h3>Contact</h3>
       <div className={st.contactBadgeDiv}>
         {mailId.length > 0 ? (
@@ -216,19 +195,53 @@ export default function Preview() {
           </a>
         ) : undefined}
       </div>
-    </>,
+    </div>,
     "오르",
-    <>
+    <div key="7" className={st.TextArr}>
       {showTextArr()}
-      {/* <h3>{newTextTitle}</h3>
-      <p>{newTextDesc}</p> */}
-    </>,
+      <h3>{newTextTitle}</h3>
+      <p>{newTextDesc}</p>
+    </div>,
   ];
 
-  const aa = () => {
+  // 인덱스에 해당하는 add Text 배열(textArr) 찾아 리턴
+  // => add Text 컴포넌트 분리
+  const choiceTempArr = (idx: any) => {
+    for (let i = 0; i < textArr.length; i++) {
+      if (idx - 1 === i) {
+        return (
+          <div key={i}>
+            <h3>{textArr[i].titleArr}</h3>
+            <p>{textArr[i].descArr}</p>
+          </div>
+        );
+      }
+    }
+  };
+
+  // (Sorting에서) 프리뷰 렌더링 요소 생성
+  const renderingSorting = () => {
     const arr: any = [];
-    prevComp.map((el: any, index) => {
+    nPrevComp.map((el: any, index: number) => {
+      if (Number(el) < 10) {
+        arr.push(tmp[el]);
+      } else {
+        let i = el.substring(1, 2);
+        arr.push(choiceTempArr(i));
+      }
+    });
+
+    return arr;
+  };
+
+  // (Sorting 이전의) 프리뷰 렌더링 요소 생성
+  const renderingPrevSorting = () => {
+    const arr: any = [];
+    const tmp2 = [...prevComp, currComponent, ...nextComp];
+
+    tmp2.map((el: any, index: number) => {
       if (index !== 0) {
+        console.log(index);
         arr.push(tmp[el]);
       }
     });
@@ -263,82 +276,81 @@ export default function Preview() {
         <button className={st.btnDiv}>초기화</button>
       </div>
       <div className={st.contentDiv}>
-        <div>
-          {currComponent !== 8 ? (
-            <>
-              {componentArr[1] ? (
-                <div>
-                  <img
-                    src={firstImgUrl}
-                    width="280"
-                    height="140"
-                    alt="baekjoon"
-                  />
-                  <img src={secImgUrl} width="285" height="140" alt="solved" />
-                </div>
-              ) : undefined}
-              {componentArr[2] ? (
-                <img
-                  src={githubUrl}
-                  width="350"
-                  height="150"
-                  alt="githubStats"
-                />
-              ) : undefined}
-              {componentArr[3] ? (
-                <img src={mulUrl} width="280" height={mulHeight} alt="MUL" />
-              ) : undefined}
-              {componentArr[4] ? (
-                <>
-                  {showTechWhole()}
-                  <h3>{techTitle}</h3>
-                  <div className={st.techBadgeDiv}>{showTechArr()}</div>
-                </>
-              ) : undefined}
-              {componentArr[5] ? (
-                <>
-                  <h3>Contact</h3>
-                  <div className={st.contactBadgeDiv}>
-                    {mailId.length > 0 ? (
-                      <a href={mailURL} target="_blank">
-                        <img
-                          src="https://img.shields.io/badge/Mail-6667AB?style=flat&logo=Gmail&logoColor=white"
-                          alt="Mail"
-                        />
-                      </a>
-                    ) : undefined}
-                    {blogLink.length > 0 ? (
-                      <a href={blogLink} target="_blank">
-                        <img
-                          src={`https://img.shields.io/badge/Tech Blog-7FD2F5?style=flat&logo=Hoppscotch&logoColor=white&link=${blogLink}/`}
-                          alt="blog"
-                        />
-                      </a>
-                    ) : undefined}
-                    {notionLink.length > 0 ? (
-                      <a href={notionLink} target="_blank">
-                        <img
-                          src={`https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white&link=${notionLink}/`}
-                          alt="notion"
-                        />
-                      </a>
-                    ) : undefined}
-                  </div>
-                </>
-              ) : undefined}
-              {componentArr[7] ? (
-                <>
-                  {showTextArr()}
-                  <h3>{newTextTitle}</h3>
-                  <p>{newTextDesc}</p>
-                </>
-              ) : undefined}
-            </>
-          ) : (
-            aa()
-          )}
-          {/* <Link href="http://solved.ac/kyum8562"> */}
-        </div>
+        {currComponent !== 8
+          ? //   (
+            //   <>
+            //     {componentArr[1] ? (
+            //       <div>
+            //         <img
+            //           src={firstImgUrl}
+            //           width="280"
+            //           height="140"
+            //           alt="baekjoon"
+            //         />
+            //         <img src={secImgUrl} width="285" height="140" alt="solved" />
+            //       </div>
+            //     ) : undefined}
+            //     {componentArr[2] ? (
+            //       <img
+            //         src={githubUrl}
+            //         width="350"
+            //         height="150"
+            //         alt="githubStats"
+            //       />
+            //     ) : undefined}
+            //     {componentArr[3] ? (
+            //       <img src={mulUrl} width="280" height={mulHeight} alt="MUL" />
+            //     ) : undefined}
+            //     {componentArr[4] ? (
+            //       <>
+            //         {showTechWhole()}
+            //         <h3>{techTitle}</h3>
+            //         <div className={st.techBadgeDiv}>{showTechArr()}</div>
+            //       </>
+            //     ) : undefined}
+            //     {componentArr[5] ? (
+            //       <>
+            //         <h3>Contact</h3>
+            //         <div className={st.contactBadgeDiv}>
+            //           {mailId.length > 0 ? (
+            //             <a href={mailURL} target="_blank">
+            //               <img
+            //                 src="https://img.shields.io/badge/Mail-6667AB?style=flat&logo=Gmail&logoColor=white"
+            //                 alt="Mail"
+            //               />
+            //             </a>
+            //           ) : undefined}
+            //           {blogLink.length > 0 ? (
+            //             <a href={blogLink} target="_blank">
+            //               <img
+            //                 src={`https://img.shields.io/badge/Tech Blog-7FD2F5?style=flat&logo=Hoppscotch&logoColor=white&link=${blogLink}/`}
+            //                 alt="blog"
+            //               />
+            //             </a>
+            //           ) : undefined}
+            //           {notionLink.length > 0 ? (
+            //             <a href={notionLink} target="_blank">
+            //               <img
+            //                 src={`https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white&link=${notionLink}/`}
+            //                 alt="notion"
+            //               />
+            //             </a>
+            //           ) : undefined}
+            //         </div>
+            //       </>
+            //     ) : undefined}
+            //     {componentArr[7] ? (
+            //       <>
+            //         {showTextArr()}
+            //         <h3>{newTextTitle}</h3>
+            //         <p>{newTextDesc}</p>
+            //       </>
+            //     ) : undefined}
+            //   </>
+            // )
+            renderingPrevSorting()
+          : renderingSorting()}
+        {/* <Link href="http://solved.ac/kyum8562"> */}
       </div>
     </div>
   );
