@@ -67,8 +67,6 @@ public class ReadmeService {
 			readmeRepository.save(readme);
 			updateReadme(readmes, user, readme);
 		}
-
-
 	}
 
 	public void updateReadme(List<ReadmeDto> readmes, User user, Readme readme){
@@ -167,53 +165,102 @@ public class ReadmeService {
 	}
 
 	public void saveContact(ReadmeDto readmeDto, User user, Readme readme, int order){
-		Contact contact = Contact.builder()
-			.user(user)
-			.readme(readme)
-			.order(order)
-			.blog(readmeDto.getBlogLink())
-			.mail(readmeDto.getMailLink())
-			.notion(readmeDto.getNotionLink())
-			.build();
-		contactRepository.save(contact);
+		// 이미 있다면
+		if(contactRepository.findByUser_IdAndReadme_Id(user.getId(), readme.getId()).isPresent()){
+			Contact contact = contactRepository.findByUser_IdAndReadme_Id(user.getId(), readme.getId()).get();
+			contact.setOrder(order);
+			contact.setBlog(readmeDto.getBlogLink());
+			contact.setMail(readmeDto.getMailLink());
+			contact.setNotion(readmeDto.getNotionLink());
+		}
+		// 없다면 새로 생성
+		else {
+			Contact contact = Contact.builder()
+				.user(user)
+				.readme(readme)
+				.order(order)
+				.blog(readmeDto.getBlogLink())
+				.mail(readmeDto.getMailLink())
+				.notion(readmeDto.getNotionLink())
+				.build();
+			contactRepository.save(contact);
+		}
 	}
 
 	public void saveLanguage(ReadmeDto readmeDto, User user, Readme readme, int order){
-		MostLanguage mostLanguage = MostLanguage.builder()
-			.user(user)
-			.readme(readme)
-			.order(order)
-			.theme(readmeDto.getLanguageTheme())
-			.type(readmeDto.getLanguageType())
-			.build();
-		mostLanguageRepository.save(mostLanguage);
+		// 이미 있다면
+		if(mostLanguageRepository.findByUser_IdAndReadme_Id(user.getId(),readme.getId()).isPresent()){
+			MostLanguage mostLanguage = mostLanguageRepository.findByUser_IdAndReadme_Id(user.getId(),readme.getId()).get();
+			mostLanguage.setOrder(order);
+			mostLanguage.setTheme(readmeDto.getLanguageTheme());
+			mostLanguage.setType(readmeDto.getLanguageType());
+		}
+		// 없다면
+		else {
+			MostLanguage mostLanguage = MostLanguage.builder()
+				.user(user)
+				.readme(readme)
+				.order(order)
+				.theme(readmeDto.getLanguageTheme())
+				.type(readmeDto.getLanguageType())
+				.build();
+			mostLanguageRepository.save(mostLanguage);
+		}
 	}
 
 	public void saveTech(ReadmeDto readmeDto, User user, Readme readme, int order) {
-		ReadmeTechstack readmeTechstack = ReadmeTechstack.builder()
-			.user(user)
-			.readme(readme)
-			.order(order)
-			.build();
-		readmeTechstackRepository.save(readmeTechstack);
-
-		for (int i = 0; i < readmeDto.getTechStack().size(); i++) {
-			Techstack techstack = Techstack.builder()
-				.readmeTechstack(readmeTechstack)
-				.name(readmeDto.getTechStack().get(i))
-				.order(i)
+		// 이미 있다면
+		if(readmeTechstackRepository.findByUser_IdAndReadme_Id(user.getId(),readme.getId()).isPresent()){
+			ReadmeTechstack readmeTechstack = readmeTechstackRepository.findByUser_IdAndReadme_Id(user.getId(),readme.getId()).get();
+			// 삭제 진행
+			List<Techstack> techstacks = techstackRepository.findByReadmeTechstack_IdOrderByOrder(readmeTechstack.getId());
+			for (Techstack t: techstacks) {
+				techstackRepository.delete(t);
+			}
+			// 새로 추가
+			for (int i = 0; i < readmeDto.getTechStack().size(); i++) {
+				Techstack techstack = Techstack.builder()
+					.readmeTechstack(readmeTechstack)
+					.name(readmeDto.getTechStack().get(i))
+					.order(i)
+					.build();
+				techstackRepository.save(techstack);
+			}
+		}
+		// 없다면
+		else {
+			ReadmeTechstack readmeTechstack = ReadmeTechstack.builder()
+				.user(user)
+				.readme(readme)
+				.order(order)
 				.build();
-			techstackRepository.save(techstack);
+			readmeTechstackRepository.save(readmeTechstack);
+
+			for (int i = 0; i < readmeDto.getTechStack().size(); i++) {
+				Techstack techstack = Techstack.builder()
+					.readmeTechstack(readmeTechstack)
+					.name(readmeDto.getTechStack().get(i))
+					.order(i)
+					.build();
+				techstackRepository.save(techstack);
+			}
 		}
 	}
 
 	public void saveOreu(User user, Readme readme, int order){
-		Oreu oreu = Oreu.builder()
-			.user(user)
-			.readme(readme)
-			.order(order)
-			.build();
-		oreuRepository.save(oreu);
+		// 이미 있다면
+		if(oreuRepository.findByUser_IdAndReadme_Id(user.getId(),readme.getId()).isPresent()){
+			Oreu oreu = oreuRepository.findByUser_IdAndReadme_Id(user.getId(),readme.getId()).get();
+		}
+		// 없다면 새로 생성
+		else {
+			Oreu oreu = Oreu.builder()
+				.user(user)
+				.readme(readme)
+				.order(order)
+				.build();
+			oreuRepository.save(oreu);
+		}
 	}
 
 	// 리드미 조회
@@ -242,14 +289,14 @@ public class ReadmeService {
 			rdmDtoList.add(getWriting(userId, readmeId));
 		}
 
-		// LANGUAGE
-		if(mostLanguageRepository.findByUser_IdAndReadme_Id(userId,readmeId).isPresent()) {
-			rdmDtoList.add(getLanguage(userId, readmeId));
-		}
-
 		// CONTACT
 		if(contactRepository.findByUser_IdAndReadme_Id(userId,readmeId).isPresent()) {
 			rdmDtoList.add(getContact(userId, readmeId));
+		}
+
+		// LANGUAGE
+		if(mostLanguageRepository.findByUser_IdAndReadme_Id(userId,readmeId).isPresent()) {
+			rdmDtoList.add(getLanguage(userId, readmeId));
 		}
 
 		// TECH
@@ -301,18 +348,6 @@ public class ReadmeService {
 		return rdmDto;
 	}
 
-	public RDMDto getLanguage(String userId, Long readmeId) {
-		MostLanguage language = mostLanguageRepository.findByUser_IdAndReadme_Id(userId, readmeId).get();
-		RDMDto rdmDto = RDMDto.builder()
-			.readmeType("LANGUAGE")
-			.order(language.getOrder())
-			.languageValue(userRepository.findById(userId).get().getNickname())
-			.languageTheme(language.getTheme())
-			.languageType(language.getType())
-			.build();
-		return rdmDto;
-	}
-
 	public RDMDto getContact(String userId, Long readmeId) {
 		Contact contact = contactRepository.findByUser_IdAndReadme_Id(userId, readmeId).get();
 		RDMDto rdmDto = RDMDto.builder()
@@ -321,6 +356,18 @@ public class ReadmeService {
 			.blogLink(contact.getBlog())
 			.mailLink(contact.getMail())
 			.notionLink(contact.getNotion())
+			.build();
+		return rdmDto;
+	}
+
+	public RDMDto getLanguage(String userId, Long readmeId) {
+		MostLanguage language = mostLanguageRepository.findByUser_IdAndReadme_Id(userId, readmeId).get();
+		RDMDto rdmDto = RDMDto.builder()
+			.readmeType("LANGUAGE")
+			.order(language.getOrder())
+			.languageValue(userRepository.findById(userId).get().getNickname())
+			.languageTheme(language.getTheme())
+			.languageType(language.getType())
 			.build();
 		return rdmDto;
 	}
