@@ -1,19 +1,22 @@
 "use client";
+import { CreateReadme } from "@/Api/Readme/createReadme";
 /* eslint-disable @next/next/no-img-element */
 import st from "./Preview.module.scss";
 import { useAppSelector } from "@/store/hooks";
 import { selectReadme } from "@/store/modules/readme";
 import Image from "next/image";
-import { useEffect } from "react";
+import Cookies from "js-cookie";
 
 export default function Preview() {
   const BaekJoonData = useAppSelector(selectReadme).baekjoonId;
-  const mulTheme = useAppSelector(selectReadme).mulTheme;
-
   const SolvedThemeData = useAppSelector(selectReadme).solvedTheme;
+
   const githubId = useAppSelector(selectReadme).githubId;
   const githubTheme = useAppSelector(selectReadme).githubTheme;
+
   const mulType = useAppSelector(selectReadme).mulType;
+  const mulTheme = useAppSelector(selectReadme).mulTheme;
+
   const newTextTitle = useAppSelector(selectReadme).newTextTitle;
   const newTextDesc = useAppSelector(selectReadme).newTextDesc;
   const textArr = useAppSelector(selectReadme).textArr;
@@ -30,6 +33,11 @@ export default function Preview() {
   const nextComp = useAppSelector(selectReadme).nextComp;
   const nPrevComp = useAppSelector(selectReadme).nPrevComp;
   const techArr = useAppSelector(selectReadme).techArr;
+
+  console.log(textArr);
+
+  const ACCESS_TOKEN = Cookies.get("Authorization");
+  const REFRESH_TOKEN = Cookies.get("RefreshToken");
 
   // 연락처
   // const mailURL = `https://mail.${mailDomain}/mail/?view=cm&amp;fs=1&amp;to=${mailId}@${mailDomain}/`;
@@ -405,10 +413,79 @@ export default function Preview() {
 
   // 저장 버튼 클릭시 readme 저장 axios 요청
   const saveReadme = async () => {
-    // try {
-    //   const res = await GetBasicFolder(ACCESS_TOKEN);
-    //   setRepositoryListData(res.data);
-    // }
+    const arr: any = [];
+    nPrevComp.map((el: any, idx: any) => {
+      let curr = Number(el);
+      let pushData = {};
+      if (curr === 1) {
+        pushData = {
+          readmeType: "BOJ",
+          bojValue: BaekJoonData.length > 0 ? BaekJoonData : "temp",
+          bojTheme: SolvedThemeData,
+        };
+      } else if (curr === 2) {
+        pushData = { readmeType: "GIT", gitTheme: githubTheme };
+      } else if (curr === 3) {
+        pushData = {
+          readmeType: "LANGUAGE",
+          languageTheme: mulTheme,
+          languageType: mulType,
+        };
+      } else if (curr === 4) {
+        techPlusWhole.map((el: any, index: any) => {
+          // 제목 백에서 넣어줄 예정
+          // pushData = { readmeType: "TECH", name: "", techStack: el.techArray };
+          pushData = { readmeType: "TECH", techStack: el.techArray };
+          arr.push(pushData);
+        });
+      } else if (curr === 5) {
+        pushData = {
+          readmeType: "CONTACT",
+          mailLink: `${mailId}@${mailDomain}`,
+          blogLink: blogLink.length > 0 ? blogLink : "temp",
+          notionLink: notionLink.length > 0 ? notionLink : "temp",
+        };
+      } else if (curr === 6) {
+        pushData = { readmeType: "PLANT" };
+      } else if (curr > 10) {
+        const tmp = (curr % 10) - 1;
+
+        pushData = {
+          readmeType: "WRITING",
+          writingTitle: textArr[tmp].titleArr,
+          writingContents: textArr[tmp].descArr,
+        };
+      }
+
+      // pushData = {readmeType:"WRITING", writingTitle}
+      if (curr !== 4) arr.push(pushData);
+    });
+    try {
+      console.log(`pushArr: `, arr);
+
+      const res = await CreateReadme(ACCESS_TOKEN, arr);
+      console.log(res);
+    } catch (err: any) {
+      console.log(err);
+
+      /**
+ * 리스트 제외 request type은 String
+ *
+ 리드미 리스트(readmes)
+ * 리드미 종류(readmeType)
+ * 1. 백준 아이디(bojValue)
+ * 2. 백준 테마(bojTheme)
+ * 2. 깃 테마(gitTheme)
+ * 3. 언어테마(languageTheme)
+ * 4. 언어타입(languageType)
+ * 5. 기술스택 리스트(techStack) - 리스트
+ * 6. 메일(mailLink)
+ * 6. 블로그(blogLink)
+ * 6. 노션(notionLink)
+ * 7. 글 제목(writingTitle)
+ * 7. 글 내용(writingContents)
+ */
+    }
   };
   return (
     <div className={st.body}>

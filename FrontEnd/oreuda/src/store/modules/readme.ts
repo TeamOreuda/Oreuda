@@ -55,7 +55,7 @@ const initialState: readmeSlice = {
   solvedTheme: "warm",
   githubId: "",
   githubTheme: "dark",
-  mulTheme: "",
+  mulTheme: "dark",
   mulType: 0,
   mailId: "",
   mailDomain: "naver.com",
