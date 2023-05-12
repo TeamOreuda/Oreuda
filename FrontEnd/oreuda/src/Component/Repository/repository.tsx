@@ -6,6 +6,16 @@ import fontColor from "../../Style/repository/languageColor.module.scss";
 import Repositorygraph from "./repositorygraph";
 import RepositoryGrassGraph from "./repositoryGrassGraph";
 
+export interface DailyCommit {
+  date: string;
+  count: number;
+}
+
+export interface YearlyCommit {
+  year: number;
+  count: number;
+}
+
 interface Repository {
   id: string;
   name: string;
@@ -15,14 +25,8 @@ interface Repository {
   starCount: number;
   isPrivate: string;
   updateDate: string;
-  yearlyCommits: {
-    year: number;
-    count: number;
-  }[];
-  dailyCommit: {
-    date: string;
-    count: number;
-  }[];
+  yearlyCommits: YearlyCommit[];
+  dailyCommits: DailyCommit[];
 }
 
 export default function Repository(props: {
@@ -107,9 +111,7 @@ export default function Repository(props: {
               <span>Updated on {formattedDate(e.updateDate)}</span>
             </div>
           </div>
-          <div className={st.repositoryGrass}>
-            <RepositoryGrassGraph />
-          </div>
+          <RepositoryGrassGraph dailyCommits={e.dailyCommits} />
           <Repositorygraph yearlyCommits={e.yearlyCommits} />
         </div>
       ))}

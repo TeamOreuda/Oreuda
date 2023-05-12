@@ -2,24 +2,21 @@ import { Chart as ChartJS, ArcElement, Tooltip } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 
 import st from "./repositorygraph.module.scss";
+import { YearlyCommit } from "@/Component/Repository/repository";
 
-interface yearlyCommit {
-  year: number;
-  count: number;
-}
-[];
-
-export default function repositorygraph(props: { yearlyCommits: yearlyCommit[] }) {
+export default function repositorygraph(props: {
+  yearlyCommits: YearlyCommit[];
+}) {
   const { yearlyCommits } = props;
 
   ChartJS.register(ArcElement, Tooltip);
   const data = {
-    labels: yearlyCommits?.map((e: yearlyCommit) => {
+    labels: yearlyCommits?.map((e: YearlyCommit) => {
       return e.year;
     }),
     datasets: [
       {
-        data: yearlyCommits?.map((e: yearlyCommit) => {
+        data: yearlyCommits?.map((e: YearlyCommit) => {
           return e.count;
         }),
         backgroundColor: [
