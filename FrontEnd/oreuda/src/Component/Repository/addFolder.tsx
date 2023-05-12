@@ -15,14 +15,13 @@ import { GetBasicFolder } from "@/Api/Folders/getBasicFolder";
 
 export default function AddFolder(props: { clickModal: any }) {
   const { clickModal } = props;
-  const params = useParams();
-  const folderId = Number(params.folderId);
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
-  const [repositoryListData, setRepositoryListData] = useState<{ id: number; name: string }[]>();
+
   const [folderName, setFolderName] = useState("");
   const [folderColor, setFolderColor] = useState("");
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
+  const [repositoryListData, setRepositoryListData] = useState<{ id: number; name: string }[]>();
 
   const colorList = ["yellow", "orange", "red", "green", "blue", "purple", "black"];
 

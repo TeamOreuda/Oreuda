@@ -3,7 +3,6 @@ import Image from "next/image";
 
 import st from "./repository.module.scss";
 import Repositorygraph from "./repositorygraph";
-import { useEffect, useState } from "react";
 import RepositoryGrassGraph from "./repositoryGrassGraph";
 
 interface Repository {
@@ -25,34 +24,13 @@ interface Repository {
   }[];
 }
 
-export default function Repository(props: { clickMove: boolean; repositoryList: Repository[] }) {
-  const { clickMove, repositoryList } = props;
-  const [checkedItems, setCheckedItems] = useState<string[]>([]);
-
-  const options = [
-    { id: 1, value: "hello" },
-    { id: 2, value: "111" },
-    { id: 3, value: "2222" },
-    { id: 1, value: "hello" },
-    { id: 2, value: "111" },
-    { id: 3, value: "2222" },
-    { id: 1, value: "hello" },
-    { id: 2, value: "111" },
-    { id: 3, value: "2222" },
-    { id: 1, value: "hello" },
-    { id: 2, value: "111" },
-    { id: 3, value: "2222" },
-    { id: 1, value: "hello" },
-    { id: 2, value: "111" },
-    { id: 3, value: "2222" },
-    { id: 1, value: "hello" },
-    { id: 2, value: "111" },
-    { id: 3, value: "2222" },
-  ];
-
-  // useEffect(() => {
-  //   setCheckedItems([]);
-  // }, [clickMove]);
+export default function Repository(props: {
+  clickMove: any;
+  repositoryList: Repository[];
+  checkedItems: string[];
+  setCheckedItems: React.Dispatch<React.SetStateAction<string[]>>;
+}) {
+  const { clickMove, repositoryList, checkedItems, setCheckedItems } = props;
 
   function formattedDate(date: string) {
     date.replace(/^(\d{4})-(\d{2})-(\d{2})$/, (match, year, month, day) => {
@@ -75,19 +53,19 @@ export default function Repository(props: { clickMove: boolean; repositoryList: 
     return date;
   }
 
-  // const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { value } = event.target;
-  //   const currentIndex = checkedItems.indexOf(value);
-  //   const newCheckedItems = [...checkedItems];
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    const currentIndex = checkedItems.indexOf(value);
+    const newCheckedItems = [...checkedItems];
 
-  //   if (currentIndex === -1) {
-  //     newCheckedItems.push(value);
-  //   } else {
-  //     newCheckedItems.splice(currentIndex, 1);
-  //   }
+    if (currentIndex === -1) {
+      newCheckedItems.push(value);
+    } else {
+      newCheckedItems.splice(currentIndex, 1);
+    }
 
-  //   setCheckedItems(newCheckedItems);
-  // };
+    setCheckedItems(newCheckedItems);
+  };
 
   return (
     <div>
@@ -95,15 +73,15 @@ export default function Repository(props: { clickMove: boolean; repositoryList: 
         <div key={index} className={st.body}>
           <div className={st.info}>
             <div className={st.infofirst}>
-              {/* {props.clickMove && (
+              {clickMove && (
                 <input
                   type="checkbox"
                   value={e.id}
                   checked={checkedItems.indexOf(String(e.id)) !== -1}
-                  // onChange={handleCheckboxChange}
+                  onChange={handleCheckboxChange}
                   onClick={(event) => event.stopPropagation()}
                 />
-              )} */}
+              )}
               <Link href={e.url} className={st.link}>
                 {e.name}
               </Link>
@@ -126,7 +104,9 @@ export default function Repository(props: { clickMove: boolean; repositoryList: 
               <span>Updated on {formattedDate(e.updateDate)}</span>
             </div>
           </div>
-          <RepositoryGrassGraph />
+          <div className={st.repositoryGrass}>
+            <RepositoryGrassGraph />
+          </div>
           <Repositorygraph yearlyCommits={e.yearlyCommits} />
         </div>
       ))}
