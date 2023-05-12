@@ -9,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -25,8 +27,12 @@ public class CardService {
     private final PlantRepository plantRepository;
 
     public String getBase64String(String imageUrl, String imageType) throws IOException {
-        Resource resource = new ClassPathResource(imageUrl);
-        InputStream is = resource.getInputStream();
+        Resource[] resources = ResourcePatternUtils
+                .getResourcePatternResolver(new DefaultResourceLoader())
+                .getResources("classpath*:msg/**");
+        for (Resource resource : resources) {
+            log.info("resource: {}", resource.getFilename());
+        }
         File imageFile = File.createTempFile("temp", ".png");
         FileInputStream imageInFile = new FileInputStream(imageFile);
 //        FileInputStream imageInFile = new FileInputStream(imageUrl);
