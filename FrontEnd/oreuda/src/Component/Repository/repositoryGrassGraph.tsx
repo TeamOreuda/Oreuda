@@ -37,7 +37,6 @@ export default function RepositoryGrassGraph(props: {
           return getScale(value.count);
         }}
         onMouseOver={(e, value) => {
-          console.log(e.target);
           if (value) {
             speechBubbleRef.current!.innerText = `${value.date} : ${value.count} 커밋`;
             speechBubbleRef.current!.style.top = `${e.clientY + 10}px`;
@@ -45,7 +44,7 @@ export default function RepositoryGrassGraph(props: {
             speechBubbleRef.current!.style.display = "block";
           }
         }}
-        onMouseLeave={(e, value) => {
+        onMouseLeave={() => {
           speechBubbleRef.current!.style.display = "none";
         }}
       />
