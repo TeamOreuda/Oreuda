@@ -82,6 +82,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
             int errorCode = 500;
             if (ex.getClass() == NullPointerException.class) {
                 errorCode = 100;
+                log.info("토큰이 없습니다.");
             } else if (ex.getClass() == ExpiredJwtException.class) {
                 errorCode = 200;
             }
