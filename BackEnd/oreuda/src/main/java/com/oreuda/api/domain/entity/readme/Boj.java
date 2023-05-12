@@ -59,4 +59,7 @@ public class Boj {
 	public Boj() {
 	}
 
+	public void setOrder(int order){this.order = order;}
+	public void setValue(String value){this.value = value;}
+	public void setTheme(String theme){this.theme = theme;}
 }

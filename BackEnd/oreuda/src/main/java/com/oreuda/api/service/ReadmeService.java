@@ -51,11 +51,27 @@ public class ReadmeService {
 	public void saveReadme(List<ReadmeDto> readmes, String userId) {
 		// 사용자 유무 검증
 		User user = userRepository.findById(userId).orElseThrow();
-		Readme readme = Readme.builder()
-			.user(user)
-			.build();
-		readmeRepository.save(readme);
 
+		Readme readme = null;
+
+		// 리드미 있다면 기존 리드미 업데이트
+		if(readmeRepository.findByUser_Id(userId).isPresent()){
+			readme = readmeRepository.findByUser_Id(userId).get();
+			updateReadme(readmes, user, readme);
+		}
+		// 없다면 새로운 리드미 생성
+		else {
+			readme = Readme.builder()
+				.user(user)
+				.build();
+			readmeRepository.save(readme);
+			updateReadme(readmes, user, readme);
+		}
+
+
+	}
+
+	public void updateReadme(List<ReadmeDto> readmes, User user, Readme readme){
 		for (int i = 0; i< readmes.size(); i++) {
 			switch (readmes.get(i).getReadmeType()) {
 				case "BOJ":
@@ -87,40 +103,67 @@ public class ReadmeService {
 					break;
 			}
 		}
-
 	}
 
 	public void saveBoj(ReadmeDto readmeDto, User user, Readme readme, int order){
-		Boj boj = Boj.builder()
-			.user(user)
-			.readme(readme)
-			.order(order)
-			.value(readmeDto.getBojValue())
-			.theme(readmeDto.getBojTheme())
-			.build();
-		bojRepository.save(boj);
-
+		// 이미 있다면
+		if(bojRepository.findByUser_IdAndReadme_Id(user.getId(), readme.getId()).isPresent()){
+			Boj boj = bojRepository.findByUser_IdAndReadme_Id(user.getId(), readme.getId()).get();
+			boj.setOrder(order);
+			boj.setValue(readmeDto.getBojValue());
+			boj.setTheme(readmeDto.getGitTheme());
+		}
+		// 없다면 새로 생성
+		else {
+			Boj boj = Boj.builder()
+				.user(user)
+				.readme(readme)
+				.order(order)
+				.value(readmeDto.getBojValue())
+				.theme(readmeDto.getBojTheme())
+				.build();
+			bojRepository.save(boj);
+		}
 	}
 
 	public void saveGit(ReadmeDto readmeDto, User user, Readme readme, int order){
-		Gitstats gitstats = Gitstats.builder()
-			.user(user)
-			.readme(readme)
-			.order(order)
-			.theme(readmeDto.getGitTheme())
-			.build();
-		gitstatsRepository.save(gitstats);
+		// 이미 있다면
+		if(gitstatsRepository.findByUser_IdAndReadme_Id(user.getId(), readme.getId()).isPresent()) {
+			Gitstats gitstats = gitstatsRepository.findByUser_IdAndReadme_Id(user.getId(), readme.getId()).get();
+			gitstats.setOrder(order);
+			gitstats.setTheme(readmeDto.getGitTheme());
+		}
+		// 없다면 새로 생성
+		else {
+			Gitstats gitstats = Gitstats.builder()
+				.user(user)
+				.readme(readme)
+				.order(order)
+				.theme(readmeDto.getGitTheme())
+				.build();
+			gitstatsRepository.save(gitstats);
+		}
 	}
 
 	public void saveWriting(ReadmeDto readmeDto, User user, Readme readme, int order){
-		Writing writing = Writing.builder()
-			.user(user)
-			.readme(readme)
-			.order(order)
-			.title(readmeDto.getWritingTitle())
-			.contents(readmeDto.getWritingContents())
-			.build();
-		writingRepository.save(writing);
+		// 이미 있다면
+		if(writingRepository.findByUser_IdAndReadme_Id(user.getId(), readme.getId()).isPresent()) {
+			Writing writing = writingRepository.findByUser_IdAndReadme_Id(user.getId(), readme.getId()).get();
+			writing.setOrder(order);
+			writing.setTitle(readmeDto.getWritingTitle());
+			writing.setContents(readmeDto.getWritingContents());
+		}
+		// 없다면 새로 생성
+		else {
+			Writing writing = Writing.builder()
+				.user(user)
+				.readme(readme)
+				.order(order)
+				.title(readmeDto.getWritingTitle())
+				.contents(readmeDto.getWritingContents())
+				.build();
+			writingRepository.save(writing);
+		}
 	}
 
 	public void saveContact(ReadmeDto readmeDto, User user, Readme readme, int order){
