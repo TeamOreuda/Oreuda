@@ -77,6 +77,7 @@ public class Folder {
 			.name(name)
 			.color(color)
 			.order(order)
+			.status(status)
 			.repositoryCount(repositories.size())
 			.build();
 	}

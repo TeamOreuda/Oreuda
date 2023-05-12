@@ -20,8 +20,28 @@ public class CardService {
     private final UserRepository userRepository;
     private final PlantRepository plantRepository;
 
-    public String getSvg(String userName, int maxStreak, int repoCount, String plantName, int barSize, int barSizeAdjust, int curStat, int maxStat) {
-        String maxValue = Objects.equals(plantName, "mountain") ? "MAX" : String.valueOf(maxStat);
+    public String getCard(String userId, PlantDto plantDto) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+        Plant plant = plantRepository.findById(plantDto.getId()).orElseThrow(() -> new IllegalArgumentException("해당 식물이 없습니다."));
+        // 카드 정보들
+        String userName = user.getNickname();
+        int maxStreak = user.getStreakMax();
+        int repoCount = user.getRepositoryCnt();
+        String plantName = plant.getName();
+        // 현재 단계 포인트 중 달성한 정도를 나타내는 바 길이
+        int barSize = (int) ((double) (user.getStats() - plant.getMin() + 1) / (plant.getMax() - plant.getMin() + 1) * 150) + 15;
+        // 캐릭터는 26px
+        int barSizeAdjust = barSize - 13;
+        // 스탯
+        String maxStat = String.valueOf(plant.getMax());
+        int curStat = user.getStats();
+        // 최고 단계일 경우
+        if (Objects.equals(plantName, "Earth")) {
+            maxStat = "MAX";
+            barSize = 165;
+            barSizeAdjust = barSize - 13;
+        }
+
         return "<!DOCTYPE svg PUBLIC\n" +
                 "        \"-//W3C//DTD SVG 1.1//EN\"\n" +
                 "        \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n" +
@@ -52,7 +72,7 @@ public class CardService {
                 "            }\n" +
                 "            @keyframes rateBarAnimation {\n" +
                 "                0% {\n" +
-                "                    stroke-dashoffset: " + barSize + ";\n" +
+                "                    stroke-dashoffset: " + barSize + "; /* 끝 위치 bar_size */\n" +
                 "                }\n" +
                 "                100%{\n" +
                 "                    stroke-dashoffset: 15;\n" +
@@ -61,25 +81,43 @@ public class CardService {
                 "            @keyframes runOrue{\n" +
                 "               0% { \n" +
                 "                    opacity: 0.5;\n" +
-                "                    transform: translateX(" + -barSize + "px);\n" +
+                "                    transform: translateX(" + -barSize + "px); /* 시작 위치  bar_size */\n" +
                 "                }\n" +
                 "                100% {\n" +
                 "                    opacity: 1;\n" +
                 "                    transform: translateX(0);\n" +
                 "                }\n" +
                 "            }\n" +
-                "            .soil-background {\n" +
+                "\n" +
+                "\n" +
+                "            .Soil-background {\n" +
                 "                fill: rgb(255, 126, 126);\n" +
                 "            }\n" +
-                "            .sprout-background{\n" +
+                "            .Sprout-background{\n" +
                 "                fill: rgb(255, 250, 124);\n" +
                 "            }\n" +
-                "            .tree-background{\n" +
+                "            .Sapling-background{\n" +
                 "                fill:rgb(202, 255, 161)\n" +
                 "            }\n" +
-                "            .mountain-background{\n" +
-                "                fill:rgb(127,210,245)\n" +
+                "            .Blossom-background{\n" +
+                "                fill:rgb(255, 246, 248)\n" +
                 "            }\n" +
+                "            .Apple-background{\n" +
+                "                fill:rgb(252, 252, 205)\n" +
+                "            }\n" +
+                "            .Rainbow-background{\n" +
+                "                fill:rgb(243, 198, 255)\n" +
+                "            }\n" +
+                "            .Volcano-background{\n" +
+                "                fill:rgb(145, 127, 179)\n" +
+                "            }\n" +
+                "            .Ice-background{\n" +
+                "                fill:rgb(127, 210, 245)\n" +
+                "            }\n" +
+                "            .Earth-background{\n" +
+                "                fill:rgb(0, 0, 0)\n" +
+                "            }\n" +
+                "\n" +
                 "\n" +
                 "            text {\n" +
                 "                fill: white;\n" +
@@ -101,47 +139,122 @@ public class CardService {
                 "                text-anchor: middle;\n" +
                 "                animation: delayFadeIn 2s ease-in-out forwards;\n" +
                 "            }\n" +
+                "\n" +
                 "            .subtitle {\n" +
                 "                font-weight: 500;\n" +
                 "                font-size: 0.9em;\n" +
                 "            }\n" +
                 "\n" +
-                "            soil-state{\n" +
+                "            .Soil-subtitle {\n" +
+                "                fill: rgb(255, 255, 255)\n" +
+                "            }\n" +
+                "            .Sprout-subtitle {\n" +
+                "                fill: rgb(99, 54, 0)\n" +
+                "                \n" +
+                "            }\n" +
+                "            .Sapling-subtitle {\n" +
+                "                fill: rgb(32, 98, 3)\n" +
+                "                \n" +
+                "            }\n" +
+                "            .Blossom-subtitle {\n" +
+                "                fill: rgb(255, 118, 148)\n" +
+                "            }\n" +
+                "            .Apple-subtitle {\n" +
+                "                fill: rgb(234, 65, 65)\n" +
+                "            \n" +
+                "            }\n" +
+                "            .Rainbow-subtitle {\n" +
+                "                fill: rgb(255, 255, 255)\n" +
+                "            \n" +
+                "            }\n" +
+                "            .Volcano-subtitle {\n" +
+                "                fill: rgb(255, 255, 255)\n" +
+                "            \n" +
+                "            }\n" +
+                "            .Ice-subtitle {\n" +
+                "                fill: rgb(255, 255, 255)\n" +
+                "            \n" +
+                "            }\n" +
+                "            .Earth-subtitle {\n" +
+                "                fill: rgb(255, 255, 255)\n" +
+                "            \n" +
+                "            }\n" +
+                "            \n" +
+                "            .Soil-state{\n" +
                 "                font-weight: 700;\n" +
                 "                font-size: 0.9em;\n" +
                 "                fill: rgb(70, 51, 34);\n" +
                 "            }\n" +
-                "\n" +
-                "            sprout-state{\n" +
+                "            .Sprout-state{\n" +
                 "                font-weight: 700;\n" +
                 "                font-size: 0.9em;\n" +
                 "                fill: rgb(53, 130, 27);\n" +
                 "            }\n" +
-                "\n" +
-                "            tree-state{\n" +
+                "            .Sapling-state{\n" +
                 "                font-weight: 700;\n" +
                 "                font-size: 0.9em;\n" +
                 "                fill: rgb(115, 57, 0);\n" +
                 "            }\n" +
-                "\n" +
-                "            mountain-state{\n" +
+                "            .Blossom-state{\n" +
                 "                font-weight: 700;\n" +
                 "                font-size: 0.9em;\n" +
-                "                fill: rgb(9, 72, 131);\n" +
+                "                fill: rgb(191, 132, 74)\n" +
+                "            }\n" +
+                "            .Apple-state{\n" +
+                "                font-weight: 700;\n" +
+                "                font-size: 0.9em;\n" +
+                "                fill: rgb(109, 201, 76)\n" +
+                "            }            \n" +
+                "            .Rainbow-state{\n" +
+                "                font-weight: 700;\n" +
+                "                font-size: 0.9em;\n" +
+                "                fill: rgb(197, 118, 218)\n" +
+                "            }\n" +
+                "            .Volcano-state{\n" +
+                "                font-weight: 700;\n" +
+                "                font-size: 0.9em;\n" +
+                "                fill: rgb(51, 51, 51)\n" +
+                "            }\n" +
+                "            .Ice-state{\n" +
+                "                font-weight: 700;\n" +
+                "                font-size: 0.9em;\n" +
+                "                fill: rgb(71, 167, 255)\n" +
+                "            }\n" +
+                "            .Earth-state{\n" +
+                "                font-weight: 700;\n" +
+                "                font-size: 0.9em;\n" +
+                "                fill: rgb(65, 144, 239)\n" +
                 "            }\n" +
                 "\n" +
-                "            .soil-gauge{\n" +
+                "\n" +
+                "            .Soil-gauge{\n" +
                 "                stroke:rgb(241, 1, 1);\n" +
                 "            }\n" +
-                "            .sprout-gauge{\n" +
+                "            .Sprout-gauge{\n" +
                 "                stroke:rgb(103, 62, 13)\n" +
                 "            }\n" +
-                "            .tree-gauge{\n" +
+                "            .Sapling-gauge{\n" +
                 "                stroke:rgb(26, 100, 0)\n" +
                 "            }\n" +
-                "            .mountain-gauge{\n" +
+                "            .Blossom-gauge{\n" +
+                "                stroke:rgb(255, 118, 148)\n" +
+                "            }\n" +
+                "            .Apple-gauge{\n" +
+                "                stroke:rgb(234, 65, 65)\n" +
+                "            }\n" +
+                "            .Rainbow-gauge{\n" +
+                "                stroke:rgb(186, 95, 211)\n" +
+                "            }\n" +
+                "            .Volcano-gauge{\n" +
+                "                stroke:rgb(255, 76, 76)\n" +
+                "            }\n" +
+                "            .Ice-gauge{\n" +
                 "                stroke:rgb(71, 167, 255)\n" +
                 "            }\n" +
+                "            .Earth-gauge{\n" +
+                "                stroke:rgb(65, 144, 239)\n" +
+                "            }\n" +
+                "\n" +
                 "            .gauge-layout{\n" +
                 "                stroke:rgb(253, 255, 239);\n" +
                 "            }\n" +
@@ -190,17 +303,17 @@ public class CardService {
                 "        </linearGradient>\n" +
                 "    </defs>\n" +
                 "    <rect width=\"350\" height=\"170\" rx=\"10\" ry=\"10\" class=\"" + plantName + "-background\"/>\n" +
-                "    <text x=\"15\" y=\"39\" class=\"user-name\">" + userName + "</text>\n" +
+                "    <text x=\"15\" y=\"39\" class=\"user-name " + plantName + "-subtitle\">" + userName + "</text>\n" +
                 "    <g class=\"item\" style=\"animation-delay: 200ms\">\n" +
-                "        <text x=\"15\" y=\"69\" class=\"subtitle\">Max Streak</text>\n" +
+                "        <text x=\"15\" y=\"69\" class=\"subtitle " + plantName + "-subtitle\">Max Streak</text>\n" +
                 "        <text x=\"165\" y=\"69\" text-anchor=\"end\" class=\"" + plantName + "-state\">" + maxStreak + "</text>\n" +
                 "    </g>\n" +
                 "    <g class=\"item\" style=\"animation-delay: 400ms\">\n" +
-                "        <text x=\"15\" y=\"89\" class=\"subtitle\">All Repo</text>\n" +
+                "        <text x=\"15\" y=\"89\" class=\"subtitle " + plantName + "-subtitle\">All Repo</text>\n" +
                 "        <text x=\"165\" y=\"89\" text-anchor=\"end\" class=\"" + plantName + "-state\">" + repoCount + "</text>\n" +
                 "    </g>\n" +
                 "    <g class=\"item\" style=\"animation-delay: 600ms\">\n" +
-                "        <text x=\"15\" y=\"109\" class=\"subtitle\">Tier</text>\n" +
+                "        <text x=\"15\" y=\"109\" class=\"subtitle " + plantName + "-subtitle\">Tier</text>\n" +
                 "        <text x=\"165\" y=\"109\" text-anchor=\"end\" class=\"" + plantName + "-state\">" + plantName + "</text>\n" +
                 "    </g>\n" +
                 "\n" +
@@ -210,20 +323,8 @@ public class CardService {
                 "    </g>\n" +
                 "    <image class = \"oreu-icon\" x=\"" + barSizeAdjust + "\" y=\"120\" href=\"/" + plantName + ".gif\" height=\"26\" width=\"26\" />\n" +
                 "    \n" +
-                "    <text x=\"165\" y=\"165\" text-anchor=\"end\" class=\"progress\">" + curStat + " / " + maxValue + "</text>" +
-                "    <image class = \"oreu-img\" x=\"195\" y=\"23\" href=\"/" + plantName + ".svg\" height=\"200\" width=\"187\" />\n" +
+                "    <text x=\"165\" y=\"165\" text-anchor=\"end\" class=\"progress " + plantName + "-subtitle\">" + curStat + " / " + maxStat + "</text>" +
+                "    <image class = \"oreu-img\" x=\"195\" y=\"10\" href=\"/" + plantName + ".svg\" height=\"200\" width=\"187\" />\n" +
                 "</svg>\n";
-    }
-
-    public String getCard(String userId, PlantDto plantDto) {
-        final int ICON_WIDTH = 26;
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
-        Plant plant = plantRepository.findById(plantDto.getId()).orElseThrow(() -> new IllegalArgumentException("해당 식물이 없습니다."));
-        int totalStat = plant.getMax() - plant.getMin() + 1;
-        int userStat = user.getStats() - plant.getMin() + 1;
-        int barSize = (int) ((double) userStat / totalStat * 150) + 15;
-        int barSizeAdjust = barSize - (ICON_WIDTH >> 1);
-        String svg = getSvg(user.getNickname(), user.getStreakMax(), user.getRepositoryCnt(), "mountain", barSize, barSizeAdjust, user.getStats(), plant.getMax());
-        return svg;
     }
 }
