@@ -22,7 +22,8 @@ export default function Repository() {
   const [showDelete, setShowDelete] = useState(false);
   const [folderListData, setFolderListData] = useState([]);
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
-  const [repositoryListData, setRepositoryListData] = useState<{ id: number; name: string }[]>();
+  const [repositoryListData, setRepositoryListData] =
+    useState<{ id: number; name: string }[]>();
 
   console.log("page", ACCESS_TOKEN);
 
@@ -34,7 +35,10 @@ export default function Repository() {
       } catch (err: any) {
         if (err.response?.status == 401) {
           const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-          saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+          saveCookiesAndRedirect(
+            token.data.Authorization,
+            token.data.RefreshToken
+          );
           try {
             await GetFolderList(ACCESS_TOKEN);
           } catch (error) {
@@ -56,7 +60,10 @@ export default function Repository() {
 
       if (err.response?.status == 401) {
         const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+        saveCookiesAndRedirect(
+          token.data.Authorization,
+          token.data.RefreshToken
+        );
         try {
           await DeleteFolder(token.data.Authorization, checkedItems);
         } catch (error) {
@@ -76,7 +83,10 @@ export default function Repository() {
       } catch (err: any) {
         if (err.response?.status == 401) {
           const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-          saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+          saveCookiesAndRedirect(
+            token.data.Authorization,
+            token.data.RefreshToken
+          );
           try {
             const res = await GetBasicFolder(ACCESS_TOKEN);
             setRepositoryListData(res.data);
