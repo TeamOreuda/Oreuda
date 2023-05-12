@@ -103,7 +103,6 @@ export default function Preview() {
         </div>
       );
     }
-
     return arr;
   };
 
@@ -207,16 +206,23 @@ export default function Preview() {
   // 인덱스에 해당하는 add Text 배열(textArr) 찾아 리턴
   // => add Text 컴포넌트 분리
   const choiceTempArr = (idx: any) => {
-    for (let i = 0; i < textArr.length; i++) {
-      if (idx - 1 === i) {
-        return (
-          <div key={i}>
-            <h3>{textArr[i].titleArr}</h3>
-            <p>{textArr[i].descArr}</p>
+    const arr: any = [];
+    textArr.map((el: any, index: any) => {
+      if (idx - 1 == index) {
+        console.log(el.titleArr);
+
+        arr.push(
+          <div key={index}>
+            <h3>{el.titleArr}</h3>
+            <p>{el.descArr}</p>
           </div>
         );
       }
-    }
+    });
+    return arr;
+    // for (let i = 0; i < textArr.length; i++) {
+
+    // }
   };
 
   // (Sorting에서) 프리뷰 렌더링 요소 생성
@@ -227,9 +233,11 @@ export default function Preview() {
         arr.push(tmp[el]);
       } else {
         let i = el.substring(1, 2);
-        arr.push(choiceTempArr(i));
+        let tmp = choiceTempArr(i);
+        arr.push(tmp);
       }
     });
+    console.log(arr);
 
     return arr;
   };
@@ -241,7 +249,6 @@ export default function Preview() {
 
     tmp2.map((el: any, index: number) => {
       if (index !== 0) {
-        console.log(index);
         arr.push(tmp[el]);
       }
     });
@@ -276,7 +283,7 @@ export default function Preview() {
         <button className={st.btnDiv}>초기화</button>
       </div>
       <div className={st.contentDiv}>
-        {currComponent !== 8
+        {Number(currComponent) == 8
           ? //   (
             //   <>
             //     {componentArr[1] ? (
@@ -348,8 +355,8 @@ export default function Preview() {
             //     ) : undefined}
             //   </>
             // )
-            renderingPrevSorting()
-          : renderingSorting()}
+            renderingSorting()
+          : renderingPrevSorting()}
         {/* <Link href="http://solved.ac/kyum8562"> */}
       </div>
     </div>
