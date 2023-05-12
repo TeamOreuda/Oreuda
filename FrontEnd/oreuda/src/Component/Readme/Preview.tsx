@@ -92,12 +92,20 @@ export default function Preview() {
     }
   };
 
+  // 저장 버튼 클릭시 readme 저장 axios 요청
+  const saveReadme = async () => {
+    // try {
+    //   const res = await GetBasicFolder(ACCESS_TOKEN);
+    //   setRepositoryListData(res.data);
+    // }
+  };
+
   // Text 배열 한번에 뿌려주는 메서드
   const showTextArr = () => {
     const arr = [];
     for (let i = 0; i < textArr.length; i++) {
       arr.push(
-        <div key={i} className={st.TextArr}>
+        <div key={Math.random() * (1000000 - 1)} className={st.TextArr}>
           <h3>{textArr[i].titleArr}</h3>
           <p>{textArr[i].descArr}</p>
         </div>
@@ -111,7 +119,7 @@ export default function Preview() {
     const arr = [];
     for (let i = 0; i < techPlusArr.length; i++) {
       arr.push(
-        <div key={i} className={st.TextArr}>
+        <div key={Math.random() * (1000000 - 1)} className={st.TextArr}>
           <img
             key={Math.random() * (1000000 - 1)}
             className={st.techBadge}
@@ -143,7 +151,11 @@ export default function Preview() {
           />
         );
       });
-      arr.push(<div className={st.techBadgeDiv}>{arr2}</div>);
+      arr.push(
+        <div className={st.techBadgeDiv} key={Math.random() * (1000000 - 1)}>
+          {arr2}
+        </div>
+      );
     });
     return arr;
   };
@@ -209,8 +221,6 @@ export default function Preview() {
     const arr: any = [];
     textArr.map((el: any, index: any) => {
       if (idx - 1 == index) {
-        console.log(el.titleArr);
-
         arr.push(
           <div key={index}>
             <h3>{el.titleArr}</h3>
@@ -234,7 +244,6 @@ export default function Preview() {
         arr.push(tmp);
       }
     });
-    console.log(arr);
 
     return arr;
   };
@@ -277,7 +286,10 @@ export default function Preview() {
             alt="download"
           />
         </div>
-        <button className={st.btnDiv}>초기화</button>
+        <button className={st.btnReset}>초기화</button>
+        <button className={st.btnSave} onClick={saveReadme}>
+          저장
+        </button>
       </div>
       <div className={st.contentDiv}>
         {Number(currComponent) == 8
