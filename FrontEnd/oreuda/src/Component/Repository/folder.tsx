@@ -1,17 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import Cookies from "js-cookie";
-import { redirect } from "next/navigation";
 
 import st from "./folder.module.scss";
 import { useEffect, useState } from "react";
 
+import { ChangeFolder } from "@/Api/Folders/changeFolder";
 import { getUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
-import { DeleteFolder } from "@/Api/Folders/deleteFolder";
-import { GetRepositoryLst } from "@/Api/Repository/getRepositoryList";
-import RepositoryGrassGraph from "./repositoryGrassGraph";
-import { ChangeFolder } from "@/Api/Folders/changeFolder";
 
 interface FolderList {
   id: number;
@@ -30,6 +26,8 @@ export default function Folder(props: {
   const { clickDelete, folderListData, checkedItems, setCheckedItems } = props;
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
+
+  const [grab, setGrab] = useState<{ dataset: any }>();
   const [targetName, setTargetName] = useState<number>();
   const [targetPosition, setTargetPosition] = useState<number>();
 
@@ -38,7 +36,6 @@ export default function Folder(props: {
       if (!targetName || !targetPosition) return;
       try {
         const res = await ChangeFolder(ACCESS_TOKEN, targetName, targetPosition);
-        console.log(res);
       } catch (err: any) {
         if (err.response?.status == 401) {
           const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
@@ -54,8 +51,12 @@ export default function Folder(props: {
     e.preventDefault();
   };
 
+  const onDragStart = (e: any) => {
+    setGrab(e.currentTarget);
+  };
+
   const onDrop = (e: any) => {
-    setTargetName(e.target.dataset.name);
+    setTargetName(grab?.dataset.name);
     setTargetPosition(Number(e.target.dataset.position));
   };
 
@@ -88,6 +89,7 @@ export default function Folder(props: {
               data-position={index}
               data-name={e.id}
               onDragOver={onDragOver}
+              onDragStart={onDragStart}
               onDrop={onDrop}
               draggable={!clickDelete}
             >

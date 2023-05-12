@@ -11,20 +11,24 @@ import Repository from "@/Component/Repository/repository";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
 import { GetRepositoryLst } from "@/Api/Repository/getRepositoryList";
 import { getUserRefresh } from "@/Api/Oauth/getUserRefresh";
+import MoveFolder from "@/Component/Repository/moveFolder";
 export default function RepositoryPage() {
   const params = useParams();
   const folderId = Number(params.folderId);
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
+  const [showModal, setShowModal] = useState(false);
   const [moveRepository, setmoveRepository] = useState(false);
+  const [checkedItems, setCheckedItems] = useState<string[]>([]);
   const [repositoryListData, setRepositoryListData] = useState([]);
-  // const [filtering, setFiltering] = useState("recent");
+
   const options = [
     { id: 1, value: "recent", name: "최신순" },
     { id: 2, value: "commit", name: "커밋순" },
     { id: 3, value: "name", name: "이름순" },
     { id: 4, value: "star", name: "별점순" },
   ];
+  const [filtering, setFiltering] = useState(options[0]);
 
   // const [isOpen, setIsOpen] = useState(true);
   // const [selectedOption, setSelectedOption] = useState(options[0]);
@@ -58,11 +62,20 @@ export default function RepositoryPage() {
     loadRepositoryList();
   }, [ACCESS_TOKEN, REFRESH_TOKEN, folderId]);
 
+  const clickModal = () => {
+    alert("준비중입니다");
+    // if (repositoryListData?.length == 0) {
+    //   alert("선택하신 레포지토리가 없습니다");
+    // } else {
+    //   setShowModal(!showModal);
+    // }
+  };
+
   return (
     <div className={st.body}>
-      <div className={st.button}>
+      <div className={st.button} onClick={clickModal}>
         <button>
-          {false ? "확 인" : "폴더 이동"}
+          {false ? "확 인" : "레포지토리 이동"}
           <Image
             className={st.img}
             src="/images/repository/send.svg"
@@ -95,8 +108,16 @@ export default function RepositoryPage() {
         </div>
       </div> */}
       <hr />
+      {/* {showModal && (
+        <MoveFolder clickModal={clickModal} folderId={folderId} filtering={filtering} />
+      )} */}
       <div className={st.repository}>
-        <Repository clickMove={false} repositoryList={repositoryListData} />
+        <Repository
+          clickMove={false}
+          repositoryList={repositoryListData}
+          checkedItems={checkedItems}
+          setCheckedItems={setCheckedItems}
+        />
       </div>
     </div>
   );
