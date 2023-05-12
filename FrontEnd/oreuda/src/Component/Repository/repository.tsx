@@ -6,6 +6,16 @@ import Repositorygraph from "./repositorygraph";
 import { useEffect, useState } from "react";
 import RepositoryGrassGraph from "./repositoryGrassGraph";
 
+export interface DailyCommit {
+  date: string;
+  count: number;
+}
+
+export interface YearlyCommit {
+  year: number;
+  count: number;
+}
+
 interface Repository {
   id: string;
   name: string;
@@ -15,17 +25,14 @@ interface Repository {
   starCount: number;
   isPrivate: string;
   updateDate: string;
-  yearlyCommits: {
-    year: number;
-    count: number;
-  }[];
-  dailyCommit: {
-    date: string;
-    count: number;
-  }[];
+  yearlyCommits: YearlyCommit[];
+  dailyCommits: DailyCommit[];
 }
 
-export default function Repository(props: { clickMove: boolean; repositoryList: Repository[] }) {
+export default function Repository(props: {
+  clickMove: boolean;
+  repositoryList: Repository[];
+}) {
   const { clickMove, repositoryList } = props;
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
 
@@ -88,7 +95,6 @@ export default function Repository(props: { clickMove: boolean; repositoryList: 
 
   //   setCheckedItems(newCheckedItems);
   // };
-
   return (
     <div>
       {repositoryList?.map((e, index) => (
@@ -126,7 +132,7 @@ export default function Repository(props: { clickMove: boolean; repositoryList: 
               <span>Updated on {formattedDate(e.updateDate)}</span>
             </div>
           </div>
-          <RepositoryGrassGraph />
+          <RepositoryGrassGraph dailyCommits={e.dailyCommits} />
           <Repositorygraph yearlyCommits={e.yearlyCommits} />
         </div>
       ))}
