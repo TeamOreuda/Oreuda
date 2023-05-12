@@ -64,34 +64,6 @@ export default function Preview() {
 
   // 추가 텍스트
 
-  // README.md 파일 다운로드
-  const file = {
-    title: "README",
-    content: "content",
-  };
-
-  // 다운로드 메서드
-  const onClickDownload = () => {
-    const blob = new Blob([file.content], { type: "text/plain" });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${file.title}.md`;
-    a.click();
-    a.remove();
-    window.URL.revokeObjectURL(url);
-  };
-
-  // 클립보드 복사 메서드
-  const onClickCopy = () => {
-    try {
-      navigator.clipboard.writeText("hi");
-      alert("클립보드에 복사되었습니다.");
-    } catch (error) {
-      alert("클립보드 복사에 실패하였습니다.");
-    }
-  };
-
   // Text 배열 한번에 뿌려주는 메서드
   const showTextArr = () => {
     const arr = [];
@@ -204,6 +176,148 @@ export default function Preview() {
     </div>,
   ];
 
+  // MD 관련 Function을 정의합니다.
+  // ******************************************************************************** /
+  const showTechWholeMD = () => {
+    const arr: any = [];
+
+    techPlusWhole.map((el, index) => {
+      arr.push(`<h3 key=${index}>${el.name}</h3>`);
+      const arr2: any = [];
+
+      el.techArray.map((elel: any, idx: any) => {
+        const x = `https://img.shields.io/badge/${elel.name}-${elel.color}?style=flat&logo=${elel.name}&logoColor=white`;
+        arr2.push(
+          `<img
+          key=${Math.random() * (1000000 - 1)}
+          className=${st.techBadge}
+          src=${x}
+          alt=""
+        />`
+        );
+      });
+      arr.push(`<div className=${st.techBadgeDiv}>${arr2.join(" ")}</div>`);
+    });
+    console.log(arr);
+    return arr.join("");
+  };
+
+  const showTechArrMD = () => {
+    const arr = [];
+    for (let i = 0; i < techPlusArr.length; i++) {
+      const x = `https://img.shields.io/badge/${techPlusArr[i].name}-${techPlusArr[i].color}?style=flat&logo=${techPlusArr[i].name}&logoColor=white`;
+      arr.push(
+        `        <div key=${i} className=${st.TextArr}>
+          <img
+            key=${Math.random() * (1000000 - 1)}
+            className=${st.techBadge}
+            src=${x}
+            alt=""
+          />
+        </div>`
+      );
+    }
+
+    return arr.join("");
+  };
+
+  const showTextArrMD = () => {
+    console.log(textArr)
+    const arr = [];
+    for (let i = 0; i < textArr.length; i++) {
+      arr.push(
+        `<div key=${i} className=${st.TextArr}>
+          <h3>${textArr[i].titleArr}</h3>
+          <p>${textArr[i].descArr}</p>
+        </div>`
+      );
+    }
+    console.log(newTextTitle)
+    return arr.join("");
+  };
+
+  const x = `https://img.shields.io/badge/Tech Blog-7FD2F5?style=flat&logo=Hoppscotch&logoColor=white&link=${blogLink}/`;
+  const y = `https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white&link=${notionLink}/`;
+
+  const selected: String[] = [
+    `
+  <div key="1">
+    <img src=${firstImgUrl} width="280" height="140" alt="baekjoon" />
+    <img src=${secImgUrl} width="285" height="140" alt="solved" />
+  </div>
+  `,
+    `
+  <div key="2">
+    <img src=${githubUrl} width="350" height="150" alt="githubStats" />
+  </div>
+  `,
+    `
+  <div key="3">
+    <img src=${mulUrl} width="280" height=${mulHeight} alt="MUL" />
+  </div>
+  `,
+    `
+  <div key="4" className=${st.TextArr}>
+    <div className=${st.TextArr}>${showTechWholeMD()}</div>
+    <h3>${techTitle}</h3>
+    <div className=${st.techBadgeDiv}>${showTechArrMD()}</div>
+  </div>
+  `,
+    `
+  <div key="5">
+    <h3>Contact</h3>
+    <div className=${st.contactBadgeDiv}>
+      ${
+        mailId.length > 0 ? (
+          `<a href=${mailURL} target="_blank">
+            <img
+              src="https://img.shields.io/badge/Mail-6667AB?style=flat&logo=Gmail&logoColor=white"
+              alt="Mail"
+            />
+          </a>`
+        ) : (
+          ""
+        )
+      }
+      ${
+        blogLink.length > 0 ? (
+          `<a href=${blogLink} target="_blank">
+            <img src=${x} alt="blog" />
+          </a>`
+        ) : (
+          ""
+        )
+      }
+      ${
+        notionLink.length > 0 ? (
+          `<a href=${notionLink} target="_blank">
+            <img src=${y} alt="notion" />
+          </a>`
+        ) : (
+          ""
+        )
+      }
+    </div>
+  </div>
+  `,
+    `
+  오르
+  `,
+    `
+  <div key="7" className=${st.TextArr}>
+    ${showTextArrMD()}
+    <h3>${newTextTitle}</h3>
+    <p>${newTextDesc}</p>
+  </div>
+  `,
+  ];
+
+  let toMD = `<div>\n`;
+  nPrevComp.map((key: any) => {
+    toMD += selected[key - 1];
+  });
+  toMD += `\n</div>`;
+
   // 인덱스에 해당하는 add Text 배열(textArr) 찾아 리턴
   // => add Text 컴포넌트 분리
   const choiceTempArr = (idx: any) => {
@@ -230,6 +344,8 @@ export default function Preview() {
         arr.push(choiceTempArr(i));
       }
     });
+    console.log("ho");
+    console.log(toMD);
 
     return arr;
   };
@@ -248,7 +364,35 @@ export default function Preview() {
 
     return arr;
   };
+  // README.md 파일 다운로드
+  const file = {
+    title: "README",
+    // content: "content",
+    content: toMD,
+  };
 
+  // 다운로드 메서드
+  const onClickDownload = () => {
+    console.log(toMD);
+    const blob = new Blob([file.content], { type: "text/plain" });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${file.title}.md`;
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
+  };
+
+  // 클립보드 복사 메서드
+  const onClickCopy = () => {
+    try {
+      navigator.clipboard.writeText("hi");
+      alert("클립보드에 복사되었습니다.");
+    } catch (error) {
+      alert("클립보드 복사에 실패하였습니다.");
+    }
+  };
   return (
     <div className={st.body}>
       <div className={st.headerDiv}>
