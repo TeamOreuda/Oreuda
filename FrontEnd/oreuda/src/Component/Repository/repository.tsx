@@ -2,8 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 
 import st from "./repository.module.scss";
+import fontColor from "../../Style/repository/languageColor.module.scss";
 import Repositorygraph from "./repositorygraph";
-import { useEffect, useState } from "react";
 import RepositoryGrassGraph from "./repositoryGrassGraph";
 
 export interface DailyCommit {
@@ -30,36 +30,12 @@ interface Repository {
 }
 
 export default function Repository(props: {
-  clickMove: boolean;
+  clickMove: any;
   repositoryList: Repository[];
+  checkedItems: string[];
+  setCheckedItems: React.Dispatch<React.SetStateAction<string[]>>;
 }) {
-  const { clickMove, repositoryList } = props;
-  const [checkedItems, setCheckedItems] = useState<string[]>([]);
-
-  const options = [
-    { id: 1, value: "hello" },
-    { id: 2, value: "111" },
-    { id: 3, value: "2222" },
-    { id: 1, value: "hello" },
-    { id: 2, value: "111" },
-    { id: 3, value: "2222" },
-    { id: 1, value: "hello" },
-    { id: 2, value: "111" },
-    { id: 3, value: "2222" },
-    { id: 1, value: "hello" },
-    { id: 2, value: "111" },
-    { id: 3, value: "2222" },
-    { id: 1, value: "hello" },
-    { id: 2, value: "111" },
-    { id: 3, value: "2222" },
-    { id: 1, value: "hello" },
-    { id: 2, value: "111" },
-    { id: 3, value: "2222" },
-  ];
-
-  // useEffect(() => {
-  //   setCheckedItems([]);
-  // }, [clickMove]);
+  const { clickMove, repositoryList, checkedItems, setCheckedItems } = props;
 
   function formattedDate(date: string) {
     date.replace(/^(\d{4})-(\d{2})-(\d{2})$/, (match, year, month, day) => {
@@ -82,43 +58,46 @@ export default function Repository(props: {
     return date;
   }
 
-  // const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { value } = event.target;
-  //   const currentIndex = checkedItems.indexOf(value);
-  //   const newCheckedItems = [...checkedItems];
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    const currentIndex = checkedItems.indexOf(value);
+    const newCheckedItems = [...checkedItems];
 
-  //   if (currentIndex === -1) {
-  //     newCheckedItems.push(value);
-  //   } else {
-  //     newCheckedItems.splice(currentIndex, 1);
-  //   }
+    if (currentIndex === -1) {
+      newCheckedItems.push(value);
+    } else {
+      newCheckedItems.splice(currentIndex, 1);
+    }
 
-  //   setCheckedItems(newCheckedItems);
-  // };
+    setCheckedItems(newCheckedItems);
+  };
+
   return (
     <div>
       {repositoryList?.map((e, index) => (
         <div key={index} className={st.body}>
           <div className={st.info}>
             <div className={st.infofirst}>
-              {/* {props.clickMove && (
+              {clickMove && (
                 <input
                   type="checkbox"
                   value={e.id}
                   checked={checkedItems.indexOf(String(e.id)) !== -1}
-                  // onChange={handleCheckboxChange}
+                  onChange={handleCheckboxChange}
                   onClick={(event) => event.stopPropagation()}
                 />
-              )} */}
+              )}
               <Link href={e.url} className={st.link}>
                 {e.name}
               </Link>
               <div>{e.isPrivate === "Y" ? "Private" : "Public"}</div>
             </div>
+
             <p>{e.description}</p>
+
             <div className={st.infosecond}>
               <div>
-                {e.language && <div></div>}
+                {e.language && <div className={fontColor[e.language]}></div>}
                 {e.language && <span>{e.language}</span>}
                 <Image
                   className={st.img}
