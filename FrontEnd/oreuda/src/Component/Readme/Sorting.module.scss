@@ -28,7 +28,19 @@
         flex-direction: column;
         border-radius: 10px;
         padding-left: 20px;
-        cursor: pointer;
+        cursor: grab;
+        &.true {
+          transition: transform 400ms ease 0s;
+        }
+        &.grabbing {
+          cursor: grabbing;
+        }
+        &.move_up {
+          transform: translate(0, -41px);
+        }
+        &.move_down {
+          transform: translate(0, 41px);
+        }
       }
     }
   }

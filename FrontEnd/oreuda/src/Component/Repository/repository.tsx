@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import st from "./repository.module.scss";
+import fontColor from "../../Style/repository/languageColor.module.scss";
 import Repositorygraph from "./repositorygraph";
 import RepositoryGrassGraph from "./repositoryGrassGraph";
 
@@ -87,10 +88,12 @@ export default function Repository(props: {
               </Link>
               <div>{e.isPrivate === "Y" ? "Private" : "Public"}</div>
             </div>
+
             <p>{e.description}</p>
+
             <div className={st.infosecond}>
               <div>
-                {e.language && <div></div>}
+                {e.language && <div className={fontColor[e.language]}></div>}
                 {e.language && <span>{e.language}</span>}
                 <Image
                   className={st.img}

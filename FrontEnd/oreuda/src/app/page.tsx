@@ -25,17 +25,16 @@ export default async function Home() {
       if (err.response?.status == 401) {
         return await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
           .then(async (res) => {
-            saveCookiesAndRedirect(
-              res.data.Authorization,
-              res.data.RefreshToken
-            );
+            saveCookiesAndRedirect(res.data.Authorization, res.data.RefreshToken);
             return await GetUser(res.data.Authorization).then((res) => {
               return res.data;
             });
           })
           .catch(() => {
-            redirect("/landing");
+            // redirect("/landing")
           });
+      } else {
+        // redirect("/landing")
       }
     });
 
@@ -47,17 +46,16 @@ export default async function Home() {
       if (err.response?.status == 401) {
         return await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
           .then(async (res) => {
-            await saveCookiesAndRedirect(
-              res.data.Authorization,
-              res.data.RefreshToken
-            );
+            await saveCookiesAndRedirect(res.data.Authorization, res.data.RefreshToken);
             return await GetCharacter(ACCESS_TOKEN).then((res) => {
               return res.data;
             });
           })
           .catch(() => {
-            redirect("/landing");
+            // redirect("/landing")
           });
+      } else {
+        // redirect("/landing")
       }
     });
 
@@ -69,17 +67,16 @@ export default async function Home() {
       if (err.response?.status == 401) {
         return await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
           .then(async (res) => {
-            await saveCookiesAndRedirect(
-              res.data.Authorization,
-              res.data.RefreshToken
-            );
+            await saveCookiesAndRedirect(res.data.Authorization, res.data.RefreshToken);
             return await GetCharacterGraph(ACCESS_TOKEN).then((res) => {
               return res.data;
             });
           })
           .catch(() => {
-            redirect("/landing");
+            // redirect("/landing")
           });
+      } else {
+        // redirect("/landing")
       }
     });
 
