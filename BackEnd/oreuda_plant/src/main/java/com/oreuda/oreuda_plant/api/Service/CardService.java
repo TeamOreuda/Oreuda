@@ -7,9 +7,13 @@ import com.oreuda.oreuda_plant.api.Repository.PlantRepository;
 import com.oreuda.oreuda_plant.api.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Objects;
 
 @Slf4j
@@ -20,7 +24,22 @@ public class CardService {
     private final UserRepository userRepository;
     private final PlantRepository plantRepository;
 
-    public String getCard(String userId, PlantDto plantDto) {
+    public String getBase64String(String imageUrl, String imageType) throws IOException {
+        FileInputStream imageInFile = new FileInputStream(imageUrl);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        byte[] imageData = new byte[1024];
+        int read = 0;
+        while ((read = imageInFile.read(imageData)) != -1) {
+            bos.write(imageData, 0, read);
+        }
+        imageData = bos.toByteArray();
+        String imageString = new String(Base64.encodeBase64(imageData), "UTF-8");
+        String base64String = "data:image/" + imageType + ";base64," + imageString;
+        imageInFile.close();
+        return base64String;
+    }
+
+    public String getCard(String userId, PlantDto plantDto) throws IOException {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
         Plant plant = plantRepository.findById(plantDto.getId()).orElseThrow(() -> new IllegalArgumentException("해당 식물이 없습니다."));
         // 카드 정보들
@@ -46,6 +65,8 @@ public class CardService {
             gaugeLayout = "255, 255, 255";
         }
 
+        String png = getBase64String("src/main/resources/static/" + plantName + ".png", "png");
+        String gif = getBase64String("src/main/resources/static/" + plantName + ".gif", "gif");
         return "<!DOCTYPE svg PUBLIC\n" +
                 "        \"-//W3C//DTD SVG 1.1//EN\"\n" +
                 "        \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n" +
@@ -322,10 +343,10 @@ public class CardService {
                 "    <g class=\"rate-bar\" style=\"animation-delay: 800ms\">\n" +
                 "        <line class = \"" + plantName + "-gauge\" x1=\"15\" y1=\"150\" x2=\"" + barSize + "\" y2=\"150\" stroke-width=\"4\" stroke-linecap=\"round\"/>\n" +
                 "    </g>\n" +
-                "    <image class = \"oreu-icon\" x=\"" + barSizeAdjust + "\" y=\"120\" href=\"https://oreuda.s3.ap-northeast-2.amazonaws.com/" + plantName + ".gif\" height=\"26\" width=\"26\" />\n" +
+                "    <image class = \"oreu-icon\" x=\"" + barSizeAdjust + "\" y=\"120\" href=\"" + gif + "\" height=\"26\" width=\"26\" />\n" +
                 "    \n" +
                 "    <text x=\"165\" y=\"165\" text-anchor=\"end\" class=\"progress " + plantName + "-subtitle\">" + curStat + " / " + maxStat + "</text>" +
-                "    <image class = \"oreu-img\" x=\"195\" y=\"10\" href=\"https://oreuda.s3.ap-northeast-2.amazonaws.com/" + plantName + ".svg\" height=\"200\" width=\"187\" />\n" +
+                "    <image class = \"oreu-img\" x=\"195\" y=\"10\" href=\"" + png + "\" height=\"200\" width=\"187\" />\n" +
                 "</svg>\n";
     }
 }

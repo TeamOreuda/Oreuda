@@ -10,6 +10,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
@@ -47,7 +48,7 @@ public class PlantController {
 
     @GetMapping("/card")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public ResponseEntity<?> getCard(@RequestParam String nickname) {
+    public ResponseEntity<?> getCard(@RequestParam String nickname) throws IOException {
         String userId = plantService.getUserId(nickname);
         PlantDto plantDto = plantService.getPlant(userId);
         String svg = cardService.getCard(userId, plantDto);
