@@ -18,6 +18,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,11 @@ public class PlantService {
     private final UserRepository userRepository;
     private final UserLogRepository userLogRepository;
     private final CommitRepository commitRepository;
+
+    public String getUserId(String nickname) {
+        User user = userRepository.findByNickname(nickname).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+        return user.getId();
+    }
 
     public PlantDto getPlant(String userId) {
 //        log.info("userId = {}", userId);
@@ -62,7 +68,7 @@ public class PlantService {
         return statusDtoList;
     }
 
-    public int getDailyPoint(int commitCnt, int day, int streak) {
+    public int getDailyPoint(int commitCnt, long day, int streak) {
 //        log.info("commitCnt = {}, day = {}, streak = {}", commitCnt, day, streak);
         // decay = 0.9748 ^ day
         final double DECAY_RATE = 0.9748;
@@ -96,8 +102,7 @@ public class PlantService {
                 streak = 1;
             }
             // 며칠전 커밋인지 계산
-            Period period = Period.between(date, start);
-            int day = period.getYears() * 365 + period.getMonths() * 30 + period.getDays();
+            long day = ChronoUnit.DAYS.between(date, start);
             // 6달 이상은 무조건 0점이므로 계산할 필요 없음
             if (day > 180) continue;
             // 점수 계산

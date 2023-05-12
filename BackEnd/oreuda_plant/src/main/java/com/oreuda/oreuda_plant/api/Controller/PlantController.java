@@ -2,6 +2,7 @@ package com.oreuda.oreuda_plant.api.Controller;
 
 import com.oreuda.oreuda_plant.api.Domain.Dto.PlantDto;
 import com.oreuda.oreuda_plant.api.Domain.Dto.StatusDto;
+import com.oreuda.oreuda_plant.api.Service.CardService;
 import com.oreuda.oreuda_plant.api.Service.PlantService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import java.util.Objects;
 @RequestMapping("api/v1/plant")
 public class PlantController {
     private final PlantService plantService;
+    private final CardService cardService;
 
     @GetMapping()
     @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -44,11 +46,10 @@ public class PlantController {
 
     @GetMapping("/card")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public ResponseEntity<?> getCard(@RequestHeader HttpHeaders headers) {
-        log.info("getCard");
-        byte[] svg = ("<svg width=\"100\" height=\"100\">\n" +
-                "  <circle cx=\"50\" cy=\"50\" r=\"40\" stroke=\"green\" stroke-width=\"4\" fill=\"yellow\" />\n" +
-                "</svg>").getBytes();
+    public ResponseEntity<?> getCard(@RequestParam String nickname) {
+        String userId = plantService.getUserId(nickname);
+        PlantDto plantDto = plantService.getPlant(userId);
+        String svg = cardService.getCard(userId, plantDto);
 
         return ResponseEntity.ok()
                 .contentType(MediaType.valueOf("image/svg+xml"))
