@@ -14,6 +14,7 @@ import javax.transaction.Transactional;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 
 @Slf4j
@@ -25,7 +26,8 @@ public class CardService {
     private final PlantRepository plantRepository;
 
     public String getBase64String(String imageUrl, String imageType) throws IOException {
-        FileInputStream imageInFile = new FileInputStream(imageUrl);
+        ClassLoader cl = this.getClass().getClassLoader();
+        InputStream imageInFile = cl.getResourceAsStream(imageUrl);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         byte[] imageData = new byte[1024];
         int read = 0;
