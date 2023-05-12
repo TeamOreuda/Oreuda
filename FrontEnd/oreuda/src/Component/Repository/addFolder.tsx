@@ -46,6 +46,7 @@ export default function AddFolder(props: { clickModal: any }) {
     try {
       await AddFolderAxios(ACCESS_TOKEN, folderName, folderColor, checkedItems);
     } catch (err: any) {
+      console.log("add", err);
       if (err.response?.status == 401) {
         const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
         saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
