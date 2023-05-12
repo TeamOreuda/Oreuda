@@ -39,9 +39,6 @@ public class CardService {
         log.info("resource: {}", resource);
         assert resource != null;
         InputStream imageInFile = resource.getInputStream();
-//        File imageFile = File.createTempFile("temp", ".png");
-//        FileInputStream imageInFile = new FileInputStream(imageFile);
-//        FileInputStream imageInFile = new FileInputStream(imageUrl);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         byte[] imageData = new byte[1024];
         int read = 0;
