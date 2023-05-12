@@ -181,7 +181,7 @@ export default function Preview() {
     const arr: any = [];
 
     techPlusWhole.map((el, index) => {
-      arr.push(`<h3 key=${index}>${el.name}</h3>`);
+      arr.push(`<h3 key=${index} style ="font-size : 1.17em; font-weight:700;">${el.name}</h3>`);
       const arr2: any = [];
 
       el.techArray.map((elel: any, idx: any) => {
@@ -189,60 +189,62 @@ export default function Preview() {
         arr2.push(
           `<img
           key=${Math.random() * (1000000 - 1)}
-          className=${st.techBadge}
+          style = "margin: 5px 5px;"
           src=${x}
           alt=""
         />`
         );
       });
-      arr.push(`<div className=${st.techBadgeDiv}>${arr2.join(" ")}</div>`);
+      arr.push(`<div ">${arr2.join(" ")}</div>`);
     });
     return arr.join("");
   };
 
   const showTechArrMD = () => {
     const arr = [];
-    for (let i = 0; i < techPlusArr.length; i++) {
-      const x = `https://img.shields.io/badge/${techPlusArr[i].name}-${techPlusArr[i].color}?style=flat&logo=${techPlusArr[i].name}&logoColor=white`;
+    for (let i = 0; i < techPlusWhole.length; i++) {
+      arr.push(`<h3 style ="font-size : 1.17em; font-weight:700;">${techPlusWhole[i].name}</h3>`)
+      const x = `https://img.shields.io/badge/${techPlusWhole[i].techArray[0].name}-${techPlusWhole[i].techArray[0].color}?style=flat&logo=${techPlusWhole[i].techArray[0].name}&logoColor=white`;
       arr.push(
-        `        <div key=${i} className=${st.TextArr}>
+        `        
+        <div key=${i}>
           <img
             key=${Math.random() * (1000000 - 1)}
-            className=${st.techBadge}
+            style = "margin: 5px 5px;"
             src=${x}
             alt=""
           />
         </div>`
       );
     }
-
+    console.log(techPlusWhole)
     return arr.join("");
   };
 
-  const showTextArrMD = () => {
-    console.log(textArr)
-    const arr = [];
-    for (let i = 0; i < textArr.length; i++) {
-      arr.push(
-        `<div key=${i} className=${st.TextArr}>
-          <h3>${textArr[i].titleArr} 12</h3>
-          <p>${textArr[i].descArr} 12</p>
-        </div>`
-      );
-    }
-    return arr.join("");
-  };
+  // const showTextArrMD = () => {
+  //   console.log(textArr);
+  //   const arr = [];
+  //   for (let i = 0; i < textArr.length; i++) {
+  //     arr.push(
+  //       `<div key=${i} style = "display: flex;  align-items: center; flex-direction: column;  justify-content: center;">
+  //         <h3 style ="font-size : 35px;">${textArr[i].titleArr} 12</h3>
+  //         <p style ="font-size : 20px;">${textArr[i].descArr} 12</p>
+  //       </div>`
+  //     );
+  //   }
+  //   return arr.join("");
+  // };
 
-const AdditionalTextMD =(id : number)=>{
-  return `
-  <div key="7" className=${st.TextArr}>
-    <div key=${id-1} className=${st.TextArr}>
-          <h3>${textArr[id-1].titleArr}</h3>
-          <p>${textArr[id-1].descArr}</p>
+  const AdditionalTextMD = (id: number) => {
+    return `
+  <div key="7" >
+    <div key=${id - 1} >
+          <h3 style ="font-size : 1.17em; font-weight:700;">${textArr[id - 1].titleArr}</h3>
+          <p> style ="font-size : 20px;"${textArr[id - 1].descArr}</p>
     </div>
   </div>
-  `
-}
+  `;
+  };
 
   const x = `https://img.shields.io/badge/TechBlog-7FD2F5?style=flat&logo=Hoppscotch&logoColor=white&link=${blogLink}/`;
   const y = `https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white&link=${notionLink}/`;
@@ -265,60 +267,52 @@ const AdditionalTextMD =(id : number)=>{
   </div>
   `,
     `
-  <div key="4" className=${st.TextArr}>
-    <div className=${st.TextArr}>${showTechWholeMD()}</div>
-    <h3>${techTitle}</h3>
-    <div className=${st.techBadgeDiv}>${showTechArrMD()}</div>
+  <div key="4"><h3 style ="font-size : 1.17em; font-weight:700;">${techTitle}</h3>
+    <div >${showTechArrMD()}</div>
   </div>
   `,
     `
   <div key="5">
-    <h3>Contact</h3>
+    <h3 style ="font-size : 1.17em; font-weight:700;">Contact</h3>
     <div className=${st.contactBadgeDiv}>
       ${
-        mailId.length > 0 ? (
-          `<a href=${mailURL} target="_blank">
+        mailId.length > 0
+          ? `<a href=${mailURL} target="_blank">
             <img
               src="https://img.shields.io/badge/Mail-6667AB?style=flat&logo=Gmail&logoColor=white"
               alt="Mail"
             />
           </a>`
-        ) : (
-          ""
-        )
+          : ""
       }
       ${
-        blogLink.length > 0 ? (
-          `<a href=${blogLink} target="_blank">
+        blogLink.length > 0
+          ? `<a href=${blogLink} target="_blank">
             <img src=${x} alt="blog" />
           </a>`
-        ) : (
-          ""
-        )
+          : ""
       }
       ${
-        notionLink.length > 0 ? (
-          `<a href=${notionLink} target="_blank">
+        notionLink.length > 0
+          ? `<a href=${notionLink} target="_blank">
             <img src=${y} alt="notion" />
           </a>`
-        ) : (
-          ""
-        )
+          : ""
       }
     </div>
   </div>
   `,
     `
   오르
-  `
+  `,
   ];
 
-  let toMD = `<div>\n`;
+  let toMD = `<div  style = "display: flex;  align-items: center; flex-direction: column;  justify-content: center;">\n`;
   nPrevComp.map((key: any) => {
-    if(key > 10){
+    if (key > 10) {
       // text arr 인 경우
-      toMD += AdditionalTextMD((key)%10);
-    }else{
+      toMD += AdditionalTextMD(key % 10);
+    } else {
       toMD += selected[key - 1];
     }
   });
@@ -378,7 +372,7 @@ const AdditionalTextMD =(id : number)=>{
 
   // 다운로드 메서드
   const onClickDownload = () => {
-    console.log(nPrevComp)
+    console.log(nPrevComp);
     console.log(toMD);
     const blob = new Blob([file.content], { type: "text/plain" });
     const url = window.URL.createObjectURL(blob);
