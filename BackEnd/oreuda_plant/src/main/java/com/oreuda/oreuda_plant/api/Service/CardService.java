@@ -9,13 +9,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Objects;
 
 @Slf4j
@@ -27,8 +25,10 @@ public class CardService {
     private final PlantRepository plantRepository;
 
     public String getBase64String(String imageUrl, String imageType) throws IOException {
-        ClassPathResource resource = new ClassPathResource(imageUrl);
-        InputStream imageInFile = resource.getInputStream();
+        Resource resource = new ClassPathResource(imageUrl);
+        InputStream is = resource.getInputStream();
+        File imageFile = File.createTempFile("temp", ".png");
+        FileInputStream imageInFile = new FileInputStream(imageFile);
 //        FileInputStream imageInFile = new FileInputStream(imageUrl);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         byte[] imageData = new byte[1024];
