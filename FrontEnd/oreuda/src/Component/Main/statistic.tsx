@@ -37,7 +37,7 @@ export default function Statistic(props: any) {
     {
       title: "주 언어",
       language: userData?.mainLanguage,
-      imageName: "typescript",
+      imageName: "",
     },
   ];
 

@@ -31,6 +31,8 @@
 
 .infofirst {
   align-items: center;
+  max-width: 450px;
+
   .link {
     font-size: 24px;
     font-weight: bold;
@@ -38,9 +40,9 @@
     text-decoration: none;
     color: black;
 
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
+    // display: -webkit-box;
+    // -webkit-line-clamp: 1;
+    // -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
   }
@@ -62,9 +64,7 @@
     div:nth-of-type(1) {
       width: 16px;
       height: 16px;
-      background-color: blue;
       border-radius: 16px;
-
       margin-right: 8px;
     }
 
