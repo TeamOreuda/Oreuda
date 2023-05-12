@@ -13,6 +13,12 @@
       bottom: 32px;
     }
   }
+
+  .repository {
+    height: calc(100vh - 240px);
+    flex-wrap: wrap;
+    overflow-y: scroll;
+  }
 }
 
 .button {
@@ -21,5 +27,35 @@
 
   button {
     @include comm.button;
+  }
+}
+
+.dropdown {
+  width: 100px;
+
+  .label {
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 150px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-top: none;
+
+    .option {
+      padding: 8px;
+      cursor: pointer;
+
+      &.active,
+      &:hover {
+        background-color: #eee;
+      }
+    }
   }
 }

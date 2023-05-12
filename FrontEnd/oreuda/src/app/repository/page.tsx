@@ -2,56 +2,100 @@
 
 import Image from "next/image";
 import Cookies from "js-cookie";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { redirect } from "next/navigation";
 
 import st from "./page.module.scss";
 import Folder from "@/Component/Repository/folder";
 import AddFolder from "@/Component/Repository/addFolder";
 
+import { DeleteFolder } from "@/Api/Folders/deleteFolder";
 import { GetFolderList } from "@/Api/Folders/getFolderList";
 import { getUserRefresh } from "@/Api/Oauth/getUserRefresh";
+import { GetBasicFolder } from "@/Api/Folders/getBasicFolder";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
 
-export default async function Repository() {
+export default function Repository() {
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
   const [showModal, setShowModal] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
+  const [folderListData, setFolderListData] = useState([]);
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
+  const [repositoryListData, setRepositoryListData] = useState<{ id: number; name: string }[]>();
 
-  console.log("page access", ACCESS_TOKEN);
+  useEffect(() => {
+    const loadFolderList = async () => {
+      try {
+        const res = await GetFolderList(ACCESS_TOKEN);
+        setFolderListData(res.data);
+      } catch (err: any) {
+        if (err.response?.status == 401) {
+          const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+          saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+          try {
+            await GetFolderList(ACCESS_TOKEN);
+          } catch (error) {
+            redirect("/landing");
+          }
+        }
+      }
+    };
+    loadFolderList();
+  }, [ACCESS_TOKEN, REFRESH_TOKEN]);
+
+  const deleteFolderList = async () => {
+    try {
+      await DeleteFolder(ACCESS_TOKEN, checkedItems);
+    } catch (err: any) {
+      if (err.response?.status == 401) {
+        const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+        try {
+          await DeleteFolder(token.data.Authorization, checkedItems);
+        } catch (error) {
+          redirect("/landing");
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    const loadRepositoryList = async () => {
+      try {
+        const res = await GetBasicFolder(ACCESS_TOKEN);
+        setRepositoryListData(res.data);
+      } catch (err: any) {
+        if (err.response?.status == 401) {
+          const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+          saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+          try {
+            const res = await GetBasicFolder(ACCESS_TOKEN);
+            setRepositoryListData(res.data);
+          } catch (error) {
+            redirect("/landing");
+          }
+        }
+      }
+    };
+    loadRepositoryList();
+  }, [ACCESS_TOKEN, REFRESH_TOKEN]);
 
   const clickModal = () => {
-    setShowModal(!showModal);
+    if (repositoryListData?.length == 0) {
+      alert("기본 폴더에 레포지토리가 없어 폴더를 만들 수 없습니다.");
+    } else {
+      setShowModal(!showModal);
+    }
   };
 
   const clickDelete = () => {
+    if (showDelete == true) {
+      deleteFolderList();
+      setCheckedItems([]);
+    }
     setShowDelete(!showDelete);
   };
-
-  const folderListData = await GetFolderList(ACCESS_TOKEN)
-    .then((res) => {
-      console.log("res.date", res.data);
-      return res.data;
-    })
-    .catch(async (err) => {
-      if (err.response?.status == 401) {
-        return await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
-          .then(async (res) => {
-            await saveCookiesAndRedirect(res.data.Authorization, res.data.RefreshToken);
-            return await GetFolderList(res.data.Authorization).then((res) => {
-              return res.data;
-            });
-          })
-
-          .catch(() => {
-            redirect("/");
-          });
-      }
-    });
-
-  console.log("folderListData", folderListData);
 
   return (
     <div className={st.body}>
@@ -80,13 +124,13 @@ export default async function Repository() {
         </button>
       </div>
       <hr />
-      {/* {showModal && <AddFolder clickModal={clickModal} />} */}
-      {/* <Folder
+      {showModal && <AddFolder clickModal={clickModal} />}
+      <Folder
         clickDelete={showDelete}
         folderListData={folderListData}
         checkedItems={checkedItems}
         setCheckedItems={setCheckedItems}
-      /> */}
+      />
     </div>
   );
 }

@@ -9,15 +9,17 @@ interface yearlyCommit {
 }
 [];
 
-export default function repositorygraph(props: any) {
+export default function repositorygraph(props: { yearlyCommits: yearlyCommit[] }) {
+  const { yearlyCommits } = props;
+
   ChartJS.register(ArcElement, Tooltip);
   const data = {
-    labels: props.yearlyCommit.map((e: yearlyCommit) => {
+    labels: yearlyCommits?.map((e: yearlyCommit) => {
       return e.year;
     }),
     datasets: [
       {
-        data: props.yearlyCommit.map((e: yearlyCommit) => {
+        data: yearlyCommits?.map((e: yearlyCommit) => {
           return e.count;
         }),
         backgroundColor: [
@@ -50,9 +52,5 @@ export default function repositorygraph(props: any) {
     //   backgroundColor: "#e3e3e3",
     // },
   };
-  return (
-    <div>
-      <Doughnut data={data} width={72} height={72} className={st.doughnut} />
-    </div>
-  );
+  return <Doughnut data={data} className={st.doughnut} />;
 }

@@ -105,7 +105,7 @@ export default function Preview() {
     for (let i = 0; i < techPlusArr.length; i++) {
       arr.push(
         <img
-          key={i}
+          key={Math.random() * (1000000 - 1)}
           className={st.techBadge}
           src={`https://img.shields.io/badge/${techPlusArr[i].name}-${techPlusArr[i].color}?style=flat&logo=${techPlusArr[i].name}&logoColor=white`}
           alt=""
@@ -124,7 +124,7 @@ export default function Preview() {
       el.techArray.map((elel: any, idx: any) => {
         arr.push(
           <img
-            key={elel.index}
+            key={Math.random() * (1000000 - 1)}
             className={st.techBadge}
             src={`https://img.shields.io/badge/${elel.name}-${elel.color}?style=flat&logo=${elel.name}&logoColor=white`}
             alt=""

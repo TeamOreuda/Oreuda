@@ -1,3 +1,4 @@
+import Link from "next/link";
 import st from "./LandingHeader.module.scss";
 
 export default function LandingHeader() {
@@ -6,9 +7,14 @@ export default function LandingHeader() {
       <div className={st.logo}>
         <span>O R E U D A</span>
       </div>
-      <div className={st.buttons}>
-        <div className={st.downloadButton}>다운로드</div>
-        <div className={st.loginButton}>로그인</div>
+      <div className={st.button}>
+        <button>다운로드</button>
+        <Link
+          href="http://52.79.221.133:8090/oauth2/authorization/github"
+          className={st.loginButton}
+        >
+          로그인
+        </Link>
       </div>
     </div>
   );
