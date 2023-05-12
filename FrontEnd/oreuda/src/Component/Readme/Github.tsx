@@ -16,14 +16,10 @@ import PrevBtn from "./PrevBtn";
 const svDesignData: string[] = [
   "dark",
   "radical",
-  "merko",
   "gruvbox",
   "tokyonight",
   "onedark",
   "cobalt",
-  "synthwave",
-  "highcontrast",
-  "dracula",
 ];
 
 export default function Github() {
