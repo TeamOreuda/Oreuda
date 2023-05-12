@@ -1,9 +1,12 @@
 package com.oreuda.api.service;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.oreuda.api.domain.dto.RDMDto;
 import com.oreuda.api.domain.dto.ReadmeDto;
 import com.oreuda.api.domain.entity.Readme;
 import com.oreuda.api.domain.entity.User;
@@ -46,8 +49,8 @@ public class ReadmeService {
 	private final ReadmeTechstackRepository readmeTechstackRepository;
 
 	public void saveReadme(List<ReadmeDto> readmes, String userId) {
-		// 사용자
-		User user = userRepository.findById(userId).get();
+		// 사용자 유무 검증
+		User user = userRepository.findById(userId).orElseThrow();
 		Readme readme = Readme.builder()
 			.user(user)
 			.build();
@@ -168,6 +171,140 @@ public class ReadmeService {
 			.order(order)
 			.build();
 		oreuRepository.save(oreu);
+	}
+
+	// 리드미 조회
+	public List<RDMDto> getReadme(String userId) {
+		// 사용자 유무 검증
+		User user = userRepository.findById(userId).orElseThrow();
+
+		// 리드미 유무 검증
+		Long readmeId = readmeRepository.findByUser_Id(userId).orElseThrow().getId();
+
+		// List create
+		List<RDMDto> rdmDtoList = new ArrayList<>();
+
+		// BOJ
+		if(bojRepository.findByUser_IdAndReadme_Id(userId,readmeId).isPresent()) {
+			rdmDtoList.add(getBoj(userId, readmeId));
+		}
+
+		// GIT
+		if(gitstatsRepository.findByUser_IdAndReadme_Id(userId,readmeId).isPresent()) {
+			rdmDtoList.add(getGit(userId, readmeId));
+		}
+
+		// WRITING
+		if(writingRepository.findByUser_IdAndReadme_Id(userId,readmeId).isPresent()) {
+			rdmDtoList.add(getWriting(userId, readmeId));
+		}
+
+		// LANGUAGE
+		if(mostLanguageRepository.findByUser_IdAndReadme_Id(userId,readmeId).isPresent()) {
+			rdmDtoList.add(getLanguage(userId, readmeId));
+		}
+
+		// CONTACT
+		if(contactRepository.findByUser_IdAndReadme_Id(userId,readmeId).isPresent()) {
+			rdmDtoList.add(getContact(userId, readmeId));
+		}
+
+		// TECH
+		if(readmeTechstackRepository.findByUser_IdAndReadme_Id(userId,readmeId).isPresent()) {
+			rdmDtoList.add(getTechstack(userId, readmeId));
+		}
+
+		// PLANT
+		if(oreuRepository.findByUser_IdAndReadme_Id(userId,readmeId).isPresent()) {
+			rdmDtoList.add(getOreu(userId, readmeId));
+		}
+
+		// 순서 기준 정렬
+		rdmDtoList.sort(Comparator.comparingInt(o -> o.getOrder()));
+
+		return rdmDtoList;
+	}
+
+	public RDMDto getBoj(String userId, Long readmeId) {
+		Boj boj = bojRepository.findByUser_IdAndReadme_Id(userId, readmeId).get();
+		RDMDto rdmDto = RDMDto.builder()
+			.readmeType("BOJ")
+			.order(boj.getOrder())
+			.bojValue(boj.getValue())
+			.bojTheme(boj.getTheme())
+			.build();
+		return rdmDto;
+	}
+
+	public RDMDto getGit(String userId, Long readmeId) {
+		Gitstats git = gitstatsRepository.findByUser_IdAndReadme_Id(userId, readmeId).get();
+		RDMDto rdmDto = RDMDto.builder()
+			.readmeType("GIT")
+			.order(git.getOrder())
+			.gitValue(userRepository.findById(userId).get().getNickname())
+			.gitTheme(git.getTheme())
+			.build();
+		return rdmDto;
+	}
+
+	public RDMDto getWriting(String userId, Long readmeId) {
+		Writing writing = writingRepository.findByUser_IdAndReadme_Id(userId, readmeId).get();
+		RDMDto rdmDto = RDMDto.builder()
+			.readmeType("WRITING")
+			.order(writing.getOrder())
+			.writingTitle(writing.getTitle())
+			.writingContents(writing.getContents())
+			.build();
+		return rdmDto;
+	}
+
+	public RDMDto getLanguage(String userId, Long readmeId) {
+		MostLanguage language = mostLanguageRepository.findByUser_IdAndReadme_Id(userId, readmeId).get();
+		RDMDto rdmDto = RDMDto.builder()
+			.readmeType("LANGUAGE")
+			.order(language.getOrder())
+			.languageValue(userRepository.findById(userId).get().getNickname())
+			.languageTheme(language.getTheme())
+			.languageType(language.getType())
+			.build();
+		return rdmDto;
+	}
+
+	public RDMDto getContact(String userId, Long readmeId) {
+		Contact contact = contactRepository.findByUser_IdAndReadme_Id(userId, readmeId).get();
+		RDMDto rdmDto = RDMDto.builder()
+			.readmeType("CONTACT")
+			.order(contact.getOrder())
+			.blogLink(contact.getBlog())
+			.mailLink(contact.getMail())
+			.notionLink(contact.getNotion())
+			.build();
+		return rdmDto;
+	}
+
+	public RDMDto getTechstack(String userId, Long readmeId) {
+		List<String> list = new ArrayList<>();
+		ReadmeTechstack readmeTechstack = readmeTechstackRepository.findByUser_IdAndReadme_Id(userId, readmeId).get();
+		List<Techstack> techstacks = techstackRepository.findByReadmeTechstack_IdOrderByOrder(readmeTechstack.getId());
+		for (Techstack t: techstacks) {
+			list.add(t.getName());
+		}
+		RDMDto rdmDto = RDMDto.builder()
+			.readmeType("TECH")
+			.order(readmeTechstack.getOrder())
+			.techStack(list)
+			.build();
+		return rdmDto;
+	}
+
+	public RDMDto getOreu(String userId, Long readmeId) {
+		Oreu oreu = oreuRepository.findByUser_IdAndReadme_Id(userId, readmeId).get();
+		RDMDto rdmDto = RDMDto.builder()
+			.readmeType("PLANT")
+			.order(oreu.getOrder())
+			.oreuValue(userRepository.findById(userId).get().getNickname())
+			.build();
+		return rdmDto;
 	}
 }
 
