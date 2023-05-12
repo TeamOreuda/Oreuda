@@ -322,10 +322,10 @@ public class CardService {
                 "    <g class=\"rate-bar\" style=\"animation-delay: 800ms\">\n" +
                 "        <line class = \"" + plantName + "-gauge\" x1=\"15\" y1=\"150\" x2=\"" + barSize + "\" y2=\"150\" stroke-width=\"4\" stroke-linecap=\"round\"/>\n" +
                 "    </g>\n" +
-                "    <image class = \"oreu-icon\" x=\"" + barSizeAdjust + "\" y=\"120\" href=\"/plant_back/" + plantName + ".gif\" height=\"26\" width=\"26\" />\n" +
+                "    <image class = \"oreu-icon\" x=\"" + barSizeAdjust + "\" y=\"120\" href=\"https://oreuda.s3.ap-northeast-2.amazonaws.com/" + plantName + ".gif\" height=\"26\" width=\"26\" />\n" +
                 "    \n" +
                 "    <text x=\"165\" y=\"165\" text-anchor=\"end\" class=\"progress " + plantName + "-subtitle\">" + curStat + " / " + maxStat + "</text>" +
-                "    <image class = \"oreu-img\" x=\"195\" y=\"10\" href=\"/plant_back/" + plantName + ".svg\" height=\"200\" width=\"187\" />\n" +
+                "    <image class = \"oreu-img\" x=\"195\" y=\"10\" href=\"https://oreuda.s3.ap-northeast-2.amazonaws.com/" + plantName + ".svg\" height=\"200\" width=\"187\" />\n" +
                 "</svg>\n";
     }
 }
