@@ -15,14 +15,13 @@ import { GetBasicFolder } from "@/Api/Folders/getBasicFolder";
 
 export default function AddFolder(props: { clickModal: any }) {
   const { clickModal } = props;
-  const params = useParams();
-  const folderId = Number(params.folderId);
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
-  const [repositoryListData, setRepositoryListData] = useState<{ id: number; name: string }[]>();
+
   const [folderName, setFolderName] = useState("");
   const [folderColor, setFolderColor] = useState("");
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
+  const [repositoryListData, setRepositoryListData] = useState<{ id: number; name: string }[]>();
 
   const colorList = ["yellow", "orange", "red", "green", "blue", "purple", "black"];
 
@@ -47,6 +46,7 @@ export default function AddFolder(props: { clickModal: any }) {
     try {
       await AddFolderAxios(ACCESS_TOKEN, folderName, folderColor, checkedItems);
     } catch (err: any) {
+      console.log("add", err);
       if (err.response?.status == 401) {
         const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
         saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);

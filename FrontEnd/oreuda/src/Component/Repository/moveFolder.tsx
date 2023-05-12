@@ -1,58 +1,97 @@
-import { useState } from "react";
-import st from "./moveFolder.module.scss";
+"use client";
 
-export default function MoveFolder() {
-  const options = [
-    { id: 1, value: "hello" },
-    { id: 2, value: "111" },
-    { id: 3, value: "2222" },
-    { id: 1, value: "hello" },
-    { id: 2, value: "111" },
-    { id: 3, value: "2222" },
-    { id: 1, value: "hello" },
-    { id: 2, value: "111" },
-    { id: 3, value: "2222" },
-    { id: 1, value: "hello" },
-    { id: 2, value: "111" },
-    { id: 3, value: "2222" },
-    { id: 1, value: "hello" },
-    { id: 2, value: "111" },
-    { id: 3, value: "2222" },
-    { id: 1, value: "hello" },
-    { id: 2, value: "111" },
-    { id: 3, value: "2222" },
-  ];
+import Image from "next/image";
+import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(options[0]);
+import st from "./addFolder.module.scss";
+import fontColor from "../../Style/repository/folderColor.module.scss";
+import { GetRepositoryLst } from "@/Api/Repository/getRepositoryList";
+import { useParams } from "next/navigation";
+import { getUserRefresh } from "@/Api/Oauth/getUserRefresh";
+import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
+import { AddFolderAxios } from "@/Api/Folders/addFolder";
+import { GetBasicFolder } from "@/Api/Folders/getBasicFolder";
+import { MoveRepository } from "@/Api/Repository/moveRepository";
 
-  const handleOptionClick = (option: any) => {
-    setSelectedOption(option);
-    setIsOpen(!isOpen);
+export default function AddFolder(props: {
+  clickModal: any;
+  folderId: number;
+  filtering: { id: number; value: string; name: string };
+}) {
+  const { clickModal, folderId, filtering } = props;
+  const ACCESS_TOKEN = Cookies.get("Authorization");
+  const REFRESH_TOKEN = Cookies.get("RefreshToken");
+
+  const [folderName, setFolderName] = useState("");
+  const [folderColor, setFolderColor] = useState("");
+  const [moveFolderId, setMoveFolderId] = useState<number>();
+  const [repositoryListData, setRepositoryListData] = useState<{ id: number; name: string }[]>();
+
+  const colorList = ["yellow", "orange", "red", "green", "blue", "purple", "black"];
+
+  useEffect(() => {
+    const loadRepositoryList = async () => {
+      try {
+        const res = await GetBasicFolder(ACCESS_TOKEN);
+        setRepositoryListData(res.data);
+      } catch (err: any) {
+        if (err.response?.status == 401) {
+          const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+          saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+          const res = await GetBasicFolder(ACCESS_TOKEN);
+          setRepositoryListData(res.data);
+        }
+      }
+    };
+    loadRepositoryList();
+  }, [ACCESS_TOKEN, REFRESH_TOKEN]);
+
+  const MoveRepossitory = async () => {
+    // if (moveFolderId)
+    //   try {
+    //     await MoveRepository(ACCESS_TOKEN, folderId, filtering.value, moveFolderId, repositories);
+    //   } catch (err: any) {
+    //     if (err.response?.status == 401) {
+    //       const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+    //       saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+    //       await MoveRepository(ACCESS_TOKEN, folderId, filtering.value, moveFolderId, repositories);
+    //     }
+    //   }
   };
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
+
+  // 폴더 공백 확인 함수
+  const makeFolder = (moveFolderId: string) => {
+    if (moveFolderId == "") {
+      alert("이동할 폴더를 1개 선택해주세요");
+    } else {
+      MoveRepossitory();
+      clickModal();
+    }
   };
 
   return (
-    <div onClick={(e) => e.stopPropagation()}>
-      <div className={st.dropdown} onClick={toggleDropdown}>
-        {selectedOption.value}
-      </div>
-      <div className={st.dropdown}>
-        {isOpen && (
-          <div className={st.options}>
-            {options.map((option) => (
-              <div
-                key={option.id}
-                className={`${st.option} ${option.value === selectedOption.value ? st.active : ""}`}
-                onClick={() => handleOptionClick(option)}
-              >
-                {option.value}
-              </div>
-            ))}
-          </div>
-        )}
+    <div className={st.modalBox} onClick={clickModal}>
+      <div className={st.modalContent} onClick={(e) => e.stopPropagation()}>
+        <div>
+          <Image src="/images/folder/white.svg" alt="" width={48} height={48} />
+          {/* <button onClick={() => makeFolder(moveFolderId)}>확인</button> */}
+        </div>
+
+        <p>이동할 폴더</p>
+        <div className={st.checkItem}>
+          {repositoryListData?.map((item, index) => (
+            <div key={index}>
+              <input
+                type="radio"
+                value={item.id}
+                // checked={moveFolderId.indexOf(String(item.id)) !== -1}
+                // onChange={setMoveFolderId()}
+              />
+              {item.name}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

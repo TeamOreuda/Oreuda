@@ -35,11 +35,7 @@ const navList: NavList[] = [
   },
 ];
 
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   if (children && typeof children === "object" && "props" in children) {
     // 로그인이 되어있지 않다면
     if (children.props.childProp.segment === "landing")
@@ -66,10 +62,7 @@ export default async function RootLayout({
         if (err.response?.status == 401) {
           return await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
             .then(async (res) => {
-              saveCookiesAndRedirect(
-                res.data.Authorization,
-                res.data.RefreshToken
-              );
+              saveCookiesAndRedirect(res.data.Authorization, res.data.RefreshToken);
               return await GetProfile(res.data.Authorization).then((res) => {
                 return res.data;
               });
@@ -77,6 +70,8 @@ export default async function RootLayout({
             .catch(() => {
               redirect("/landing");
             });
+        } else {
+          redirect("/landing");
         }
       });
 
@@ -115,18 +110,12 @@ export default async function RootLayout({
                 );
               })}
             </div>
-            <ul>
+            {/* <ul>
               <Link href="/landing" className={st.link}>
-                <Image
-                  className={st.img}
-                  src={userProfile}
-                  alt=""
-                  width={24}
-                  height={24}
-                />
+                <Image className={st.img} src={userProfile} alt="" width={24} height={24} />
                 로그아웃
               </Link>
-            </ul>
+            </ul> */}
           </nav>
           <Providers>{children}</Providers>
         </body>
