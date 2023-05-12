@@ -8,6 +8,7 @@ import com.oreuda.oreuda_plant.api.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -26,8 +27,9 @@ public class CardService {
     private final PlantRepository plantRepository;
 
     public String getBase64String(String imageUrl, String imageType) throws IOException {
-        ClassLoader cl = this.getClass().getClassLoader();
-        InputStream imageInFile = cl.getResourceAsStream(imageUrl);
+        ClassPathResource resource = new ClassPathResource(imageUrl);
+        InputStream imageInFile = resource.getInputStream();
+//        FileInputStream imageInFile = new FileInputStream(imageUrl);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         byte[] imageData = new byte[1024];
         int read = 0;
