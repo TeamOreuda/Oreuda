@@ -20,7 +20,7 @@ export default function AddText() {
   const textTitleArr = useAppSelector(selectReadme).textTitle;
   const textDescArr = useAppSelector(selectReadme).textDesc;
   const textArr = useAppSelector(selectReadme).textArr;
-  console.log(textArr);
+  console.log(`textArr: `, textArr);
 
   const TitleArrLastVal = textTitleArr[textTitleArr.length - 1];
   const DescArrLastVal = textDescArr[textDescArr.length - 1];
