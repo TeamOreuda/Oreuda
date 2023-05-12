@@ -220,9 +220,6 @@ export default function Preview() {
       }
     });
     return arr;
-    // for (let i = 0; i < textArr.length; i++) {
-
-    // }
   };
 
   // (Sorting에서) 프리뷰 렌더링 요소 생성
@@ -284,80 +281,8 @@ export default function Preview() {
       </div>
       <div className={st.contentDiv}>
         {Number(currComponent) == 8
-          ? //   (
-            //   <>
-            //     {componentArr[1] ? (
-            //       <div>
-            //         <img
-            //           src={firstImgUrl}
-            //           width="280"
-            //           height="140"
-            //           alt="baekjoon"
-            //         />
-            //         <img src={secImgUrl} width="285" height="140" alt="solved" />
-            //       </div>
-            //     ) : undefined}
-            //     {componentArr[2] ? (
-            //       <img
-            //         src={githubUrl}
-            //         width="350"
-            //         height="150"
-            //         alt="githubStats"
-            //       />
-            //     ) : undefined}
-            //     {componentArr[3] ? (
-            //       <img src={mulUrl} width="280" height={mulHeight} alt="MUL" />
-            //     ) : undefined}
-            //     {componentArr[4] ? (
-            //       <>
-            //         {showTechWhole()}
-            //         <h3>{techTitle}</h3>
-            //         <div className={st.techBadgeDiv}>{showTechArr()}</div>
-            //       </>
-            //     ) : undefined}
-            //     {componentArr[5] ? (
-            //       <>
-            //         <h3>Contact</h3>
-            //         <div className={st.contactBadgeDiv}>
-            //           {mailId.length > 0 ? (
-            //             <a href={mailURL} target="_blank">
-            //               <img
-            //                 src="https://img.shields.io/badge/Mail-6667AB?style=flat&logo=Gmail&logoColor=white"
-            //                 alt="Mail"
-            //               />
-            //             </a>
-            //           ) : undefined}
-            //           {blogLink.length > 0 ? (
-            //             <a href={blogLink} target="_blank">
-            //               <img
-            //                 src={`https://img.shields.io/badge/Tech Blog-7FD2F5?style=flat&logo=Hoppscotch&logoColor=white&link=${blogLink}/`}
-            //                 alt="blog"
-            //               />
-            //             </a>
-            //           ) : undefined}
-            //           {notionLink.length > 0 ? (
-            //             <a href={notionLink} target="_blank">
-            //               <img
-            //                 src={`https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white&link=${notionLink}/`}
-            //                 alt="notion"
-            //               />
-            //             </a>
-            //           ) : undefined}
-            //         </div>
-            //       </>
-            //     ) : undefined}
-            //     {componentArr[7] ? (
-            //       <>
-            //         {showTextArr()}
-            //         <h3>{newTextTitle}</h3>
-            //         <p>{newTextDesc}</p>
-            //       </>
-            //     ) : undefined}
-            //   </>
-            // )
-            renderingSorting()
+          ? renderingSorting()
           : renderingPrevSorting()}
-        {/* <Link href="http://solved.ac/kyum8562"> */}
       </div>
     </div>
   );
