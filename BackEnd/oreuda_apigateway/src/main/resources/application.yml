@@ -47,7 +47,7 @@ spring:
 
         # plant-server
         - id: card-server
-          uri: http://localhost:8060/
+          uri: http://172.28.0.25:8060/
           predicates:
             - Path=/api/v1/plant/card
 
