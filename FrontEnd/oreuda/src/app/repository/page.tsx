@@ -40,6 +40,8 @@ export default function Repository() {
           } catch (error) {
             redirect("/landing");
           }
+        } else {
+          redirect("/landing");
         }
       }
     };
@@ -60,6 +62,8 @@ export default function Repository() {
         } catch (error) {
           redirect("/landing");
         }
+      } else {
+        redirect("/landing");
       }
     }
   };
@@ -79,6 +83,8 @@ export default function Repository() {
           } catch (error) {
             redirect("/landing");
           }
+        } else {
+          redirect("/landing");
         }
       }
     };

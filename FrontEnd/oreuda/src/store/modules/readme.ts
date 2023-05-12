@@ -46,6 +46,7 @@ export interface readmeSlice {
   componentArr: boolean[];
   currComponent: number;
   prevComp: number[];
+  nPrevComp: any;
 }
 
 // 초기 상태 정의
@@ -67,7 +68,6 @@ const initialState: readmeSlice = {
   newTextDesc: "",
   textCnt: 0,
   techTitle: "",
-  nextComp: [],
   techPlusArr: [],
   techPlusModifyArr: [],
   techPlusWhole: [],
@@ -127,6 +127,8 @@ const initialState: readmeSlice = {
   componentArr: [true, false, false, false, false, false, false, false],
   currComponent: 0,
   prevComp: [],
+  nextComp: [],
+  nPrevComp: [],
 };
 
 const themeSlice = createSlice({
@@ -381,16 +383,24 @@ const themeSlice = createSlice({
       console.log(start, end);
 
       const arr: any = state.prevComp;
-      arr[start] = state.prevComp.splice(end, 1, state.prevComp[start]);
+      state.nPrevComp[start] = state.nPrevComp.splice(
+        end,
+        1,
+        state.nPrevComp[start]
+      )[0];
 
       // const arr2: any = state.componentArr;
-      // arr2[start] = state.componentArr.splice(
-      //   end,
-      //   1,
-      //   state.componentArr[start]
-      // );
-
-      console.log(arr);
+      // state.componentArr.splice(end, 1, state.componentArr[start]);
+    },
+    // 삭제해도 된당.
+    setPrevCompChange(state, action) {
+      // console.log(action.payload);
+      // state.prevComp = action.payload;
+    },
+    // ㅇㅇㅇ
+    setNewPrevComp(state, action) {
+      console.log(action.payload);
+      state.nPrevComp = action.payload;
     },
   },
 });
@@ -426,6 +436,8 @@ export const {
   setNextCompMoving,
   setPrevCompMoving,
   setMovingComponent,
+  setPrevCompChange,
+  setNewPrevComp,
 } = themeSlice.actions;
 export const selectReadme = (state: RootState) => state.readme;
 // 리듀서
