@@ -24,6 +24,8 @@ export default function Repository() {
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
   const [repositoryListData, setRepositoryListData] = useState<{ id: number; name: string }[]>();
 
+  console.log("page", ACCESS_TOKEN);
+
   useEffect(() => {
     const loadFolderList = async () => {
       try {
@@ -48,6 +50,8 @@ export default function Repository() {
     try {
       await DeleteFolder(ACCESS_TOKEN, checkedItems);
     } catch (err: any) {
+      console.log("delete", err);
+
       if (err.response?.status == 401) {
         const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
         saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
