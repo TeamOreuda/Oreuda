@@ -54,7 +54,8 @@ public class PlantController {
 
         return ResponseEntity.ok()
                 .contentType(MediaType.valueOf("image/svg+xml"))
-                .cacheControl(CacheControl.maxAge(Duration.ofHours(1)))
+//                .cacheControl(CacheControl.maxAge(Duration.ofHours(1)))
+                .cacheControl(CacheControl.noCache())
                 .body(svg);
     }
 }
