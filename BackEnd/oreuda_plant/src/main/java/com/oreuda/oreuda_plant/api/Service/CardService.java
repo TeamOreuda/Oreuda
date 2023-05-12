@@ -29,7 +29,7 @@ public class CardService {
     public String getBase64String(String imageUrl, String imageType) throws IOException {
         Resource[] resources = ResourcePatternUtils
                 .getResourcePatternResolver(new DefaultResourceLoader())
-                .getResources("classpath*:msg/**");
+                .getResources("classpath*:static/*");
         for (Resource resource : resources) {
             log.info("resource: {}", resource.getFilename());
         }
