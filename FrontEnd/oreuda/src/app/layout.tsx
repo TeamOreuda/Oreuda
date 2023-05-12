@@ -70,6 +70,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             .catch(() => {
               redirect("/landing");
             });
+        } else {
+          redirect("/landing");
         }
       });
 
