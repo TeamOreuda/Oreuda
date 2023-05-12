@@ -53,7 +53,10 @@ export default function RepositoryPage() {
       } catch (err: any) {
         if (err.response?.status == 401) {
           const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-          saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+          saveCookiesAndRedirect(
+            token.data.Authorization,
+            token.data.RefreshToken
+          );
           const res = await GetRepositoryLst(ACCESS_TOKEN, folderId, "recent");
           setRepositoryListData(res.data);
         }
@@ -73,8 +76,8 @@ export default function RepositoryPage() {
 
   return (
     <div className={st.body}>
-      <div className={st.button} onClick={clickModal}>
-        <button>
+      <div className={st.button}>
+        <button onClick={clickModal}>
           {false ? "확 인" : "레포지토리 이동"}
           <Image
             className={st.img}
