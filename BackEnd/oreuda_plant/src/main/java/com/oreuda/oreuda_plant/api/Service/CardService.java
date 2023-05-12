@@ -41,6 +41,10 @@ public class CardService {
             barSize = 165;
             barSizeAdjust = barSize - 13;
         }
+        String gaugeLayout = "253, 255, 239";
+        if (Objects.equals(plantName, "Blossom") || Objects.equals(plantName, "Apple") || Objects.equals(plantName, "Sapling")) {
+            gaugeLayout = "255, 255, 255";
+        }
 
         return "<!DOCTYPE svg PUBLIC\n" +
                 "        \"-//W3C//DTD SVG 1.1//EN\"\n" +
@@ -61,9 +65,6 @@ public class CardService {
                 "            }\n" +
                 "            @keyframes delayFadeIn {\n" +
                 "                0%{\n" +
-                "                    opacity:0\n" +
-                "                }\n" +
-                "                80%{\n" +
                 "                    opacity:0\n" +
                 "                }\n" +
                 "                100%{\n" +
@@ -256,7 +257,7 @@ public class CardService {
                 "            }\n" +
                 "\n" +
                 "            .gauge-layout{\n" +
-                "                stroke:rgb(253, 255, 239);\n" +
+                "                stroke:rgb("+ gaugeLayout + ");\n" +
                 "            }\n" +
                 "\n" +
                 "\n" +
@@ -272,8 +273,8 @@ public class CardService {
                 "                animation: delayFadeIn 1s ease-in-out forwards;\n" +
                 "            }\n" +
                 "            .rate-bar {\n" +
-                "                stroke-dasharray: 150;\n" +
-                "                stroke-dashoffset: 150;\n" +
+                "                stroke-dasharray: " + barSize + ";\n" +
+                "                stroke-dashoffset: " + barSize + ";\n" +
                 "                animation: rateBarAnimation 1.5s forwards ease-in-out;\n" +
                 "            }\n" +
                 "            .tier-title {\n" +
@@ -317,9 +318,9 @@ public class CardService {
                 "        <text x=\"165\" y=\"109\" text-anchor=\"end\" class=\"" + plantName + "-state\">" + plantName + "</text>\n" +
                 "    </g>\n" +
                 "\n" +
-                "    <line x1=\"15\" y1=\"150\" x2=\"165\" y2=\"150\" stroke-width=\"4\" stroke-opacity=\"30%\" stroke=\"floralwhite\" stroke-linecap=\"round\"/>\n" +
+                "    <line x1=\"15\" y1=\"150\" x2=\"165\" y2=\"150\" stroke-width=\"4\" class=\"gauge-layout\" stroke-opacity=\"70%\" stroke-linecap=\"round\"/>\n" +
                 "    <g class=\"rate-bar\" style=\"animation-delay: 800ms\">\n" +
-                "        <line class = \"" + plantName + "-gauge\" x1=\"15\" y1=\"150\" x2=\"" + barSize + "\" y2=\"150\" stroke-width=\"4\" stroke=\"rgb(241, 1, 1)\" stroke-linecap=\"round\"/>\n" +
+                "        <line class = \"" + plantName + "-gauge\" x1=\"15\" y1=\"150\" x2=\"" + barSize + "\" y2=\"150\" stroke-width=\"4\" stroke-linecap=\"round\"/>\n" +
                 "    </g>\n" +
                 "    <image class = \"oreu-icon\" x=\"" + barSizeAdjust + "\" y=\"120\" href=\"/" + plantName + ".gif\" height=\"26\" width=\"26\" />\n" +
                 "    \n" +
