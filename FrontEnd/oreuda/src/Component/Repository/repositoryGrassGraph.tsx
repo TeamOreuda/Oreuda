@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { DailyCommit } from "@/Component/Repository/repository";
 import CalendarHeatmap from "react-calendar-heatmap";
-import "./heatmap.css";
+import "./repositoryGrassGraph.css";
 
 export default function RepositoryGrassGraph(props: {
   dailyCommits: DailyCommit[];
