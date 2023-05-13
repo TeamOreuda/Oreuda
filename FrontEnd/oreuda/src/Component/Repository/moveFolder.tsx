@@ -11,16 +11,11 @@ import {
 } from "react";
 
 import st from "./addFolder.module.scss";
-import fontColor from "../../Style/repository/folderColor.module.scss";
-import { GetRepositoryLst } from "@/Api/Repository/getRepositoryList";
-import { useParams } from "next/navigation";
+import { Folder } from "@/Component/Repository/folder";
+
+import { GetFolderList } from "@/Api/Folders/getFolderList";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
-import { AddFolderAxios } from "@/Api/Folders/addFolder";
-import { GetBasicFolder } from "@/Api/Folders/getBasicFolder";
-import { MoveRepository } from "@/Api/Repository/moveRepository";
-import { GetFolderList } from "@/Api/Folders/getFolderList";
-import { Folder } from "@/Component/Repository/folder";
 
 export default function MoveFolder(props: {
   closeModal: () => void;

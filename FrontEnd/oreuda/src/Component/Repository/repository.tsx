@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import React, { useEffect } from "react";
 
 import st from "./repository.module.scss";
-import fontColor from "../../Style/repository/languageColor.module.scss";
 import RepositoryGraph from "./repositoryGraph";
 import RepositoryGrassGraph from "./repositoryGrassGraph";
+import fontColor from "../../Style/repository/languageColor.module.scss";
 
 export interface DailyCommit {
   date: string;
