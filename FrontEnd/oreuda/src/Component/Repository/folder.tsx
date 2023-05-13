@@ -3,13 +3,13 @@ import Image from "next/image";
 import Cookies from "js-cookie";
 
 import st from "./folder.module.scss";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { ChangeFolder } from "@/Api/Folders/changeFolder";
-import { getUserRefresh } from "@/Api/Oauth/getUserRefresh";
+import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
 
-interface FolderList {
+export interface Folder {
   id: number;
   name: string;
   color: string;
@@ -19,11 +19,18 @@ interface FolderList {
 
 export default function Folder(props: {
   clickDelete: boolean;
-  folderListData: FolderList[];
+  folderList: Folder[];
   checkedItems: number[];
   setCheckedItems: React.Dispatch<React.SetStateAction<number[]>>;
+  loadFolderList: () => Promise<void>;
 }) {
-  const { clickDelete, folderListData, checkedItems, setCheckedItems } = props;
+  const {
+    clickDelete,
+    folderList,
+    checkedItems,
+    setCheckedItems,
+    loadFolderList,
+  } = props;
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
 
@@ -31,41 +38,38 @@ export default function Folder(props: {
   const [targetName, setTargetName] = useState<number>();
   const [targetPosition, setTargetPosition] = useState<number>();
 
-  useEffect(() => {
-    const changeFolderList = async () => {
-      if (!targetName || !targetPosition) return;
-      try {
-        const res = await ChangeFolder(ACCESS_TOKEN, targetName, targetPosition);
-      } catch (err: any) {
-        if (err.response?.status == 401) {
-          const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-          saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
-          await ChangeFolder(ACCESS_TOKEN, targetName, targetPosition);
-        }
+  const changeFolderList = async () => {
+    if (!targetName || targetPosition == undefined) return;
+    try {
+      await ChangeFolder(ACCESS_TOKEN, targetName, targetPosition);
+    } catch (err: any) {
+      if (err.response?.status == 401) {
+        const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+        saveCookiesAndRedirect(
+          token.data.Authorization,
+          token.data.RefreshToken
+        );
+        await ChangeFolder(ACCESS_TOKEN, targetName, targetPosition);
       }
-    };
-    changeFolderList();
-  }, [ACCESS_TOKEN, REFRESH_TOKEN, targetName, targetPosition]);
-
-  const onDragOver = (e: any) => {
-    e.preventDefault();
+    }
   };
 
-  const onDragStart = (e: any) => {
+  useEffect(() => {
+    changeFolderList().then(() => loadFolderList());
+  }, [ACCESS_TOKEN, REFRESH_TOKEN, targetName, targetPosition]);
+
+  const onDragStart = (e: React.DragEvent<HTMLAnchorElement>) => {
     setGrab(e.currentTarget);
   };
 
-  const onDrop = (e: any) => {
-    setTargetName(grab?.dataset.name);
-    setTargetPosition(Number(e.target.dataset.position));
-  };
-
-  const handleClick = (e: any) => {
+  const onDrop = (e: React.DragEvent<HTMLAnchorElement>) => {
     e.preventDefault();
+    setTargetName(grab?.dataset.name);
+    setTargetPosition(Number(e.currentTarget.dataset.position));
   };
 
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
     const currentIndex = checkedItems.indexOf(Number(value));
     const newCheckedItems = [...checkedItems];
 
@@ -80,42 +84,43 @@ export default function Folder(props: {
 
   return (
     <div className={st.folders}>
-      {folderListData?.map((e: FolderList, index: number) => {
+      {folderList?.map((folder: Folder, index: number) => {
         return (
-          <div key={index}>
+          <div key={index} data-position={index}>
             <Link
-              href={`/repository/${e.id}`}
-              {...(clickDelete ? { onClick: handleClick } : {})}
+              href={`/repository/${folder.id}`}
+              {...(clickDelete ? { onClick: (e) => e.preventDefault() } : {})}
               data-position={index}
-              data-name={e.id}
-              onDragOver={onDragOver}
+              data-name={folder.id}
+              onDragOver={(e) => e.preventDefault()}
               onDragStart={onDragStart}
               onDrop={onDrop}
               draggable={!clickDelete}
             >
-              <div className={st.folder}>
-                {clickDelete && (
+              <div className={st.folder} data-position={index}>
+                {clickDelete && folder.name !== "기본 폴더" && (
                   <input
                     type="checkbox"
-                    value={e.id}
-                    checked={checkedItems.indexOf(e.id) !== -1}
+                    value={folder.id}
+                    checked={checkedItems.indexOf(folder.id) !== -1}
                     onChange={handleCheckboxChange}
                     onClick={(event) => event.stopPropagation()}
                   />
                 )}
-                <div data-position={index} data-name={e.id}>
+                <div data-position={index} data-name={folder.id}>
                   <Image
                     data-position={index}
-                    data-name={e.id}
-                    src={`images/folder/${e.color}.svg`}
+                    data-name={folder.id}
+                    src={`images/folder/${folder.color}.svg`}
                     alt="폴더"
                     width={128}
                     height={128}
                     draggable={false}
+                    priority
                   />
                 </div>
-                <p data-position={index} data-name={e.id}>
-                  {e.name}
+                <p data-position={index} data-name={folder.id}>
+                  {folder.name}
                 </p>
               </div>
             </Link>

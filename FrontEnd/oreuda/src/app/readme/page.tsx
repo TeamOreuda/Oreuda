@@ -19,10 +19,12 @@ export default function Readme() {
   const componentArr = useAppSelector(selectReadme).componentArr;
   const prevComp = useAppSelector(selectReadme).prevComp;
   const currComponent = useAppSelector(selectReadme).currComponent;
+  const githubId = useAppSelector(selectReadme).githubId;
   // console.log(`currComponent: ${currComponent}`);
-  console.log(`prevComp: ${prevComp}`);
-  console.log(`nextComp: ${nextComp}`);
-  console.log(`componentArr: ${componentArr}`);
+  // console.log(`githubId: ${githubId}`);
+  // console.log(`prevComp: ${prevComp}`);
+  // console.log(`nextComp: ${nextComp}`);
+  // console.log(`componentArr: ${componentArr}`);
   return (
     <div className={st.body}>{currComponent === 0 ? <Main /> : <Comp />}</div>
   );

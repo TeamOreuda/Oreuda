@@ -1,19 +1,23 @@
 "use client";
+import { CreateReadme } from "@/Api/Readme/createReadme";
 /* eslint-disable @next/next/no-img-element */
 import st from "./Preview.module.scss";
 import { useAppSelector } from "@/store/hooks";
 import { selectReadme } from "@/store/modules/readme";
 import Image from "next/image";
-import { useEffect } from "react";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 export default function Preview() {
   const BaekJoonData = useAppSelector(selectReadme).baekjoonId;
-  const mulTheme = useAppSelector(selectReadme).mulTheme;
-
   const SolvedThemeData = useAppSelector(selectReadme).solvedTheme;
+
   const githubId = useAppSelector(selectReadme).githubId;
   const githubTheme = useAppSelector(selectReadme).githubTheme;
+
   const mulType = useAppSelector(selectReadme).mulType;
+  const mulTheme = useAppSelector(selectReadme).mulTheme;
+
   const newTextTitle = useAppSelector(selectReadme).newTextTitle;
   const newTextDesc = useAppSelector(selectReadme).newTextDesc;
   const textArr = useAppSelector(selectReadme).textArr;
@@ -30,6 +34,11 @@ export default function Preview() {
   const nextComp = useAppSelector(selectReadme).nextComp;
   const nPrevComp = useAppSelector(selectReadme).nPrevComp;
   const techArr = useAppSelector(selectReadme).techArr;
+
+  console.log(textArr);
+
+  const ACCESS_TOKEN = Cookies.get("Authorization");
+  const REFRESH_TOKEN = Cookies.get("RefreshToken");
 
   // 연락처
   // const mailURL = `https://mail.${mailDomain}/mail/?view=cm&amp;fs=1&amp;to=${mailId}@${mailDomain}/`;
@@ -64,34 +73,6 @@ export default function Preview() {
 
   // 추가 텍스트
 
-  // README.md 파일 다운로드
-  const file = {
-    title: "README",
-    content: "content",
-  };
-
-  // 다운로드 메서드
-  const onClickDownload = () => {
-    const blob = new Blob([file.content], { type: "text/plain" });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${file.title}.md`;
-    a.click();
-    a.remove();
-    window.URL.revokeObjectURL(url);
-  };
-
-  // 클립보드 복사 메서드
-  const onClickCopy = () => {
-    try {
-      navigator.clipboard.writeText("hi");
-      alert("클립보드에 복사되었습니다.");
-    } catch (error) {
-      alert("클립보드 복사에 실패하였습니다.");
-    }
-  };
-
   // Text 배열 한번에 뿌려주는 메서드
   const showTextArr = () => {
     const arr = [];
@@ -103,7 +84,6 @@ export default function Preview() {
         </div>
       );
     }
-
     return arr;
   };
 
@@ -164,10 +144,10 @@ export default function Preview() {
     </div>,
     <div key="4" className={st.TextArr}>
       <div className={st.TextArr}>{showTechWhole()}</div>
-      <h3>{techTitle}</h3>
+      <h3>Tech Stack</h3>
       <div className={st.techBadgeDiv}>{showTechArr()}</div>
     </div>,
-    <div key="5">
+    <div key="5" className={st.TextArr}>
       <h3>Contact</h3>
       <div className={st.contactBadgeDiv}>
         {mailId.length > 0 ? (
@@ -196,7 +176,12 @@ export default function Preview() {
         ) : undefined}
       </div>
     </div>,
-    "오르",
+    <div key="6">
+      <img
+        src={`https://oreuda.kr/api/v1/plant/card?nickname=${githubId}`}
+        alt="oreuda"
+      />
+    </div>,
     <div key="7" className={st.TextArr}>
       {showTextArr()}
       <h3>{newTextTitle}</h3>
@@ -204,19 +189,183 @@ export default function Preview() {
     </div>,
   ];
 
+  // MD 관련 Function을 정의합니다.
+  // ******************************************************************************** /
+  const showTechWholeMD = () => {
+    const arr: any = [];
+
+    techPlusWhole.map((el, index) => {
+      arr.push(
+        `<h3 key=${index} style ="font-size : 1.17em; font-weight:700;">${el.name}</h3>`
+      );
+      const arr2: any = [];
+
+      el.techArray.map((elel: any, idx: any) => {
+        const x = `https://img.shields.io/badge/${elel.name}-${elel.color}?style=flat&logo=${elel.name}&logoColor=white`;
+        arr2.push(
+          `<img
+          key=${Math.random() * (1000000 - 1)}
+          style = "margin: 5px 5px;"
+          src=${x}
+          alt=""
+        />`
+        );
+      });
+      arr.push(`<div ">${arr2.join(" ")}</div>`);
+    });
+    return arr.join("");
+  };
+
+  const showTechArrMD = () => {
+    const arr = [];
+    for (let i = 0; i < techPlusWhole.length; i++) {
+      arr.push(
+        `<h3 style ="font-size : 1.5em; font-weight:700;">${techPlusWhole[i].name}</h3>`
+      );
+      const x = `https://img.shields.io/badge/${techPlusWhole[i].techArray[0].name}-${techPlusWhole[i].techArray[0].color}?style=flat&logo=${techPlusWhole[i].techArray[0].name}&logoColor=white`;
+      arr.push(
+        `        
+        <div key=${i}>
+          <img
+            key=${Math.random() * (1000000 - 1)}
+            style = "margin: 5px 5px;"
+            src=${x}
+            alt=""
+          />
+        </div>`
+      );
+    }
+    console.log(techPlusWhole);
+    return arr.join("");
+  };
+
+  // const showTextArrMD = () => {
+  //   console.log(textArr);
+  //   const arr = [];
+  //   for (let i = 0; i < textArr.length; i++) {
+  //     arr.push(
+  //       `<div key=${i} style = "display: flex;  align-items: center; flex-direction: column;  justify-content: center;">
+  //         <h3 style ="font-size : 35px;">${textArr[i].titleArr} 12</h3>
+  //         <p style ="font-size : 20px;">${textArr[i].descArr} 12</p>
+  //       </div>`
+  //     );
+  //   }
+  //   return arr.join("");
+  // };
+
+  const AdditionalTextMD = (id: number) => {
+    return `
+  <div key="7" >
+    <div key=${id - 1} >
+          <h3 style ="font-size : 1.5em; font-weight:700;">${
+            textArr[id - 1].titleArr
+          }</h3>
+          <p style ="font-size : 20px;">${textArr[id - 1].descArr}</p>
+    </div>
+  </div>
+  `;
+  };
+
+  const blogImg = `https://img.shields.io/badge/TechBlog-7FD2F5?style=flat&logo=Hoppscotch&logoColor=white&link=${blogLink}/`;
+  const notionImg = `https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white&link=${notionLink}/`;
+  const oreuCard = `https://oreuda.kr/api/v1/plant/card?nickname=${githubId}`;
+
+  const selected: String[] = [
+    `
+  <div key="1">
+    <img src=${firstImgUrl} width="280" height="140" alt="baekjoon" />
+    <img src=${secImgUrl} width="285" height="140" alt="solved" />
+  </div>
+  `,
+    `
+  <div key="2">
+    <img src=${githubUrl} width="350" height="150" alt="githubStats" />
+  </div>
+  `,
+    `
+  <div key="3">
+    <img src=${mulUrl} width="280" height=${mulHeight} alt="MUL" />
+  </div>
+  `,
+    `
+  <div key="4">
+  <h3 style ="font-size : 1.5em; font-weight:700;">Tech Stack</h3>
+    <div >${showTechArrMD()}</div>
+  </div>
+  `,  
+    `
+  <div key="5">
+    <h3 style ="font-size : 1.5em; font-weight:700;">Contact</h3>
+    <div className=${st.contactBadgeDiv}>
+      ${
+        mailId.length > 0
+          ? `<a href=${mailURL} target="_blank">
+            <img
+              src="https://img.shields.io/badge/Mail-6667AB?style=flat&logo=Gmail&logoColor=white"
+              alt="Mail"
+            />
+          </a>`
+          : ""
+      }
+      ${
+        blogLink.length > 0
+          ? `<a href=${blogLink} target="_blank">
+            <img src=${blogImg} alt="blog" />
+          </a>`
+          : ""
+      }
+      ${
+        notionLink.length > 0
+          ? `<a href=${notionLink} target="_blank">
+            <img src=${notionImg} alt="notion" />
+          </a>`
+          : ""
+      }
+    </div>
+  </div>
+  `,
+    `
+  <div key="6">
+    <a href = "https://oreuda.kr/">
+      <img
+        src=${oreuCard}
+        alt="oreuda"
+      />
+    </a>
+  </div>
+  `,
+  ];
+
+  let toMD = `<div  style = "display: flex;  align-items: center; flex-direction: column;  justify-content: center;">\n
+<!-- font-size 를 조절하면 원하는 크기로 글자를 조절할 수 있습니다.-->
+<!-- Designed and developed in-house at Oreuda (https://oreuda.kr) -->
+<!-- 불편 사항 및 문의는 tykimdream@gmail.com으로 보내주세요 -->
+`;
+  nPrevComp.map((key: any) => {
+    if (key > 10) {
+      // text arr 인 경우
+      toMD += AdditionalTextMD(key % 10);
+    } else {
+      toMD += selected[key - 1];
+    }
+  });
+  toMD += `\n</div>`;
+
   // 인덱스에 해당하는 add Text 배열(textArr) 찾아 리턴
   // => add Text 컴포넌트 분리
   const choiceTempArr = (idx: any) => {
-    for (let i = 0; i < textArr.length; i++) {
-      if (idx - 1 === i) {
-        return (
-          <div key={i}>
-            <h3>{textArr[i].titleArr}</h3>
-            <p>{textArr[i].descArr}</p>
+    const arr: any = [];
+    textArr.map((el: any, index: any) => {
+      if (idx - 1 == index) {
+        arr.push(
+          <div key={index}>
+            <h3>{el.titleArr}</h3>
+            <p>{el.descArr}</p>
           </div>
         );
       }
-    }
+    });
+    return arr;
   };
 
   // (Sorting에서) 프리뷰 렌더링 요소 생성
@@ -227,10 +376,10 @@ export default function Preview() {
         arr.push(tmp[el]);
       } else {
         let i = el.substring(1, 2);
-        arr.push(choiceTempArr(i));
+        let tmp = choiceTempArr(i);
+        arr.push(tmp);
       }
     });
-
     return arr;
   };
 
@@ -241,14 +390,126 @@ export default function Preview() {
 
     tmp2.map((el: any, index: number) => {
       if (index !== 0) {
-        console.log(index);
         arr.push(tmp[el]);
       }
     });
 
     return arr;
   };
+  // README.md 파일 다운로드
+  const file = {
+    title: "README",
+    // content: "content",
+    content: toMD,
+  };
 
+  // 다운로드 메서드
+  const onClickDownload = () => {
+    console.log(nPrevComp);
+    console.log(toMD);
+    const blob = new Blob([file.content], { type: "text/plain" });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${file.title}.md`;
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
+  };
+
+  // 클립보드 복사 메서드
+  const onClickCopy = () => {
+    try {
+      navigator.clipboard.writeText("hi");
+      alert("클립보드에 복사되었습니다.");
+    } catch (error) {
+      alert("클립보드 복사에 실패하였습니다.");
+    }
+  };
+
+  // 저장 버튼 클릭시 readme 저장 axios 요청
+  const saveReadme = async () => {
+    const arr: any = [];
+    nPrevComp.map((el: any, idx: any) => {
+      let curr = Number(el);
+      let pushData = {};
+      if (curr === 1) {
+        pushData = {
+          readmeType: "BOJ",
+          bojValue: BaekJoonData.length > 0 ? BaekJoonData : "temp",
+          bojTheme: SolvedThemeData,
+        };
+      } else if (curr === 2) {
+        pushData = { readmeType: "GIT", gitTheme: githubTheme };
+      } else if (curr === 3) {
+        pushData = {
+          readmeType: "LANGUAGE",
+          languageTheme: mulTheme,
+          languageType: mulType,
+        };
+      } else if (curr === 4) {
+        techPlusWhole.map((el: any, index: any) => {
+          // 제목 백에서 넣어줄 예정
+          // pushData = { readmeType: "TECH", techTitle: "", techStack: el.techArray };
+          pushData = { readmeType: "TECH", techStack: el.techArray };
+          arr.push(pushData);
+        });
+      } else if (curr === 5) {
+        pushData = {
+          readmeType: "CONTACT",
+          mailLink: `${mailId}@${mailDomain}`,
+          blogLink: blogLink.length > 0 ? blogLink : "temp",
+          notionLink: notionLink.length > 0 ? notionLink : "temp",
+        };
+      } else if (curr === 6) {
+        pushData = { readmeType: "PLANT" };
+      } else if (curr > 10) {
+        const tmp = (curr % 10) - 1;
+
+        pushData = {
+          readmeType: "WRITING",
+          writingTitle: textArr[tmp].titleArr,
+          writingContents: textArr[tmp].descArr,
+        };
+      }
+
+      // pushData = {readmeType:"WRITING", writingTitle}
+      if (curr !== 4) arr.push(pushData);
+    });
+    try {
+      console.log(`pushArr: `, arr);
+      const res = await axios.patch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/readme`,
+        arr,
+        {
+          headers: {
+            Authorization: ACCESS_TOKEN,
+          },
+        }
+      );
+      console.log(res);
+    } catch (err: any) {
+      console.log(err);
+
+      /**
+ * 리스트 제외 request type은 String
+ *
+ 리드미 리스트(readmes)
+ * 리드미 종류(readmeType)
+ * 1. 백준 아이디(bojValue)
+ * 2. 백준 테마(bojTheme)
+ * 2. 깃 테마(gitTheme)
+ * 3. 언어테마(languageTheme)
+ * 4. 언어타입(languageType)
+ * 5. 기술스택 리스트(techStack) - 리스트
+ * 6. 메일(mailLink)
+ * 6. 블로그(blogLink)
+ * 6. 노션(notionLink)
+ * 7. 글 제목(writingTitle)
+ * 7. 글 내용(writingContents)
+ */
+    }
+  };
   return (
     <div className={st.body}>
       <div className={st.headerDiv}>
@@ -273,84 +534,15 @@ export default function Preview() {
             alt="download"
           />
         </div>
-        <button className={st.btnDiv}>초기화</button>
+        <button className={st.btnReset}>초기화</button>
+        <button className={st.btnSave} onClick={saveReadme}>
+          저장
+        </button>
       </div>
       <div className={st.contentDiv}>
-        {currComponent !== 8
-          ? //   (
-            //   <>
-            //     {componentArr[1] ? (
-            //       <div>
-            //         <img
-            //           src={firstImgUrl}
-            //           width="280"
-            //           height="140"
-            //           alt="baekjoon"
-            //         />
-            //         <img src={secImgUrl} width="285" height="140" alt="solved" />
-            //       </div>
-            //     ) : undefined}
-            //     {componentArr[2] ? (
-            //       <img
-            //         src={githubUrl}
-            //         width="350"
-            //         height="150"
-            //         alt="githubStats"
-            //       />
-            //     ) : undefined}
-            //     {componentArr[3] ? (
-            //       <img src={mulUrl} width="280" height={mulHeight} alt="MUL" />
-            //     ) : undefined}
-            //     {componentArr[4] ? (
-            //       <>
-            //         {showTechWhole()}
-            //         <h3>{techTitle}</h3>
-            //         <div className={st.techBadgeDiv}>{showTechArr()}</div>
-            //       </>
-            //     ) : undefined}
-            //     {componentArr[5] ? (
-            //       <>
-            //         <h3>Contact</h3>
-            //         <div className={st.contactBadgeDiv}>
-            //           {mailId.length > 0 ? (
-            //             <a href={mailURL} target="_blank">
-            //               <img
-            //                 src="https://img.shields.io/badge/Mail-6667AB?style=flat&logo=Gmail&logoColor=white"
-            //                 alt="Mail"
-            //               />
-            //             </a>
-            //           ) : undefined}
-            //           {blogLink.length > 0 ? (
-            //             <a href={blogLink} target="_blank">
-            //               <img
-            //                 src={`https://img.shields.io/badge/Tech Blog-7FD2F5?style=flat&logo=Hoppscotch&logoColor=white&link=${blogLink}/`}
-            //                 alt="blog"
-            //               />
-            //             </a>
-            //           ) : undefined}
-            //           {notionLink.length > 0 ? (
-            //             <a href={notionLink} target="_blank">
-            //               <img
-            //                 src={`https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white&link=${notionLink}/`}
-            //                 alt="notion"
-            //               />
-            //             </a>
-            //           ) : undefined}
-            //         </div>
-            //       </>
-            //     ) : undefined}
-            //     {componentArr[7] ? (
-            //       <>
-            //         {showTextArr()}
-            //         <h3>{newTextTitle}</h3>
-            //         <p>{newTextDesc}</p>
-            //       </>
-            //     ) : undefined}
-            //   </>
-            // )
-            renderingPrevSorting()
-          : renderingSorting()}
-        {/* <Link href="http://solved.ac/kyum8562"> */}
+        {Number(currComponent) == 8
+          ? renderingSorting()
+          : renderingPrevSorting()}
       </div>
     </div>
   );

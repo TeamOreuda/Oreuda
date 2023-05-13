@@ -1,0 +1,287 @@
+<!DOCTYPE svg PUBLIC
+        "-//W3C//DTD SVG 1.1//EN"
+        "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg height="170" width="350" version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve">
+    <style type="text/css">
+        <![CDATA[
+            @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=block');
+            @keyframes fadeIn {
+                0%{
+                    opacity:0
+                }
+                100%{
+                    opacity:1
+                }
+            }
+            @keyframes delayFadeIn {
+                0%{
+                    opacity:0
+                }
+                80%{
+                    opacity:0
+                }
+                100%{
+                    opacity:1
+                }
+            }
+            @keyframes rateBarAnimation {
+                0% {
+                    stroke-dashoffset: {bar_size}; /* 끝 위치 bar_size */
+                }
+                100%{
+                    stroke-dashoffset: 15;
+                }
+            }
+            @keyframes runOrue{
+               0% { 
+                    opacity: 0.5;
+                    transform: translateX(-{bar_size}px); /* 시작 위치  bar_size */
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+
+
+            .Soil-background {
+                fill: rgb(255, 126, 126);
+            }
+            .Sprout-background{
+                fill: rgb(255, 250, 124);
+            }
+            .Sapling-background{
+                fill:rgb(202, 255, 161)
+            }
+            .Blossom-background{
+                fill:rgb(255, 246, 248)
+            }
+            .Apple-background{
+                fill:rgb(252, 252, 205)
+            }
+            .Rainbow-background{
+                fill:rgb(243, 198, 255)
+            }
+            .Volcano-background{
+                fill:rgb(145, 127, 179)
+            }
+            .Ice-background{
+                fill:rgb(127, 210, 245)
+            }
+            .Earth-background{
+                fill:rgb(0, 0, 0)
+            }
+
+
+            text {
+                fill: white;
+                font-family: 'Noto Sans KR', sans-serif;
+            }
+            text.user-name {
+                font-weight: 700;
+                font-size: 1.50em;
+                animation: fadeIn 1s ease-in-out forwards;
+            }
+            text.tier-text {
+                font-weight: 700;
+                font-size: 1.45em;
+                opacity: 55%;
+            }
+            text.tier-number {
+                font-size: 3.1em;
+                font-weight: 700;
+                text-anchor: middle;
+                animation: delayFadeIn 2s ease-in-out forwards;
+            }
+
+            .subtitle {
+                font-weight: 500;
+                font-size: 0.9em;
+            }
+
+            .Soil-subtitle {
+                fill: rgb(255, 255, 255)
+            }
+            .Sprout-subtitle {
+                fill: rgb(99, 54, 0)
+                
+            }
+            .Sapling-subtitle {
+                fill: rgb(32, 98, 3)
+                
+            }
+            .Blossom-subtitle {
+                fill: rgb(255, 118, 148)
+            }
+            .Apple-subtitle {
+                fill: rgb(234, 65, 65)
+            
+            }
+            .Rainbow-subtitle {
+                fill: rgb(255, 255, 255)
+            
+            }
+            .Volcano-subtitle {
+                fill: rgb(255, 255, 255)
+            
+            }
+            .Ice-subtitle {
+                fill: rgb(255, 255, 255)
+            
+            }
+            .Earth-subtitle {
+                fill: rgb(255, 255, 255)
+            
+            }
+            
+            .Soil-state{
+                font-weight: 700;
+                font-size: 0.9em;
+                fill: rgb(70, 51, 34);
+            }
+            .Sprout-state{
+                font-weight: 700;
+                font-size: 0.9em;
+                fill: rgb(53, 130, 27);
+            }
+            .Sapling-state{
+                font-weight: 700;
+                font-size: 0.9em;
+                fill: rgb(115, 57, 0);
+            }
+            .Blossom-state{
+                font-weight: 700;
+                font-size: 0.9em;
+                fill: rgb(191, 132, 74)
+            }
+            .Apple-state{
+                font-weight: 700;
+                font-size: 0.9em;
+                fill: rgb(109, 201, 76)
+            }            
+            .Rainbow-state{
+                font-weight: 700;
+                font-size: 0.9em;
+                fill: rgb(197, 118, 218)
+            }
+            .Volcano-state{
+                font-weight: 700;
+                font-size: 0.9em;
+                fill: rgb(51, 51, 51)
+            }
+            .Ice-state{
+                font-weight: 700;
+                font-size: 0.9em;
+                fill: rgb(71, 167, 255)
+            }
+            .Earth-state{
+                font-weight: 700;
+                font-size: 0.9em;
+                fill: rgb(65, 144, 239)
+            }
+
+
+            .Soil-gauge{
+                stroke:rgb(241, 1, 1);
+            }
+            .Sprout-gauge{
+                stroke:rgb(103, 62, 13)
+            }
+            .Sapling-gauge{
+                stroke:rgb(26, 100, 0)
+            }
+            .Blossom-gauge{
+                stroke:rgb(255, 118, 148)
+            }
+            .Apple-gauge{
+                stroke:rgb(234, 65, 65)
+            }
+            .Rainbow-gauge{
+                stroke:rgb(186, 95, 211)
+            }
+            .Volcano-gauge{
+                stroke:rgb(255, 76, 76)
+            }
+            .Ice-gauge{
+                stroke:rgb(71, 167, 255)
+            }
+            .Earth-gauge{
+                stroke:rgb(65, 144, 239)
+            }
+
+            .gauge-layout{
+                stroke:rgb(253, 255, 239);
+            }
+
+
+            .percentage {
+                font-weight: 300;
+                font-size: 0.8em;
+            }
+            .progress {
+                font-size: 0.7em;
+            }
+            .item {
+                opacity: 0;
+                animation: delayFadeIn 1s ease-in-out forwards;
+            }
+            .rate-bar {
+                stroke-dasharray: 150;
+                stroke-dashoffset: 150;
+                animation: rateBarAnimation 1.5s forwards ease-in-out;
+            }
+            .tier-title {
+                animation: delayFadeIn 1s ease-in-out forwards;
+            }
+            .oreu-icon{
+                opacity: 0;
+                animation: runOrue 1.5s forwards ease-in-out;
+                animation-delay: 0.8s;
+            }
+            .oreu-img{
+                animation: delayFadeIn 2s ease-in-out forwards;
+            }
+        ]]>
+    </style>
+    <defs>
+        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="35%">
+            <stop offset="10%" style="stop-color:#FFC944;stop-opacity:1">
+                <animate attributeName="stop-opacity" values="0.7; 0.73; 0.9 ; 0.97; 1; 0.97; 0.9; 0.73; 0.7;" dur="4s" repeatCount="indefinite" repeatDur="01:00"></animate>
+            </stop>
+            <stop offset="55%" style="stop-color:#FFAF44;stop-opacity:1">
+                <animate attributeName="stop-opacity" values="1; 0.95; 0.93; 0.95; 1;" dur="4s" repeatCount="indefinite" repeatDur="01:00"></animate>
+            </stop>
+            <stop offset="100%" style="stop-color:#FF9632;stop-opacity:1">
+                <animate attributeName="stop-opacity" values="1; 0.97; 0.9; 0.83; 0.8; 0.83; 0.9; 0.97; 1;" dur="4s" repeatCount="indefinite" repeatDur="01:00"></animate>
+            </stop>
+        </linearGradient>
+    </defs>
+    <rect width="350" height="170" rx="10" ry="10" class={tier-background}/>
+    <text x="15" y="39" class="user-name {tier-subtitle}">{user-name}</text>
+    <g class="item" style="animation-delay: 200ms">
+        <text x="15" y="69" class="subtitle {tier-subtitle}">Max Streak</text>
+        <text x="165" y="69" text-anchor="end" class={tier-state}>{max-streak}</text>
+    </g>
+    <g class="item" style="animation-delay: 400ms">
+        <text x="15" y="89" class="subtitle {tier-subtitle}">All Repo</text>
+        <text x="165" y="89" text-anchor="end" class={tier-state}>{all-repo}</text>
+    </g>
+    <g class="item" style="animation-delay: 600ms">
+        <text x="15" y="109" class="subtitle {tier-subtitle}">Tier</text>
+        <text x="165" y="109" text-anchor="end" class={tier-state}>{tier}</text>
+    </g>
+
+    <line class = "gauge-layout" x1="15" y1="150" x2="165" y2="150" stroke-width="4" stroke-opacity="30%" stroke-linecap="round"/>
+    <g class="rate-bar" style="animation-delay: 800ms">
+        <line class = {tier-gauge} x1="15" y1="150" x2="{bar_size}" y2="150" stroke-width="4" stroke-linecap="round"/>
+    </g>
+    <image class = "oreu-icon" x="{bar_size_adjust}" y="120" href="./gifTest.gif" height="30" width="30" />
+    <text x="165" y="165" text-anchor="end" class="progress">{current_point} / {full_point}</text>
+    <image class = "oreu-img" x="195" y="23" href="./soildChar.svg" height="200" width="187" />
+
+</svg>
+<!-- bar_size : 채워질 게이지 길이 -->
+<!-- bar_size_adjust : 채워질 게이지 위에 아이콘 띄울 위치 (bar_size - (icon-size / 2)) 현재 26이니 bar_size -13으로 두면 됨-->
+<!-- bar_size_reverse : -bar_size -->
