@@ -49,11 +49,25 @@
       cursor: pointer;
     }
 
-    .btnDiv {
+    .btnReset {
       position: absolute;
       width: 130px;
       height: 45px;
       right: 0px;
+      background: #4bca80;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      border-radius: 10px;
+      font-family: "GmarketSansMedium";
+      border: none;
+      cursor: pointer;
+    }
+    .btnSave {
+      position: absolute;
+      width: 80px;
+      height: 45px;
+      right: 250px;
       background: #4bca80;
       color: white;
       font-weight: bold;
@@ -86,8 +100,6 @@
 .techBadge {
   margin: 5px 5px;
 }
-.tecc {
-}
 
 .card {
   display: flex;
@@ -108,6 +120,7 @@
   display: flex;
   justify-content: flex-start;
   width: 220px;
+  margin: 10px;
 
   a {
     margin: 0 5px;

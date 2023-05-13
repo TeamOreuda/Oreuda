@@ -16,6 +16,7 @@
 
   .repository {
     height: calc(100vh - 240px);
+    z-index: -1;
     flex-wrap: wrap;
     overflow-y: scroll;
   }
@@ -31,7 +32,8 @@
 }
 
 .dropdown {
-  width: 100px;
+  width: 120px;
+  z-index: 1;
 
   .label {
     display: block;
@@ -39,7 +41,8 @@
   }
 
   .options {
-    position: absolute;
+    // position: absolute;
+    z-index: 1;
     top: 100%;
     left: 0;
     right: 0;

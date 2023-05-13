@@ -1,7 +1,7 @@
 .body {
   display: grid;
   grid-template-columns: 2fr 2fr 1fr;
-  height: 200px;
+  height: 180px;
 
   margin: {
     left: 32px;
@@ -29,7 +29,7 @@
   }
 }
 
-.infofirst {
+.infoFirst {
   align-items: center;
   max-width: 450px;
 
@@ -43,6 +43,8 @@
     // display: -webkit-box;
     // -webkit-line-clamp: 1;
     // -webkit-box-orient: vertical;
+
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
@@ -57,7 +59,7 @@
   }
 }
 
-.infosecond {
+.infoSecond {
   justify-content: space-between;
 
   & div {

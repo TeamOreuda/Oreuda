@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Cookies from "js-cookie";
-import { useEffect, useState } from "react";
 import { redirect } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 
 import st from "./page.module.scss";
 import Folder from "@/Component/Repository/folder";
@@ -11,42 +11,78 @@ import AddFolder from "@/Component/Repository/addFolder";
 
 import { DeleteFolder } from "@/Api/Folders/deleteFolder";
 import { GetFolderList } from "@/Api/Folders/getFolderList";
-import { getUserRefresh } from "@/Api/Oauth/getUserRefresh";
+import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { GetBasicFolder } from "@/Api/Folders/getBasicFolder";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
 
 export default function Repository() {
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
+
   const [showModal, setShowModal] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
-  const [folderListData, setFolderListData] = useState([]);
+  const [folderList, setFolderList] = useState([]);
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
-  const [repositoryListData, setRepositoryListData] = useState<{ id: number; name: string }[]>();
+  const [repositoryListData, setRepositoryListData] =
+    useState<{ id: number; name: string }[]>();
 
-  console.log("page", ACCESS_TOKEN);
-
-  useEffect(() => {
-    const loadFolderList = async () => {
-      try {
-        const res = await GetFolderList(ACCESS_TOKEN);
-        setFolderListData(res.data);
-      } catch (err: any) {
-        if (err.response?.status == 401) {
-          const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-          saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
-          try {
-            await GetFolderList(ACCESS_TOKEN);
-          } catch (error) {
-            // redirect("/landing")
-          }
-        } else {
+  const loadFolderList = useCallback(async () => {
+    try {
+      const res = await GetFolderList(ACCESS_TOKEN);
+      setFolderList(res.data);
+    } catch (err: any) {
+      if (err.response?.status == 401) {
+        const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+        saveCookiesAndRedirect(
+          token.data.Authorization,
+          token.data.RefreshToken
+        );
+        try {
+          await GetFolderList(ACCESS_TOKEN);
+        } catch (error) {
           // redirect("/landing")
         }
+      } else {
+        // redirect("/landing")
       }
-    };
-    loadFolderList();
+    }
   }, [ACCESS_TOKEN, REFRESH_TOKEN]);
+
+  const loadRepositoryList = useCallback(async () => {
+    try {
+      const res = await GetBasicFolder(ACCESS_TOKEN);
+      setRepositoryListData(res.data);
+    } catch (err: any) {
+      if (err.response?.status == 401) {
+        const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+        saveCookiesAndRedirect(
+          token.data.Authorization,
+          token.data.RefreshToken
+        );
+        try {
+          const res = await GetBasicFolder(ACCESS_TOKEN);
+          setRepositoryListData(res.data);
+        } catch (error) {
+          // redirect("/landing")
+        }
+      } else {
+        // redirect("/landing")
+      }
+    }
+  }, [ACCESS_TOKEN, REFRESH_TOKEN]);
+
+  useEffect(() => {
+    loadFolderList();
+    loadRepositoryList();
+  }, [ACCESS_TOKEN, REFRESH_TOKEN, loadFolderList, loadRepositoryList]);
+
+  const clickModal = () => {
+    if (repositoryListData?.length == 0) {
+      alert("기본 폴더에 레포지토리가 없어 폴더를 만들 수 없습니다.");
+    } else {
+      setShowModal(!showModal);
+    }
+  };
 
   const deleteFolderList = async () => {
     try {
@@ -55,8 +91,11 @@ export default function Repository() {
       console.log("delete", err);
 
       if (err.response?.status == 401) {
-        const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+        const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+        saveCookiesAndRedirect(
+          token.data.Authorization,
+          token.data.RefreshToken
+        );
         try {
           await DeleteFolder(token.data.Authorization, checkedItems);
         } catch (error) {
@@ -68,40 +107,10 @@ export default function Repository() {
     }
   };
 
-  useEffect(() => {
-    const loadRepositoryList = async () => {
-      try {
-        const res = await GetBasicFolder(ACCESS_TOKEN);
-        setRepositoryListData(res.data);
-      } catch (err: any) {
-        if (err.response?.status == 401) {
-          const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-          saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
-          try {
-            const res = await GetBasicFolder(ACCESS_TOKEN);
-            setRepositoryListData(res.data);
-          } catch (error) {
-            // redirect("/landing")
-          }
-        } else {
-          // redirect("/landing")
-        }
-      }
-    };
-    loadRepositoryList();
-  }, [ACCESS_TOKEN, REFRESH_TOKEN]);
-
-  const clickModal = () => {
-    if (repositoryListData?.length == 0) {
-      alert("기본 폴더에 레포지토리가 없어 폴더를 만들 수 없습니다.");
-    } else {
-      setShowModal(!showModal);
-    }
-  };
-
-  const clickDelete = () => {
-    if (showDelete == true) {
-      deleteFolderList();
+  const clickDelete = async () => {
+    if (showDelete) {
+      await deleteFolderList();
+      await loadFolderList();
       setCheckedItems([]);
     }
     setShowDelete(!showDelete);
@@ -134,12 +143,15 @@ export default function Repository() {
         </button>
       </div>
       <hr />
-      {showModal && <AddFolder clickModal={clickModal} />}
+      {showModal && (
+        <AddFolder clickModal={clickModal} loadFolderList={loadFolderList} />
+      )}
       <Folder
         clickDelete={showDelete}
-        folderListData={folderListData}
+        folderList={folderList}
         checkedItems={checkedItems}
         setCheckedItems={setCheckedItems}
+        loadFolderList={loadFolderList}
       />
     </div>
   );

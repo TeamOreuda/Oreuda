@@ -8,7 +8,7 @@ import st from "./layout.module.scss";
 import { Providers } from "@/store/provider";
 
 import { GetProfile } from "@/Api/Users/getProfile";
-import { getUserRefresh } from "@/Api/Oauth/getUserRefresh";
+import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
 
 interface NavList {
@@ -35,7 +35,11 @@ const navList: NavList[] = [
   },
 ];
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   if (children && typeof children === "object" && "props" in children) {
     // 로그인이 되어있지 않다면
     if (children.props.childProp.segment === "landing")
@@ -60,9 +64,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       })
       .catch(async (err) => {
         if (err.response?.status == 401) {
-          return await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
+          return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
             .then(async (res) => {
-              saveCookiesAndRedirect(res.data.Authorization, res.data.RefreshToken);
+              saveCookiesAndRedirect(
+                res.data.Authorization,
+                res.data.RefreshToken
+              );
               return await GetProfile(res.data.Authorization).then((res) => {
                 return res.data;
               });
