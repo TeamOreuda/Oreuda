@@ -390,5 +390,16 @@ public class ReadmeService {
 			oreuRepository.delete(oreuRepository.findByUser_IdAndReadme_Id(userId,readmeId).get());
 		}
 	}
+
+	public boolean hsaReadme(String userId){
+		// 사용자 유무 검증
+		User user = userRepository.findById(userId).orElseThrow();
+
+		// 리드미 있다면 기존 리드미 업데이트
+		if(readmeRepository.findByUser_Id(userId).isPresent()){
+			return true;
+		}
+		return false;
+	}
 }
 
