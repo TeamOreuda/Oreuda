@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.oreuda.api.domain.dto.RDMDto;
 import com.oreuda.api.domain.dto.ReadmeDto;
 import com.oreuda.api.service.ReadmeService;
-import com.oreuda.api.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/v1/readme")
 public class ReadmeController {
 
-	private final UserService userService;
 	private final ReadmeService readmeService;
 
 	// 사용자 리드미 저장
@@ -40,12 +38,20 @@ public class ReadmeController {
 	// 사용자 리드미 조회
 	@GetMapping()
 	@CrossOrigin(origins = "*", allowedHeaders = "*")
-	public ResponseEntity<?> getReadme(@RequestHeader String userId) throws Exception {
+	public ResponseEntity<?> getReadme(@RequestHeader String userId) {
 		List<RDMDto> rdmDtoList = readmeService.getReadme(userId);
 		for (RDMDto r:rdmDtoList) {
 			System.out.println(r.toString());
 		}
 		return new ResponseEntity<List<RDMDto>>(rdmDtoList, HttpStatus.OK);
+	}
+
+	// 사용자 리드미 유무 조회
+	@GetMapping("/check")
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
+	public ResponseEntity<?> getHasReadme(@RequestHeader String userId) {
+		boolean hasReadme = readmeService.hsaReadme(userId);
+		return new ResponseEntity<Boolean>(hasReadme, HttpStatus.OK);
 	}
 
 }
