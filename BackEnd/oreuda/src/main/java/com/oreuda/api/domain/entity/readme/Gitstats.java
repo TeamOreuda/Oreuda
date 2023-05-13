@@ -54,4 +54,11 @@ public class Gitstats {
 	public Gitstats() {
 	}
 
+	public void setOrder(int order) {
+		this.order = order;
+	}
+
+	public void setTheme(String theme) {
+		this.theme = theme;
+	}
 }

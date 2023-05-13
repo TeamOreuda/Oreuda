@@ -59,4 +59,15 @@ public class MostLanguage {
 	public MostLanguage() {
 	}
 
+	public void setOrder(int order) {
+		this.order = order;
+	}
+
+	public void setTheme(String theme) {
+		this.theme = theme;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 }
