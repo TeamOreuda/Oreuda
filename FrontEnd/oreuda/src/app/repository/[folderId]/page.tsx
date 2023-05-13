@@ -1,24 +1,26 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { redirect, useParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 
 import st from "./page.module.scss";
+import MoveFolder from "@/Component/Repository/moveFolder";
 import Repository from "@/Component/Repository/repository";
 
-import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
-import { GetRepositoryLst } from "@/Api/Repository/getRepositoryList";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
-import MoveFolder from "@/Component/Repository/moveFolder";
 import { MoveRepository } from "@/Api/Repository/moveRepository";
+import { GetRepositoryLst } from "@/Api/Repository/getRepositoryList";
+import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
+import { isParameter } from "typescript";
 
 export default function RepositoryPage() {
   const params = useParams();
   const folderId = Number(params.folderId);
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
+
   const [showModal, setShowModal] = useState(false);
   const [moveRepositoryMode, setMoveRepositoryMode] = useState(false);
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
@@ -31,25 +33,22 @@ export default function RepositoryPage() {
     { id: 3, value: "name", name: "이름순" },
     { id: 4, value: "star", name: "별점순" },
   ];
+  
+  const [isOpen, setIsOpen] = useState(false);
   const [filtering, setFiltering] = useState(options[0]);
 
-  // const [isOpen, setIsOpen] = useState(true);
-  // const [selectedOption, setSelectedOption] = useState(options[0]);
+  const handleOptionClick = (option: any) => {
+    setFiltering(option);
+    setIsOpen(!isOpen);
+  };
 
-  // const handleOptionClick = (option: any) => {
-  //   setSelectedOption(option);
-  //   setIsOpen(!isOpen);
-  // };
-  // const toggleDropdown = () => {
-  //   setIsOpen(!isOpen);
-  // };
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
 
-  // const clickMove = () => {
-  //   setMoveRepository(!moveRepository);
-  // };
   const loadRepositoryList = useCallback(async () => {
     try {
-      const res = await GetRepositoryLst(ACCESS_TOKEN, folderId, "recent");
+      const res = await GetRepositoryLst(ACCESS_TOKEN, folderId, filtering.value);
       setRepositoryList(res.data);
     } catch (err: any) {
       if (err.response?.status == 401) {
@@ -58,7 +57,7 @@ export default function RepositoryPage() {
           token.data.Authorization,
           token.data.RefreshToken
         );
-        const res = await GetRepositoryLst(ACCESS_TOKEN, folderId, "recent");
+        const res = await GetRepositoryLst(ACCESS_TOKEN, folderId, filtering.value);
         setRepositoryList(res.data);
       }
     }
@@ -128,9 +127,9 @@ export default function RepositoryPage() {
           />
         </button>
       </div>
-      {/* <div onClick={(e) => e.stopPropagation()}>
+      <div onClick={(e) => e.stopPropagation()}>
         <div className={st.dropdown} onClick={toggleDropdown}>
-          {selectedOption.name}
+          {filtering.name}
         </div>
         <div className={st.dropdown}>
           {isOpen && (
@@ -139,7 +138,7 @@ export default function RepositoryPage() {
                 <div
                   key={option.id}
                   className={`${st.option} ${
-                    option.value === selectedOption.value ? st.active : ""
+                    option.value === filtering.value ? st.active : ""
                   }`}
                   onClick={() => handleOptionClick(option)}
                 >
@@ -149,7 +148,7 @@ export default function RepositoryPage() {
             </div>
           )}
         </div>
-      </div> */}
+      </div>
       <hr />
       {showModal && (
         <MoveFolder
