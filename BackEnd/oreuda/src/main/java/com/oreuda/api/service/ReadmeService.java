@@ -245,6 +245,7 @@ public class ReadmeService {
 					.name(readmeDto.getTechStack().get(i).getName())
 					.color(readmeDto.getTechStack().get(i).getColor())
 					.index(readmeDto.getTechStack().get(i).getIndex())
+					.order(i)
 					.build();
 				techstackRepository.save(techstack);
 			}
@@ -384,7 +385,7 @@ public class ReadmeService {
 
 	public RDMDto getTechstack(ReadmeTechstack readmeTechstack) {
 		List<TechstackDto> techstackDtos = new ArrayList<>();
-		List<Techstack> techstacks = techstackRepository.findByReadmeTechstack_IdOrderByIndex(readmeTechstack.getId());
+		List<Techstack> techstacks = techstackRepository.findByReadmeTechstack_IdOrderByOrder(readmeTechstack.getId());
 		if(!techstacks.isEmpty()){
 			for (Techstack t:techstacks) {
 				techstackDtos.add(TechstackDto.toEntity(t));
