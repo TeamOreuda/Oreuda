@@ -27,6 +27,7 @@ public class RDMDto {
 	String languageValue;
 	String languageTheme;
 	String languageType;
+	String techTitle;
 	List<TechstackDto> techStack;
 	String oreuValue;
 
