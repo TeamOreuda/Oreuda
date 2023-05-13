@@ -46,7 +46,6 @@ public class ReadmeTechstack {
 	private int order;
 
 	// 제목
-	@NotNull
 	@Column(name = "readme_techstack_title")
 	private String title;
 
