@@ -33,7 +33,7 @@ export default function RepositoryPage() {
     { id: 3, value: "name", name: "이름순" },
     { id: 4, value: "star", name: "별점순" },
   ];
-  
+
   const [isOpen, setIsOpen] = useState(false);
   const [filtering, setFiltering] = useState(options[0]);
 
@@ -48,7 +48,11 @@ export default function RepositoryPage() {
 
   const loadRepositoryList = useCallback(async () => {
     try {
-      const res = await GetRepositoryLst(ACCESS_TOKEN, folderId, filtering.value);
+      const res = await GetRepositoryLst(
+        ACCESS_TOKEN,
+        folderId,
+        filtering.value
+      );
       setRepositoryList(res.data);
     } catch (err: any) {
       if (err.response?.status == 401) {
@@ -57,11 +61,15 @@ export default function RepositoryPage() {
           token.data.Authorization,
           token.data.RefreshToken
         );
-        const res = await GetRepositoryLst(ACCESS_TOKEN, folderId, filtering.value);
+        const res = await GetRepositoryLst(
+          ACCESS_TOKEN,
+          folderId,
+          filtering.value
+        );
         setRepositoryList(res.data);
       }
     }
-  }, [ACCESS_TOKEN, REFRESH_TOKEN, folderId]);
+  }, [ACCESS_TOKEN, REFRESH_TOKEN, filtering.value, folderId]);
 
   useEffect(() => {
     loadRepositoryList();

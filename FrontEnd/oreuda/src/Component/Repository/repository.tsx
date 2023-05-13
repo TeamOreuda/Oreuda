@@ -79,25 +79,26 @@ export default function Repository(props: {
       {repositoryList?.map((e, index) => (
         <div key={index} className={st.body}>
           <div className={st.info}>
-            <div className={st.infoFirst}>
-              {moveRepositoryMode && (
-                <input
-                  type="checkbox"
-                  value={e.id}
-                  checked={checkedItems.indexOf(String(e.id)) !== -1}
-                  onChange={handleCheckboxChange}
-                  onClick={(event) => event.stopPropagation()}
-                />
-              )}
-              <Link href={e.url} className={st.link}>
-                {e.name}
-              </Link>
-              <div>{e.isPrivate === "Y" ? "Private" : "Public"}</div>
+            <div className={st.infoTop}>
+              <div className={st.infoFirst}>
+                {moveRepositoryMode && (
+                  <input
+                    type="checkbox"
+                    value={e.id}
+                    checked={checkedItems.indexOf(String(e.id)) !== -1}
+                    onChange={handleCheckboxChange}
+                    onClick={(event) => event.stopPropagation()}
+                  />
+                )}
+                <Link href={e.url} className={st.link}>
+                  {e.name}
+                </Link>
+                <div>{e.isPrivate === "Y" ? "Private" : "Public"}</div>
+              </div>
+              <p>{e.description}</p>
             </div>
 
-            <p>{e.description}</p>
-
-            <div className={st.infoSecond}>
+            <div className={st.infoBottom}>
               <div>
                 {e.language && <div className={fontColor[e.language]}></div>}
                 {e.language && <span>{e.language}</span>}
