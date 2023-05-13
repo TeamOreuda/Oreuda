@@ -317,6 +317,7 @@ public class ReadmeService {
 		RDMDto rdmDto = RDMDto.builder()
 			.readmeType("TECH")
 			.order(readmeTechstack.getOrder())
+			.techTitle(readmeTechstack.getTitle())
 			.build();
 		rdmDto.setTechStack(techstackDtos);
 		return rdmDto;
