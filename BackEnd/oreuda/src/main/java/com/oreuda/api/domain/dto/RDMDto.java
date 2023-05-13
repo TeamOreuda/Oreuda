@@ -27,6 +27,10 @@ public class RDMDto {
 	String languageValue;
 	String languageTheme;
 	String languageType;
-	List<String> techStack;
+	List<TechstackDto> techStack;
 	String oreuValue;
+
+	public void setTechStack(List<TechstackDto> techStack) {
+		this.techStack = techStack;
+	}
 }
