@@ -1,9 +1,10 @@
+import React, { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
 import st from "./repository.module.scss";
 import fontColor from "../../Style/repository/languageColor.module.scss";
-import Repositorygraph from "./repositorygraph";
+import RepositoryGraph from "./repositoryGraph";
 import RepositoryGrassGraph from "./repositoryGrassGraph";
 
 export interface DailyCommit {
@@ -30,12 +31,13 @@ interface Repository {
 }
 
 export default function Repository(props: {
-  clickMove: any;
+  moveRepositoryMode: any;
   repositoryList: Repository[];
   checkedItems: string[];
   setCheckedItems: React.Dispatch<React.SetStateAction<string[]>>;
 }) {
-  const { clickMove, repositoryList, checkedItems, setCheckedItems } = props;
+  const { moveRepositoryMode, repositoryList, checkedItems, setCheckedItems } =
+    props;
 
   function formattedDate(date: string) {
     date.replace(/^(\d{4})-(\d{2})-(\d{2})$/, (match, year, month, day) => {
@@ -77,8 +79,8 @@ export default function Repository(props: {
       {repositoryList?.map((e, index) => (
         <div key={index} className={st.body}>
           <div className={st.info}>
-            <div className={st.infofirst}>
-              {clickMove && (
+            <div className={st.infoFirst}>
+              {moveRepositoryMode && (
                 <input
                   type="checkbox"
                   value={e.id}
@@ -95,7 +97,7 @@ export default function Repository(props: {
 
             <p>{e.description}</p>
 
-            <div className={st.infosecond}>
+            <div className={st.infoSecond}>
               <div>
                 {e.language && <div className={fontColor[e.language]}></div>}
                 {e.language && <span>{e.language}</span>}
@@ -112,7 +114,7 @@ export default function Repository(props: {
             </div>
           </div>
           <RepositoryGrassGraph dailyCommits={e.dailyCommits} />
-          <Repositorygraph yearlyCommits={e.yearlyCommits} />
+          <RepositoryGraph yearlyCommits={e.yearlyCommits} />
         </div>
       ))}
     </div>

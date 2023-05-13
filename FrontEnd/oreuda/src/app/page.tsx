@@ -8,7 +8,7 @@ import CharacterGraph from "@/Component/Main/charactergraph";
 
 import { GetUser } from "@/Api/Users/getUsers";
 import { GetCharacter } from "@/Api/Plant/getCharacter";
-import { getUserRefresh } from "@/Api/Oauth/getUserRefresh";
+import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { GetCharacterGraph } from "@/Api/Plant/getCharacterGraph";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
 
@@ -23,7 +23,7 @@ export default async function Home() {
     })
     .catch(async (err) => {
       if (err.response?.status == 401) {
-        return await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
+        return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
           .then(async (res) => {
             saveCookiesAndRedirect(
               res.data.Authorization,
@@ -47,7 +47,7 @@ export default async function Home() {
     })
     .catch(async (err) => {
       if (err.response?.status == 401) {
-        return await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
+        return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
           .then(async (res) => {
             await saveCookiesAndRedirect(
               res.data.Authorization,
@@ -65,13 +65,13 @@ export default async function Home() {
       }
     });
 
-  const charactergraph = await GetCharacterGraph(ACCESS_TOKEN)
+  const characterGraph = await GetCharacterGraph(ACCESS_TOKEN)
     .then((res) => {
       return res.data;
     })
     .catch(async (err) => {
       if (err.response?.status == 401) {
-        return await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
+        return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
           .then(async (res) => {
             await saveCookiesAndRedirect(
               res.data.Authorization,
@@ -94,7 +94,7 @@ export default async function Home() {
       <Statistic userData={userData} />
       <div className={st.character}>
         <Character characterData={characterData} />
-        <CharacterGraph charactergraph={charactergraph} />
+        <CharacterGraph charactergraph={characterGraph} />
       </div>
     </div>
   );

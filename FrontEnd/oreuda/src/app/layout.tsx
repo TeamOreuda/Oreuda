@@ -8,7 +8,7 @@ import st from "./layout.module.scss";
 import { Providers } from "@/store/provider";
 
 import { GetProfile } from "@/Api/Users/getProfile";
-import { getUserRefresh } from "@/Api/Oauth/getUserRefresh";
+import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
 
 interface NavList {
@@ -64,7 +64,7 @@ export default async function RootLayout({
       })
       .catch(async (err) => {
         if (err.response?.status == 401) {
-          return await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
+          return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
             .then(async (res) => {
               saveCookiesAndRedirect(
                 res.data.Authorization,
