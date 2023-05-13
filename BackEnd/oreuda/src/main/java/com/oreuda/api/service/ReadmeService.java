@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.oreuda.api.domain.dto.RDMDto;
 import com.oreuda.api.domain.dto.ReadmeDto;
+import com.oreuda.api.domain.dto.TechstackDto;
 import com.oreuda.api.domain.entity.Readme;
 import com.oreuda.api.domain.entity.User;
 import com.oreuda.api.domain.entity.readme.Boj;
@@ -51,11 +52,25 @@ public class ReadmeService {
 	public void saveReadme(List<ReadmeDto> readmes, String userId) {
 		// 사용자 유무 검증
 		User user = userRepository.findById(userId).orElseThrow();
-		Readme readme = Readme.builder()
-			.user(user)
-			.build();
-		readmeRepository.save(readme);
 
+		Readme readme = null;
+
+		// 리드미 있다면 기존 리드미 업데이트
+		if(readmeRepository.findByUser_Id(userId).isPresent()){
+			readme = readmeRepository.findByUser_Id(userId).get();
+			updateReadme(readmes, user, readme);
+		}
+		// 없다면 새로운 리드미 생성
+		else {
+			readme = Readme.builder()
+				.user(user)
+				.build();
+			readmeRepository.save(readme);
+			updateReadme(readmes, user, readme);
+		}
+	}
+
+	public void updateReadme(List<ReadmeDto> readmes, User user, Readme readme){
 		for (int i = 0; i< readmes.size(); i++) {
 			switch (readmes.get(i).getReadmeType()) {
 				case "BOJ":
@@ -87,90 +102,169 @@ public class ReadmeService {
 					break;
 			}
 		}
-
 	}
 
 	public void saveBoj(ReadmeDto readmeDto, User user, Readme readme, int order){
-		Boj boj = Boj.builder()
-			.user(user)
-			.readme(readme)
-			.order(order)
-			.value(readmeDto.getBojValue())
-			.theme(readmeDto.getBojTheme())
-			.build();
-		bojRepository.save(boj);
-
-	}
-
-	public void saveGit(ReadmeDto readmeDto, User user, Readme readme, int order){
-		Gitstats gitstats = Gitstats.builder()
-			.user(user)
-			.readme(readme)
-			.order(order)
-			.theme(readmeDto.getGitTheme())
-			.build();
-		gitstatsRepository.save(gitstats);
-	}
-
-	public void saveWriting(ReadmeDto readmeDto, User user, Readme readme, int order){
-		Writing writing = Writing.builder()
-			.user(user)
-			.readme(readme)
-			.order(order)
-			.title(readmeDto.getWritingTitle())
-			.contents(readmeDto.getWritingContents())
-			.build();
-		writingRepository.save(writing);
-	}
-
-	public void saveContact(ReadmeDto readmeDto, User user, Readme readme, int order){
-		Contact contact = Contact.builder()
-			.user(user)
-			.readme(readme)
-			.order(order)
-			.blog(readmeDto.getBlogLink())
-			.mail(readmeDto.getMailLink())
-			.notion(readmeDto.getNotionLink())
-			.build();
-		contactRepository.save(contact);
-	}
-
-	public void saveLanguage(ReadmeDto readmeDto, User user, Readme readme, int order){
-		MostLanguage mostLanguage = MostLanguage.builder()
-			.user(user)
-			.readme(readme)
-			.order(order)
-			.theme(readmeDto.getLanguageTheme())
-			.type(readmeDto.getLanguageType())
-			.build();
-		mostLanguageRepository.save(mostLanguage);
-	}
-
-	public void saveTech(ReadmeDto readmeDto, User user, Readme readme, int order) {
-		ReadmeTechstack readmeTechstack = ReadmeTechstack.builder()
-			.user(user)
-			.readme(readme)
-			.order(order)
-			.build();
-		readmeTechstackRepository.save(readmeTechstack);
-
-		for (int i = 0; i < readmeDto.getTechStack().size(); i++) {
-			Techstack techstack = Techstack.builder()
-				.readmeTechstack(readmeTechstack)
-				.name(readmeDto.getTechStack().get(i))
-				.order(i)
+		// 이미 있다면
+		if(bojRepository.findByUser_IdAndReadme_Id(user.getId(), readme.getId()).isPresent()){
+			Boj boj = bojRepository.findByUser_IdAndReadme_Id(user.getId(), readme.getId()).get();
+			boj.setOrder(order);
+			boj.setValue(readmeDto.getBojValue());
+			boj.setTheme(readmeDto.getGitTheme());
+		}
+		// 없다면 새로 생성
+		else {
+			Boj boj = Boj.builder()
+				.user(user)
+				.readme(readme)
+				.order(order)
+				.value(readmeDto.getBojValue())
+				.theme(readmeDto.getBojTheme())
 				.build();
-			techstackRepository.save(techstack);
+			bojRepository.save(boj);
 		}
 	}
 
+	public void saveGit(ReadmeDto readmeDto, User user, Readme readme, int order){
+		// 이미 있다면
+		if(gitstatsRepository.findByUser_IdAndReadme_Id(user.getId(), readme.getId()).isPresent()) {
+			Gitstats gitstats = gitstatsRepository.findByUser_IdAndReadme_Id(user.getId(), readme.getId()).get();
+			gitstats.setOrder(order);
+			gitstats.setTheme(readmeDto.getGitTheme());
+		}
+		// 없다면 새로 생성
+		else {
+			Gitstats gitstats = Gitstats.builder()
+				.user(user)
+				.readme(readme)
+				.order(order)
+				.theme(readmeDto.getGitTheme())
+				.build();
+			gitstatsRepository.save(gitstats);
+		}
+	}
+
+	public void saveWriting(ReadmeDto readmeDto, User user, Readme readme, int order){
+/*		// 이미 있다면
+		if(writingRepository.findByUser_IdAndReadme_Id(user.getId(), readme.getId()).isPresent()) {
+			Writing writing = writingRepository.findByUser_IdAndReadme_Id(user.getId(), readme.getId()).get();
+			writing.setOrder(order);
+			writing.setTitle(readmeDto.getWritingTitle());
+			writing.setContents(readmeDto.getWritingContents());
+		}
+		// 없다면 새로 생성
+		else {*/
+			Writing writing = Writing.builder()
+				.user(user)
+				.readme(readme)
+				.order(order)
+				.title(readmeDto.getWritingTitle())
+				.contents(readmeDto.getWritingContents())
+				.build();
+			writingRepository.save(writing);
+		//}
+	}
+
+	public void saveContact(ReadmeDto readmeDto, User user, Readme readme, int order){
+		// 이미 있다면
+		if(contactRepository.findByUser_IdAndReadme_Id(user.getId(), readme.getId()).isPresent()){
+			Contact contact = contactRepository.findByUser_IdAndReadme_Id(user.getId(), readme.getId()).get();
+			contact.setOrder(order);
+			contact.setBlog(readmeDto.getBlogLink());
+			contact.setMail(readmeDto.getMailLink());
+			contact.setNotion(readmeDto.getNotionLink());
+		}
+		// 없다면 새로 생성
+		else {
+			Contact contact = Contact.builder()
+				.user(user)
+				.readme(readme)
+				.order(order)
+				.blog(readmeDto.getBlogLink())
+				.mail(readmeDto.getMailLink())
+				.notion(readmeDto.getNotionLink())
+				.build();
+			contactRepository.save(contact);
+		}
+	}
+
+	public void saveLanguage(ReadmeDto readmeDto, User user, Readme readme, int order){
+		// 이미 있다면
+		if(mostLanguageRepository.findByUser_IdAndReadme_Id(user.getId(),readme.getId()).isPresent()){
+			MostLanguage mostLanguage = mostLanguageRepository.findByUser_IdAndReadme_Id(user.getId(),readme.getId()).get();
+			mostLanguage.setOrder(order);
+			mostLanguage.setTheme(readmeDto.getLanguageTheme());
+			mostLanguage.setType(readmeDto.getLanguageType());
+		}
+		// 없다면
+		else {
+			MostLanguage mostLanguage = MostLanguage.builder()
+				.user(user)
+				.readme(readme)
+				.order(order)
+				.theme(readmeDto.getLanguageTheme())
+				.type(readmeDto.getLanguageType())
+				.build();
+			mostLanguageRepository.save(mostLanguage);
+		}
+	}
+
+	public void saveTech(ReadmeDto readmeDto, User user, Readme readme, int order) {
+/*		// 이미 있다면
+		if(readmeTechstackRepository.findByUser_IdAndReadme_Id(user.getId(),readme.getId()).isPresent()){
+			ReadmeTechstack readmeTechstack = readmeTechstackRepository.findByUser_IdAndReadme_Id(user.getId(),readme.getId()).get();
+			// 삭제 진행
+			List<Techstack> techstacks = techstackRepository.findByReadmeTechstack_IdOrderByIndex(readmeTechstack.getId());
+			for (Techstack t: techstacks) {
+				techstackRepository.delete(t);
+			}
+			// 새로 추가
+			for (int i = 0; i < readmeDto.getTechStack().size(); i++) {
+				Techstack techstack = Techstack.builder()
+					.readmeTechstack(readmeTechstack)
+					.name(readmeDto.getTechStack().get(i).getName())
+					.color(readmeDto.getTechStack().get(i).getColor())
+					.index(readmeDto.getTechStack().get(i).getIndex())
+					.build();
+				techstackRepository.save(techstack);
+			}
+		}
+		// 없다면
+		else {*/
+			ReadmeTechstack readmeTechstack = ReadmeTechstack.builder()
+				.user(user)
+				.readme(readme)
+				.order(order)
+				.title(readmeDto.getTechTitle())
+				.build();
+			readmeTechstackRepository.save(readmeTechstack);
+
+			for (int i = 0; i < readmeDto.getTechStack().size(); i++) {
+				Techstack techstack = Techstack.builder()
+					.readmeTechstack(readmeTechstack)
+					.name(readmeDto.getTechStack().get(i).getName())
+					.color(readmeDto.getTechStack().get(i).getColor())
+					.index(readmeDto.getTechStack().get(i).getIndex())
+					.build();
+				techstackRepository.save(techstack);
+			}
+		//}
+	}
+
 	public void saveOreu(User user, Readme readme, int order){
-		Oreu oreu = Oreu.builder()
-			.user(user)
-			.readme(readme)
-			.order(order)
-			.build();
-		oreuRepository.save(oreu);
+		// 이미 있다면
+		if(oreuRepository.findByUser_IdAndReadme_Id(user.getId(),readme.getId()).isPresent()){
+			Oreu oreu = oreuRepository.findByUser_IdAndReadme_Id(user.getId(),readme.getId()).get();
+		}
+		// 없다면 새로 생성
+		else {
+			Oreu oreu = Oreu.builder()
+				.user(user)
+				.readme(readme)
+				.order(order)
+				.build();
+			oreuRepository.save(oreu);
+		}
 	}
 
 	// 리드미 조회
@@ -195,13 +289,11 @@ public class ReadmeService {
 		}
 
 		// WRITING
-		if(writingRepository.findByUser_IdAndReadme_Id(userId,readmeId).isPresent()) {
-			rdmDtoList.add(getWriting(userId, readmeId));
-		}
-
-		// LANGUAGE
-		if(mostLanguageRepository.findByUser_IdAndReadme_Id(userId,readmeId).isPresent()) {
-			rdmDtoList.add(getLanguage(userId, readmeId));
+		if(writingRepository.findByUser_IdAndReadme_Id(userId,readmeId).size()!=0) {
+			List<Writing> writings = writingRepository.findByUser_IdAndReadme_Id(userId, readmeId);
+			for (Writing w:writings) {
+				rdmDtoList.add(getWriting(w));
+			}
 		}
 
 		// CONTACT
@@ -209,9 +301,17 @@ public class ReadmeService {
 			rdmDtoList.add(getContact(userId, readmeId));
 		}
 
+		// LANGUAGE
+		if(mostLanguageRepository.findByUser_IdAndReadme_Id(userId,readmeId).isPresent()) {
+			rdmDtoList.add(getLanguage(userId, readmeId));
+		}
+
 		// TECH
-		if(readmeTechstackRepository.findByUser_IdAndReadme_Id(userId,readmeId).isPresent()) {
-			rdmDtoList.add(getTechstack(userId, readmeId));
+		if(readmeTechstackRepository.findByUser_IdAndReadme_Id(userId,readmeId).size()!=0) {
+			List<ReadmeTechstack> readmeTechstacks = readmeTechstackRepository.findByUser_IdAndReadme_Id(userId, readmeId);
+			for (ReadmeTechstack r:readmeTechstacks) {
+				rdmDtoList.add(getTechstack(r));
+			}
 		}
 
 		// PLANT
@@ -247,25 +347,13 @@ public class ReadmeService {
 		return rdmDto;
 	}
 
-	public RDMDto getWriting(String userId, Long readmeId) {
-		Writing writing = writingRepository.findByUser_IdAndReadme_Id(userId, readmeId).get();
+	public RDMDto getWriting(Writing writing) {
+
 		RDMDto rdmDto = RDMDto.builder()
 			.readmeType("WRITING")
 			.order(writing.getOrder())
 			.writingTitle(writing.getTitle())
 			.writingContents(writing.getContents())
-			.build();
-		return rdmDto;
-	}
-
-	public RDMDto getLanguage(String userId, Long readmeId) {
-		MostLanguage language = mostLanguageRepository.findByUser_IdAndReadme_Id(userId, readmeId).get();
-		RDMDto rdmDto = RDMDto.builder()
-			.readmeType("LANGUAGE")
-			.order(language.getOrder())
-			.languageValue(userRepository.findById(userId).get().getNickname())
-			.languageTheme(language.getTheme())
-			.languageType(language.getType())
 			.build();
 		return rdmDto;
 	}
@@ -282,18 +370,32 @@ public class ReadmeService {
 		return rdmDto;
 	}
 
-	public RDMDto getTechstack(String userId, Long readmeId) {
-		List<String> list = new ArrayList<>();
-		ReadmeTechstack readmeTechstack = readmeTechstackRepository.findByUser_IdAndReadme_Id(userId, readmeId).get();
-		List<Techstack> techstacks = techstackRepository.findByReadmeTechstack_IdOrderByOrder(readmeTechstack.getId());
-		for (Techstack t: techstacks) {
-			list.add(t.getName());
+	public RDMDto getLanguage(String userId, Long readmeId) {
+		MostLanguage language = mostLanguageRepository.findByUser_IdAndReadme_Id(userId, readmeId).get();
+		RDMDto rdmDto = RDMDto.builder()
+			.readmeType("LANGUAGE")
+			.order(language.getOrder())
+			.languageValue(userRepository.findById(userId).get().getNickname())
+			.languageTheme(language.getTheme())
+			.languageType(language.getType())
+			.build();
+		return rdmDto;
+	}
+
+	public RDMDto getTechstack(ReadmeTechstack readmeTechstack) {
+		List<TechstackDto> techstackDtos = new ArrayList<>();
+		List<Techstack> techstacks = techstackRepository.findByReadmeTechstack_IdOrderByIndex(readmeTechstack.getId());
+		if(!techstacks.isEmpty()){
+			for (Techstack t:techstacks) {
+				techstackDtos.add(TechstackDto.toEntity(t));
+			}
 		}
+
 		RDMDto rdmDto = RDMDto.builder()
 			.readmeType("TECH")
 			.order(readmeTechstack.getOrder())
-			.techStack(list)
 			.build();
+		rdmDto.setTechStack(techstackDtos);
 		return rdmDto;
 	}
 

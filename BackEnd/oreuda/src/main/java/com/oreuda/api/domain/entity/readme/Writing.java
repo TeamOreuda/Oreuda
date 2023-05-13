@@ -59,4 +59,15 @@ public class Writing {
 	public Writing() {
 	}
 
+	public void setOrder(int order) {
+		this.order = order;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public void setContents(String contents) {
+		this.contents = contents;
+	}
 }

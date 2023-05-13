@@ -1,6 +1,5 @@
 package com.oreuda.api.domain.entity.readme;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -61,4 +60,19 @@ public class Contact {
 	public Contact() {
 	}
 
+	public void setOrder(int order) {
+		this.order = order;
+	}
+
+	public void setBlog(String blog) {
+		this.blog = blog;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+
+	public void setNotion(String notion) {
+		this.notion = notion;
+	}
 }

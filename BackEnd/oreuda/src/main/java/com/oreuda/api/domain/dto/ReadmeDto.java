@@ -47,5 +47,8 @@ public class ReadmeDto {
 	String languageType;
 
 	@JsonProperty
-	List<String> techStack;
+	String techTitle;
+
+	@JsonProperty
+	List<TechstackDto> techStack;
 }

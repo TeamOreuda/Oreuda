@@ -8,5 +8,5 @@ import com.oreuda.api.domain.entity.readme.Techstack;
 
 public interface TechstackRepository extends JpaRepository<Techstack, Long> {
 
-	List<Techstack> findByReadmeTechstack_IdOrderByOrder(Long readmeTechstackId);
+	List<Techstack> findByReadmeTechstack_IdOrderByIndex(Long readmeTechstackId);
 }
