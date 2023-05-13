@@ -42,6 +42,11 @@ public class Techstack {
 
 	// 기술 스택 순서
 	@NotNull
+	@Column(name = "techstack_order")
+	private int order;
+
+	// 기술 스택 고유 번호
+	@NotNull
 	@Column(name = "techstack_index")
 	private int index;
 
