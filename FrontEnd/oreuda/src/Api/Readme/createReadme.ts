@@ -1,9 +1,11 @@
 import axios from "axios";
 
-export const CreateReadme = (ACCESS_TOKEN: any, dataArr: any) => {
+export const CreateReadme = (ACCESS_TOKEN: any, arr: any) => {
+  console.log(ACCESS_TOKEN, arr[0]);
+
   return axios.patch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/v1/readme`,
-    [dataArr],
+    arr[0],
     {
       headers: {
         Authorization: ACCESS_TOKEN,
