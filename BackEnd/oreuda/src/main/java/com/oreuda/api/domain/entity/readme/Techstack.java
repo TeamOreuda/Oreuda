@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,14 +31,20 @@ public class Techstack {
 	private ReadmeTechstack readmeTechstack;
 
 	// 기술 스택 이름
+	@NotNull
 	@Column(name = "techstack_name")
 	private String name;
 
+	// 기술 스택 색상
+	@NotNull
+	@Column(name = "techstack_color")
+	private String color;
+
 	// 기술 스택 순서
-	@Column(name = "techstack_order")
-	private int order;
+	@NotNull
+	@Column(name = "techstack_index")
+	private int index;
 
 	public Techstack() {
 	}
-
 }
