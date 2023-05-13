@@ -144,7 +144,7 @@ export default function Preview() {
     </div>,
     <div key="4" className={st.TextArr}>
       <div className={st.TextArr}>{showTechWhole()}</div>
-      <h3>{techTitle}</h3>
+      <h3>Tech Stack</h3>
       <div className={st.techBadgeDiv}>{showTechArr()}</div>
     </div>,
     <div key="5" className={st.TextArr}>
@@ -220,7 +220,7 @@ export default function Preview() {
     const arr = [];
     for (let i = 0; i < techPlusWhole.length; i++) {
       arr.push(
-        `<h3 style ="font-size : 1.17em; font-weight:700;">${techPlusWhole[i].name}</h3>`
+        `<h3 style ="font-size : 1.5em; font-weight:700;">${techPlusWhole[i].name}</h3>`
       );
       const x = `https://img.shields.io/badge/${techPlusWhole[i].techArray[0].name}-${techPlusWhole[i].techArray[0].color}?style=flat&logo=${techPlusWhole[i].techArray[0].name}&logoColor=white`;
       arr.push(
@@ -257,17 +257,18 @@ export default function Preview() {
     return `
   <div key="7" >
     <div key=${id - 1} >
-          <h3 style ="font-size : 1.17em; font-weight:700;">${
+          <h3 style ="font-size : 1.5em; font-weight:700;">${
             textArr[id - 1].titleArr
           }</h3>
-          <p> style ="font-size : 20px;"${textArr[id - 1].descArr}</p>
+          <p style ="font-size : 20px;">${textArr[id - 1].descArr}</p>
     </div>
   </div>
   `;
   };
 
-  const x = `https://img.shields.io/badge/TechBlog-7FD2F5?style=flat&logo=Hoppscotch&logoColor=white&link=${blogLink}/`;
-  const y = `https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white&link=${notionLink}/`;
+  const blogImg = `https://img.shields.io/badge/TechBlog-7FD2F5?style=flat&logo=Hoppscotch&logoColor=white&link=${blogLink}/`;
+  const notionImg = `https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white&link=${notionLink}/`;
+  const oreuCard = `https://oreuda.kr/api/v1/plant/card?nickname=${githubId}`;
 
   const selected: String[] = [
     `
@@ -287,13 +288,14 @@ export default function Preview() {
   </div>
   `,
     `
-  <div key="4"><h3 style ="font-size : 1.17em; font-weight:700;">${techTitle}</h3>
+  <div key="4">
+  <h3 style ="font-size : 1.5em; font-weight:700;">Tech Stack</h3>
     <div >${showTechArrMD()}</div>
   </div>
-  `,
+  `,  
     `
   <div key="5">
-    <h3 style ="font-size : 1.17em; font-weight:700;">Contact</h3>
+    <h3 style ="font-size : 1.5em; font-weight:700;">Contact</h3>
     <div className=${st.contactBadgeDiv}>
       ${
         mailId.length > 0
@@ -308,14 +310,14 @@ export default function Preview() {
       ${
         blogLink.length > 0
           ? `<a href=${blogLink} target="_blank">
-            <img src=${x} alt="blog" />
+            <img src=${blogImg} alt="blog" />
           </a>`
           : ""
       }
       ${
         notionLink.length > 0
           ? `<a href=${notionLink} target="_blank">
-            <img src=${y} alt="notion" />
+            <img src=${notionImg} alt="notion" />
           </a>`
           : ""
       }
@@ -323,11 +325,22 @@ export default function Preview() {
   </div>
   `,
     `
-  오르
+  <div key="6">
+    <a href = "https://oreuda.kr/">
+      <img
+        src=${oreuCard}
+        alt="oreuda"
+      />
+    </a>
+  </div>
   `,
   ];
 
-  let toMD = `<div  style = "display: flex;  align-items: center; flex-direction: column;  justify-content: center;">\n`;
+  let toMD = `<div  style = "display: flex;  align-items: center; flex-direction: column;  justify-content: center;">\n
+<!-- font-size 를 조절하면 원하는 크기로 글자를 조절할 수 있습니다.-->
+<!-- Designed and developed in-house at Oreuda (https://oreuda.kr) -->
+<!-- 불편 사항 및 문의는 tykimdream@gmail.com으로 보내주세요 -->
+`;
   nPrevComp.map((key: any) => {
     if (key > 10) {
       // text arr 인 경우
