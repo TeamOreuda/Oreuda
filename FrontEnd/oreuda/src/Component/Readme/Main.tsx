@@ -40,6 +40,14 @@ export default function Main() {
     setOptionVal("선택해주세요");
   };
 
+  const onClickLoadReadme = () => {
+    if (window.confirm("당신은 유지연입니까?")) {
+      console.log("hi");
+    } else {
+      console.log("ㅠㅠㅠ");
+    }
+  };
+
   return (
     <div className={st.readmeMain}>
       <div className={st.titleDiv}>
@@ -60,6 +68,9 @@ export default function Main() {
         })}
       </select>
       <MainSelectBtn />
+      <button onClick={onClickLoadReadme} className={st.loadReadmeBtn}>
+        불러오기
+      </button>
       {nextComp.length > 0 ? <NextBtn /> : ""}
     </div>
   );

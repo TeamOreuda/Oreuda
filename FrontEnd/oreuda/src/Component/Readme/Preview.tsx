@@ -6,6 +6,7 @@ import { useAppSelector } from "@/store/hooks";
 import { selectReadme } from "@/store/modules/readme";
 import Image from "next/image";
 import Cookies from "js-cookie";
+import axios from "axios";
 
 export default function Preview() {
   const BaekJoonData = useAppSelector(selectReadme).baekjoonId;
@@ -146,7 +147,7 @@ export default function Preview() {
       <h3>{techTitle}</h3>
       <div className={st.techBadgeDiv}>{showTechArr()}</div>
     </div>,
-    <div key="5">
+    <div key="5" className={st.TextArr}>
       <h3>Contact</h3>
       <div className={st.contactBadgeDiv}>
         {mailId.length > 0 ? (
@@ -175,7 +176,12 @@ export default function Preview() {
         ) : undefined}
       </div>
     </div>,
-    "오르",
+    <div key="6">
+      <img
+        src={`https://oreuda.kr/api/v1/plant/card?nickname=${githubId}`}
+        alt="oreuda"
+      />
+    </div>,
     <div key="7" className={st.TextArr}>
       {showTextArr()}
       <h3>{newTextTitle}</h3>
@@ -431,7 +437,7 @@ export default function Preview() {
       } else if (curr === 4) {
         techPlusWhole.map((el: any, index: any) => {
           // 제목 백에서 넣어줄 예정
-          // pushData = { readmeType: "TECH", name: "", techStack: el.techArray };
+          // pushData = { readmeType: "TECH", techTitle: "", techStack: el.techArray };
           pushData = { readmeType: "TECH", techStack: el.techArray };
           arr.push(pushData);
         });
@@ -459,8 +465,15 @@ export default function Preview() {
     });
     try {
       console.log(`pushArr: `, arr);
-
-      const res = await CreateReadme(ACCESS_TOKEN, arr);
+      const res = await axios.patch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/readme`,
+        arr,
+        {
+          headers: {
+            Authorization: ACCESS_TOKEN,
+          },
+        }
+      );
       console.log(res);
     } catch (err: any) {
       console.log(err);
@@ -508,7 +521,10 @@ export default function Preview() {
             alt="download"
           />
         </div>
-        <button className={st.btnDiv}>초기화</button>
+        <button className={st.btnReset}>초기화</button>
+        <button className={st.btnSave} onClick={saveReadme}>
+          저장
+        </button>
       </div>
       <div className={st.contentDiv}>
         {Number(currComponent) == 8
