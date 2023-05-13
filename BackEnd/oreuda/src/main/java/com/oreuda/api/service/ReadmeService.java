@@ -317,6 +317,7 @@ public class ReadmeService {
 		RDMDto rdmDto = RDMDto.builder()
 			.readmeType("TECH")
 			.order(readmeTechstack.getOrder())
+			.techTitle(readmeTechstack.getTitle())
 			.build();
 		rdmDto.setTechStack(techstackDtos);
 		return rdmDto;
@@ -388,6 +389,17 @@ public class ReadmeService {
 		if(oreuRepository.findByUser_IdAndReadme_Id(userId,readmeId).isPresent()) {
 			oreuRepository.delete(oreuRepository.findByUser_IdAndReadme_Id(userId,readmeId).get());
 		}
+	}
+
+	public boolean hsaReadme(String userId){
+		// 사용자 유무 검증
+		User user = userRepository.findById(userId).orElseThrow();
+
+		// 리드미 있다면 기존 리드미 업데이트
+		if(readmeRepository.findByUser_Id(userId).isPresent()){
+			return true;
+		}
+		return false;
 	}
 }
 
