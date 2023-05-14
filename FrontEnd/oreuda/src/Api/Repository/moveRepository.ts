@@ -9,7 +9,6 @@ export const MoveRepository = (
     repositories: string[];
   }
 ) => {
-  console.log(data);
   return axios.patch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/v1/repository`,
     data,

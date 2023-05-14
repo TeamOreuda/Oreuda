@@ -11,12 +11,14 @@ import { AddFolderAxios } from "@/Api/Folders/addFolder";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { GetBasicFolder } from "@/Api/Folders/getBasicFolder";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
+import { Folder } from "./folder";
 
 export default function AddFolder(props: {
   clickModal: () => void;
+  folderList: Folder[];
   loadFolderList: () => Promise<void>;
 }) {
-  const { clickModal, loadFolderList } = props;
+  const { clickModal, loadFolderList, folderList} = props;
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
 
@@ -60,7 +62,8 @@ export default function AddFolder(props: {
     try {
       await AddFolderAxios(ACCESS_TOKEN, folderName, folderColor, checkedItems);
     } catch (err: any) {
-      console.log("add", err);
+      console.log(err);
+      
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
         saveCookiesAndRedirect(
@@ -73,7 +76,7 @@ export default function AddFolder(props: {
           folderColor,
           checkedItems
         );
-      }
+      } 
     }
   };
 
@@ -91,6 +94,9 @@ export default function AddFolder(props: {
     setCheckedItems(newCheckedItems);
   };
 
+  console.log('folderList',folderList);
+  
+
   // 폴더 공백 확인 함수
   const makeFolder = async (
     folderName: string,
@@ -99,6 +105,10 @@ export default function AddFolder(props: {
   ) => {
     if (folderName == "") {
       alert("폴더명을 입력해주세요");
+    } else if (folderList?.filter((folder) => {
+      return folder.name === folderName
+    })) {
+      alert("중복된 폴더명입니다");
     } else if (folderName.length > 20) {
       alert("폴더명은 20글자를 넘길 수 없습니다");
     } else if (folderColor == "") {
