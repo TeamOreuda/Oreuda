@@ -90,6 +90,7 @@ export default function Preview() {
   // 작성중인(추가하지 않은) 테크 컴포넌트 렌더링
   const showTechArr = () => {
     const arr = [];
+    arr.push(<h3>{techTitle}</h3>) // 이 부분 추가했는데 css가 좀 이상하네
     for (let i = 0; i < techPlusArr.length; i++) {
       arr.push(
         <div key={i} className={st.TextArr}>
@@ -112,6 +113,7 @@ export default function Preview() {
 
     techPlusWhole.map((el, index) => {
       arr.push(<h3 key={index}>{el.name}</h3>);
+      
       const arr2: any = [];
 
       el.techArray.map((elel: any, idx: any) => {
@@ -143,8 +145,9 @@ export default function Preview() {
       <img src={mulUrl} width="280" height={mulHeight} alt="MUL" />
     </div>,
     <div key="4" className={st.TextArr}>
-      <div className={st.TextArr}>{showTechWhole()}</div>
       <h3>Tech Stack</h3>
+      {/* <h3>{techTitle}</h3> */}
+      <div className={st.TextArr}>{showTechWhole()}</div>
       <div className={st.techBadgeDiv}>{showTechArr()}</div>
     </div>,
     <div key="5" className={st.TextArr}>
@@ -196,7 +199,7 @@ export default function Preview() {
 
     techPlusWhole.map((el, index) => {
       arr.push(
-        `<h3 key=${index} style ="font-size : 1.17em; font-weight:700;">${el.name}</h3>`
+        `<h3 key=${index} style ="font-size : 1.5em; font-weight:700;">${el.name}</h3>`
       );
       const arr2: any = [];
 
@@ -216,43 +219,6 @@ export default function Preview() {
     return arr.join("");
   };
 
-  const showTechArrMD = () => {
-    const arr = [];
-    for (let i = 0; i < techPlusWhole.length; i++) {
-      arr.push(
-        `<h3 style ="font-size : 1.5em; font-weight:700;">${techPlusWhole[i].name}</h3>`
-      );
-      const x = `https://img.shields.io/badge/${techPlusWhole[i].techArray[0].name}-${techPlusWhole[i].techArray[0].color}?style=flat&logo=${techPlusWhole[i].techArray[0].name}&logoColor=white`;
-      arr.push(
-        `        
-        <div key=${i}>
-          <img
-            key=${Math.random() * (1000000 - 1)}
-            style = "margin: 5px 5px;"
-            src=${x}
-            alt=""
-          />
-        </div>`
-      );
-    }
-    console.log(techPlusWhole);
-    return arr.join("");
-  };
-
-  // const showTextArrMD = () => {
-  //   console.log(textArr);
-  //   const arr = [];
-  //   for (let i = 0; i < textArr.length; i++) {
-  //     arr.push(
-  //       `<div key=${i} style = "display: flex;  align-items: center; flex-direction: column;  justify-content: center;">
-  //         <h3 style ="font-size : 35px;">${textArr[i].titleArr} 12</h3>
-  //         <p style ="font-size : 20px;">${textArr[i].descArr} 12</p>
-  //       </div>`
-  //     );
-  //   }
-  //   return arr.join("");
-  // };
-
   const AdditionalTextMD = (id: number) => {
     return `
   <div key="7" >
@@ -266,10 +232,12 @@ export default function Preview() {
   `;
   };
 
+  // md parsing을 위하여 변수가 포함된 src를 사용하기 위하여 빼놓은 문자열입니다.
   const blogImg = `https://img.shields.io/badge/TechBlog-7FD2F5?style=flat&logo=Hoppscotch&logoColor=white&link=${blogLink}/`;
   const notionImg = `https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white&link=${notionLink}/`;
   const oreuCard = `https://oreuda.kr/api/v1/plant/card?nickname=${githubId}`;
 
+  // 각각의 컴포넌트 (tmp)를 md 문자열로 변환한 String 배열입니다.
   const selected: String[] = [
     `
   <div key="1">
@@ -289,13 +257,13 @@ export default function Preview() {
   `,
     `
   <div key="4">
-  <h3 style ="font-size : 1.5em; font-weight:700;">Tech Stack</h3>
-    <div >${showTechArrMD()}</div>
+  <h3 style ="font-size : 2em; font-weight:700;">Tech Stack</h3>
+    <div >${showTechWholeMD()}</div>
   </div>
   `,  
     `
   <div key="5">
-    <h3 style ="font-size : 1.5em; font-weight:700;">Contact</h3>
+    <h3 style ="font-size : 2em; font-weight:700;">Contact</h3>
     <div className=${st.contactBadgeDiv}>
       ${
         mailId.length > 0
@@ -336,11 +304,16 @@ export default function Preview() {
   `,
   ];
 
-  let toMD = `<div  style = "display: flex;  align-items: center; flex-direction: column;  justify-content: center;">\n
-<!-- font-size 를 조절하면 원하는 크기로 글자를 조절할 수 있습니다.-->
-<!-- Designed and developed in-house at Oreuda (https://oreuda.kr) -->
-<!-- 불편 사항 및 문의는 tykimdream@gmail.com으로 보내주세요 -->
-`;
+  // caution : MD 파일 상단에 작성할 안내 메세지입니다.
+  const caution = `\n<!-- font-size 를 조절하면 원하는 크기로 글자를 조절할 수 있습니다.-->
+  <!-- Designed and developed in-house at Oreuda (https://oreuda.kr) -->
+  <!-- 불편 사항 및 문의는 tykimdream@gmail.com으로 보내주세요 -->`
+
+  // toMD : 작성된 HTML을 md로 변환한 문자열을 저장합니다.
+  let toMD = `<div  style = "display: flex;  align-items: center; flex-direction: column;  justify-content: center;">`;
+  toMD += caution;
+  
+  // nPrevComp : toMD에 작성한 컴포넌트들을 붙히는 함수입니다.
   nPrevComp.map((key: any) => {
     if (key > 10) {
       // text arr 인 경우
@@ -420,7 +393,7 @@ export default function Preview() {
   // 클립보드 복사 메서드
   const onClickCopy = () => {
     try {
-      navigator.clipboard.writeText("hi");
+      navigator.clipboard.writeText(toMD);
       alert("클립보드에 복사되었습니다.");
     } catch (error) {
       alert("클립보드 복사에 실패하였습니다.");
