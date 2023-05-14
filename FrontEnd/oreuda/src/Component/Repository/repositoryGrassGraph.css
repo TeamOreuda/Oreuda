@@ -1,9 +1,7 @@
-/*
- * react-calendar-heatmap styles
- *
- * All of the styles in this file are optional and configurable!
- * The github and gitlab color scales are provided for reference.
- */
+.react-calendar-heatmap {
+    height: 150px;
+    padding: 8px 16px;
+}
 
 .react-calendar-heatmap rect {
     rx: 3;
@@ -52,16 +50,3 @@
     color: #fff;
     font-size: 14px;
 }
-
-/*.arrow_box:after {*/
-/*    position: absolute;*/
-/*    bottom: 100%;*/
-/*    left: 50%;*/
-/*    width: 0;*/
-/*    height: 0;*/
-/*    margin-left: -10px;*/
-/*    border: solid transparent 10px;*/
-/*    border-bottom-color: #333;*/
-/*    pointer-events: none;*/
-/*    content: ' ';*/
-/*}*/

@@ -5,8 +5,7 @@
 
   margin: {
     left: 32px;
-    right: 16px;
-    bottom: 16px;
+    bottom: 64px;
   }
 }
 
@@ -16,12 +15,11 @@
   flex-direction: column;
   justify-content: space-between;
 
-}
-
-.infoTop {
   div {
     display: flex;
   }
+
+}
 
   .infoFirst {
     align-items: center;
@@ -34,14 +32,11 @@
       text-decoration: none;
       color: black;
 
-      // display: -webkit-box;
-      // -webkit-line-clamp: 1;
-      // -webkit-box-orient: vertical;
-
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
     div {
       font-size: 8px;
       font-weight: bold;
@@ -51,7 +46,6 @@
       border-radius: 16px;
       padding: 4px;
     }
-  }
 
   p {
     color: #858181;
@@ -67,7 +61,6 @@
 
 
 .infoBottom {
-  display: flex;
   justify-content: space-between;
 
   & div {
@@ -95,4 +88,10 @@
 .repositoryGrass {
   position: relative;
   z-index: -1;
+}
+
+
+.repositoryGrassGraph .repositoryGraph {
+  display: flex;
+  align-items: center; 
 }

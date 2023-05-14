@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import React, { useEffect } from "react";
 
 import st from "./repository.module.scss";
 import RepositoryGraph from "./repositoryGraph";
@@ -40,7 +39,7 @@ export default function Repository(props: {
     props;
 
   function formattedDate(date: string) {
-    date.replace(/^(\d{4})-(\d{2})-(\d{2})$/, (match, year, month, day) => {
+    date.replace(/^(\d{4})-(\d{2})-(\d{2})$/, (year, month, day) => {
       const months = [
         "Jan",
         "Feb",
@@ -114,8 +113,12 @@ export default function Repository(props: {
               <span>Updated on {formattedDate(e.updateDate)}</span>
             </div>
           </div>
-          <RepositoryGrassGraph dailyCommits={e.dailyCommits} />
-          <RepositoryGraph yearlyCommits={e.yearlyCommits} />
+          <div className={st.repositoryGrassGraph}>
+            <RepositoryGrassGraph dailyCommits={e.dailyCommits} />
+          </div>
+          <div className={st.repositoryGrassGraph}>
+            <RepositoryGraph yearlyCommits={e.yearlyCommits} />
+          </div>
         </div>
       ))}
     </div>

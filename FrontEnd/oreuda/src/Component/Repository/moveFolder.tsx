@@ -29,6 +29,7 @@ export default function MoveFolder(props: {
   const [folderList, setFolderList] = useState<{ id: number; name: string }[]>(
     []
   );
+
   const loadFolderList = useCallback(async () => {
     try {
       const res = await GetFolderList(ACCESS_TOKEN);
@@ -49,7 +50,7 @@ export default function MoveFolder(props: {
         // redirect("/landing")
       }
     }
-  }, [ACCESS_TOKEN, REFRESH_TOKEN]);
+  }, [ACCESS_TOKEN, REFRESH_TOKEN, folderId] );
 
   useEffect(() => {
     loadFolderList();

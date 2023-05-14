@@ -88,8 +88,6 @@ export default function Repository() {
     try {
       await DeleteFolder(ACCESS_TOKEN, checkedItems);
     } catch (err: any) {
-      console.log("delete", err);
-
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
         saveCookiesAndRedirect(
@@ -144,7 +142,7 @@ export default function Repository() {
       </div>
       <hr />
       {showModal && (
-        <AddFolder clickModal={clickModal} loadFolderList={loadFolderList} />
+        <AddFolder clickModal={clickModal} loadFolderList={loadFolderList} folderList={folderList} />
       )}
       <Folder
         clickDelete={showDelete}

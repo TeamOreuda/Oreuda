@@ -1,5 +1,5 @@
-import { Chart as ChartJS, ArcElement, Tooltip } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip } from "chart.js";
 
 import st from "./repositoryGraph.module.scss";
 import { YearlyCommit } from "@/Component/Repository/repository";
@@ -7,7 +7,6 @@ import { YearlyCommit } from "@/Component/Repository/repository";
 export default function repositoryGraph(props: {
   yearlyCommits: YearlyCommit[];
 }) {
-  // const { yearlyCommits } = props;
   const yearlyCommits = [
     { year: 2023, count: 5 },
     { year: 2022, count: 5 },
@@ -16,7 +15,6 @@ export default function repositoryGraph(props: {
     { year: 2019, count: 5 },
     { year: 2018, count: 5 },
   ];
-  console.log(yearlyCommits);
   ChartJS.register(ArcElement, Tooltip);
   const data = {
     labels: yearlyCommits?.map((e: YearlyCommit) => {
@@ -53,8 +51,8 @@ export default function repositoryGraph(props: {
       data={data}
       options={options}
       className={st.doughnut}
-      width={150}
-      height={150}
+      width={160}
+      height={160}
     />
   );
 }
