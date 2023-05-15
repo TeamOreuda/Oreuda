@@ -40,6 +40,18 @@ public class UserController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
+	// 오늘 첫 로그인이라면
+	@PostMapping("/today")
+	// 인증서버로부터 받는 값
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
+	public ResponseEntity<?> todayFirstLogin(@RequestHeader String userId) {
+		if (userService.isTodayFirstLogin(userId)) {
+			dataClient.setData(userId);
+		}
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+
 	// 사용자 정보 조회
 	@GetMapping()
 	@CrossOrigin(origins = "*", allowedHeaders = "*")
