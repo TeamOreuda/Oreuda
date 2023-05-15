@@ -59,6 +59,7 @@ public class CommitService {
 		variables.put("repoName", nameWithOwner.split("/")[1]);
 
 		JsonNode data;
+		int commitCount = 0; // 해당 레포지토리의 사용자 커밋 수
 		LocalDate now = LocalDate.now(); // 오늘 날짜
 		Map<String, DailyCommit> dailyCommit = new HashMap<>(); // 일별 커밋
 		Map<Integer, YearlyCommit> yearlyCommit = new HashMap<>(); // 연도별 커밋
@@ -68,8 +69,9 @@ public class CommitService {
 				GraphQLRequest.builder().query(query).variables(variables).build());
 			if (data == null) return;
 
-			// 사용자 커밋 수
-			repository.setCommitCount(data.get("nodes").size());
+			// 사용자 커밋 수 카운팅
+			commitCount += data.get("nodes").size();
+
 			try {
 				// 2. 커밋 preprocessing
 				for (JsonNode cmt : data.get("nodes")) {
@@ -112,6 +114,9 @@ public class CommitService {
 			// 3. 다음 페이지 불러오기
 			variables.put("cursor", data.get("pageInfo").get("endCursor"));
 		} while (data.get("pageInfo").get("hasNextPage").booleanValue());
+
+		// 사용자 커밋 수
+		repository.setCommitCount(commitCount);
 
 		// 일자별 커밋 저장
 		if (dailyCommit.values().size() != 0) {
