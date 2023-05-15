@@ -27,12 +27,25 @@ public class DataController {
 
 	private final PlantClient plantClient;
 
+	private final UserJpaRepository userJpaRepository;
+
 	@PatchMapping()
 	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	public ResponseEntity<?> data(@RequestHeader String userId) {
-		repositoryService.getAllRepositories(userId);
-		userService.updateUser(userId);
-		plantClient.notifyCompletion(userId); // 데이터 전처리 완료 알림
+		// 현재 시간
+		LocalDateTime now = LocalDateTime.now();
+		// 마지막 업데이트 시간
+		LocalDateTime lastUpdateTime = userJpaRepository.findById(userId)
+			.orElseThrow(NotFoundException::new)
+			.getUpdateTime();
+
+		// 마지막 업데이트가 1분 이내일 때
+		long seconds = ChronoUnit.SECONDS.between(lastUpdateTime, now);
+		if (60 < seconds) {
+			repositoryService.getAllRepositories(userId);
+			userService.updateUser(userId);
+			plantClient.notifyCompletion(userId); // 데이터 전처리 완료 알림
+		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
