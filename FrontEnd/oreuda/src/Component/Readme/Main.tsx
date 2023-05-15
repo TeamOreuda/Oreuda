@@ -13,7 +13,7 @@ import NextBtn from "./NextBtn";
 import { useEffect, useState } from "react";
 import { GetHasReadme } from "@/Api/Readme/getHasReadme";
 import Cookies from "js-cookie";
-import { getUserRefresh } from "@/Api/Oauth/getUserRefresh";
+import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh"; 
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
 import { GetLoadReadme } from "@/Api/Readme/getLoadReadme";
 
@@ -75,7 +75,7 @@ export default function Main() {
           // })
         } catch (err: any) {
           if (err.response?.status == 401) {
-            const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+            const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
             saveCookiesAndRedirect(
               token.data.Authorization,
               token.data.RefreshToken

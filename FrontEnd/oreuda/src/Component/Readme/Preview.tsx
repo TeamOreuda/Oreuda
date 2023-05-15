@@ -80,7 +80,7 @@ export default function Preview() {
       arr.push(
         <div key={Math.random() * (1000000 - 1)} className={st.TextArr}>
           <h3>{textArr[i].titleArr}</h3>
-          <p>{textArr[i].descArr}</p>
+          <p>{parseTextEnter(textArr[i].descArr)}</p>
         </div>
       );
     }
@@ -90,7 +90,6 @@ export default function Preview() {
   // 작성중인(추가하지 않은) 테크 컴포넌트 렌더링
   const showTechArr = () => {
     const arr = [];
-    arr.push(<h3>{techTitle}</h3>) // 이 부분 추가했는데 css가 좀 이상하네
     for (let i = 0; i < techPlusArr.length; i++) {
       arr.push(
         <div key={Math.random() * (1000000 - 1)} className={st.TextArr}>
@@ -130,6 +129,20 @@ export default function Preview() {
     return arr;
   };
 
+  const parseTextEnter = (text: string) => {
+    const arr:any = [];
+    const textSplit = text.split("<br />");
+    textSplit.map((el: any, index:number) => {
+      arr.push(<span className={st.textareaParse}>{el}</span>);
+      console.log(textSplit.length);
+      if(textSplit.length-1 > index)
+        arr.push(<br />)
+    });
+    console.log(textSplit);
+
+    return arr;
+  }
+
   // 컴포넌트 별 jsx (1 ~ 7)
   const tmp = [
     "",
@@ -147,6 +160,7 @@ export default function Preview() {
       <h3>Tech Stack</h3>
       {/* <h3>{techTitle}</h3> */}
       <div className={st.TextArr}>{showTechWhole()}</div>
+      <h3>{techTitle}</h3>
       <div className={st.techBadgeDiv}>{showTechArr()}</div>
     </div>,
     <div key="5" className={st.TextArr}>
@@ -187,9 +201,11 @@ export default function Preview() {
     <div key="7" className={st.TextArr}>
       {showTextArr()}
       <h3>{newTextTitle}</h3>
-      <p>{newTextDesc}</p>
+      <p>{parseTextEnter(newTextDesc)}</p>
     </div>,
   ];
+
+  
 
   // MD 관련 Function을 정의합니다.
   // ******************************************************************************** /
@@ -511,7 +527,7 @@ export default function Preview() {
           />
         </div>
         <button className={st.btnReset}>초기화</button>
-        <button className={st.btnSave} onClick={saveReadme}>
+        <button className={`${st.btnSave} ${currComponent === 8 ? undefined : st.disabledBtn}`} onClick={saveReadme} disabled={currComponent !== 8}>
           저장
         </button>
       </div>
