@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import React, { useEffect } from "react";
 
 import st from "./repository.module.scss";
 import RepositoryGraph from "./repositoryGraph";
@@ -36,11 +35,10 @@ export default function Repository(props: {
   checkedItems: string[];
   setCheckedItems: React.Dispatch<React.SetStateAction<string[]>>;
 }) {
-  const { moveRepositoryMode, repositoryList, checkedItems, setCheckedItems } =
-    props;
+  const { moveRepositoryMode, repositoryList, checkedItems, setCheckedItems } = props;
 
   function formattedDate(date: string) {
-    date.replace(/^(\d{4})-(\d{2})-(\d{2})$/, (match, year, month, day) => {
+    date.replace(/^(\d{4})-(\d{2})-(\d{2})$/, (year, month, day) => {
       const months = [
         "Jan",
         "Feb",
@@ -73,31 +71,31 @@ export default function Repository(props: {
 
     setCheckedItems(newCheckedItems);
   };
-
   return (
     <div>
       {repositoryList?.map((e, index) => (
         <div key={index} className={st.body}>
           <div className={st.info}>
-            <div className={st.infoFirst}>
-              {moveRepositoryMode && (
-                <input
-                  type="checkbox"
-                  value={e.id}
-                  checked={checkedItems.indexOf(String(e.id)) !== -1}
-                  onChange={handleCheckboxChange}
-                  onClick={(event) => event.stopPropagation()}
-                />
-              )}
-              <Link href={e.url} className={st.link}>
-                {e.name}
-              </Link>
-              <div>{e.isPrivate === "Y" ? "Private" : "Public"}</div>
+            <div className={st.infoTop}>
+              <div className={st.infoFirst}>
+                {moveRepositoryMode && (
+                  <input
+                    type="checkbox"
+                    value={e.id}
+                    checked={checkedItems.indexOf(String(e.id)) !== -1}
+                    onChange={handleCheckboxChange}
+                    onClick={(event) => event.stopPropagation()}
+                  />
+                )}
+                <Link href={e.url} className={st.link}>
+                  {e.name}
+                </Link>
+                <div>{e.isPrivate === "Y" ? "Private" : "Public"}</div>
+              </div>
+              <p>{e.description}</p>
             </div>
 
-            <p>{e.description}</p>
-
-            <div className={st.infoSecond}>
+            <div className={st.infoBottom}>
               <div>
                 {e.language && <div className={fontColor[e.language]}></div>}
                 {e.language && <span>{e.language}</span>}
@@ -113,8 +111,12 @@ export default function Repository(props: {
               <span>Updated on {formattedDate(e.updateDate)}</span>
             </div>
           </div>
-          <RepositoryGrassGraph dailyCommits={e.dailyCommits} />
-          <RepositoryGraph yearlyCommits={e.yearlyCommits} />
+          <div className={st.repositoryGrassGraph}>
+            <RepositoryGrassGraph dailyCommits={e.dailyCommits} />
+          </div>
+          <div className={st.repositoryGrassGraph}>
+            <RepositoryGraph yearlyCommits={e.yearlyCommits} />
+          </div>
         </div>
       ))}
     </div>

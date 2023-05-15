@@ -35,8 +35,6 @@ export default function Preview() {
   const nPrevComp = useAppSelector(selectReadme).nPrevComp;
   const techArr = useAppSelector(selectReadme).techArr;
 
-  console.log(textArr);
-
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
 
@@ -78,7 +76,7 @@ export default function Preview() {
     const arr = [];
     for (let i = 0; i < textArr.length; i++) {
       arr.push(
-        <div key={i} className={st.TextArr}>
+        <div key={Math.random() * (1000000 - 1)} className={st.TextArr}>
           <h3>{textArr[i].titleArr}</h3>
           <p>{textArr[i].descArr}</p>
         </div>
@@ -92,7 +90,7 @@ export default function Preview() {
     const arr = [];
     for (let i = 0; i < techPlusArr.length; i++) {
       arr.push(
-        <div key={i} className={st.TextArr}>
+        <div key={Math.random() * (1000000 - 1)} className={st.TextArr}>
           <img
             key={Math.random() * (1000000 - 1)}
             className={st.techBadge}
@@ -111,7 +109,7 @@ export default function Preview() {
     const arr: any = [];
 
     techPlusWhole.map((el, index) => {
-      arr.push(<h3 key={index}>{el.name}</h3>);
+      arr.push(<h3 key={Math.random() * (1000000 - 1)}>{el.name}</h3>);
       const arr2: any = [];
 
       el.techArray.map((elel: any, idx: any) => {
@@ -129,6 +127,17 @@ export default function Preview() {
     return arr;
   };
 
+  const parseTextEnter = (text: string) => {
+    const arr: any = [];
+    const textSplit = text.split("<br />");
+    textSplit.map((el: any, index: number) => {
+      arr.push(<span className={st.textareaParse}>{el}</span>);
+      if (textSplit.length - 1 > index) arr.push(<br />);
+    });
+
+    return arr;
+  };
+
   // 컴포넌트 별 jsx (1 ~ 7)
   const tmp = [
     "",
@@ -143,8 +152,10 @@ export default function Preview() {
       <img src={mulUrl} width="280" height={mulHeight} alt="MUL" />
     </div>,
     <div key="4" className={st.TextArr}>
-      <div className={st.TextArr}>{showTechWhole()}</div>
       <h3>Tech Stack</h3>
+      {/* <h3>{techTitle}</h3> */}
+      <div className={st.TextArr}>{showTechWhole()}</div>
+      <h3>{techTitle}</h3>
       <div className={st.techBadgeDiv}>{showTechArr()}</div>
     </div>,
     <div key="5" className={st.TextArr}>
@@ -196,7 +207,7 @@ export default function Preview() {
 
     techPlusWhole.map((el, index) => {
       arr.push(
-        `<h3 key=${index} style ="font-size : 1.17em; font-weight:700;">${el.name}</h3>`
+        `<h3 key=${index} style ="font-size : 1.5em; font-weight:700;">${el.name}</h3>`
       );
       const arr2: any = [];
 
@@ -216,43 +227,6 @@ export default function Preview() {
     return arr.join("");
   };
 
-  const showTechArrMD = () => {
-    const arr = [];
-    for (let i = 0; i < techPlusWhole.length; i++) {
-      arr.push(
-        `<h3 style ="font-size : 1.5em; font-weight:700;">${techPlusWhole[i].name}</h3>`
-      );
-      const x = `https://img.shields.io/badge/${techPlusWhole[i].techArray[0].name}-${techPlusWhole[i].techArray[0].color}?style=flat&logo=${techPlusWhole[i].techArray[0].name}&logoColor=white`;
-      arr.push(
-        `        
-        <div key=${i}>
-          <img
-            key=${Math.random() * (1000000 - 1)}
-            style = "margin: 5px 5px;"
-            src=${x}
-            alt=""
-          />
-        </div>`
-      );
-    }
-    console.log(techPlusWhole);
-    return arr.join("");
-  };
-
-  // const showTextArrMD = () => {
-  //   console.log(textArr);
-  //   const arr = [];
-  //   for (let i = 0; i < textArr.length; i++) {
-  //     arr.push(
-  //       `<div key=${i} style = "display: flex;  align-items: center; flex-direction: column;  justify-content: center;">
-  //         <h3 style ="font-size : 35px;">${textArr[i].titleArr} 12</h3>
-  //         <p style ="font-size : 20px;">${textArr[i].descArr} 12</p>
-  //       </div>`
-  //     );
-  //   }
-  //   return arr.join("");
-  // };
-
   const AdditionalTextMD = (id: number) => {
     return `
   <div key="7" >
@@ -266,10 +240,12 @@ export default function Preview() {
   `;
   };
 
+  // md parsing을 위하여 변수가 포함된 src를 사용하기 위하여 빼놓은 문자열입니다.
   const blogImg = `https://img.shields.io/badge/TechBlog-7FD2F5?style=flat&logo=Hoppscotch&logoColor=white&link=${blogLink}/`;
   const notionImg = `https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white&link=${notionLink}/`;
   const oreuCard = `https://oreuda.kr/api/v1/plant/card?nickname=${githubId}`;
 
+  // 각각의 컴포넌트 (tmp)를 md 문자열로 변환한 String 배열입니다.
   const selected: String[] = [
     `
   <div key="1">
@@ -289,13 +265,13 @@ export default function Preview() {
   `,
     `
   <div key="4">
-  <h3 style ="font-size : 1.5em; font-weight:700;">Tech Stack</h3>
-    <div >${showTechArrMD()}</div>
+  <h3 style ="font-size : 2em; font-weight:700;">Tech Stack</h3>
+    <div >${showTechWholeMD()}</div>
   </div>
-  `,  
+  `,
     `
   <div key="5">
-    <h3 style ="font-size : 1.5em; font-weight:700;">Contact</h3>
+    <h3 style ="font-size : 2em; font-weight:700;">Contact</h3>
     <div className=${st.contactBadgeDiv}>
       ${
         mailId.length > 0
@@ -336,11 +312,16 @@ export default function Preview() {
   `,
   ];
 
-  let toMD = `<div  style = "display: flex;  align-items: center; flex-direction: column;  justify-content: center;">\n
-<!-- font-size 를 조절하면 원하는 크기로 글자를 조절할 수 있습니다.-->
-<!-- Designed and developed in-house at Oreuda (https://oreuda.kr) -->
-<!-- 불편 사항 및 문의는 tykimdream@gmail.com으로 보내주세요 -->
-`;
+  // caution : MD 파일 상단에 작성할 안내 메세지입니다.
+  const caution = `\n<!-- font-size 를 조절하면 원하는 크기로 글자를 조절할 수 있습니다.-->
+  <!-- Designed and developed in-house at Oreuda (https://oreuda.kr) -->
+  <!-- 불편 사항 및 문의는 tykimdream@gmail.com으로 보내주세요 -->`;
+
+  // toMD : 작성된 HTML을 md로 변환한 문자열을 저장합니다.
+  let toMD = `<div  style = "display: flex;  align-items: center; flex-direction: column;  justify-content: center;">`;
+  toMD += caution;
+
+  // nPrevComp : toMD에 작성한 컴포넌트들을 붙히는 함수입니다.
   nPrevComp.map((key: any) => {
     if (key > 10) {
       // text arr 인 경우
@@ -358,7 +339,7 @@ export default function Preview() {
     textArr.map((el: any, index: any) => {
       if (idx - 1 == index) {
         arr.push(
-          <div key={index}>
+          <div key={Math.random() * (1000000 - 1)} className={st.TextArr}>
             <h3>{el.titleArr}</h3>
             <p>{el.descArr}</p>
           </div>
@@ -405,8 +386,8 @@ export default function Preview() {
 
   // 다운로드 메서드
   const onClickDownload = () => {
-    console.log(nPrevComp);
-    console.log(toMD);
+    // console.log(nPrevComp);
+    // console.log(toMD);
     const blob = new Blob([file.content], { type: "text/plain" });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -420,7 +401,7 @@ export default function Preview() {
   // 클립보드 복사 메서드
   const onClickCopy = () => {
     try {
-      navigator.clipboard.writeText("hi");
+      navigator.clipboard.writeText(toMD);
       alert("클립보드에 복사되었습니다.");
     } catch (error) {
       alert("클립보드 복사에 실패하였습니다.");
@@ -429,85 +410,73 @@ export default function Preview() {
 
   // 저장 버튼 클릭시 readme 저장 axios 요청
   const saveReadme = async () => {
-    const arr: any = [];
-    nPrevComp.map((el: any, idx: any) => {
-      let curr = Number(el);
-      let pushData = {};
-      if (curr === 1) {
-        pushData = {
-          readmeType: "BOJ",
-          bojValue: BaekJoonData.length > 0 ? BaekJoonData : "temp",
-          bojTheme: SolvedThemeData,
-        };
-      } else if (curr === 2) {
-        pushData = { readmeType: "GIT", gitTheme: githubTheme };
-      } else if (curr === 3) {
-        pushData = {
-          readmeType: "LANGUAGE",
-          languageTheme: mulTheme,
-          languageType: mulType,
-        };
-      } else if (curr === 4) {
-        techPlusWhole.map((el: any, index: any) => {
-          // 제목 백에서 넣어줄 예정
-          // pushData = { readmeType: "TECH", techTitle: "", techStack: el.techArray };
-          pushData = { readmeType: "TECH", techStack: el.techArray };
-          arr.push(pushData);
-        });
-      } else if (curr === 5) {
-        pushData = {
-          readmeType: "CONTACT",
-          mailLink: `${mailId}@${mailDomain}`,
-          blogLink: blogLink.length > 0 ? blogLink : "temp",
-          notionLink: notionLink.length > 0 ? notionLink : "temp",
-        };
-      } else if (curr === 6) {
-        pushData = { readmeType: "PLANT" };
-      } else if (curr > 10) {
-        const tmp = (curr % 10) - 1;
+    if (window.confirm("저장하시겠습니까!?")) {
+      const arr: any = [];
+      nPrevComp.map((el: any, idx: any) => {
+        let curr = Number(el);
+        let pushData = {};
+        if (curr === 1) {
+          pushData = {
+            readmeType: "BOJ",
+            bojValue: BaekJoonData.length > 0 ? BaekJoonData : "temp",
+            bojTheme: SolvedThemeData,
+          };
+        } else if (curr === 2) {
+          pushData = { readmeType: "GIT", gitTheme: githubTheme };
+        } else if (curr === 3) {
+          pushData = {
+            readmeType: "LANGUAGE",
+            languageTheme: mulTheme,
+            languageType: mulType,
+          };
+        } else if (curr === 4) {
+          techPlusWhole.map((el: any, index: any) => {
+            // 제목 백에서 넣어줄 예정
+            pushData = {
+              readmeType: "TECH",
+              techTitle: el.name,
+              techStack: el.techArray,
+            };
+            // pushData = { readmeType: "TECH", techStack: el.techArray };
+            arr.push(pushData);
+          });
+        } else if (curr === 5) {
+          pushData = {
+            readmeType: "CONTACT",
+            mailLink: `${mailId}@${mailDomain}`,
+            blogLink: blogLink.length > 0 ? blogLink : "temp",
+            notionLink: notionLink.length > 0 ? notionLink : "temp",
+          };
+        } else if (curr === 6) {
+          pushData = { readmeType: "PLANT" };
+        } else if (curr > 10) {
+          const tmp = (curr % 10) - 1;
 
-        pushData = {
-          readmeType: "WRITING",
-          writingTitle: textArr[tmp].titleArr,
-          writingContents: textArr[tmp].descArr,
-        };
-      }
-
-      // pushData = {readmeType:"WRITING", writingTitle}
-      if (curr !== 4) arr.push(pushData);
-    });
-    try {
-      console.log(`pushArr: `, arr);
-      const res = await axios.patch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/readme`,
-        arr,
-        {
-          headers: {
-            Authorization: ACCESS_TOKEN,
-          },
+          pushData = {
+            readmeType: "WRITING",
+            writingTitle: textArr[tmp].titleArr,
+            writingContents: textArr[tmp].descArr,
+          };
         }
-      );
-      console.log(res);
-    } catch (err: any) {
-      console.log(err);
 
-      /**
- * 리스트 제외 request type은 String
- *
- 리드미 리스트(readmes)
- * 리드미 종류(readmeType)
- * 1. 백준 아이디(bojValue)
- * 2. 백준 테마(bojTheme)
- * 2. 깃 테마(gitTheme)
- * 3. 언어테마(languageTheme)
- * 4. 언어타입(languageType)
- * 5. 기술스택 리스트(techStack) - 리스트
- * 6. 메일(mailLink)
- * 6. 블로그(blogLink)
- * 6. 노션(notionLink)
- * 7. 글 제목(writingTitle)
- * 7. 글 내용(writingContents)
- */
+        // pushData = {readmeType:"WRITING", writingTitle}
+        if (curr !== 4) arr.push(pushData);
+      });
+      try {
+        // console.log(`pushArr: `, arr);
+        const res = await axios.patch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/readme`,
+          arr,
+          {
+            headers: {
+              Authorization: ACCESS_TOKEN,
+            },
+          }
+        );
+        // console.log(res);
+      } catch (err: any) {
+        console.log(err);
+      }
     }
   };
   return (
@@ -535,7 +504,13 @@ export default function Preview() {
           />
         </div>
         <button className={st.btnReset}>초기화</button>
-        <button className={st.btnSave} onClick={saveReadme}>
+        <button
+          className={`${st.btnSave} ${
+            currComponent === 8 ? undefined : st.disabledBtn
+          }`}
+          onClick={saveReadme}
+          disabled={currComponent !== 8}
+        >
           저장
         </button>
       </div>

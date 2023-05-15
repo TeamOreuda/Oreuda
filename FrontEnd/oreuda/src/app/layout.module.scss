@@ -12,7 +12,7 @@
   display: flex;
   font-family: "GmarketSansMedium";
   margin: 0px;
-  
+
   ::selection {
     background-color: #4bca80;
     color: white;
@@ -43,13 +43,25 @@
       .img {
         margin-right: 16px;
       }
+
+      .logout {
+        margin-right: 16px;
+        border-radius: 16px;
+      }
     }
+  }
+
+  .characterimg {
+    margin-left: 40px;
   }
 }
 
 .header {
   display: flex;
   align-items: center;
+  text-decoration: none;
+  color: black;
+
   margin: {
     top: 40px;
     bottom: 48px;

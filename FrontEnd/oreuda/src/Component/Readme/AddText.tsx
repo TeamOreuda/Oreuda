@@ -20,7 +20,6 @@ export default function AddText() {
   const textTitleArr = useAppSelector(selectReadme).textTitle;
   const textDescArr = useAppSelector(selectReadme).textDesc;
   const textArr = useAppSelector(selectReadme).textArr;
-  console.log(`textArr: `, textArr);
 
   const TitleArrLastVal = textTitleArr[textTitleArr.length - 1];
   const DescArrLastVal = textDescArr[textDescArr.length - 1];
@@ -107,7 +106,8 @@ export default function AddText() {
             placeholder="내용을 입력해주세요."
             onChange={(e) => {
               if (curr == 0) {
-                setDesc(e.target.value);
+                const a = e.target.value.replace(/(\n|\r\n)/g, "<br />");
+                setDesc(e.target.value + "");
                 dispatch(setTextDesc(e.target.value));
               } else {
                 setModifyD(e.target.value);

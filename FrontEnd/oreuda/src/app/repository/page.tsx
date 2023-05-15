@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Cookies from "js-cookie";
+import { hotjar } from "react-hotjar";
 import { redirect } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
@@ -23,8 +24,13 @@ export default function Repository() {
   const [showDelete, setShowDelete] = useState(false);
   const [folderList, setFolderList] = useState([]);
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
-  const [repositoryListData, setRepositoryListData] =
-    useState<{ id: number; name: string }[]>();
+  const [repositoryListData, setRepositoryListData] = useState<{ id: number; name: string }[]>();
+
+  useEffect(() => {
+    if (process.env.NODE_ENV !== "development") {
+      hotjar.initialize(3483558, 6);
+    }
+  }, []);
 
   const loadFolderList = useCallback(async () => {
     try {
@@ -33,17 +39,14 @@ export default function Repository() {
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(
-          token.data.Authorization,
-          token.data.RefreshToken
-        );
+        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
         try {
           await GetFolderList(ACCESS_TOKEN);
         } catch (error) {
-          // redirect("/landing")
+          redirect("/landing");
         }
       } else {
-        // redirect("/landing")
+        redirect("/landing");
       }
     }
   }, [ACCESS_TOKEN, REFRESH_TOKEN]);
@@ -55,18 +58,15 @@ export default function Repository() {
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(
-          token.data.Authorization,
-          token.data.RefreshToken
-        );
+        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
         try {
           const res = await GetBasicFolder(ACCESS_TOKEN);
           setRepositoryListData(res.data);
         } catch (error) {
-          // redirect("/landing")
+          redirect("/landing");
         }
       } else {
-        // redirect("/landing")
+        redirect("/landing");
       }
     }
   }, [ACCESS_TOKEN, REFRESH_TOKEN]);
@@ -88,21 +88,16 @@ export default function Repository() {
     try {
       await DeleteFolder(ACCESS_TOKEN, checkedItems);
     } catch (err: any) {
-      console.log("delete", err);
-
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(
-          token.data.Authorization,
-          token.data.RefreshToken
-        );
+        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
         try {
           await DeleteFolder(token.data.Authorization, checkedItems);
         } catch (error) {
-          // redirect("/landing")
+          redirect("/landing");
         }
       } else {
-        // redirect("/landing")
+        redirect("/landing");
       }
     }
   };
@@ -144,7 +139,11 @@ export default function Repository() {
       </div>
       <hr />
       {showModal && (
-        <AddFolder clickModal={clickModal} loadFolderList={loadFolderList} />
+        <AddFolder
+          clickModal={clickModal}
+          loadFolderList={loadFolderList}
+          folderList={folderList}
+        />
       )}
       <Folder
         clickDelete={showDelete}

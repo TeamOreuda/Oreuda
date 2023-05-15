@@ -77,6 +77,10 @@
       border: none;
       cursor: pointer;
     }
+    .disabledBtn{
+      background-color: #cccccc;
+      cursor: auto;
+    }
   }
 
   & .contentDiv {
@@ -135,5 +139,13 @@
 
   h3 {
     text-align: center;
+    margin: 10px 0px;
   }
+}
+
+.textareaParse{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }

@@ -13,7 +13,6 @@ import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { MoveRepository } from "@/Api/Repository/moveRepository";
 import { GetRepositoryLst } from "@/Api/Repository/getRepositoryList";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
-import { isParameter } from "typescript";
 
 export default function RepositoryPage() {
   const params = useParams();
@@ -33,7 +32,7 @@ export default function RepositoryPage() {
     { id: 3, value: "name", name: "이름순" },
     { id: 4, value: "star", name: "별점순" },
   ];
-  
+
   const [isOpen, setIsOpen] = useState(false);
   const [filtering, setFiltering] = useState(options[0]);
 
@@ -53,15 +52,12 @@ export default function RepositoryPage() {
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(
-          token.data.Authorization,
-          token.data.RefreshToken
-        );
+        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
         const res = await GetRepositoryLst(ACCESS_TOKEN, folderId, filtering.value);
         setRepositoryList(res.data);
       }
     }
-  }, [ACCESS_TOKEN, REFRESH_TOKEN, folderId]);
+  }, [ACCESS_TOKEN, REFRESH_TOKEN, filtering.value, folderId]);
 
   useEffect(() => {
     loadRepositoryList();
@@ -101,10 +97,7 @@ export default function RepositoryPage() {
       } catch (err: any) {
         if (err.response?.status == 401) {
           const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-          saveCookiesAndRedirect(
-            token.data.Authorization,
-            token.data.RefreshToken
-          );
+          saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
           await MoveRepository(ACCESS_TOKEN, data);
         }
       }
@@ -137,9 +130,7 @@ export default function RepositoryPage() {
               {options.map((option) => (
                 <div
                   key={option.id}
-                  className={`${st.option} ${
-                    option.value === filtering.value ? st.active : ""
-                  }`}
+                  className={`${st.option} ${option.value === filtering.value ? st.active : ""}`}
                   onClick={() => handleOptionClick(option)}
                 >
                   {option.name}

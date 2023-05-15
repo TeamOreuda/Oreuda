@@ -47,31 +47,27 @@ export interface readmeSlice {
   currComponent: number;
   prevComp: number[];
   nPrevComp: any;
+  isSaveReadme: boolean;
 }
 
 // 초기 상태 정의
 const initialState: readmeSlice = {
   baekjoonId: "",
   solvedTheme: "warm",
+
   githubId: "",
   githubTheme: "dark",
+
   mulTheme: "dark",
   mulType: 0,
-  mailId: "",
-  mailDomain: "naver.com",
-  blogLink: "",
-  notionLink: "",
-  textTitle: [],
-  textDesc: [],
-  textArr: [],
-  newTextTitle: "",
-  newTextDesc: "",
-  textCnt: 0,
-  techTitle: "",
+
+  // curr
+  techPlusWhole: [],
+
+  techCnt: 0,
   techPlusArr: [],
   techPlusModifyArr: [],
-  techPlusWhole: [],
-  techCnt: 0,
+  techTitle: "",
   techArr: [
     true,
     false,
@@ -124,11 +120,25 @@ const initialState: readmeSlice = {
     false,
     false,
   ],
+
+  mailId: "",
+  mailDomain: "naver.com",
+  blogLink: "",
+  notionLink: "",
+
+  textArr: [],
+  textCnt: 0,
+  textTitle: [],
+  textDesc: [],
+  newTextTitle: "",
+  newTextDesc: "",
+
   componentArr: [true, false, false, false, false, false, false, false],
   currComponent: 0,
   prevComp: [],
   nextComp: [],
   nPrevComp: [],
+  isSaveReadme: false,
 };
 
 const themeSlice = createSlice({
@@ -393,6 +403,167 @@ const themeSlice = createSlice({
       // console.log(action.payload);
       state.nPrevComp = action.payload;
     },
+    // 리드미 store값 초기화
+    setClearReadmeStore(state, action) {
+      state.baekjoonId = "";
+      state.solvedTheme = "warm";
+      state.githubTheme = "dark";
+      state.mulTheme = "dark";
+      state.mulType = 0;
+      state.mailId = "";
+      state.mailDomain = "naver.com";
+      state.blogLink = "";
+      state.notionLink = "";
+      state.textTitle = [];
+      state.textDesc = [];
+      state.textArr = [];
+      state.newTextTitle = "";
+      state.newTextDesc = "";
+      state.textCnt = 0;
+      state.techTitle = "";
+      state.techPlusArr = [];
+      state.techPlusModifyArr = [];
+      state.techPlusWhole = [];
+      state.techCnt = 0;
+      state.techArr = [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ];
+      state.techModifyArr = [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ];
+      state.componentArr = [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ];
+      state.currComponent = 0;
+      state.prevComp = [];
+      state.nextComp = [];
+      state.nPrevComp = [];
+    },
+    // 불러온 데이터 활용해 store 변경
+    setLoadDataMapping(state, action) {
+      const data = action.payload;
+      // console.log();
+
+      const techWholeTmpArr: any = [];
+      const textWholeTmpArr: any = [];
+      let ttmp = 0;
+      let techFlag = false;
+      let textFlag = false;
+      data.map((el: any, index: any) => {
+        let tmp = el.readmeType;
+        if (tmp === "BOJ") {
+          state.baekjoonId = el.bojValue;
+          state.solvedTheme = el.bojTheme;
+          state.componentArr[1] = true;
+          state.nextComp.push(1);
+        } else if (tmp === "GIT") {
+          state.githubTheme = el.gitTheme;
+          state.githubId = el.gitValue;
+          state.componentArr[2] = true;
+          state.nextComp.push(2);
+        } else if (tmp === "LANGUAGE") {
+          state.mulTheme = el.languageTheme;
+          state.mulType = el.languageType;
+          state.githubId = el.languageValue;
+          state.componentArr[3] = true;
+          state.nextComp.push(3);
+        } else if (tmp === "TECH") {
+          const obj: any = {};
+          obj.name = el.techTitle;
+          obj.techArray = el.techStack;
+          obj.index = ttmp++;
+          techWholeTmpArr.push(obj);
+          state.componentArr[4] = true;
+          if (!techFlag) {
+            state.nextComp.push(4);
+            techFlag = true;
+          }
+        } else if (tmp === "CONTACT") {
+          const mail = el.mailLink.split("@");
+          state.mailId = mail[0];
+          state.mailDomain = mail[1];
+          state.blogLink = el.blogLink;
+          state.notionLink = el.notionLink;
+          state.componentArr[5] = true;
+          state.nextComp.push(5);
+        } else if (tmp === "PLANT") {
+          state.githubId = el.oreuValue;
+          state.componentArr[6] = true;
+          state.nextComp.push(6);
+        } else if (tmp === "WRITING") {
+          const obj: any = {};
+          // console.log(el);
+
+          obj.titleArr = el.writingTitle;
+          obj.descArr = el.writingContents;
+          obj.index = state.textCnt++;
+          textWholeTmpArr.push(obj);
+          state.componentArr[7] = true;
+          if (!textFlag) {
+            state.nextComp.push(7);
+            textFlag = true;
+          }
+        }
+      });
+      state.techPlusWhole = techWholeTmpArr;
+      state.textArr = textWholeTmpArr;
+    },
+    setIsSaveReadme(state, action) {
+      state.isSaveReadme = action.payload;
+    },
   },
 });
 
@@ -429,6 +600,9 @@ export const {
   setMovingComponent,
   setPrevCompChange,
   setNewPrevComp,
+  setClearReadmeStore,
+  setLoadDataMapping,
+  setIsSaveReadme,
 } = themeSlice.actions;
 export const selectReadme = (state: RootState) => state.readme;
 // 리듀서
