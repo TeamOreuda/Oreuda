@@ -1,13 +1,18 @@
 package com.oreuda.api.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.oreuda.api.client.PlantClient;
+import com.oreuda.api.repository.UserJpaRepository;
 import com.oreuda.api.service.RepositoryService;
 import com.oreuda.api.service.UserService;
-import lombok.extern.slf4j.Slf4j;
+import com.oreuda.common.exception.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
