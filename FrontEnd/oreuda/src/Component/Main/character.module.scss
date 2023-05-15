@@ -5,13 +5,31 @@
   ul {
     font-weight: bold;
     font-size: 32px;
+
     margin: {
       top: 0px;
       bottom: 8px;
       left: 0px;
       right: 16px;
     }
+
     padding: 0px;
+    z-index: -100;
+  }
+
+  // .img {
+  //   z-index: -100;
+  // }
+
+  .hovered {
+    top: 100%;
+    left: 0;
+    right: 0;
+    border-top: none;
+    width: 600px;
+    height: 300px;
+    transform: scale(1.2);
+    z-index: 100;
   }
 }
 

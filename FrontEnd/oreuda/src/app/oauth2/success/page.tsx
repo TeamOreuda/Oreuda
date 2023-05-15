@@ -4,14 +4,11 @@ import "swiper/css";
 import "swiper/css/autoplay";
 import Cookies from "js-cookie";
 import { useCallback, useEffect } from "react";
-
-import { useAppDispatch } from "@/store/hooks";
 import { useSearchParams } from "next/navigation";
 import Loading from "@/Component/Loading/Loading";
 
 export default function Token() {
   const searchParams = useSearchParams();
-  const dispatch = useAppDispatch();
   const ACCESS_TOKEN = searchParams.get("Authorization");
   const REFRESH_TOKEN = searchParams.get("RefreshToken");
 
