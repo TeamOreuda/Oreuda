@@ -105,7 +105,7 @@ export default function Main() {
       try {
         const res = await GetHasReadme(ACCESS_TOKEN);
         setWasSaveReadme(true);
-        dispatch(setIsSaveReadme(true));
+        dispatch(setIsSaveReadme(res.data));
         // store에 저장
       } catch (err: any) {
         if (err.response?.status == 401) {
