@@ -35,8 +35,6 @@ export default function Preview() {
   const nPrevComp = useAppSelector(selectReadme).nPrevComp;
   const techArr = useAppSelector(selectReadme).techArr;
 
-  console.log(textArr);
-
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
 
@@ -80,7 +78,7 @@ export default function Preview() {
       arr.push(
         <div key={Math.random() * (1000000 - 1)} className={st.TextArr}>
           <h3>{textArr[i].titleArr}</h3>
-          <p>{parseTextEnter(textArr[i].descArr)}</p>
+          <p>{textArr[i].descArr}</p>
         </div>
       );
     }
@@ -130,18 +128,15 @@ export default function Preview() {
   };
 
   const parseTextEnter = (text: string) => {
-    const arr:any = [];
+    const arr: any = [];
     const textSplit = text.split("<br />");
-    textSplit.map((el: any, index:number) => {
+    textSplit.map((el: any, index: number) => {
       arr.push(<span className={st.textareaParse}>{el}</span>);
-      console.log(textSplit.length);
-      if(textSplit.length-1 > index)
-        arr.push(<br />)
+      if (textSplit.length - 1 > index) arr.push(<br />);
     });
-    console.log(textSplit);
 
     return arr;
-  }
+  };
 
   // 컴포넌트 별 jsx (1 ~ 7)
   const tmp = [
@@ -201,11 +196,9 @@ export default function Preview() {
     <div key="7" className={st.TextArr}>
       {showTextArr()}
       <h3>{newTextTitle}</h3>
-      <p>{parseTextEnter(newTextDesc)}</p>
+      <p>{newTextDesc}</p>
     </div>,
   ];
-
-  
 
   // MD 관련 Function을 정의합니다.
   // ******************************************************************************** /
@@ -275,7 +268,7 @@ export default function Preview() {
   <h3 style ="font-size : 2em; font-weight:700;">Tech Stack</h3>
     <div >${showTechWholeMD()}</div>
   </div>
-  `,  
+  `,
     `
   <div key="5">
     <h3 style ="font-size : 2em; font-weight:700;">Contact</h3>
@@ -322,12 +315,12 @@ export default function Preview() {
   // caution : MD 파일 상단에 작성할 안내 메세지입니다.
   const caution = `\n<!-- font-size 를 조절하면 원하는 크기로 글자를 조절할 수 있습니다.-->
   <!-- Designed and developed in-house at Oreuda (https://oreuda.kr) -->
-  <!-- 불편 사항 및 문의는 tykimdream@gmail.com으로 보내주세요 -->`
+  <!-- 불편 사항 및 문의는 tykimdream@gmail.com으로 보내주세요 -->`;
 
   // toMD : 작성된 HTML을 md로 변환한 문자열을 저장합니다.
   let toMD = `<div  style = "display: flex;  align-items: center; flex-direction: column;  justify-content: center;">`;
   toMD += caution;
-  
+
   // nPrevComp : toMD에 작성한 컴포넌트들을 붙히는 함수입니다.
   nPrevComp.map((key: any) => {
     if (key > 10) {
@@ -393,8 +386,8 @@ export default function Preview() {
 
   // 다운로드 메서드
   const onClickDownload = () => {
-    console.log(nPrevComp);
-    console.log(toMD);
+    // console.log(nPrevComp);
+    // console.log(toMD);
     const blob = new Blob([file.content], { type: "text/plain" });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -417,89 +410,73 @@ export default function Preview() {
 
   // 저장 버튼 클릭시 readme 저장 axios 요청
   const saveReadme = async () => {
-    const arr: any = [];
-    nPrevComp.map((el: any, idx: any) => {
-      let curr = Number(el);
-      let pushData = {};
-      if (curr === 1) {
-        pushData = {
-          readmeType: "BOJ",
-          bojValue: BaekJoonData.length > 0 ? BaekJoonData : "temp",
-          bojTheme: SolvedThemeData,
-        };
-      } else if (curr === 2) {
-        pushData = { readmeType: "GIT", gitTheme: githubTheme };
-      } else if (curr === 3) {
-        pushData = {
-          readmeType: "LANGUAGE",
-          languageTheme: mulTheme,
-          languageType: mulType,
-        };
-      } else if (curr === 4) {
-        techPlusWhole.map((el: any, index: any) => {
-          // 제목 백에서 넣어줄 예정
+    if (window.confirm("저장하시겠습니까!?")) {
+      const arr: any = [];
+      nPrevComp.map((el: any, idx: any) => {
+        let curr = Number(el);
+        let pushData = {};
+        if (curr === 1) {
           pushData = {
-            readmeType: "TECH",
-            techTitle: el.name,
-            techStack: el.techArray,
+            readmeType: "BOJ",
+            bojValue: BaekJoonData.length > 0 ? BaekJoonData : "temp",
+            bojTheme: SolvedThemeData,
           };
-          // pushData = { readmeType: "TECH", techStack: el.techArray };
-          arr.push(pushData);
-        });
-      } else if (curr === 5) {
-        pushData = {
-          readmeType: "CONTACT",
-          mailLink: `${mailId}@${mailDomain}`,
-          blogLink: blogLink.length > 0 ? blogLink : "temp",
-          notionLink: notionLink.length > 0 ? notionLink : "temp",
-        };
-      } else if (curr === 6) {
-        pushData = { readmeType: "PLANT" };
-      } else if (curr > 10) {
-        const tmp = (curr % 10) - 1;
+        } else if (curr === 2) {
+          pushData = { readmeType: "GIT", gitTheme: githubTheme };
+        } else if (curr === 3) {
+          pushData = {
+            readmeType: "LANGUAGE",
+            languageTheme: mulTheme,
+            languageType: mulType,
+          };
+        } else if (curr === 4) {
+          techPlusWhole.map((el: any, index: any) => {
+            // 제목 백에서 넣어줄 예정
+            pushData = {
+              readmeType: "TECH",
+              techTitle: el.name,
+              techStack: el.techArray,
+            };
+            // pushData = { readmeType: "TECH", techStack: el.techArray };
+            arr.push(pushData);
+          });
+        } else if (curr === 5) {
+          pushData = {
+            readmeType: "CONTACT",
+            mailLink: `${mailId}@${mailDomain}`,
+            blogLink: blogLink.length > 0 ? blogLink : "temp",
+            notionLink: notionLink.length > 0 ? notionLink : "temp",
+          };
+        } else if (curr === 6) {
+          pushData = { readmeType: "PLANT" };
+        } else if (curr > 10) {
+          const tmp = (curr % 10) - 1;
 
-        pushData = {
-          readmeType: "WRITING",
-          writingTitle: textArr[tmp].titleArr,
-          writingContents: textArr[tmp].descArr,
-        };
-      }
-
-      // pushData = {readmeType:"WRITING", writingTitle}
-      if (curr !== 4) arr.push(pushData);
-    });
-    try {
-      console.log(`pushArr: `, arr);
-      const res = await axios.patch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/readme`,
-        arr,
-        {
-          headers: {
-            Authorization: ACCESS_TOKEN,
-          },
+          pushData = {
+            readmeType: "WRITING",
+            writingTitle: textArr[tmp].titleArr,
+            writingContents: textArr[tmp].descArr,
+          };
         }
-      );
-      console.log(res);
-    } catch (err: any) {
-      console.log(err);
 
-      /**
- * 리스트 제외 request type은 String
- *
- 리드미 리스트(readmes)
- * 리드미 종류(readmeType)
- * 1. 백준 아이디(bojValue)
- * 2. 백준 테마(bojTheme)
- * 2. 깃 테마(gitTheme)
- * 3. 언어테마(languageTheme)
- * 4. 언어타입(languageType)
- * 5. 기술스택 리스트(techStack) - 리스트
- * 6. 메일(mailLink)
- * 6. 블로그(blogLink)
- * 6. 노션(notionLink)
- * 7. 글 제목(writingTitle)
- * 7. 글 내용(writingContents)
- */
+        // pushData = {readmeType:"WRITING", writingTitle}
+        if (curr !== 4) arr.push(pushData);
+      });
+      try {
+        // console.log(`pushArr: `, arr);
+        const res = await axios.patch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/readme`,
+          arr,
+          {
+            headers: {
+              Authorization: ACCESS_TOKEN,
+            },
+          }
+        );
+        // console.log(res);
+      } catch (err: any) {
+        console.log(err);
+      }
     }
   };
   return (
@@ -527,7 +504,13 @@ export default function Preview() {
           />
         </div>
         <button className={st.btnReset}>초기화</button>
-        <button className={`${st.btnSave} ${currComponent === 8 ? undefined : st.disabledBtn}`} onClick={saveReadme} disabled={currComponent !== 8}>
+        <button
+          className={`${st.btnSave} ${
+            currComponent === 8 ? undefined : st.disabledBtn
+          }`}
+          onClick={saveReadme}
+          disabled={currComponent !== 8}
+        >
           저장
         </button>
       </div>

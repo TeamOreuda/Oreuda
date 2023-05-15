@@ -47,6 +47,7 @@ export interface readmeSlice {
   currComponent: number;
   prevComp: number[];
   nPrevComp: any;
+  isSaveReadme: boolean;
 }
 
 // 초기 상태 정의
@@ -137,6 +138,7 @@ const initialState: readmeSlice = {
   prevComp: [],
   nextComp: [],
   nPrevComp: [],
+  isSaveReadme: false,
 };
 
 const themeSlice = createSlice({
@@ -499,6 +501,7 @@ const themeSlice = createSlice({
       const textWholeTmpArr: any = [];
       let ttmp = 0;
       let techFlag = false;
+      let textFlag = false;
       data.map((el: any, index: any) => {
         let tmp = el.readmeType;
         if (tmp === "BOJ") {
@@ -507,12 +510,14 @@ const themeSlice = createSlice({
           state.componentArr[1] = true;
           state.nextComp.push(1);
         } else if (tmp === "GIT") {
-          state.githubTheme = el.githubTheme;
+          state.githubTheme = el.gitTheme;
+          state.githubId = el.gitValue;
           state.componentArr[2] = true;
           state.nextComp.push(2);
         } else if (tmp === "LANGUAGE") {
           state.mulTheme = el.languageTheme;
           state.mulType = el.languageType;
+          state.githubId = el.languageValue;
           state.componentArr[3] = true;
           state.nextComp.push(3);
         } else if (tmp === "TECH") {
@@ -540,16 +545,24 @@ const themeSlice = createSlice({
           state.nextComp.push(6);
         } else if (tmp === "WRITING") {
           const obj: any = {};
-          obj.name = el.titleArr;
-          obj.techArray = el.descArr;
+          // console.log(el);
+
+          obj.titleArr = el.writingTitle;
+          obj.descArr = el.writingContents;
           obj.index = state.textCnt++;
           textWholeTmpArr.push(obj);
           state.componentArr[7] = true;
-          state.nextComp.push(7);
+          if (!textFlag) {
+            state.nextComp.push(7);
+            textFlag = true;
+          }
         }
       });
       state.techPlusWhole = techWholeTmpArr;
       state.textArr = textWholeTmpArr;
+    },
+    setIsSaveReadme(state, action) {
+      state.isSaveReadme = action.payload;
     },
   },
 });
@@ -589,6 +602,7 @@ export const {
   setNewPrevComp,
   setClearReadmeStore,
   setLoadDataMapping,
+  setIsSaveReadme,
 } = themeSlice.actions;
 export const selectReadme = (state: RootState) => state.readme;
 // 리듀서
