@@ -7,6 +7,7 @@ import st from "./character.module.scss";
 import { GetCharacter } from "@/Api/Plant/getCharacter";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
+import { redirect } from "next/navigation";
 
 export default function Character() {
   const ACCESS_TOKEN = Cookies.get("Authorization");
@@ -29,10 +30,10 @@ export default function Character() {
           const res = await GetCharacter(token.data.Authorization);
           setCharacterData(res.data);
         } catch (error) {
-          // redirect("/landing")
+          redirect("/landing");
         }
       } else {
-        // redirect("/landing")
+        redirect("/landing");
       }
     }
   }, [ACCESS_TOKEN, REFRESH_TOKEN]);
