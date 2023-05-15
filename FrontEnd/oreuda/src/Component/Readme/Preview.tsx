@@ -481,6 +481,7 @@ export default function Preview() {
       } catch (err: any) {
         console.log(err);
       }
+      alert("저장이 완료되었습니다.");
     }
   };
   return (
