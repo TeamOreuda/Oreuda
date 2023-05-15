@@ -51,9 +51,7 @@ export default async function RootLayout({
         </html>
       );
 
-    {
-      /* 로그인이 되어있다면 */
-    }
+    /* 로그인이 되어있다면 */
 
     const cookieStore = cookies();
     const ACCESS_TOKEN = cookieStore.get("Authorization")?.value;
@@ -81,6 +79,10 @@ export default async function RootLayout({
           // redirect("/landing")
         }
       });
+
+    const logoutHandler = () => {
+      console.log("logout");
+    };
 
     return (
       <html lang="kr">
@@ -117,28 +119,19 @@ export default async function RootLayout({
                 );
               })}
             </div>
-            <ul>
-              <Link
-                href="http://52.79.221.133:8090/oauth2/authorization/github"
-                className={st.link}
-              >
-                <Image
-                  className={st.img}
-                  src={`/images/nav/logout.svg`}
-                  alt=""
-                  width={24}
-                  height={24}
-                />
-                로그인
-              </Link>
-            </ul>
 
-            {/* <ul>
-              <Link href="/landing" className={st.link}>
-                <Image className={st.img} src={userProfile} alt="" width={24} height={24} />
+            <ul>
+              <div className={st.link}>
+                <Image
+                  className={st.profile}
+                  src={userProfile}
+                  alt=""
+                  width={32}
+                  height={32}
+                />
                 로그아웃
-              </Link>
-            </ul> */}
+              </div>
+            </ul>
           </nav>
           <Providers>{children}</Providers>
         </body>

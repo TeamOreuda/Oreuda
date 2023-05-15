@@ -7,14 +7,7 @@ import { YearlyCommit } from "@/Component/Repository/repository";
 export default function repositoryGraph(props: {
   yearlyCommits: YearlyCommit[];
 }) {
-  const yearlyCommits = [
-    { year: 2023, count: 5 },
-    { year: 2022, count: 5 },
-    { year: 2021, count: 5 },
-    { year: 2020, count: 5 },
-    { year: 2019, count: 5 },
-    { year: 2018, count: 5 },
-  ];
+  const { yearlyCommits } = props;
   ChartJS.register(ArcElement, Tooltip);
   const data = {
     labels: yearlyCommits?.map((e: YearlyCommit) => {
