@@ -78,7 +78,7 @@ export default function Preview() {
     const arr = [];
     for (let i = 0; i < textArr.length; i++) {
       arr.push(
-        <div key={i} className={st.TextArr}>
+        <div key={Math.random() * (1000000 - 1)} className={st.TextArr}>
           <h3>{textArr[i].titleArr}</h3>
           <p>{textArr[i].descArr}</p>
         </div>
@@ -93,7 +93,7 @@ export default function Preview() {
     arr.push(<h3>{techTitle}</h3>) // 이 부분 추가했는데 css가 좀 이상하네
     for (let i = 0; i < techPlusArr.length; i++) {
       arr.push(
-        <div key={i} className={st.TextArr}>
+        <div key={Math.random() * (1000000 - 1)} className={st.TextArr}>
           <img
             key={Math.random() * (1000000 - 1)}
             className={st.techBadge}
@@ -112,8 +112,7 @@ export default function Preview() {
     const arr: any = [];
 
     techPlusWhole.map((el, index) => {
-      arr.push(<h3 key={index}>{el.name}</h3>);
-      
+      arr.push(<h3 key={Math.random() * (1000000 - 1)}>{el.name}</h3>);
       const arr2: any = [];
 
       el.techArray.map((elel: any, idx: any) => {
@@ -331,7 +330,7 @@ export default function Preview() {
     textArr.map((el: any, index: any) => {
       if (idx - 1 == index) {
         arr.push(
-          <div key={index}>
+          <div key={Math.random() * (1000000 - 1)} className={st.TextArr}>
             <h3>{el.titleArr}</h3>
             <p>{el.descArr}</p>
           </div>
@@ -423,8 +422,12 @@ export default function Preview() {
       } else if (curr === 4) {
         techPlusWhole.map((el: any, index: any) => {
           // 제목 백에서 넣어줄 예정
-          // pushData = { readmeType: "TECH", techTitle: "", techStack: el.techArray };
-          pushData = { readmeType: "TECH", techStack: el.techArray };
+          pushData = {
+            readmeType: "TECH",
+            techTitle: el.name,
+            techStack: el.techArray,
+          };
+          // pushData = { readmeType: "TECH", techStack: el.techArray };
           arr.push(pushData);
         });
       } else if (curr === 5) {

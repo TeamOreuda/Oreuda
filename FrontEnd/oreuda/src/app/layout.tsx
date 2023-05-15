@@ -8,6 +8,7 @@ import st from "./layout.module.scss";
 import { Providers } from "@/store/provider";
 
 import { GetProfile } from "@/Api/Users/getProfile";
+import { GetCharacter } from "@/Api/Plant/getCharacter";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
 
@@ -35,11 +36,7 @@ const navList: NavList[] = [
   },
 ];
 
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   if (children && typeof children === "object" && "props" in children) {
     // 로그인이 되어있지 않다면
     if (children.props.childProp.segment === "landing")
@@ -64,10 +61,7 @@ export default async function RootLayout({
         if (err.response?.status == 401) {
           return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
             .then(async (res) => {
-              saveCookiesAndRedirect(
-                res.data.Authorization,
-                res.data.RefreshToken
-              );
+              saveCookiesAndRedirect(res.data.Authorization, res.data.RefreshToken);
               return await GetProfile(res.data.Authorization).then((res) => {
                 return res.data;
               });
@@ -80,9 +74,26 @@ export default async function RootLayout({
         }
       });
 
-    const logoutHandler = () => {
-      console.log("logout");
-    };
+    const characterData = await GetCharacter(ACCESS_TOKEN)
+      .then((res) => {
+        return res.data;
+      })
+      .catch(async (err) => {
+        if (err.response?.status == 401) {
+          return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
+            .then(async (res) => {
+              await saveCookiesAndRedirect(res.data.Authorization, res.data.RefreshToken);
+              return await GetCharacter(ACCESS_TOKEN).then((res) => {
+                return res.data;
+              });
+            })
+            .catch(() => {
+              // redirect("/landing")
+            });
+        } else {
+          // redirect("/landing")
+        }
+      });
 
     return (
       <html lang="kr">
@@ -92,7 +103,7 @@ export default async function RootLayout({
         <body className={st.body}>
           <nav className={st.nav}>
             <div>
-              <header className={st.header}>
+              <Link href="/" className={st.header}>
                 <Image
                   className={st.img}
                   src="/images/nav/navImg.svg"
@@ -101,7 +112,7 @@ export default async function RootLayout({
                   height={36}
                 />
                 O R E U D A
-              </header>
+              </Link>
               {navList.map((e: NavList) => {
                 return (
                   <ul key={e.name}>
@@ -118,6 +129,13 @@ export default async function RootLayout({
                   </ul>
                 );
               })}
+              <Image
+                className={st.characterimg}
+                src={`/images/character/${characterData?.name}.svg`}
+                alt=""
+                width={144}
+                height={144}
+              />
             </div>
 
             <ul>

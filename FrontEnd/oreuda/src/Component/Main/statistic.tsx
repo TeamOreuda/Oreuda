@@ -17,7 +17,7 @@ interface gitHubStatistic {
   count?: number;
   language?: string;
   howCount?: string;
-  imageName?: string;
+  imageName: string;
 }
 
 interface UserData {
@@ -143,17 +143,14 @@ export default function Statistic() {
           <div key={e.title} className={st.box}>
             <div>
               <ul>{e.title}</ul>
-              <span>
+              <span className={st.count}>
                 {e.count} <span>{e.howCount}</span>
               </span>
-              <span>{e.language}</span>
+              {e.language && (
+                <span className={e.language.length > 6 ? st.language : st.count}>{e.language}</span>
+              )}
             </div>
-            <Image
-              src={`/images/main/${e.imageName}.svg`}
-              alt="주언어"
-              width={80}
-              height={80}
-            />
+            <Image src={`/images/main/${e.imageName}.svg`} alt="주언어" width={80} height={80} />
           </div>
         ))}
       </div>
