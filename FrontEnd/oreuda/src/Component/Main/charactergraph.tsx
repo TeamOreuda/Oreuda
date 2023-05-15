@@ -13,20 +13,13 @@ import { Line } from "react-chartjs-2";
 
 import st from "./charactergraph.module.scss";
 
-interface Charactergraph {
+export interface Charactergraph {
   id: number;
   time: string;
   val: number;
 }
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip
-);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip);
 
 export default function Character(props: { charactergraph: Charactergraph[] }) {
   const { charactergraph } = props;
@@ -36,10 +29,10 @@ export default function Character(props: { charactergraph: Charactergraph[] }) {
       {
         fill: true,
         data: charactergraph?.map((e: Charactergraph) => {
-          const date = `${e.time.substring(2, 4)}.${e.time.substring(
-            5,
-            7
-          )}.${e.time.substring(8, 10)}`;
+          const date = `${e.time.substring(2, 4)}.${e.time.substring(5, 7)}.${e.time.substring(
+            8,
+            10
+          )}`;
           return { x: date, y: e.val };
         }),
       },
