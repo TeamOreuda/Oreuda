@@ -53,6 +53,19 @@ public class UserService {
 
 	}
 
+	public boolean isTodayFirstLogin(String userId) {
+		User user = userRepository.findById(userId).get();
+		LocalDateTime updateTime = user.getUpdateTime();
+		LocalDateTime now = LocalDateTime.now();
+
+		if (updateTime == null) {
+			return true;
+		}
+
+		return updateTime.getYear() != now.getYear() || updateTime.getMonth() != now.getMonth()
+			|| updateTime.getDayOfMonth() != now.getDayOfMonth();
+	}
+
 	public UserDto getUser(String userId) {
 		User user = userRepository.findById(userId).get();
 		UserDto userDto = UserDto.toEntity(user);
