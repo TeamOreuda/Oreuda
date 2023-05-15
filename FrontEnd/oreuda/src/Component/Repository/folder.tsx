@@ -3,7 +3,7 @@ import Image from "next/image";
 import Cookies from "js-cookie";
 
 import st from "./folder.module.scss";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState ,SetStateAction,Dispatch, useCallback} from "react";
 
 import { ChangeFolder } from "@/Api/Folders/changeFolder";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
@@ -21,7 +21,7 @@ export default function Folder(props: {
   clickDelete: boolean;
   folderList: Folder[];
   checkedItems: number[];
-  setCheckedItems: React.Dispatch<React.SetStateAction<number[]>>;
+  setCheckedItems: Dispatch<SetStateAction<number[]>>;
   loadFolderList: () => Promise<void>;
 }) {
   const {
@@ -38,7 +38,7 @@ export default function Folder(props: {
   const [targetName, setTargetName] = useState<number>();
   const [targetPosition, setTargetPosition] = useState<number>();
 
-  const changeFolderList = async () => {
+  const changeFolderList = useCallback(async () => {
     if (!targetName || targetPosition == undefined) return;
     try {
       await ChangeFolder(ACCESS_TOKEN, targetName, targetPosition);
@@ -52,11 +52,11 @@ export default function Folder(props: {
         await ChangeFolder(ACCESS_TOKEN, targetName, targetPosition);
       }
     }
-  };
+  },[ACCESS_TOKEN, REFRESH_TOKEN, targetName, targetPosition])
 
   useEffect(() => {
     changeFolderList().then(() => loadFolderList());
-  }, [ACCESS_TOKEN, REFRESH_TOKEN, targetName, targetPosition]);
+  }, [ACCESS_TOKEN, REFRESH_TOKEN, changeFolderList, loadFolderList]);
 
   const onDragStart = (e: React.DragEvent<HTMLAnchorElement>) => {
     setGrab(e.currentTarget);

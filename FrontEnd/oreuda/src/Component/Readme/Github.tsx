@@ -28,7 +28,6 @@ export default function Github() {
   const githubTheme = useAppSelector(selectReadme).githubTheme;
   const githubId = useAppSelector(selectReadme).githubId;
   const [id, setId] = useState(githubId);
-  console.log(id);
 
   const dispatch = useAppDispatch();
   const activeEnter = (e: any) => {
