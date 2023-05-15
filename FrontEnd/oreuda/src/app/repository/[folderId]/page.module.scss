@@ -15,9 +15,11 @@
   }
 
   .repository {
-    height: calc(100vh - 240px);
+    height: calc(100vh - 260px);
+    z-index: -100;
     flex-wrap: wrap;
     overflow-y: scroll;
+
   }
 }
 
@@ -31,15 +33,16 @@
 }
 
 .dropdown {
-  width: 100px;
+  width: 120px;
+  z-index: 100;
 
   .label {
-    display: block;
     margin-bottom: 16px;
   }
 
   .options {
-    position: absolute;
+    // position: absolute;
+    z-index: 100;
     top: 100%;
     left: 0;
     right: 0;

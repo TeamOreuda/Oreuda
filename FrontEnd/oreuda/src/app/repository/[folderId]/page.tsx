@@ -1,26 +1,30 @@
 "use client";
 
 import Image from "next/image";
-import { use, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { redirect, useParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 
 import st from "./page.module.scss";
+import MoveFolder from "@/Component/Repository/moveFolder";
 import Repository from "@/Component/Repository/repository";
 
-import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
+import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
+import { MoveRepository } from "@/Api/Repository/moveRepository";
 import { GetRepositoryLst } from "@/Api/Repository/getRepositoryList";
-import { getUserRefresh } from "@/Api/Oauth/getUserRefresh";
-import MoveFolder from "@/Component/Repository/moveFolder";
+import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
+
 export default function RepositoryPage() {
   const params = useParams();
   const folderId = Number(params.folderId);
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
+
   const [showModal, setShowModal] = useState(false);
-  const [moveRepository, setmoveRepository] = useState(false);
+  const [moveRepositoryMode, setMoveRepositoryMode] = useState(false);
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
-  const [repositoryListData, setRepositoryListData] = useState([]);
+  const [moveFolderId, setMoveFolderId] = useState<number>(-1);
+  const [repositoryList, setRepositoryList] = useState([]);
 
   const options = [
     { id: 1, value: "recent", name: "최신순" },
@@ -28,57 +32,99 @@ export default function RepositoryPage() {
     { id: 3, value: "name", name: "이름순" },
     { id: 4, value: "star", name: "별점순" },
   ];
+
+  const [isOpen, setIsOpen] = useState(false);
   const [filtering, setFiltering] = useState(options[0]);
 
-  // const [isOpen, setIsOpen] = useState(true);
-  // const [selectedOption, setSelectedOption] = useState(options[0]);
+  const handleOptionClick = (option: any) => {
+    setFiltering(option);
+    setIsOpen(!isOpen);
+  };
 
-  // const handleOptionClick = (option: any) => {
-  //   setSelectedOption(option);
-  //   setIsOpen(!isOpen);
-  // };
-  // const toggleDropdown = () => {
-  //   setIsOpen(!isOpen);
-  // };
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
 
-  // const clickMove = () => {
-  //   setmoveRepository(!moveRepository);
-  // };
+  const loadRepositoryList = useCallback(async () => {
+    try {
+      const res = await GetRepositoryLst(
+        ACCESS_TOKEN,
+        folderId,
+        filtering.value
+      );
+      setRepositoryList(res.data);
+    } catch (err: any) {
+      if (err.response?.status == 401) {
+        const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+        saveCookiesAndRedirect(
+          token.data.Authorization,
+          token.data.RefreshToken
+        );
+        const res = await GetRepositoryLst(
+          ACCESS_TOKEN,
+          folderId,
+          filtering.value
+        );
+        setRepositoryList(res.data);
+      }
+    }
+  }, [ACCESS_TOKEN, REFRESH_TOKEN, filtering.value, folderId]);
 
   useEffect(() => {
-    const loadRepositoryList = async () => {
+    loadRepositoryList();
+  }, [loadRepositoryList]);
+
+  const clickModal = () => {
+    if (repositoryList?.length == 0) {
+      alert("선택하신 레포지토리가 없습니다");
+    } else {
+      if (moveRepositoryMode) {
+        setShowModal(true);
+        setMoveRepositoryMode(false);
+      } else {
+        setMoveRepositoryMode(true);
+      }
+    }
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setMoveFolderId(-1);
+    setCheckedItems([]);
+  };
+
+  const moveRepository = async () => {
+    if (moveFolderId === -1) {
+      alert("이동할 폴더를 1개 선택해주세요");
+    } else {
+      const data = {
+        nowFolderId: folderId,
+        filtering: filtering.value,
+        moveFolderId: moveFolderId,
+        repositories: checkedItems,
+      };
       try {
-        const res = await GetRepositoryLst(ACCESS_TOKEN, folderId, "recent");
-        setRepositoryListData(res.data);
+        await MoveRepository(ACCESS_TOKEN, data);
       } catch (err: any) {
         if (err.response?.status == 401) {
-          const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+          const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
           saveCookiesAndRedirect(
             token.data.Authorization,
             token.data.RefreshToken
           );
-          const res = await GetRepositoryLst(ACCESS_TOKEN, folderId, "recent");
-          setRepositoryListData(res.data);
+          await MoveRepository(ACCESS_TOKEN, data);
         }
       }
-    };
-    loadRepositoryList();
-  }, [ACCESS_TOKEN, REFRESH_TOKEN, folderId]);
-
-  const clickModal = () => {
-    alert("준비중입니다");
-    // if (repositoryListData?.length == 0) {
-    //   alert("선택하신 레포지토리가 없습니다");
-    // } else {
-    //   setShowModal(!showModal);
-    // }
+      await loadRepositoryList();
+      closeModal();
+    }
   };
 
   return (
     <div className={st.body}>
       <div className={st.button}>
         <button onClick={clickModal}>
-          {false ? "확 인" : "레포지토리 이동"}
+          {moveRepositoryMode ? "확 인" : "레포지토리 이동"}
           <Image
             className={st.img}
             src="/images/repository/send.svg"
@@ -88,9 +134,9 @@ export default function RepositoryPage() {
           />
         </button>
       </div>
-      {/* <div onClick={(e) => e.stopPropagation()}>
+      <div onClick={(e) => e.stopPropagation()}>
         <div className={st.dropdown} onClick={toggleDropdown}>
-          {selectedOption.name}
+          {filtering.name}
         </div>
         <div className={st.dropdown}>
           {isOpen && (
@@ -99,7 +145,7 @@ export default function RepositoryPage() {
                 <div
                   key={option.id}
                   className={`${st.option} ${
-                    option.value === selectedOption.value ? st.active : ""
+                    option.value === filtering.value ? st.active : ""
                   }`}
                   onClick={() => handleOptionClick(option)}
                 >
@@ -109,15 +155,20 @@ export default function RepositoryPage() {
             </div>
           )}
         </div>
-      </div> */}
+      </div>
       <hr />
-      {/* {showModal && (
-        <MoveFolder clickModal={clickModal} folderId={folderId} filtering={filtering} />
-      )} */}
+      {showModal && (
+        <MoveFolder
+          closeModal={closeModal}
+          folderId={folderId}
+          setMoveFolderId={setMoveFolderId}
+          moveRepository={moveRepository}
+        />
+      )}
       <div className={st.repository}>
         <Repository
-          clickMove={false}
-          repositoryList={repositoryListData}
+          moveRepositoryMode={moveRepositoryMode}
+          repositoryList={repositoryList}
           checkedItems={checkedItems}
           setCheckedItems={setCheckedItems}
         />

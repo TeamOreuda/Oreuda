@@ -17,13 +17,11 @@ interface gitHubStatistic {
 
 export default function Statistic(props: any) {
   const dispatch = useAppDispatch();
-
   const { userData } = props;
-  // console.log(userData);
 
   useEffect(() => {
-    dispatch(setGithubId(userData.nickname));
-  }, []);
+    dispatch(setGithubId(userData?.nickname));
+  }, [dispatch, userData]);
 
   const gitHubStatistic: gitHubStatistic[] = [
     {

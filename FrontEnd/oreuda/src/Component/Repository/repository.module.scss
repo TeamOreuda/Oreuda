@@ -1,21 +1,51 @@
 .body {
   display: grid;
   grid-template-columns: 2fr 2fr 1fr;
-  height: 180px;
+  height: 150px;
 
   margin: {
     left: 32px;
-    right: 16px;
-    bottom: 16px;
+    bottom: 64px;
   }
 }
 
 .info {
   padding-right: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   div {
     display: flex;
   }
+
+}
+
+  .infoFirst {
+    align-items: center;
+    max-width: 450px;
+
+    .link {
+      font-size: 24px;
+      font-weight: bold;
+      margin-right: 16px;
+      text-decoration: none;
+      color: black;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    div {
+      font-size: 8px;
+      font-weight: bold;
+      color: #a9a9a9;
+
+      border: 1px solid #a9a9a9;
+      border-radius: 16px;
+      padding: 4px;
+    }
 
   p {
     color: #858181;
@@ -29,37 +59,8 @@
   }
 }
 
-.infofirst {
-  align-items: center;
-  max-width: 450px;
 
-  .link {
-    font-size: 24px;
-    font-weight: bold;
-    margin-right: 16px;
-    text-decoration: none;
-    color: black;
-
-    // display: -webkit-box;
-    // -webkit-line-clamp: 1;
-    // -webkit-box-orient: vertical;
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  div {
-    font-size: 8px;
-    font-weight: bold;
-    color: #a9a9a9;
-
-    border: 1px solid #a9a9a9;
-    border-radius: 16px;
-    padding: 4px;
-  }
-}
-
-.infosecond {
+.infoBottom {
   justify-content: space-between;
 
   & div {
@@ -87,4 +88,10 @@
 .repositoryGrass {
   position: relative;
   z-index: -1;
+}
+
+
+.repositoryGrassGraph .repositoryGraph {
+  display: flex;
+  align-items: center; 
 }

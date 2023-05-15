@@ -45,11 +45,18 @@
       }
     }
   }
+
+  .characterimg{
+    margin-left: 40px;
+  }
 }
 
 .header {
   display: flex;
   align-items: center;
+  text-decoration: none;
+  color: black;
+
   margin: {
     top: 40px;
     bottom: 48px;
