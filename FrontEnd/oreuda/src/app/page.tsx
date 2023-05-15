@@ -9,20 +9,24 @@ import { redirect } from "next/navigation";
 import st from "./page.module.scss";
 import Statistic from "@/Component/Main/statistic";
 import Character from "@/Component/Main/character";
-import CharacterGraph, { Charactergraph } from "@/Component/Main/charactergraph";
+import CharacterGraph, {
+  Charactergraph,
+} from "@/Component/Main/charactergraph";
 
 import { GetUser } from "@/Api/Users/getUsers";
 import { GetCharacter } from "@/Api/Plant/getCharacter";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { GetCharacterGraph } from "@/Api/Plant/getCharacterGraph";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
-import { RefreshData } from "@/Api/Data/refreshData";
 
 export default function Home() {
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
   const [userData, setUserData] = useState();
-  const [characterData, setCharacterData] = useState<{ id: number; name: string }>({
+  const [characterData, setCharacterData] = useState<{
+    id: number;
+    name: string;
+  }>({
     id: 0,
     name: "oreuda",
   });
@@ -41,7 +45,10 @@ export default function Home() {
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+        saveCookiesAndRedirect(
+          token.data.Authorization,
+          token.data.RefreshToken
+        );
         try {
           const res = await GetUser(token.data.Authorization);
           setUserData(res.data);
@@ -61,7 +68,10 @@ export default function Home() {
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+        saveCookiesAndRedirect(
+          token.data.Authorization,
+          token.data.RefreshToken
+        );
         try {
           const res = await GetCharacter(token.data.Authorization);
           setCharacterData(res.data);
@@ -81,7 +91,10 @@ export default function Home() {
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+        saveCookiesAndRedirect(
+          token.data.Authorization,
+          token.data.RefreshToken
+        );
         try {
           const res = await GetCharacterGraph(token.data.Authorization);
           setCharacterGraph(res.data);
@@ -98,7 +111,13 @@ export default function Home() {
     loadUserData();
     loadCharacterData();
     loadCharacterGraphData();
-  }, [ACCESS_TOKEN, REFRESH_TOKEN, loadUserData, loadCharacterData, loadCharacterGraphData]);
+  }, [
+    ACCESS_TOKEN,
+    REFRESH_TOKEN,
+    loadUserData,
+    loadCharacterData,
+    loadCharacterGraphData,
+  ]);
 
   return (
     <div className={st.body}>

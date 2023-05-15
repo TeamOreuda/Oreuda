@@ -6,8 +6,8 @@ import st from "./statistic.module.scss";
 import { useAppDispatch } from "@/store/hooks";
 import { setGithubId } from "@/store/modules/readme";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { RefreshData } from "@/Api/Data/refreshData";
 import Cookies from "js-cookie";
+import { RefreshData } from "@/Api/Data/refreshData";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
 import { GetUser } from "@/Api/Users/getUsers";
@@ -147,10 +147,19 @@ export default function Statistic() {
                 {e.count} <span>{e.howCount}</span>
               </span>
               {e.language && (
-                <span className={e.language.length > 6 ? st.language : st.count}>{e.language}</span>
+                <span
+                  className={e.language.length > 6 ? st.language : st.count}
+                >
+                  {e.language}
+                </span>
               )}
             </div>
-            <Image src={`/images/main/${e.imageName}.svg`} alt="주언어" width={80} height={80} />
+            <Image
+              src={`/images/main/${e.imageName}.svg`}
+              alt="주언어"
+              width={80}
+              height={80}
+            />
           </div>
         ))}
       </div>
