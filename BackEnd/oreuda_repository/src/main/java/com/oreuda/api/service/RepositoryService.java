@@ -1,9 +1,7 @@
 package com.oreuda.api.service;
 
-import java.time.Year;
 import java.util.*;
 
-import com.oreuda.api.domain.dto.YearlyCommitDto;
 import org.springframework.stereotype.Service;
 
 import com.oreuda.api.domain.dto.InputRepositoryDto;
@@ -53,24 +51,7 @@ public class RepositoryService {
 			// 레포지토리ID로 Redis에 있는 레포지토리 정보 불러오기
 			Repository repository = repositoryRepository.get(userId, folderRepository.getId())
 				.orElseThrow(NotFoundException::new);
-			// 해당 년도 커밋이 없을 경우, 0커밋으로 초기화
-			int nowYear = Year.now().getValue();
-			List<YearlyCommitDto> yearlyCommits = repository.getYearlyCommits();
-			Map<Integer, Integer> yearlyCommitMap = new HashMap<>();
-			for (YearlyCommitDto yearlyCommitDto : yearlyCommits) {
-				if (yearlyCommitDto.getYear() < 2018) {
-					yearlyCommitMap.put(2018, yearlyCommitDto.getCount());
-				}
-				yearlyCommitMap.put(yearlyCommitDto.getYear(), yearlyCommitDto.getCount());
-			}
-			yearlyCommits.clear();
-			for (; nowYear > 2017; nowYear--) {
-				YearlyCommitDto yearlyCommitDto = YearlyCommitDto.builder()
-						.year(nowYear)
-						.count(yearlyCommitMap.getOrDefault(nowYear, 0))
-						.build();
-				yearlyCommits.add(yearlyCommitDto);
-			}
+
 			repositories.add(RepositoryDto.builder()
 				.id(repository.getId())
 				.name(repository.getName())
@@ -82,7 +63,7 @@ public class RepositoryService {
 				.commitCount(repository.getCommitCount())
 				.updateDate(repository.getUpdateDate())
 				.dailyCommits(repository.getDailyCommits())
-				.yearlyCommits(yearlyCommits)
+				.yearlyCommits(repository.getYearlyCommits())
 				.build());
 		}
 
