@@ -14,39 +14,9 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
-  div {
-    display: flex;
-  }
-
 }
 
-  .infoFirst {
-    align-items: center;
-    max-width: 450px;
-
-    .link {
-      font-size: 24px;
-      font-weight: bold;
-      margin-right: 16px;
-      text-decoration: none;
-      color: black;
-
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    div {
-      font-size: 8px;
-      font-weight: bold;
-      color: #a9a9a9;
-
-      border: 1px solid #a9a9a9;
-      border-radius: 16px;
-      padding: 4px;
-    }
-
+.infoTop {
   p {
     color: #858181;
     font-size: 16px;
@@ -59,8 +29,39 @@
   }
 }
 
+.infoFirst {
+  display: flex;
+  align-items: center;
+  max-width: 450px;
+
+  .link {
+    font-size: 24px;
+    font-weight: bold;
+    margin-right: 16px;
+    text-decoration: none;
+    color: black;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  div {
+    font-size: 8px;
+    font-weight: bold;
+    color: #a9a9a9;
+
+    border: 1px solid #a9a9a9;
+    border-radius: 16px;
+    padding: 4px;
+  }
+}
 
 .infoBottom {
+  display: flex;
+  div {
+    display: flex;
+  }
   justify-content: space-between;
 
   & div {
@@ -90,8 +91,7 @@
   z-index: -1;
 }
 
-
 .repositoryGrassGraph .repositoryGraph {
   display: flex;
-  align-items: center; 
+  align-items: center;
 }

@@ -35,8 +35,7 @@ export default function Repository(props: {
   checkedItems: string[];
   setCheckedItems: React.Dispatch<React.SetStateAction<string[]>>;
 }) {
-  const { moveRepositoryMode, repositoryList, checkedItems, setCheckedItems } =
-    props;
+  const { moveRepositoryMode, repositoryList, checkedItems, setCheckedItems } = props;
 
   function formattedDate(date: string) {
     date.replace(/^(\d{4})-(\d{2})-(\d{2})$/, (year, month, day) => {
