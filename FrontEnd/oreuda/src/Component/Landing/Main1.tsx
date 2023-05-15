@@ -64,7 +64,7 @@ export default function Main1() {
           </div>
           <div className={st.buttons}>
             <div className={st.button}>
-              <Link href="http://52.79.221.133:8090/oauth2/authorization/github">
+              <Link href={`${process.env.NEXT_PUBLIC_LOGIN_URL}`}>
                 <div className={st.github}>
                   <Image
                     data-position={1}
