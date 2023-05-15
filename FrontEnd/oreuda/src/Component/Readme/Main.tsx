@@ -1,11 +1,21 @@
 "use client";
 
 import st from "./Main.module.scss";
-import { selectReadme, setPushComponent } from "@/store/modules/readme";
+import {
+  selectReadme,
+  setClearReadmeStore,
+  setLoadDataMapping,
+  setPushComponent,
+} from "@/store/modules/readme";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import MainSelectBtn from "./MainSelectBtn";
 import NextBtn from "./NextBtn";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { GetHasReadme } from "@/Api/Readme/getHasReadme";
+import Cookies from "js-cookie";
+import { getUserRefresh } from "@/Api/Oauth/getUserRefresh";
+import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
+import { GetLoadReadme } from "@/Api/Readme/getLoadReadme";
 
 export const mainCompChoiceData: any = [
   "선택해주세요",
@@ -30,6 +40,9 @@ export default function Main() {
    * 7. 추가 텍스트(Add Text) - 두개 이상을 넣을 수 있도록
    * 8. (박스 순서 배치)
    */
+
+  const ACCESS_TOKEN = Cookies.get("Authorization");
+  const REFRESH_TOKEN = Cookies.get("RefreshToken");
   const dispatch = useAppDispatch();
   const nextComp = useAppSelector(selectReadme).nextComp;
   const [optionVal, setOptionVal] = useState("선택해주세요");
@@ -41,13 +54,73 @@ export default function Main() {
   };
 
   const onClickLoadReadme = () => {
-    if (window.confirm("당신은 유지연입니까?")) {
-      console.log("hi");
-    } else {
-      console.log("ㅠㅠㅠ");
+    if (
+      window.confirm(
+        "저장된 데이터를 불러오시겠습니까? 저장하지 않은 기존 데이터는 없어집니다."
+      )
+    ) {
+      // 기존에 저장을 눌러 작성된 데이터가 있는지 확인하는 axios
+      const isLoadReadme = async () => {
+        try {
+          const res = await GetLoadReadme(ACCESS_TOKEN);
+          console.log(res.data);
+
+          // store 초기화
+          dispatch(setClearReadmeStore(0));
+          // store에 저장
+          dispatch(setLoadDataMapping(res.data));
+          // res.data.map((el: any, index: any) => {
+          //   // 순서대로 리스트에 넣기
+
+          // })
+        } catch (err: any) {
+          if (err.response?.status == 401) {
+            const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+            saveCookiesAndRedirect(
+              token.data.Authorization,
+              token.data.RefreshToken
+            );
+            try {
+              const res = await GetHasReadme(ACCESS_TOKEN);
+              // store에 저장
+            } catch (error) {
+              // redirect("/landing")
+            }
+          } else {
+            // redirect("/landing")
+          }
+        }
+      };
+      isLoadReadme();
     }
   };
 
+  // useEffect(() => {
+  //   // 기존에 저장을 눌러 작성된 데이터가 있는지 확인하는 axios
+  //   const hasReadme = async () => {
+  //     try {
+  //       const res = await GetHasReadme(ACCESS_TOKEN);
+  //       // store에 저장
+  //     } catch (err: any) {
+  //       if (err.response?.status == 401) {
+  //         const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+  //         saveCookiesAndRedirect(
+  //           token.data.Authorization,
+  //           token.data.RefreshToken
+  //         );
+  //         try {
+  //           const res = await GetHasReadme(ACCESS_TOKEN);
+  //           // store에 저장
+  //         } catch (error) {
+  //           // redirect("/landing")
+  //         }
+  //       } else {
+  //         // redirect("/landing")
+  //       }
+  //     }
+  //   };
+  //   hasReadme();
+  // }, [ACCESS_TOKEN, REFRESH_TOKEN]);
   return (
     <div className={st.readmeMain}>
       <div className={st.titleDiv}>
