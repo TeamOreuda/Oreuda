@@ -4,6 +4,7 @@ import "swiper/css";
 import "swiper/css/autoplay";
 import Cookies from "js-cookie";
 import { useCallback, useEffect } from "react";
+
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useSearchParams } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
