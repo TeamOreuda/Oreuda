@@ -1,13 +1,14 @@
 "use client";
 
+import "swiper/css";
+import "swiper/css/autoplay";
 import Cookies from "js-cookie";
-import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useSearchParams } from "next/navigation";
+import Loading from "@/Component/Loading/Loading";
 
 export default function Token() {
   const searchParams = useSearchParams();
-  const dispatch = useAppDispatch();
   const ACCESS_TOKEN = searchParams.get("Authorization");
   const REFRESH_TOKEN = searchParams.get("RefreshToken");
 
@@ -34,4 +35,6 @@ export default function Token() {
     saveCookiesAndRedirect();
     window.location.replace("/");
   }, [saveCookiesAndRedirect]);
+
+  return <Loading />;
 }

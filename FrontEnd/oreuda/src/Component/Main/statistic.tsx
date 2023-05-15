@@ -11,6 +11,7 @@ import { RefreshData } from "@/Api/Data/refreshData";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
 import { GetUser } from "@/Api/Users/getUsers";
+import { redirect } from "next/navigation";
 
 interface gitHubStatistic {
   title: string;
@@ -44,13 +45,12 @@ export default function Statistic() {
     } catch (e: any) {
       if (e.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(
-          token.data.Authorization,
-          token.data.RefreshToken
-        );
+        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
         const res = await GetUser(token.data.Authorization);
         setUserData(res.data);
         dispatch(setGithubId(res.data.nickname));
+      } else {
+        redirect("/landing");
       }
     }
   }, [ACCESS_TOKEN, REFRESH_TOKEN, dispatch]);
@@ -89,9 +89,7 @@ export default function Statistic() {
     const rotateInterval = setInterval(() => {
       if (refreshIconRef.current) {
         refreshIconRef.current.style.transform = `rotate(${(
-          Number(
-            refreshIconRef.current.style.transform.replace(/[^0-9]/g, "")
-          ) + 10
+          Number(refreshIconRef.current.style.transform.replace(/[^0-9]/g, "")) + 10
         ).toString()}deg)`;
       }
     }, 1000 / (360 / 10));
@@ -105,10 +103,7 @@ export default function Statistic() {
     } catch (e: any) {
       if (e.response.status === 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(
-          token.data.Authorization,
-          token.data.RefreshToken
-        );
+        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
         await RefreshData(token.data.Authorization);
         await loadUserData();
         clearInterval(rotateInterval);
@@ -147,19 +142,10 @@ export default function Statistic() {
                 {e.count} <span>{e.howCount}</span>
               </span>
               {e.language && (
-                <span
-                  className={e.language.length > 6 ? st.language : st.count}
-                >
-                  {e.language}
-                </span>
+                <span className={e.language.length > 6 ? st.language : st.count}>{e.language}</span>
               )}
             </div>
-            <Image
-              src={`/images/main/${e.imageName}.svg`}
-              alt="주언어"
-              width={80}
-              height={80}
-            />
+            <Image src={`/images/main/${e.imageName}.svg`} alt="주언어" width={80} height={80} />
           </div>
         ))}
       </div>
