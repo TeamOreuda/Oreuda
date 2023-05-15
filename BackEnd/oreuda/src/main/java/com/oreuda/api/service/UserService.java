@@ -9,7 +9,6 @@ import com.oreuda.api.domain.dto.UserDto;
 import com.oreuda.api.domain.entity.Folder;
 import com.oreuda.api.domain.entity.User;
 import com.oreuda.api.repository.FolderRepository;
-import com.oreuda.api.repository.UserLogRepository;
 import com.oreuda.api.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 public class UserService {
 
 	private final UserRepository userRepository;
-	private final UserLogRepository userLogRepository;
 	private final FolderRepository folderRepository;
 
 	public void signup(SignUpDto signUpDto) {
@@ -78,6 +76,10 @@ public class UserService {
 		String userImage = user.getImage();
 
 		return userImage;
+	}
+
+	public Long getCountUser() {
+		return userRepository.count();
 	}
 }
 
