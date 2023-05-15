@@ -118,8 +118,12 @@ export default function Tech() {
         })}
       </div>
       <div className={st.titleDiv}>
-        <span>기술(Tech)</span>
-        <p>주로 사용했던 언어와 기술들은 어떤 것인가요?</p>
+        <span>기술(Tech Stacks)</span>
+        <p>
+          리드미에서 어필하고 싶은 기술들을 작성해보세요🤲
+          <br />
+          제목과 기술들을 선택하고 추가를 누르면 저장 완료!
+        </p>
       </div>
       <div className={st.contentDiv}>
         <div className={st.mailDiv}>

@@ -1,6 +1,6 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import { persistReducer } from "redux-persist";
-import createWebStorage from "redux-persist/lib/storage/createWebStorage";
+import localStorage from "redux-persist/lib/storage";
 
 import readme from "./readme";
 
@@ -23,13 +23,14 @@ const createNoopStorage = () => {
 };
 
 const storage =
-  typeof window !== "undefined"
-    ? createWebStorage("local")
-    : createNoopStorage();
+  typeof window !== "undefined" ? localStorage : createNoopStorage();
+console.log(storage);
+console.log(typeof window);
+
 const persistConfig = {
-  key: "root",
-  storage,
-  whiteList: ["readme"],
+  key: "root", // 스토리지에 사용되는 키 명칭
+  storage: storage, // 어떤 스토리지를 쓸지 필수 입력(storage 혹은 sessionStorage)
+  whiteList: ["readme"], //whiteList: 스토리지를 통해 관리할 항목
 };
 
 const persistReducers = persistReducer(persistConfig, rootReducer);
