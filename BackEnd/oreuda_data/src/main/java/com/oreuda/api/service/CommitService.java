@@ -9,8 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -30,7 +28,6 @@ import com.oreuda.common.exception.NotFoundException;
 import graphql.kickstart.spring.webclient.boot.GraphQLRequest;
 import lombok.RequiredArgsConstructor;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CommitService {
@@ -70,6 +67,7 @@ public class CommitService {
 			data = gitHubClient.getCommitByRepository(accessToken,
 				GraphQLRequest.builder().query(query).variables(variables).build());
 			if (data == null) return;
+
 			// 사용자 커밋 수
 			repository.setCommitCount(data.get("nodes").size());
 			try {
@@ -85,6 +83,9 @@ public class CommitService {
 					// YYYY-MM-DD HH:MM:SS to YYYY-MM-DD to YYYY
 					String date = commit.getDate().split(" ")[0];
 					int year = Integer.parseInt(date.split("-")[0]);
+
+					// 2018년도 이전 연도는 2018년도로 통합
+					year = year < 2018 ? 2018 : year;
 
 					// 연도별 커밋
 					if (yearlyCommit.containsKey(year))
@@ -120,11 +121,13 @@ public class CommitService {
 		}
 
 		// 연도별 커밋 저장
-		if (yearlyCommit.values().size() != 0) {
-			List<YearlyCommit> yearlyCommits = new ArrayList<>(yearlyCommit.values());
-			Collections.sort(yearlyCommits, (o1, o2) -> o1.getYear() - o2.getYear());
-			repository.setYearlyCommit(yearlyCommits);
+		for (int y = 2018, nowYear = now.getYear(); y <= nowYear; y++) {
+			// 해당 연도 커밋이 없을 경우, 0커밋으로 초기화
+			if (!yearlyCommit.containsKey(y)) yearlyCommit.put(y, new YearlyCommit(y, 0));
 		}
+		List<YearlyCommit> yearlyCommits = new ArrayList<>(yearlyCommit.values());
+		Collections.sort(yearlyCommits, (o1, o2) -> o1.getYear() - o2.getYear());
+		repository.setYearlyCommit(yearlyCommits);
 
 		repositoryRepository.set(userId, repoId, repository);
 	}
