@@ -35,7 +35,7 @@ export default function Contact() {
     <div className={st.ContactMain}>
       <div className={st.titleDiv}>
         <span>연락처(Contacts)</span>
-        <p>연락 가능한 정보 및 기술 블로그를 넣어보세요.</p>
+        <p>연락 가능한 정보 및 기술 블로그를 넣어보세요📞</p>
       </div>
       <div className={st.ContentDiv}>
         <div className={st.mailDiv}>
