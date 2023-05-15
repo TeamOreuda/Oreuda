@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import pg from "./Landing.module.scss";
+import pg from "../Landing.module.scss"
 import st from "./Main1.module.scss";
 
 import { getRegisteredUser } from "@/Api/Users/getRegisteredUser";
@@ -52,7 +52,7 @@ export default function Main1() {
               <Image
                 data-position={1}
                 data-name={1}
-                src={`images/landing/Soil.svg`}
+                src={`images/landing/main1/Soil.svg`}
                 alt="폴더"
                 width={35}
                 height={32}
@@ -69,7 +69,7 @@ export default function Main1() {
                   <Image
                     data-position={1}
                     data-name={1}
-                    src={`images/landing/github.svg`}
+                    src={`images/landing/main1/Github.svg`}
                     alt="폴더"
                     width={44}
                     height={44}
@@ -89,7 +89,7 @@ export default function Main1() {
                   <Image
                     data-position={1}
                     data-name={1}
-                    src={`images/landing/Google.svg`}
+                    src={`images/landing/main1/Google.svg`}
                     alt="폴더"
                     width={44}
                     height={44}
@@ -108,7 +108,7 @@ export default function Main1() {
             <Image
               data-position={1}
               data-name={1}
-              src={`images/landing/Cloud.svg`}
+              src={`images/landing/main1/Cloud.svg`}
               alt="구름"
               width={600}
               height={500}
@@ -119,7 +119,7 @@ export default function Main1() {
             <Image
               data-position={1}
               data-name={1}
-              src={`images/landing/Sun.svg`}
+              src={`images/landing/main1/Sun.svg`}
               alt="해"
               width={500}
               height={500}
@@ -130,7 +130,7 @@ export default function Main1() {
             <Image
               data-position={1}
               data-name={1}
-              src={`images/landing/Cloud.svg`}
+              src={`images/landing/main1/Cloud.svg`}
               alt="구름"
               width={600}
               height={500}
@@ -142,7 +142,7 @@ export default function Main1() {
               <Image
                 data-position={1}
                 data-name={1}
-                src={`images/landing/Mountain.svg`}
+                src={`images/landing/main1/Mountain.svg`}
                 alt="산"
                 width={1200}
                 height={800}
@@ -152,7 +152,7 @@ export default function Main1() {
               <Image
                 data-position={1}
                 data-name={1}
-                src={`images/landing/Mountain_close.svg`}
+                src={`images/landing/main1/Mountain_close.svg`}
                 alt="산"
                 width={1200}
                 height={800}
