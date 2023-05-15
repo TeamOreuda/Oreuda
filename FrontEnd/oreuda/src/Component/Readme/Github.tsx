@@ -45,7 +45,7 @@ export default function Github() {
     <div className={st.body}>
       <div className={st.titleDiv}>
         <span>깃헙 스탯(Stats)</span>
-        <p>깃헙 스택을 보여주는 컴포넌트 입니다.</p>
+        <p>총 커밋 수, 이슈 등의 지표를 보여줍니다🤠</p>
       </div>
       <div className={st.contentDiv}>
         {/* <input
