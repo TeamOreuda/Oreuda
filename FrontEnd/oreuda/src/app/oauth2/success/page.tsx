@@ -3,11 +3,9 @@
 import Cookies from "js-cookie";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
 
 export default function Token() {
   const searchParams = useSearchParams();
-  const dispatch = useAppDispatch();
   const ACCESS_TOKEN = searchParams.get("Authorization");
   const REFRESH_TOKEN = searchParams.get("RefreshToken");
 
