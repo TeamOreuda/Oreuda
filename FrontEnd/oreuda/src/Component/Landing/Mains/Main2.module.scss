@@ -1,0 +1,27 @@
+.layout {
+  position: relative;
+
+  height: 100vh;
+  width: 80vw;
+
+  display: flex;
+  overflow: hidden;
+
+  flex-direction: row;
+  justify-content: space-between;
+  
+  z-index: 1;
+  .ellipse {
+    position: absolute;
+    // opacity: 5%;
+    left: -84.97px;
+    top: -600px;
+    z-index: 0;
+  }
+  .content {
+    z-index: 2;
+  }
+  .buttons {
+    z-index: 2;
+  }
+}
