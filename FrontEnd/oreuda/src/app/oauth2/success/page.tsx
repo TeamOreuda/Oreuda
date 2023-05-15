@@ -1,8 +1,11 @@
 "use client";
 
+import "swiper/css";
+import "swiper/css/autoplay";
 import Cookies from "js-cookie";
-import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import Loading from "@/Component/Loading/Loading";
 
 export default function Token() {
   const searchParams = useSearchParams();
@@ -30,6 +33,8 @@ export default function Token() {
 
   useEffect(() => {
     saveCookiesAndRedirect();
-    window.location.replace("/");
+    // window.location.replace("/");
   }, [saveCookiesAndRedirect]);
+
+  return <Loading />;
 }

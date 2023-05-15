@@ -36,10 +36,17 @@ const navList: NavList[] = [
   },
 ];
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   if (children && typeof children === "object" && "props" in children) {
     // 로그인이 되어있지 않다면
-    if (children.props.childProp.segment === "landing") {
+    if (
+      children.props.childProp.segment === "landing" ||
+      children.props.childProp.segment === "oauth2"
+    )
       return (
         <html lang="kr">
           <body className={st.body}>
@@ -48,47 +55,45 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </html>
       );
     } else {
-      /* 로그인이 되어있다면 */
-      const cookieStore = cookies();
-      const ACCESS_TOKEN = cookieStore.get("Authorization")?.value;
-      const REFRESH_TOKEN = cookieStore.get("RefreshToken")?.value;
+    /* 로그인이 되어있다면 */
 
-      const userProfile = await GetProfile(ACCESS_TOKEN)
-        .then((res) => {
-          return res.data;
-        })
-        .catch(async (err) => {
-          if (err.response?.status == 401) {
-            return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
-              .then(async (res) => {
-                saveCookiesAndRedirect(res.data.Authorization, res.data.RefreshToken);
-                return await GetProfile(res.data.Authorization).then((res) => {
-                  return res.data;
-                });
-              })
-              .catch(() => {
-                // redirect("/landing");
+    const cookieStore = cookies();
+    const ACCESS_TOKEN = cookieStore.get("Authorization")?.value;
+    const REFRESH_TOKEN = cookieStore.get("RefreshToken")?.value;
+    const userProfile = await GetProfile(ACCESS_TOKEN)
+      .then((res) => {
+        return res.data;
+      })
+      .catch(async (err) => {
+        if (err.response?.status == 401) {
+          return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
+            .then(async (res) => {
+              saveCookiesAndRedirect(
+                res.data.Authorization,
+                res.data.RefreshToken
+              );
+              return await GetProfile(res.data.Authorization).then((res) => {
+                return res.data;
               });
           } else {
             // redirect("/landing");
           }
         });
 
-      const characterData = await GetCharacter(ACCESS_TOKEN)
-        .then((res) => {
-          return res.data;
-        })
-        .catch(async (err) => {
-          if (err.response?.status == 401) {
-            return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
-              .then(async (res) => {
-                saveCookiesAndRedirect(res.data.Authorization, res.data.RefreshToken);
-                return await GetCharacter(ACCESS_TOKEN).then((res) => {
-                  return res.data;
-                });
-              })
-              .catch(() => {
-                // redirect("/landing");
+    const characterData = await GetCharacter(ACCESS_TOKEN)
+      .then((res) => {
+        return res.data;
+      })
+      .catch(async (err) => {
+        if (err.response?.status == 401) {
+          return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
+            .then(async (res) => {
+              await saveCookiesAndRedirect(
+                res.data.Authorization,
+                res.data.RefreshToken
+              );
+              return await GetCharacter(ACCESS_TOKEN).then((res) => {
+                return res.data;
               });
           } else {
             // redirect("/landing");
