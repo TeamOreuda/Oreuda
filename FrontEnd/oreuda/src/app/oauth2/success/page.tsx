@@ -33,7 +33,7 @@ export default function Token() {
 
   useEffect(() => {
     saveCookiesAndRedirect();
-    // window.location.replace("/");
+    window.location.replace("/");
   }, [saveCookiesAndRedirect]);
 
   return <Loading />;

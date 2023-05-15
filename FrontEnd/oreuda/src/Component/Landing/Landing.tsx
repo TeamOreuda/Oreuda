@@ -9,7 +9,6 @@ import LandingRepo from "./LandingRepo";
 import PageFormat from "./PageFormat";
 
 import Main1 from "./Main1";
-import { useEffect } from "react";
 
 export default function Landing() {
   const ACCESS_TOKEN = Cookies?.get("Authorization");

@@ -18,6 +18,7 @@ import st from "./charactergraph.module.scss";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { GetCharacterGraph } from "@/Api/Plant/getCharacterGraph";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
+import { redirect } from "next/navigation";
 
 export interface Charactergraph {
   id: number;
@@ -44,10 +45,10 @@ export default function Character() {
           const res = await GetCharacterGraph(token.data.Authorization);
           setCharacterGraph(res.data);
         } catch (error) {
-          // redirect("/landing")
+          redirect("/landing");
         }
       } else {
-        // redirect("/landing")
+        redirect("/landing");
       }
     }
   }, [ACCESS_TOKEN, REFRESH_TOKEN]);
