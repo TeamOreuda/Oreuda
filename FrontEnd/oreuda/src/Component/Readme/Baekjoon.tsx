@@ -37,7 +37,7 @@ export default function Baekjoon() {
     <div className={st.body}>
       <div className={st.titleDiv}>
         <span>백준(Baek Joon)</span>
-        <p>백준의 티어와 잔디를 보여주는 컴포넌트 입니다.</p>
+        <p>백준의 티어와 솔브드 잔디를 보여줍니다😁</p>
       </div>
       <div className={st.contentDiv}>
         <input

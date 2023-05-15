@@ -23,9 +23,9 @@ export const mainCompChoiceData: any = [
   "백준(Baek Joon)",
   "깃헙 스탯(Stats)",
   "주 사용 언어(Most Used Language)",
-  "기술(Tech)",
+  "기술(Tech Stacks)",
   "연락처(Contacts)",
-  "오르 캐릭터(Ore Character)",
+  "오르 캐릭터(Ore)",
   "추가 텍스트(Add Text)",
 ];
 
