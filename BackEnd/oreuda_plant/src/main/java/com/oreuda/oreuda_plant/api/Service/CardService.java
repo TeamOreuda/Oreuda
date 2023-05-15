@@ -41,7 +41,7 @@ public class CardService {
         InputStream imageInFile = resource.getInputStream();
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         byte[] imageData = new byte[1024];
-        int read = 0;
+        int read;
         while ((read = imageInFile.read(imageData)) != -1) {
             bos.write(imageData, 0, read);
         }
