@@ -143,7 +143,7 @@ public class UserService {
 		// 해당 사용자의 기본 폴더 정보
 		Folder baseFolder = folderJpaRepository.findByUserAndStatus(user, "B");
 		for (Repository repository : repositories) {
-			if(repoSet.contains(repository.getId())) continue;
+			if(repoSet.remove(repository.getId())) continue;
 
 			// 폴더 미지정 레포지토리는 기본 폴더에 지정
 			FolderRepository folderRepository = FolderRepository.builder()
@@ -151,6 +151,11 @@ public class UserService {
 				.folder(baseFolder)
 				.build();
 			repositoryJpaRepository.save(folderRepository);
+		}
+
+		// 존재하지 않는 레포지토리 DB에서 삭제
+		for(String deleteId : repoSet) {
+			repositoryJpaRepository.deleteById(deleteId);
 		}
 	}
 }
