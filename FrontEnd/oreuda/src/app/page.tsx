@@ -11,35 +11,12 @@ import { GetCharacter } from "@/Api/Plant/getCharacter";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { GetCharacterGraph } from "@/Api/Plant/getCharacterGraph";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
+import { RefreshData } from "@/Api/Data/refreshData";
 
 export default async function Home() {
   const cookieStore = cookies();
   const ACCESS_TOKEN = cookieStore.get("Authorization")?.value;
   const REFRESH_TOKEN = cookieStore.get("RefreshToken")?.value;
-
-  const userData = await GetUser(ACCESS_TOKEN)
-    .then((res) => {
-      return res.data;
-    })
-    .catch(async (err) => {
-      if (err.response?.status == 401) {
-        return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN)
-          .then(async (res) => {
-            saveCookiesAndRedirect(
-              res.data.Authorization,
-              res.data.RefreshToken
-            );
-            return await GetUser(res.data.Authorization).then((res) => {
-              return res.data;
-            });
-          })
-          .catch(() => {
-            // redirect("/landing")
-          });
-      } else {
-        // redirect("/landing")
-      }
-    });
 
   const characterData = await GetCharacter(ACCESS_TOKEN)
     .then((res) => {
@@ -91,7 +68,7 @@ export default async function Home() {
 
   return (
     <div className={st.body}>
-      <Statistic userData={userData} />
+      <Statistic />
       <div className={st.character}>
         <Character characterData={characterData} />
         <CharacterGraph charactergraph={characterGraph} />
