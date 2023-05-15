@@ -4,6 +4,7 @@ import st from "./Main.module.scss";
 import {
   selectReadme,
   setClearReadmeStore,
+  setIsSaveReadme,
   setLoadDataMapping,
   setPushComponent,
 } from "@/store/modules/readme";
@@ -13,7 +14,7 @@ import NextBtn from "./NextBtn";
 import { useEffect, useState } from "react";
 import { GetHasReadme } from "@/Api/Readme/getHasReadme";
 import Cookies from "js-cookie";
-import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh"; 
+import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
 import { GetLoadReadme } from "@/Api/Readme/getLoadReadme";
 
@@ -45,8 +46,11 @@ export default function Main() {
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
   const dispatch = useAppDispatch();
   const nextComp = useAppSelector(selectReadme).nextComp;
-  const [optionVal, setOptionVal] = useState("선택해주세요");
+  const githubId = useAppSelector(selectReadme).githubId;
+  const isSaveReadme = useAppSelector(selectReadme).isSaveReadme;
 
+  const [optionVal, setOptionVal] = useState("선택해주세요");
+  const [wasSaveReadme, setWasSaveReadme] = useState(false);
   // option select 변경했을 때 동작하는 메서드
   const onChangeCompOption = (e: any) => {
     dispatch(setPushComponent(e.target.value));
@@ -63,7 +67,7 @@ export default function Main() {
       const isLoadReadme = async () => {
         try {
           const res = await GetLoadReadme(ACCESS_TOKEN);
-          console.log(res.data);
+          // console.log(res.data);
 
           // store 초기화
           dispatch(setClearReadmeStore(0));
@@ -95,32 +99,34 @@ export default function Main() {
     }
   };
 
-  // useEffect(() => {
-  //   // 기존에 저장을 눌러 작성된 데이터가 있는지 확인하는 axios
-  //   const hasReadme = async () => {
-  //     try {
-  //       const res = await GetHasReadme(ACCESS_TOKEN);
-  //       // store에 저장
-  //     } catch (err: any) {
-  //       if (err.response?.status == 401) {
-  //         const token = await getUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-  //         saveCookiesAndRedirect(
-  //           token.data.Authorization,
-  //           token.data.RefreshToken
-  //         );
-  //         try {
-  //           const res = await GetHasReadme(ACCESS_TOKEN);
-  //           // store에 저장
-  //         } catch (error) {
-  //           // redirect("/landing")
-  //         }
-  //       } else {
-  //         // redirect("/landing")
-  //       }
-  //     }
-  //   };
-  //   hasReadme();
-  // }, [ACCESS_TOKEN, REFRESH_TOKEN]);
+  useEffect(() => {
+    // 기존에 저장을 눌러 작성된 데이터가 있는지 확인하는 axios
+    const hasReadme = async () => {
+      try {
+        const res = await GetHasReadme(ACCESS_TOKEN);
+        setWasSaveReadme(true);
+        dispatch(setIsSaveReadme(true));
+        // store에 저장
+      } catch (err: any) {
+        if (err.response?.status == 401) {
+          const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+          saveCookiesAndRedirect(
+            token.data.Authorization,
+            token.data.RefreshToken
+          );
+          try {
+            const res = await GetHasReadme(ACCESS_TOKEN);
+            // store에 저장
+          } catch (error) {
+            // redirect("/landing")
+          }
+        } else {
+          // redirect("/landing")
+        }
+      }
+    };
+    hasReadme();
+  }, [ACCESS_TOKEN, REFRESH_TOKEN]);
   return (
     <div className={st.readmeMain}>
       <div className={st.titleDiv}>
@@ -141,7 +147,13 @@ export default function Main() {
         })}
       </select>
       <MainSelectBtn />
-      <button onClick={onClickLoadReadme} className={st.loadReadmeBtn}>
+      <button
+        onClick={onClickLoadReadme}
+        className={`${st.loadReadmeBtn} ${
+          isSaveReadme ? undefined : st.disabledBtn
+        }`}
+        disabled={!isSaveReadme}
+      >
         불러오기
       </button>
       {nextComp.length > 0 ? <NextBtn /> : ""}
