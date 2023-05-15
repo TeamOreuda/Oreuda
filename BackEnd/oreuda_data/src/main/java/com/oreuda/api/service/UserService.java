@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -128,18 +129,22 @@ public class UserService {
 	private void baseFolderMapping(User user, List<Repository> repositories) {
 		// 사용자의 폴더 정보
 		List<Folder> folders = folderJpaRepository.findByUser(user);
+
+		Set<String> repoSet = new HashSet<>();
 		for (Folder folder : folders) {
 			List<FolderRepository> folderRepositories = repositoryJpaRepository.findByFolder(folder);
 
-			// 폴더가 지정되어있는 레포지토리 삭제
+			// 폴더가 지정되어있는 레포지토리 추가
 			for (FolderRepository folderRepository : folderRepositories) {
-				repositories.remove(folderRepository.getId());
+				repoSet.add(folderRepository.getId());
 			}
 		}
 
 		// 해당 사용자의 기본 폴더 정보
 		Folder baseFolder = folderJpaRepository.findByUserAndStatus(user, "B");
 		for (Repository repository : repositories) {
+			if(repoSet.contains(repository.getId())) continue;
+
 			// 폴더 미지정 레포지토리는 기본 폴더에 지정
 			FolderRepository folderRepository = FolderRepository.builder()
 				.id(repository.getId())
