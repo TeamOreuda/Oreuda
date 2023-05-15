@@ -5,7 +5,12 @@ import Image from "next/image";
 import st from "./statistic.module.scss";
 import { useAppDispatch } from "@/store/hooks";
 import { setGithubId } from "@/store/modules/readme";
-import { useEffect } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { RefreshData } from "@/Api/Data/refreshData";
+import Cookies from "js-cookie";
+import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
+import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
+import { GetUser } from "@/Api/Users/getUsers";
 
 interface gitHubStatistic {
   title: string;
@@ -15,13 +20,44 @@ interface gitHubStatistic {
   imageName: string;
 }
 
-export default function Statistic(props: any) {
+interface UserData {
+  nickname: string;
+  commitCnt: number;
+  repositoryCnt: number;
+  streakMax: number;
+  mainLanguage: string;
+  updateTime: string;
+}
+
+export default function Statistic() {
   const dispatch = useAppDispatch();
-  const { userData } = props;
+  const refreshIconRef = useRef<HTMLImageElement>(null);
+  const ACCESS_TOKEN = Cookies.get("Authorization");
+  const REFRESH_TOKEN = Cookies.get("RefreshToken");
+  const [userData, setUserData] = useState<UserData>();
+
+  const loadUserData = useCallback(async () => {
+    try {
+      const res = await GetUser(ACCESS_TOKEN);
+      setUserData(res.data);
+      dispatch(setGithubId(res.data.nickname));
+    } catch (e: any) {
+      if (e.response?.status == 401) {
+        const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+        saveCookiesAndRedirect(
+          token.data.Authorization,
+          token.data.RefreshToken
+        );
+        const res = await GetUser(token.data.Authorization);
+        setUserData(res.data);
+        dispatch(setGithubId(res.data.nickname));
+      }
+    }
+  }, [ACCESS_TOKEN, REFRESH_TOKEN, dispatch]);
 
   useEffect(() => {
-    dispatch(setGithubId(userData?.nickname));
-  }, [dispatch, userData]);
+    loadUserData();
+  }, [loadUserData]);
 
   const gitHubStatistic: gitHubStatistic[] = [
     {
@@ -49,11 +85,58 @@ export default function Statistic(props: any) {
     },
   ];
 
+  const refreshHandler = async (e: React.MouseEvent<HTMLImageElement>) => {
+    const rotateInterval = setInterval(() => {
+      if (refreshIconRef.current) {
+        refreshIconRef.current.style.transform = `rotate(${(
+          Number(
+            refreshIconRef.current.style.transform.replace(/[^0-9]/g, "")
+          ) + 10
+        ).toString()}deg)`;
+      }
+    }, 1000 / (360 / 10));
+    try {
+      await RefreshData(ACCESS_TOKEN);
+      await loadUserData();
+      clearInterval(rotateInterval);
+      if (refreshIconRef.current) {
+        refreshIconRef.current.style.transform = `rotate(0deg)`;
+      }
+    } catch (e: any) {
+      if (e.response.status === 401) {
+        const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+        saveCookiesAndRedirect(
+          token.data.Authorization,
+          token.data.RefreshToken
+        );
+        await RefreshData(token.data.Authorization);
+        await loadUserData();
+        clearInterval(rotateInterval);
+        if (refreshIconRef.current) {
+          refreshIconRef.current.style.transform = `rotate(0deg)`;
+        }
+      }
+    }
+  };
+
   return (
     <div>
       <ul className={st.header}>
         <span>{userData?.nickname}</span>
         님의 깃헙을 분석해 봤어요.
+        <Image
+          src="/images/main/refresh.svg"
+          alt="갱신"
+          width={32}
+          height={32}
+          className={st.refresh}
+          onClick={refreshHandler}
+          ref={refreshIconRef}
+        />
+        <span className={st.lastUpdated}>
+          마지막 업데이트
+          <br /> {userData?.updateTime.replace("T", " ").slice(0, 16)}
+        </span>
       </ul>
       <div className={st.statistic}>
         {gitHubStatistic.map((e) => (

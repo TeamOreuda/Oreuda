@@ -16,6 +16,7 @@ import { GetCharacter } from "@/Api/Plant/getCharacter";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { GetCharacterGraph } from "@/Api/Plant/getCharacterGraph";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
+import { RefreshData } from "@/Api/Data/refreshData";
 
 export default function Home() {
   const ACCESS_TOKEN = Cookies.get("Authorization");
@@ -101,7 +102,7 @@ export default function Home() {
 
   return (
     <div className={st.body}>
-      <Statistic userData={userData} />
+      <Statistic />
       <div className={st.character}>
         <Character characterData={characterData} />
         <CharacterGraph charactergraph={characterGraph} />

@@ -71,7 +71,6 @@ export default function Repository(props: {
 
     setCheckedItems(newCheckedItems);
   };
-
   return (
     <div>
       {repositoryList?.map((e, index) => (
