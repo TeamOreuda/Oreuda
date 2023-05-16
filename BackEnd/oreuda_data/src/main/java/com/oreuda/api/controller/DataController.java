@@ -16,7 +16,6 @@ import com.oreuda.common.exception.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/v1/data")
 @RequiredArgsConstructor
