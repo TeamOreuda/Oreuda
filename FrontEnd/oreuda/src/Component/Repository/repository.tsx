@@ -87,7 +87,7 @@ export default function Repository(props: {
                     onClick={(event) => event.stopPropagation()}
                   />
                 )}
-                <Link href={e.url} className={st.link}>
+                <Link href={e.url} className={st.link} target="_blank">
                   {e.name}
                 </Link>
                 <div>{e.isPrivate === "Y" ? "Private" : "Public"}</div>
