@@ -12,6 +12,18 @@
 
   z-index: 1;
   .layout_left {
+    .stacks {
+      position: absolute;
+      top: 200px;
+      left: 80px;
+      z-index: 1;
+    }
+    .finger {
+      position: absolute;
+      top: 390px;
+      left: 420px;
+      z-index: -1;
+    }
   }
   .layout_right {
     display: flex;
