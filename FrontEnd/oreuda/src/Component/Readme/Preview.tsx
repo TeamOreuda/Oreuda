@@ -146,7 +146,7 @@ export default function Preview() {
       <img src={secImgUrl} width="285" height="140" alt="solved" />
     </div>,
     <div key="2">
-      <img src={githubUrl} width="350" height="150" alt="githubStats" />
+      <img src={githubUrl} width="350" height="170" alt="githubStats" />
     </div>,
     <div key="3">
       <img src={mulUrl} width="280" height={mulHeight} alt="MUL" />

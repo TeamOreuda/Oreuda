@@ -57,8 +57,6 @@ export default function AddFolder(props: {
     try {
       await AddFolderAxios(ACCESS_TOKEN, folderName, folderColor, checkedItems);
     } catch (err: any) {
-      // console.log(err);
-
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
         saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
