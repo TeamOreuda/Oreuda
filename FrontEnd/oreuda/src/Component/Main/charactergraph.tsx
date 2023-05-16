@@ -9,16 +9,16 @@ import {
   Filler,
   Tooltip,
 } from "chart.js";
-import { Line } from "react-chartjs-2";
-import { useCallback, useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import { Line } from "react-chartjs-2";
+import { redirect } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 
 import st from "./charactergraph.module.scss";
 
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { GetCharacterGraph } from "@/Api/Plant/getCharacterGraph";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
-import { redirect } from "next/navigation";
 
 export interface Charactergraph {
   id: number;
@@ -26,14 +26,7 @@ export interface Charactergraph {
   val: number;
 }
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip
-);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip);
 
 export default function Character() {
   const ACCESS_TOKEN = Cookies.get("Authorization");
@@ -47,10 +40,7 @@ export default function Character() {
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(
-          token.data.Authorization,
-          token.data.RefreshToken
-        );
+        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
         try {
           const res = await GetCharacterGraph(token.data.Authorization);
           setCharacterGraph(res.data);
@@ -72,10 +62,10 @@ export default function Character() {
       {
         fill: true,
         data: characterGraph?.map((e: Charactergraph) => {
-          const date = `${e.time.substring(2, 4)}.${e.time.substring(
-            5,
-            7
-          )}.${e.time.substring(8, 10)}`;
+          const date = `${e.time.substring(2, 4)}.${e.time.substring(5, 7)}.${e.time.substring(
+            8,
+            10
+          )}`;
           return { x: date, y: e.val };
         }),
       },
@@ -111,7 +101,7 @@ export default function Character() {
       <div className={st.header}>
         <ul>성장 차트</ul>
       </div>
-      <ul className={st.discription}>성장 곡선을 차트를 통해 확인해보세요</ul>
+      <ul className={st.discription}>날짜별 캐릭터 능력치 변화추이입니다</ul>
       <Line options={options} data={data} width={600} height={320} />
     </div>
   );

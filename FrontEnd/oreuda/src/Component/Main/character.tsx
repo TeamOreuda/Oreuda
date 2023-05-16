@@ -99,17 +99,17 @@ export default function Character() {
           />
         )}
       </div>
+      <ul className={st.discription}>현재 능력치: {characterInfoData.userStats}</ul>
       <ul className={st.discription}>
-        현재 능력치: {characterInfoData.userStats}
         {characterInfoData.nextLevel !== "MAX" ? (
           <div>
             <Image
               src={`/images/character/${characterInfoData.nextLevel}.svg`}
               alt=""
-              width={24}
-              height={24}
+              width={16}
+              height={16}
             />
-            <p>까지 남은 능력치: {characterInfoData.nextLevelExp}</p>
+            <p> 승급까지 남은 능력치: {characterInfoData.nextLevelExp}</p>
           </div>
         ) : (
           "현재 최종레벨에 도달하셨습니다"
@@ -119,8 +119,8 @@ export default function Character() {
         className={st.character}
         src={`/images/character/${characterData?.name}.svg`}
         alt=""
-        width={280}
-        height={280}
+        width={304}
+        height={304}
       />
     </div>
   );
