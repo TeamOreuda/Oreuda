@@ -162,7 +162,7 @@ export default function Main() {
         </select>
 
       </div> */}
-      <div className={st.dropdown}>
+      <div className={`${st.dropdown} ${openModal ? st.option : ""}`}>
         <input
           type="text"
           className="textBox"

@@ -58,11 +58,11 @@
 
   .choiceComp {
     margin: 10px;
-    border-radius: 30px;
-    height: 30px;
+    border-radius: 20px;
+    height: 40px;
     width: 80px;
-    background: comm.$mainGreen;
-    color: comm.$mainWhite;
+    background: white;
+    color: comm.$mainGreen;
     border: 3px solid comm.$mainGreen;
     display: flex;
     justify-content: center;
@@ -134,7 +134,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 10px 0px;
+  margin: 15px 0px;
 }
 
 .dropdown input {
@@ -170,7 +170,7 @@
   cursor: pointer;
 }
 .dropdown .option div:hover {
-  background: #62baea;
+  background: #57da8e;
   color: #fff;
 }
 .dropdown::before {
@@ -188,7 +188,8 @@
   transition: 0.5s;
   pointer-events: none;
 }
-.dropdown.option::before {
+.option::before {
+  top: 25px;
   transform: rotate(-225deg);
 }
 .display {
