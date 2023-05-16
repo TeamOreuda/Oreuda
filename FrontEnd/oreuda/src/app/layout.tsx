@@ -104,7 +104,6 @@ export default async function RootLayout({
             redirect("/landing");
           }
         });
-
       return (
         <html lang="kr">
           <Head>
@@ -140,7 +139,7 @@ export default async function RootLayout({
                   );
                 })}
                 <Image
-                  className={st.characterimg}
+                  className={st.characterImg}
                   src={`/images/character/${characterData?.name}.svg`}
                   alt=""
                   width={144}
@@ -157,7 +156,7 @@ export default async function RootLayout({
               </div>
 
               <ul>
-                <Link href="http://localhost:3000/landing" className={st.link}>
+                <Link href="/landing" className={st.link}>
                   <Image
                     className={st.logout}
                     src={userProfile}

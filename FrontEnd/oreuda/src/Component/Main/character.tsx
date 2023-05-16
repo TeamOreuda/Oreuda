@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Cookies from "js-cookie";
+import { redirect } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 import st from "./character.module.scss";
@@ -7,16 +8,48 @@ import st from "./character.module.scss";
 import { GetCharacter } from "@/Api/Plant/getCharacter";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
-import { redirect } from "next/navigation";
+import { GetCharacterInfo } from "@/Api/Plant/getCharacterInfo";
 
 export default function Character() {
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
   const [isHovered, setIsHovered] = useState(false);
-  const [characterData, setCharacterData] = useState<{ id: number; name: string }>({
+  const [characterData, setCharacterData] = useState<{
+    id: number;
+    name: string;
+  }>({
     id: 0,
     name: "",
   });
+  const [characterInfoData, setCharacterInfoData] = useState<{
+    userStats: number;
+    nextLevelExp: number;
+    nextLevel: string;
+  }>({
+    userStats: 0,
+    nextLevelExp: 0,
+    nextLevel: "",
+  });
+
+  const loadCharacterInfoData = useCallback(async () => {
+    try {
+      const res = await GetCharacterInfo(ACCESS_TOKEN);
+      setCharacterInfoData(res.data);
+    } catch (err: any) {
+      if (err.response?.status == 401) {
+        const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+        try {
+          const res = await GetCharacterInfo(token.data.Authorization);
+          setCharacterInfoData(res.data);
+        } catch (error) {
+          redirect("/landing");
+        }
+      } else {
+        redirect("/landing");
+      }
+    }
+  }, [ACCESS_TOKEN, REFRESH_TOKEN]);
 
   const loadCharacterData = useCallback(async () => {
     try {
@@ -40,9 +73,8 @@ export default function Character() {
 
   useEffect(() => {
     loadCharacterData();
-  }, [loadCharacterData]);
-
-  console.log(isHovered);
+    loadCharacterInfoData();
+  }, [loadCharacterData, loadCharacterInfoData]);
 
   return (
     <div>
@@ -57,23 +89,38 @@ export default function Character() {
           width={24}
           height={24}
         />
-        {/* {isHovered && (
+        {isHovered && (
           <Image
-            className={isHovered ? st.hovered : ""}
+            className={isHovered ? st.infohovered : ""}
             src="/images/main/Characterinfo.svg"
             alt=""
             width={24}
             height={24}
           />
-        )} */}
+        )}
       </div>
-      <ul className={st.discription}>현재 성장 식물을 나타냅니다</ul>
+      <ul className={st.discription}>현재 능력치: {characterInfoData.userStats}</ul>
+      <ul className={st.discription}>
+        {characterInfoData.nextLevel !== "MAX" ? (
+          <div>
+            <Image
+              src={`/images/character/${characterInfoData.nextLevel}.svg`}
+              alt=""
+              width={16}
+              height={16}
+            />
+            <p> 승급까지 남은 능력치: {characterInfoData.nextLevelExp}</p>
+          </div>
+        ) : (
+          "현재 최종레벨에 도달하셨습니다"
+        )}
+      </ul>
       <Image
         className={st.character}
         src={`/images/character/${characterData?.name}.svg`}
         alt=""
-        width={320}
-        height={320}
+        width={304}
+        height={304}
       />
     </div>
   );

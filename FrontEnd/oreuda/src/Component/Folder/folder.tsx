@@ -2,8 +2,9 @@ import Link from "next/link";
 import Image from "next/image";
 import Cookies from "js-cookie";
 
+import EditFolder from "./editFolder";
 import st from "./folder.module.scss";
-import React, { useEffect, useState ,SetStateAction,Dispatch, useCallback} from "react";
+import React, { useEffect, useState, SetStateAction, Dispatch, useCallback } from "react";
 
 import { ChangeFolder } from "@/Api/Folders/changeFolder";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
@@ -24,16 +25,11 @@ export default function Folder(props: {
   setCheckedItems: Dispatch<SetStateAction<number[]>>;
   loadFolderList: () => Promise<void>;
 }) {
-  const {
-    clickDelete,
-    folderList,
-    checkedItems,
-    setCheckedItems,
-    loadFolderList,
-  } = props;
+  const { clickDelete, folderList, checkedItems, setCheckedItems, loadFolderList } = props;
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
 
+  const [openEdit, setOpenEdit] = useState(false);
   const [grab, setGrab] = useState<{ dataset: any }>();
   const [targetName, setTargetName] = useState<number>();
   const [targetPosition, setTargetPosition] = useState<number>();
@@ -45,14 +41,11 @@ export default function Folder(props: {
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(
-          token.data.Authorization,
-          token.data.RefreshToken
-        );
+        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
         await ChangeFolder(ACCESS_TOKEN, targetName, targetPosition);
       }
     }
-  },[ACCESS_TOKEN, REFRESH_TOKEN, targetName, targetPosition])
+  }, [ACCESS_TOKEN, REFRESH_TOKEN, targetName, targetPosition]);
 
   useEffect(() => {
     changeFolderList().then(() => loadFolderList());
@@ -82,11 +75,15 @@ export default function Folder(props: {
     setCheckedItems(newCheckedItems);
   };
 
+  const changeFolder = () => {
+    setOpenEdit(!openEdit);
+  };
+
   return (
     <div className={st.folders}>
       {folderList?.map((folder: Folder, index: number) => {
         return (
-          <div key={index} data-position={index}>
+          <div key={index} data-position={index} className={st.folder}>
             <Link
               href={`/repository/${folder.id}`}
               {...(clickDelete ? { onClick: (e) => e.preventDefault() } : {})}
@@ -96,34 +93,39 @@ export default function Folder(props: {
               onDragStart={onDragStart}
               onDrop={onDrop}
               draggable={!clickDelete}
+              className={st.folderdiv}
             >
-              <div className={st.folder} data-position={index}>
-                {clickDelete && folder.name !== "기본 폴더" && (
-                  <input
-                    type="checkbox"
-                    value={folder.id}
-                    checked={checkedItems.indexOf(folder.id) !== -1}
-                    onChange={handleCheckboxChange}
-                    onClick={(event) => event.stopPropagation()}
-                  />
-                )}
-                <div data-position={index} data-name={folder.id}>
-                  <Image
-                    data-position={index}
-                    data-name={folder.id}
-                    src={`images/folder/${folder.color}.svg`}
-                    alt="폴더"
-                    width={128}
-                    height={128}
-                    draggable={false}
-                    priority
-                  />
-                </div>
-                <p data-position={index} data-name={folder.id}>
-                  {folder.name}
-                </p>
+              {clickDelete && folder.name !== "기본 폴더" && (
+                <input
+                  type="checkbox"
+                  value={folder.id}
+                  checked={checkedItems.indexOf(folder.id) !== -1}
+                  onChange={handleCheckboxChange}
+                  onClick={(event) => event.stopPropagation()}
+                />
+              )}
+              <div data-position={index} data-name={folder.id}>
+                <Image
+                  data-position={index}
+                  data-name={folder.id}
+                  src={`images/folder/${folder.color}.svg`}
+                  alt="폴더"
+                  width={128}
+                  height={128}
+                  draggable={false}
+                  priority
+                />
               </div>
             </Link>
+            <div
+              className={st.folderName}
+              data-position={index}
+              data-name={folder.id}
+              onClick={changeFolder}
+            >
+              {openEdit && <EditFolder folderId={folder.id} changeFolder={changeFolder} />}
+              {folder.name}
+            </div>
           </div>
         );
       })}

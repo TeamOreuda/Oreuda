@@ -16,7 +16,7 @@ export default function Main1() {
 
   useEffect(() => {
     getRegisteredUser().then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
       setUserCnt(response.data);
       setIsLoading(true);
     });
