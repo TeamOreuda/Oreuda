@@ -1,7 +1,6 @@
 import Image from "next/image";
 
 import pg from "../Landing.module.scss";
-import bt from "./login_buttons.module.scss";
 import st from "./Main4.module.scss";
 
 export default function Main4() {
@@ -71,7 +70,18 @@ export default function Main4() {
       </div>
 
       {/* img 영역 */}
-      <div></div>
+      <div>
+        <Image
+          data-position={1}
+          data-name={1}
+          src={`images/landing/back_ellipse.svg`}
+          className={st.ellipse}
+          alt="타원"
+          width={1037}
+          height={1370}
+          draggable={false}
+        />
+      </div>
     </div>
   );
 }
