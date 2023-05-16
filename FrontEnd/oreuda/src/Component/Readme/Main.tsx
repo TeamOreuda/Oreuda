@@ -3,6 +3,7 @@
 import st from "./Main.module.scss";
 import {
   selectReadme,
+  setAllCheckComp,
   setClearReadmeStore,
   setIsSaveReadme,
   setLoadDataMapping,
@@ -127,25 +128,37 @@ export default function Main() {
     };
     hasReadme();
   }, [ACCESS_TOKEN, REFRESH_TOKEN]);
+
+  // 체크박스 모든 요소 선택 메서드(토글 아님)
+  const onClickAllCheck = () => {
+    // compenentArr, nextComp 초기화 및 모든 값 넣어주기
+    dispatch(setAllCheckComp(0));
+  };
+
   return (
     <div className={st.readmeMain}>
       <div className={st.titleDiv}>
         <span>리드미 요소 정하기</span>
-        <p>리드미에 어떤 내용을 담을지 선택해보세요.</p>
+        <p>리드미에 어떤 내용을 담을지 선택해보세요💙</p>
       </div>
-      <select
-        className={st.selectSV}
-        onChange={onChangeCompOption}
-        value={optionVal}
-      >
-        {mainCompChoiceData.map((data: string, index: number) => {
-          return (
-            <option value={index} key={index}>
-              {data}
-            </option>
-          );
-        })}
-      </select>
+      <div className={st.divdiv}>
+        <select
+          className={st.selectSV}
+          onChange={onChangeCompOption}
+          value={optionVal}
+        >
+          {mainCompChoiceData.map((data: string, index: number) => {
+            return (
+              <option value={index} key={index}>
+                {data}
+              </option>
+            );
+          })}
+        </select>
+        <div className={st.checkAllBtn} onClick={onClickAllCheck}>
+          All
+        </div>
+      </div>
       <MainSelectBtn />
       <button
         onClick={onClickLoadReadme}

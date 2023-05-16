@@ -13,8 +13,11 @@ import { GetCharacterInfo } from "@/Api/Plant/getCharacterInfo";
 export default function Character() {
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
-  const [isInfoHovered, setIsInfoHovered] = useState(false);
-  const [characterData, setCharacterData] = useState<{ id: number; name: string }>({
+  const [isHovered, setIsHovered] = useState(false);
+  const [characterData, setCharacterData] = useState<{
+    id: number;
+    name: string;
+  }>({
     id: 0,
     name: "",
   });
@@ -55,7 +58,10 @@ export default function Character() {
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+        saveCookiesAndRedirect(
+          token.data.Authorization,
+          token.data.RefreshToken
+        );
         try {
           const res = await GetCharacter(token.data.Authorization);
           setCharacterData(res.data);
