@@ -30,12 +30,12 @@ export default function Github() {
   const [id, setId] = useState(githubId);
 
   const dispatch = useAppDispatch();
-  const activeEnter = (e: any) => {
-    if (e.key === "Enter") {
-      // global state에 저장해야 함
-      dispatch(setGithubId(id));
-    }
-  };
+  // const activeEnter = (e: any) => {
+  //   if (e.key === "Enter") {
+  //     // global state에 저장해야 함
+  //     dispatch(setGithubId(id));
+  //   }
+  // };
 
   const onClickSVTheme = (e: any) => {
     dispatch(setGithubTheme(e.target.value));
