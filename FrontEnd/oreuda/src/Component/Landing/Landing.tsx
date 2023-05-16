@@ -22,9 +22,9 @@ export default function Landing() {
 
   return (
     <div className={st.page}>
+        <Main3 />
         <Main1 />
         <Main2 />
-        <Main3 />
     </div>
   );
 }

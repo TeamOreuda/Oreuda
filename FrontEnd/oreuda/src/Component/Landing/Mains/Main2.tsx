@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import pg from "../Landing.module.scss";
+import bt from "./login_buttons.module.scss"
 import st from "./Main2.module.scss";
 
 import Folders from "./Folders";
@@ -27,10 +28,10 @@ export default function Main2() {
         </div>
 
         {/* 로그인 버튼들 */}
-        <div className={st.buttons}>
-          <div className={st.button}>
+        <div className={bt.buttons}>
+          <div className={bt.button}>
             <Link href={`${process.env.NEXT_PUBLIC_LOGIN_URL}`}>
-              <div className={st.github}>
+              <div className={bt.github}>
                 <Image
                   data-position={1}
                   data-name={1}
@@ -45,12 +46,12 @@ export default function Main2() {
               </div>
             </Link>
           </div>
-          <div className={st.button}>
+          <div className={bt.button}>
             <Link
               href="https://chrome.google.com/webstore/detail/oreuda/hooeinlffeekoieamkdbbphnjmclpdmp?hl=ko"
               target="_black"
             >
-              <div className={st.extension}>
+              <div className={bt.extension}>
                 <Image
                   data-position={1}
                   data-name={1}
