@@ -58,10 +58,7 @@ export default function Character() {
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(
-          token.data.Authorization,
-          token.data.RefreshToken
-        );
+        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
         try {
           const res = await GetCharacter(token.data.Authorization);
           setCharacterData(res.data);
@@ -84,17 +81,17 @@ export default function Character() {
       <div className={st.header}>
         <ul>나의 성장 식물</ul>
         <Image
-          onMouseEnter={() => setIsInfoHovered(true)}
-          onMouseLeave={() => setIsInfoHovered(false)}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
           className={st.img}
           src="/images/info.svg"
           alt=""
           width={24}
           height={24}
         />
-        {isInfoHovered && (
+        {isHovered && (
           <Image
-            className={isInfoHovered ? st.infohovered : ""}
+            className={isHovered ? st.infohovered : ""}
             src="/images/main/Characterinfo.svg"
             alt=""
             width={24}
