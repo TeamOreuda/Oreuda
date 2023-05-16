@@ -152,7 +152,10 @@
   font-size: 17px;
   border-radius: 10px;
 }
-
+.focusInput {
+  color: #000000;
+  outline: 4px solid comm.$mainGreen !important;
+}
 .dropdown .option {
   position: absolute;
   width: 300px;

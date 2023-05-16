@@ -28,6 +28,8 @@ export default function Github() {
   const githubTheme = useAppSelector(selectReadme).githubTheme;
   const githubId = useAppSelector(selectReadme).githubId;
   const [id, setId] = useState(githubId);
+  const [openModal, setOpenModal] = useState(false);
+  const [optionVal, setOptionVal] = useState("");
 
   const dispatch = useAppDispatch();
   // const activeEnter = (e: any) => {
@@ -55,7 +57,7 @@ export default function Github() {
           onKeyDown={(e) => activeEnter(e)}
           value={id}
         ></input> */}
-        <div className={st.selectBox}>
+        {/* <div className={st.selectBox}>
           <span>테마 설정</span>
           <select
             className={st.selectSV}
@@ -70,6 +72,36 @@ export default function Github() {
               );
             })}
           </select>
+        </div> */}
+        <div className={`${st.dropdown} ${openModal ? st.option : ""}`}>
+          <input
+            type="text"
+            className={openModal ? st.focusInput : ""}
+            placeholder="테마를 선택해주세요"
+            readOnly
+            value={optionVal}
+            onClick={(e) => {
+              setOpenModal(!openModal);
+            }}
+          />
+          <div className={` ${openModal ? st.option : st.display}`}>
+            {svDesignData.map((data: string, index: number) => {
+              if (index !== 0) {
+                return (
+                  <div
+                    key={index}
+                    onClick={(e) => {
+                      setOptionVal(data);
+                      setOpenModal(!openModal);
+                      onClickSVTheme;
+                    }}
+                  >
+                    {data}
+                  </div>
+                );
+              }
+            })}
+          </div>
         </div>
       </div>
     </div>

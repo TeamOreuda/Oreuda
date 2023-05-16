@@ -152,14 +152,14 @@ export default function Preview() {
       <img src={mulUrl} width="280" height={mulHeight} alt="MUL" />
     </div>,
     <div key="4" className={st.TextArr}>
-      <h3>Tech Stack</h3>
+      <h2>🍀Tech Stack🍀</h2>
       {/* <h3>{techTitle}</h3> */}
       <div className={st.TextArr}>{showTechWhole()}</div>
       <h3>{techTitle}</h3>
       <div className={st.techBadgeDiv}>{showTechArr()}</div>
     </div>,
     <div key="5" className={st.TextArr}>
-      <h3>Contact</h3>
+      <h2>💙Contact💙</h2>
       <div className={st.contactBadgeDiv}>
         {mailId.length > 0 ? (
           <a href={mailURL} target="_blank">
