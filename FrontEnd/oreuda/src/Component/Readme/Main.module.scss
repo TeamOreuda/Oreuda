@@ -10,9 +10,15 @@
   @include comm.title;
 }
 
+.divdiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
 .selectSV {
-  width: 30%;
-  height: 10%;
+  width: 65%;
+  height: 60px;
   margin: 20px;
   border-radius: 10px;
   border: 3px solid black;
@@ -82,4 +88,17 @@
 .disabledBtn {
   background-color: #cccccc;
   cursor: auto;
+}
+.checkAllBtn {
+  position: relative;
+  cursor: pointer;
+  width: 60px;
+  border-radius: 10px;
+  font-size: 17px;
+  height: 60px;
+  background: comm.$mainGreen;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

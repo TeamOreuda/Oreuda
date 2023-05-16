@@ -14,26 +14,20 @@
     }
 
     padding: 0px;
-    z-index: -100;
   }
 
-  // .img {
-  //   z-index: -100;
-  // }
-
-  .hovered {
-    top: 100%;
-    left: 0;
-    right: 0;
+  .infohovered {
+    position: absolute;
+    top: 53%;
+    left: 52%;
     border-top: none;
-    width: 600px;
-    height: 300px;
-    transform: scale(1.2);
-    z-index: 100;
+    scale: 20;
   }
 }
 
 .discription {
+  display: flex;
+  align-items: center;
   font-size: 12px;
   color: #979696;
   margin: {
@@ -43,6 +37,10 @@
     right: 16px;
   }
   padding: 0px;
+
+  div {
+    display: flex;
+  }
 }
 
 .character {
