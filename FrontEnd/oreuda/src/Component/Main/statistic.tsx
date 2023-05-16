@@ -85,7 +85,7 @@ export default function Statistic() {
     {
       title: "주 언어",
       language: userData?.mainLanguage,
-      imageName: "language",
+      imageName: userData?.mainLanguage || "language",
     },
   ];
 
