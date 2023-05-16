@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Slf4j
@@ -35,6 +36,14 @@ public class PlantController {
     public ResponseEntity<?> setPlantStatus(@RequestHeader String userId) {
         plantService.setStatus(userId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/info")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    public ResponseEntity<?> getPlantInfo(@RequestHeader HttpHeaders headers) {
+        String userId = headers.getFirst("userId");
+        Map<?, ?> info = plantService.getInfo(userId);
+        return ResponseEntity.ok().body(info);
     }
 
     @GetMapping("/graph")
