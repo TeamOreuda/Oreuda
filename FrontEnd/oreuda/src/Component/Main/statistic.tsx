@@ -42,14 +42,17 @@ export default function Statistic() {
     try {
       const res = await GetUser(ACCESS_TOKEN);
       setUserData(res.data);
-      dispatch(setGithubId(res.data.nickname));
+      // dispatch(setGithubId(res.data.nickname));
     } catch (e: any) {
       if (e.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+        saveCookiesAndRedirect(
+          token.data.Authorization,
+          token.data.RefreshToken
+        );
         const res = await GetUser(token.data.Authorization);
         setUserData(res.data);
-        dispatch(setGithubId(res.data.nickname));
+        // dispatch(setGithubId(res.data.nickname));
       } else {
         redirect("/landing");
       }
@@ -90,7 +93,9 @@ export default function Statistic() {
     const rotateInterval = setInterval(() => {
       if (refreshIconRef.current) {
         refreshIconRef.current.style.transform = `rotate(${(
-          Number(refreshIconRef.current.style.transform.replace(/[^0-9]/g, "")) + 10
+          Number(
+            refreshIconRef.current.style.transform.replace(/[^0-9]/g, "")
+          ) + 10
         ).toString()}deg)`;
       }
     }, 1000 / (360 / 10));
@@ -104,7 +109,10 @@ export default function Statistic() {
     } catch (e: any) {
       if (e.response.status === 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+        saveCookiesAndRedirect(
+          token.data.Authorization,
+          token.data.RefreshToken
+        );
         await RefreshData(token.data.Authorization);
         await loadUserData();
         clearInterval(rotateInterval);
@@ -114,6 +122,10 @@ export default function Statistic() {
       }
     }
   };
+
+  useEffect(() => {
+    dispatch(setGithubId(userData?.nickname));
+  }, []);
 
   return (
     <div>
@@ -143,10 +155,19 @@ export default function Statistic() {
                 {e.count} <span>{e.howCount}</span>
               </span>
               {e.language && (
-                <span className={e.language.length > 6 ? st.language : st.count}>{e.language}</span>
+                <span
+                  className={e.language.length > 6 ? st.language : st.count}
+                >
+                  {e.language}
+                </span>
               )}
             </div>
-            <Image src={`/images/main/${e.imageName}.svg`} alt="주언어" width={80} height={80} />
+            <Image
+              src={`/images/main/${e.imageName}.svg`}
+              alt="주언어"
+              width={80}
+              height={80}
+            />
           </div>
         ))}
       </div>

@@ -35,7 +35,6 @@
   outline: none;
   &:focus {
     color: #000000;
-
     outline: 4px solid comm.$mainGreen !important;
   }
 
@@ -127,8 +126,71 @@
   justify-content: center;
   align-items: center;
 }
-.btnHoverDiv {
+
+.dropdown {
+  position: relative;
+  width: 400px;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0px;
+}
+
+.dropdown input {
+  width: 300px;
+  height: 100%;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+  background: #fff;
+  border: none;
+  outline: none;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  font-family: "GmarketSansMedium";
+  text-indent: 20px;
+  font-size: 17px;
+  border-radius: 10px;
+}
+
+.dropdown .option {
   position: absolute;
-  width: 80px;
-  height: 48px;
+  width: 300px;
+  height: 200px;
+  top: 80px;
+  background: #fff;
+  box-shadow: 0 30px 20px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  overflow-y: scroll;
+  font-family: "GmarketSansMedium";
+  cursor: pointer;
+}
+.dropdown .option div {
+  padding: 12px 20px;
+  cursor: pointer;
+}
+.dropdown .option div:hover {
+  background: #62baea;
+  color: #fff;
+}
+.dropdown::before {
+  content: "";
+  position: absolute;
+  right: 120px;
+  top: 20px;
+  z-index: 15px;
+  width: 8px;
+  height: 8px;
+  border: 2px solid #333;
+  border-top: 2px solid #fff;
+  border-right: 2px solid #fff;
+  transform: rotate(-45deg);
+  transition: 0.5s;
+  pointer-events: none;
+}
+.dropdown.option::before {
+  transform: rotate(-225deg);
+}
+.display {
+  display: none;
 }

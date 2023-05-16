@@ -23,7 +23,7 @@ export const mainCompChoiceData: any = [
   "선택해주세요",
   "백준(Baek Joon)",
   "깃헙 스탯(Stats)",
-  "주 사용 언어(Most Used Language)",
+  "주 사용 언어(MUL)",
   "기술(Tech Stacks)",
   "연락처(Contacts)",
   "오르 캐릭터(Ore)",
@@ -54,10 +54,13 @@ export default function Main() {
 
   const [optionVal, setOptionVal] = useState("선택해주세요");
   const [wasSaveReadme, setWasSaveReadme] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   // option select 변경했을 때 동작하는 메서드
-  const onChangeCompOption = (e: any) => {
-    dispatch(setPushComponent(e.target.value));
-    setOptionVal("선택해주세요");
+  const onChangeCompOption = (index: any) => {
+    console.log(index);
+
+    dispatch(setPushComponent(index));
+    // setOptionVal("선택해주세요");
   };
 
   const onClickLoadReadme = () => {
@@ -143,7 +146,7 @@ export default function Main() {
         <span>리드미 요소 정하기</span>
         <p>리드미에 어떤 내용을 담을지 선택해보세요💙</p>
       </div>
-      <div className={st.divdiv}>
+      {/* <div className={st.divdiv}>
         <select
           className={st.selectSV}
           onChange={onChangeCompOption}
@@ -157,13 +160,43 @@ export default function Main() {
             );
           })}
         </select>
+
+      </div> */}
+      <div className={st.dropdown}>
+        <input
+          type="text"
+          className="textBox"
+          placeholder="선택해주세요"
+          readOnly
+          value={optionVal}
+          onClick={(e) => {
+            setOpenModal(!openModal);
+          }}
+        />
+        <div className={` ${openModal ? st.option : st.display}`}>
+          {mainCompChoiceData.map((data: string, index: number) => {
+            if (index !== 0) {
+              return (
+                <div
+                  key={index}
+                  onClick={(e) => {
+                    setOptionVal(data);
+                    setOpenModal(!openModal);
+                    onChangeCompOption(index);
+                  }}
+                >
+                  {data}
+                </div>
+              );
+            }
+          })}
+        </div>
         <div className={st.checkAllBtn} onClick={onClickAllCheck}>
           All
         </div>
       </div>
       <MainSelectBtn />
       <div
-        className={st.btnHoverDiv}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
