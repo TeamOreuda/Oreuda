@@ -37,7 +37,6 @@ export interface readmeSlice {
   textCnt: number;
   techTitle: string;
   techCnt: number;
-  nextComp: number[];
   techPlusArr: Array<AddTech>;
   techPlusModifyArr: Array<AddTech>;
   techArr: boolean[];
@@ -45,6 +44,7 @@ export interface readmeSlice {
   techPlusWhole: Array<AddTechWhole>;
   componentArr: boolean[];
   currComponent: number;
+  nextComp: number[];
   prevComp: number[];
   nPrevComp: any;
   isSaveReadme: boolean;
@@ -352,7 +352,9 @@ const themeSlice = createSlice({
     setDeleteComponent(state, action) {
       if (state.componentArr[action.payload]) {
         state.nextComp.map((el, index) => {
-          if (String(el) === action.payload) {
+          console.log(typeof el, typeof action.payload);
+
+          if (Number(el) === action.payload) {
             state.nextComp.splice(index, 1);
           }
         });
@@ -561,8 +563,33 @@ const themeSlice = createSlice({
       state.techPlusWhole = techWholeTmpArr;
       state.textArr = textWholeTmpArr;
     },
+    // DB에 리드미가 저장되어 불러올 수 있는지 없는지 유무값 저장
     setIsSaveReadme(state, action) {
       state.isSaveReadme = action.payload;
+    },
+    // [Main] 리드미 메인에서 모두 선택
+    setAllCheckComp(state, action) {
+      // 이전에 선택한 리스트는 초기화한 뒤
+      state.componentArr = [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ];
+      state.nextComp = [];
+
+      // 모두 선택
+      state.componentArr.map((el, index) => {
+        if (index !== 0) {
+          state.componentArr[index] = true;
+          state.nextComp.push(index);
+        }
+      });
+      console.log(state.componentArr);
     },
   },
 });
@@ -603,6 +630,7 @@ export const {
   setClearReadmeStore,
   setLoadDataMapping,
   setIsSaveReadme,
+  setAllCheckComp,
 } = themeSlice.actions;
 export const selectReadme = (state: RootState) => state.readme;
 // 리듀서
