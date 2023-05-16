@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import pg from "../Landing.module.scss"
+import pg from "../Landing.module.scss";
 import st from "./Main1.module.scss";
 
 import { getRegisteredUser } from "@/Api/Users/getRegisteredUser";
@@ -22,10 +22,10 @@ export default function Main1() {
     });
   }, []);
 
-//   setInterval(() => {
-//     const temp = Math.floor(Math.random() * 100);
-//     setMountainEyeNumber(mountainEyeNumber + temp);
-//   }, 100);
+  //   setInterval(() => {
+  //     const temp = Math.floor(Math.random() * 100);
+  //     setMountainEyeNumber(mountainEyeNumber + temp);
+  //   }, 100);
 
   if (mountainEyeNumber >= 1000) {
     // console.log(mountainEyeNumber)
@@ -39,7 +39,7 @@ export default function Main1() {
 
   if (isLoading) {
     return (
-      <div className={`${pg.page} ${st.layout}`}>
+      <div className={`${pg.page} ${st.layout}`} id="page">
         {/* 텍스트 영역 */}
         <div className={st.content}>
           <div className={st.title}>Oreuda</div>
@@ -123,6 +123,7 @@ export default function Main1() {
               alt="해"
               width={500}
               height={500}
+              priority
               draggable={false}
             />
           </div>
@@ -134,6 +135,7 @@ export default function Main1() {
               alt="구름"
               width={600}
               height={500}
+              priority
               draggable={false}
             />
           </div>
@@ -146,6 +148,7 @@ export default function Main1() {
                 alt="산"
                 width={1200}
                 height={800}
+                priority
                 draggable={false}
               />
             ) : (
@@ -156,6 +159,7 @@ export default function Main1() {
                 alt="산"
                 width={1200}
                 height={800}
+                priority
                 draggable={false}
               />
             )}

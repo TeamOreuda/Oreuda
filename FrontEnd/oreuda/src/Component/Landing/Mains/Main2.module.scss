@@ -2,26 +2,201 @@
   position: relative;
 
   height: 100vh;
-  width: 80vw;
+  width: 100vw;
 
   display: flex;
   overflow: hidden;
 
   flex-direction: row;
   justify-content: space-between;
-  
+
   z-index: 1;
   .ellipse {
     position: absolute;
     // opacity: 5%;
-    left: -84.97px;
-    top: -600px;
+    left: -310px;
+    top: -640px;
+    // transform: rotate(3deg);
     z-index: 0;
   }
   .content {
+    position: relative;
+    left: 90px;
+    top: 100px;
     z-index: 2;
+    .title {
+      font-size: 54px;
+      line-height: 64px;
+      display: flex;
+      align-items: center;
+      .emphasis {
+        color: #1087a0;
+      }
+    }
+    .intro {
+      font-size: 24px;
+      line-height: 29px;
+      display: flex;
+      align-items: center;
+
+      color: #555555;
+    }
   }
   .buttons {
+    font-weight: 400;
+    font-size: 24px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin: 30px 80px 0 0;
+
     z-index: 2;
+    a {
+      text-decoration: none;
+    }
+    .button {
+      display: flex; /* 부모 요소를 플렉스 박스로 설정 */
+      align-items: center;
+      margin: 2% 0 2% 0;
+      padding: 0 8px 0 8px;
+
+      .github {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 0 20px 0 20px;
+        height: 45px;
+
+        font-size: 17px;
+
+        background: #000000;
+        border-radius: 12px;
+        color: #ffffff;
+      }
+    }
+    .button {
+      display: flex; /* 부모 요소를 플렉스 박스로 설정 */
+      align-items: center;
+      margin: 2% 0 2% 0;
+      .extension {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 20px 0 20px;
+        font-size: 17px;
+
+        height: 45px;
+
+        background: #d9e7ff;
+        border-radius: 12px;
+        color: #518ef8;
+      }
+    }
   }
+}
+
+@keyframes folder_fadeIn {
+  0% {
+    // opacity : 0;
+    // transform: rotate(90deg);
+    transform: translateX(-800px);
+  }
+  100% {
+    // opacity : 1;
+    // transform: rotate(30deg);
+  }
+}
+
+@keyframes folder_fadeDrop {
+  0% {
+    // opacity : 0;
+    // transform: rotate(90deg);
+    // transform: translateX(-800px);
+    transform: translateX(-800px);
+  }
+  50%{
+    transform-origin: bottom right; /* 회전 축 설정 */
+    transform: translateX(0px);
+    // transform: rotate(20deg);
+  }
+  75% {
+    transform-origin: bottom right ; /* 회전 축 설정 */
+    transform: rotate(-20deg) translateX(58px) translateY(-45px);
+  }
+  100% {
+    transform-origin: bottom right ; /* 회전 축 설정 */
+    transform: rotate(-20deg) translateX(58px) translateY(-45px);
+  }
+}
+
+.folder1 {
+  position: absolute;
+  top: 325px;
+  left: 710px;
+  z-index: 10;
+  animation: folder_fadeDrop 4.5s ;
+  animation-fill-mode: forwards;
+
+}
+
+.folder2 {
+  position: absolute;
+  top: 300px;
+  left: 750px;
+  z-index: 9;
+  animation: folder_fadeIn 2.1s ;
+
+}
+.folder3 {
+  position: absolute;
+  top: 275px;
+  left: 790px;
+  z-index: 8;
+  animation: folder_fadeIn 1.8s ;
+
+}
+.folder4 {
+  position: absolute;
+  top: 250px;
+  left: 830px;
+  z-index: 7;
+  animation: folder_fadeIn 1.5s ;
+
+}
+.folder5 {
+  position: absolute;
+  top: 225px;
+  left: 870px;
+  z-index: 6;
+  animation: folder_fadeIn 1.2s ;
+
+}
+.folder6 {
+  position: absolute;
+  top: 200px;
+  left: 910px;
+  z-index: 5;
+  animation: folder_fadeIn 0.9s ;
+
+}
+.folder7 {
+  position: absolute;
+  top: 175px;
+  left: 950px;
+  z-index: 4;
+  animation: folder_fadeIn 0.6s ;
+
+}
+.folder8 {
+  position: absolute;
+  top: 150px;
+  left: 990px;
+  z-index: 3;
+  animation: folder_fadeIn 0.3s ;
+
+}
+.secret{
+  display: none;
 }
