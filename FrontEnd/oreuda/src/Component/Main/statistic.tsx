@@ -124,8 +124,10 @@ export default function Statistic() {
   };
 
   useEffect(() => {
+    console.log();
+
     dispatch(setGithubId(userData?.nickname));
-  }, []);
+  }, [userData]);
 
   return (
     <div>
