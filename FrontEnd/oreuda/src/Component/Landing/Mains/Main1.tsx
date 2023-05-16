@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import pg from "../Landing.module.scss"
+import pg from "../Landing.module.scss";
 import st from "./Main1.module.scss";
 
 import { getRegisteredUser } from "@/Api/Users/getRegisteredUser";
@@ -16,16 +16,16 @@ export default function Main1() {
 
   useEffect(() => {
     getRegisteredUser().then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
       setUserCnt(response.data);
       setIsLoading(true);
     });
   }, []);
 
-//   setInterval(() => {
-//     const temp = Math.floor(Math.random() * 100);
-//     setMountainEyeNumber(mountainEyeNumber + temp);
-//   }, 100);
+  //   setInterval(() => {
+  //     const temp = Math.floor(Math.random() * 100);
+  //     setMountainEyeNumber(mountainEyeNumber + temp);
+  //   }, 100);
 
   if (mountainEyeNumber >= 1000) {
     // console.log(mountainEyeNumber)

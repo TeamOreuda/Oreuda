@@ -47,13 +47,24 @@ export default function RepositoryPage() {
 
   const loadRepositoryList = useCallback(async () => {
     try {
-      const res = await GetRepositoryLst(ACCESS_TOKEN, folderId, filtering.value);
+      const res = await GetRepositoryLst(
+        ACCESS_TOKEN,
+        folderId,
+        filtering.value
+      );
       setRepositoryList(res.data);
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
-        const res = await GetRepositoryLst(ACCESS_TOKEN, folderId, filtering.value);
+        saveCookiesAndRedirect(
+          token.data.Authorization,
+          token.data.RefreshToken
+        );
+        const res = await GetRepositoryLst(
+          ACCESS_TOKEN,
+          folderId,
+          filtering.value
+        );
         setRepositoryList(res.data);
       }
     }
@@ -64,15 +75,15 @@ export default function RepositoryPage() {
   }, [loadRepositoryList]);
 
   const clickModal = () => {
-    if (repositoryList?.length == 0) {
-      alert("선택하신 레포지토리가 없습니다");
-    } else {
-      if (moveRepositoryMode) {
+    if (moveRepositoryMode) {
+      if (checkedItems?.length == 0) {
+        alert("선택하신 레포지토리가 없습니다");
+      } else {
         setShowModal(true);
         setMoveRepositoryMode(false);
-      } else {
-        setMoveRepositoryMode(true);
       }
+    } else {
+      setMoveRepositoryMode(true);
     }
   };
 
@@ -97,7 +108,10 @@ export default function RepositoryPage() {
       } catch (err: any) {
         if (err.response?.status == 401) {
           const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-          saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+          saveCookiesAndRedirect(
+            token.data.Authorization,
+            token.data.RefreshToken
+          );
           await MoveRepository(ACCESS_TOKEN, data);
         }
       }
@@ -109,6 +123,23 @@ export default function RepositoryPage() {
   return (
     <div className={st.body}>
       <div className={st.button}>
+        {moveRepositoryMode && (
+          <button
+            onClick={() => {
+              setMoveRepositoryMode(false);
+            }}
+            className={st.rollbackButton}
+          >
+            취 소
+            <Image
+              className={st.img}
+              src="/images/repository/send.svg"
+              alt="plus"
+              width={16}
+              height={16}
+            />
+          </button>
+        )}
         <button onClick={clickModal}>
           {moveRepositoryMode ? "확 인" : "레포지토리 이동"}
           <Image
@@ -130,7 +161,9 @@ export default function RepositoryPage() {
               {options.map((option) => (
                 <div
                   key={option.id}
-                  className={`${st.option} ${option.value === filtering.value ? st.active : ""}`}
+                  className={`${st.option} ${
+                    option.value === filtering.value ? st.active : ""
+                  }`}
                   onClick={() => handleOptionClick(option)}
                 >
                   {option.name}
