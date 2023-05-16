@@ -34,7 +34,7 @@ public class UserService {
 			.repositoryCnt(0)
 			.streakMax(0)
 			.mostLanguage("empty")
-			.updateTime(LocalDateTime.now())
+			.updateTime(LocalDateTime.now().minusMinutes(5))
 			.build();
 		userRepository.save(user);
 
