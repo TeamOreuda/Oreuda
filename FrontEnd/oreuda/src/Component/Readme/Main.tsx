@@ -50,6 +50,8 @@ export default function Main() {
   const githubId = useAppSelector(selectReadme).githubId;
   const isSaveReadme = useAppSelector(selectReadme).isSaveReadme;
 
+  const [isHovered, setIsHovered] = useState(false);
+
   const [optionVal, setOptionVal] = useState("선택해주세요");
   const [wasSaveReadme, setWasSaveReadme] = useState(false);
   // option select 변경했을 때 동작하는 메서드
@@ -160,15 +162,26 @@ export default function Main() {
         </div>
       </div>
       <MainSelectBtn />
-      <button
-        onClick={onClickLoadReadme}
-        className={`${st.loadReadmeBtn} ${
-          isSaveReadme ? undefined : st.disabledBtn
-        }`}
-        disabled={!isSaveReadme}
+      <div
+        className={st.btnHoverDiv}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
-        불러오기
-      </button>
+        <button
+          onClick={isSaveReadme ? onClickLoadReadme : undefined}
+          className={`${st.loadReadmeBtn} ${
+            isSaveReadme ? undefined : st.disabledBtn
+          }`}
+          // disabled={!isSaveReadme}
+        >
+          불러오기
+        </button>
+        {isHovered && !isSaveReadme ? (
+          <div className={st.saveBtnDesc}>
+            저장한 데이터가 있을 경우 활성화 됩니다!
+          </div>
+        ) : undefined}
+      </div>
       {nextComp.length > 0 ? <NextBtn /> : ""}
     </div>
   );

@@ -79,7 +79,7 @@ export default async function RootLayout({
               }
             );
           } else {
-            redirect("/landing");
+            // redirect("/landing");
           }
         });
 
@@ -101,7 +101,7 @@ export default async function RootLayout({
               }
             );
           } else {
-            redirect("/landing");
+            // redirect("/landing");
           }
         });
 

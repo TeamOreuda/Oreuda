@@ -15,16 +15,29 @@
   justify-content: center;
   align-items: center;
   flex-direction: row;
+
+  select {
+    appearance: none;
+  }
 }
+
 .selectSV {
   width: 65%;
   height: 60px;
   margin: 20px;
   border-radius: 10px;
-  border: 3px solid black;
-  text-indent: 10px;
+  border: none;
+  text-indent: 20px;
   font-size: 17px;
   font-family: "GmarketSansMedium";
+  color: #a8a8a8;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  outline: none;
+  &:focus {
+    color: #000000;
+
+    outline: 4px solid comm.$mainGreen !important;
+  }
 
   option {
     font-size: 14px;
@@ -85,6 +98,17 @@
   justify-content: center;
   align-items: center;
 }
+.saveBtnDesc {
+  position: fixed;
+  width: 260px;
+  height: 48px;
+  left: 370px;
+  top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+}
 .disabledBtn {
   background-color: #cccccc;
   cursor: auto;
@@ -96,9 +120,15 @@
   border-radius: 10px;
   font-size: 17px;
   height: 60px;
+  margin-right: 15px;
   background: comm.$mainGreen;
   color: #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.btnHoverDiv {
+  position: absolute;
+  width: 80px;
+  height: 48px;
 }
