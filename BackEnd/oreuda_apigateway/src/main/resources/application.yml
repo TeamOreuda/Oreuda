@@ -55,7 +55,7 @@ spring:
         - id: plant-server
           uri: http://172.28.0.25:8060/
           predicates:
-            - Path=/api/v1/plant, /api/v1/plant/graph
+            - Path=/api/v1/plant, /api/v1/plant/graph, /api/v1/plant/info
           filters:
             - AuthorizationHeaderFilter
 
