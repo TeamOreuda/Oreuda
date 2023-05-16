@@ -12,9 +12,9 @@ export default function MainSelectBtn() {
   const dispatch = useAppDispatch();
 
   const onClickRemoveComp = (e: any) => {
-    console.log(e.target.id);
-    console.log(`nextComp:`, nextComp);
-    console.log(`componentArr:`, componentArr);
+    // console.log(e.target.id);
+    // console.log(`nextComp:`, nextComp);
+    // console.log(`componentArr:`, componentArr);
 
     dispatch(setDeleteComponent(Number(e.target.id)));
   };

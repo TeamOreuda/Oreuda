@@ -352,7 +352,7 @@ const themeSlice = createSlice({
     setDeleteComponent(state, action) {
       if (state.componentArr[action.payload]) {
         state.nextComp.map((el, index) => {
-          console.log(typeof el, typeof action.payload);
+          // console.log(typeof el, typeof action.payload);
 
           if (Number(el) === action.payload) {
             state.nextComp.splice(index, 1);
@@ -589,7 +589,7 @@ const themeSlice = createSlice({
           state.nextComp.push(index);
         }
       });
-      console.log(state.componentArr);
+      // console.log(state.componentArr);
     },
   },
 });
