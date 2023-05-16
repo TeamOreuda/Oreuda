@@ -42,7 +42,7 @@ export default function Statistic() {
     try {
       const res = await GetUser(ACCESS_TOKEN);
       setUserData(res.data);
-      dispatch(setGithubId(res.data.nickname));
+      // dispatch(setGithubId(res.data.nickname));
     } catch (e: any) {
       if (e.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
@@ -52,7 +52,7 @@ export default function Statistic() {
         );
         const res = await GetUser(token.data.Authorization);
         setUserData(res.data);
-        dispatch(setGithubId(res.data.nickname));
+        // dispatch(setGithubId(res.data.nickname));
       } else {
         redirect("/landing");
       }
@@ -122,6 +122,10 @@ export default function Statistic() {
       }
     }
   };
+
+  useEffect(() => {
+    dispatch(setGithubId(userData?.nickname));
+  }, []);
 
   return (
     <div>
