@@ -1,0 +1,53 @@
+.buttons {
+    font-weight: 400;
+    font-size: 24px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin: 30px 80px 0 0;
+
+    z-index: 2;
+    a {
+      text-decoration: none;
+    }
+    .button {
+      display: flex; /* 부모 요소를 플렉스 박스로 설정 */
+      align-items: center;
+      margin: 2% 0 2% 0;
+      padding: 0 8px 0 8px;
+
+      .github {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 0 20px 0 20px;
+        height: 45px;
+
+        font-size: 17px;
+
+        background: #000000;
+        border-radius: 12px;
+        color: #ffffff;
+      }
+    }
+    .button {
+      display: flex; /* 부모 요소를 플렉스 박스로 설정 */
+      align-items: center;
+      margin: 2% 0 2% 0;
+      .extension {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 20px 0 20px;
+        font-size: 17px;
+
+        height: 45px;
+
+        background: #d9e7ff;
+        border-radius: 12px;
+        color: #518ef8;
+      }
+    }
+  }
