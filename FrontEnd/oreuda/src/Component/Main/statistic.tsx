@@ -1,17 +1,18 @@
 "use client";
 
 import Image from "next/image";
+import Cookies from "js-cookie";
+import { redirect } from "next/navigation";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import st from "./statistic.module.scss";
 import { useAppDispatch } from "@/store/hooks";
 import { setGithubId } from "@/store/modules/readme";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import Cookies from "js-cookie";
+
+import { GetUser } from "@/Api/Users/getUsers";
 import { RefreshData } from "@/Api/Data/refreshData";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
-import { GetUser } from "@/Api/Users/getUsers";
-import { redirect } from "next/navigation";
 
 interface gitHubStatistic {
   title: string;
