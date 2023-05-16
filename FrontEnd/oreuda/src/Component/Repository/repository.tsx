@@ -5,6 +5,7 @@ import st from "./repository.module.scss";
 import RepositoryGraph from "./repositoryGraph";
 import RepositoryGrassGraph from "./repositoryGrassGraph";
 import fontColor from "../../Style/repository/languageColor.module.scss";
+import { log } from "util";
 
 export interface DailyCommit {
   date: string;
@@ -35,7 +36,8 @@ export default function Repository(props: {
   checkedItems: string[];
   setCheckedItems: React.Dispatch<React.SetStateAction<string[]>>;
 }) {
-  const { moveRepositoryMode, repositoryList, checkedItems, setCheckedItems } = props;
+  const { moveRepositoryMode, repositoryList, checkedItems, setCheckedItems } =
+    props;
 
   function formattedDate(date: string) {
     date.replace(/^(\d{4})-(\d{2})-(\d{2})$/, (year, month, day) => {
@@ -87,7 +89,7 @@ export default function Repository(props: {
                     onClick={(event) => event.stopPropagation()}
                   />
                 )}
-                <Link href={e.url} className={st.link}>
+                <Link href={e.url} className={st.link} target="_blank">
                   {e.name}
                 </Link>
                 <div>{e.isPrivate === "Y" ? "Private" : "Public"}</div>
@@ -97,7 +99,9 @@ export default function Repository(props: {
 
             <div className={st.infoBottom}>
               <div>
-                {e.language && <div className={fontColor[e.language]}></div>}
+                {e.language && (
+                  <div className={fontColor[e.language.replace(" ", "")]}></div>
+                )}
                 {e.language && <span>{e.language}</span>}
                 <Image
                   className={st.img}

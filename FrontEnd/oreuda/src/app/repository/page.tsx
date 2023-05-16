@@ -7,8 +7,8 @@ import { redirect } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 import st from "./page.module.scss";
-import Folder from "@/Component/Repository/folder";
-import AddFolder from "@/Component/Repository/addFolder";
+import Folder from "@/Component/Folder/folder";
+import AddFolder from "@/Component/Folder/addFolder";
 
 import { DeleteFolder } from "@/Api/Folders/deleteFolder";
 import { GetFolderList } from "@/Api/Folders/getFolderList";
@@ -103,10 +103,16 @@ export default function Repository() {
   };
 
   const clickDelete = async () => {
-    if (showDelete) {
-      await deleteFolderList();
-      await loadFolderList();
-      setCheckedItems([]);
+    if (showDelete && checkedItems.length > 0) {
+      if (confirm("내부에 레포지토리가 있으면 기본폴더로 이동됩니다. 삭제하시겠습니까?") == true) {
+        await deleteFolderList();
+        await loadFolderList();
+        setCheckedItems([]);
+        alert("삭제되었습니다");
+      } else {
+        setCheckedItems([]);
+        alert("취소되었습니다");
+      }
     }
     setShowDelete(!showDelete);
   };
