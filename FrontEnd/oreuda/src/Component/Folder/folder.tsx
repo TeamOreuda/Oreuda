@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Cookies from "js-cookie";
 
+import EditFolder from "./editFolder";
 import st from "./folder.module.scss";
 import React, { useEffect, useState, SetStateAction, Dispatch, useCallback } from "react";
 
@@ -28,6 +29,7 @@ export default function Folder(props: {
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
 
+  const [openEdit, setOpenEdit] = useState(false);
   const [grab, setGrab] = useState<{ dataset: any }>();
   const [targetName, setTargetName] = useState<number>();
   const [targetPosition, setTargetPosition] = useState<number>();
@@ -73,6 +75,10 @@ export default function Folder(props: {
     setCheckedItems(newCheckedItems);
   };
 
+  const changeFolder = () => {
+    setOpenEdit(!openEdit);
+  };
+
   return (
     <div className={st.folders}>
       {folderList?.map((folder: Folder, index: number) => {
@@ -111,9 +117,15 @@ export default function Folder(props: {
                 />
               </div>
             </Link>
-            <p data-position={index} data-name={folder.id}>
+            <div
+              className={st.folderName}
+              data-position={index}
+              data-name={folder.id}
+              onClick={changeFolder}
+            >
+              {openEdit && <EditFolder folderId={folder.id} changeFolder={changeFolder} />}
               {folder.name}
-            </p>
+            </div>
           </div>
         );
       })}

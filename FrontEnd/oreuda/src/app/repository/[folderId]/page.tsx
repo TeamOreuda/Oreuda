@@ -53,8 +53,14 @@ export default function RepositoryPage() {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
         saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
-        const res = await GetRepositoryLst(ACCESS_TOKEN, folderId, filtering.value);
-        setRepositoryList(res.data);
+        try {
+          const res = await GetRepositoryLst(ACCESS_TOKEN, folderId, filtering.value);
+          setRepositoryList(res.data);
+        } catch (error) {
+          redirect("/landing");
+        }
+      } else {
+        redirect("/landing");
       }
     }
   }, [ACCESS_TOKEN, REFRESH_TOKEN, filtering.value, folderId]);
