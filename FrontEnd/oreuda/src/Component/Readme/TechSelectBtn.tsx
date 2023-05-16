@@ -16,7 +16,7 @@ export default function TechSelectBtn({ curr }: any) {
   const dispatch = useAppDispatch();
 
   const onClickRemoveComp = (e: any) => {
-    console.log(techData[e.target.id]);
+    // console.log(techData[e.target.id]);
 
     dispatch(setDeleteTech({ data: techData[e.target.id], curr: curr }));
   };
