@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 // import AOS from "aos";
 import "aos/dist/aos.css";
@@ -9,6 +9,7 @@ import st from "./Landing.module.scss";
 import Main1 from "./Mains/Main1";
 import Main2 from "./Mains/Main2";
 import Main3 from "./Mains/Main3";
+import Main4 from "./Mains/Main4";
 
 export default function Landing() {
   const ACCESS_TOKEN = Cookies?.get("Authorization");
@@ -22,9 +23,10 @@ export default function Landing() {
 
   return (
     <div className={st.page}>
-        <Main3 />
-        <Main1 />
-        <Main2 />
+      <Main1 />
+      <Main4 />
+      <Main3 />
+      <Main2 />
     </div>
   );
 }

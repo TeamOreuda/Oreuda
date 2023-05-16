@@ -4,8 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 import pg from "../Landing.module.scss";
-import bt from "./login_buttons.module.scss";
+// import bt from "./login_buttons.module.scss";
 import st from "./Main3.module.scss";
+
+import LoginButtons from "./LoginButtons";
 
 export default function Main3() {
   return (
@@ -13,76 +15,46 @@ export default function Main3() {
       <div className={`${pg.page} ${st.layout}`}>
         <div className={st.layout_left}>
           <Image
+            className={st.stacks}
             data-position={1}
             data-name={1}
-            src={`images/landing/main3/Stack.svg`}
+            src={`/images/landing/main3/Stack.svg`}
             alt="스택"
             width={600}
             height={545}
             draggable={false}
             priority
           />
-          <Image
+          {/* <Image
+            className={st.finger}
             data-position={1}
             data-name={1}
-            src={`images/landing/main3/Finger.gif`}
+            src={`/images/landing/main3/Finger.gif`}
             alt="폴더"
-            width={32}
-            height={32}
+            width={400}
+            height={400}
             draggable={false}
             priority
+          /> */}
+          <img
+            className={st.finger}
+            src={`/images/landing/main3/Finger.gif`}
+            alt="폴더"
+            width={400}
+            height={400}
+            draggable={false}
           />
         </div>
         <div className={st.layout_right}>
           {/* 로그인 버튼들 */}
-          <div className={bt.buttons}>
-            <div className={bt.button}>
-              <Link href={`${process.env.NEXT_PUBLIC_LOGIN_URL}`}>
-                <div className={bt.github}>
-                  <Image
-                    data-position={1}
-                    data-name={1}
-                    src={`images/landing/main1/github.svg`}
-                    alt="폴더"
-                    width={32}
-                    height={32}
-                    draggable={false}
-                    priority
-                  />
-                  &nbsp; 로그인
-                </div>
-              </Link>
-            </div>
-            <div className={bt.button}>
-              <Link
-                href="https://chrome.google.com/webstore/detail/oreuda/hooeinlffeekoieamkdbbphnjmclpdmp?hl=ko"
-                target="_black"
-              >
-                <div className={bt.extension}>
-                  <Image
-                    data-position={1}
-                    data-name={1}
-                    src={`images/landing/main1/Google.svg`}
-                    alt="폴더"
-                    width={32}
-                    height={32}
-                    draggable={false}
-                    priority
-                  />
-                  &nbsp; 다운로드
-                </div>
-              </Link>
-            </div>
-          </div>
-
+          <LoginButtons />
           {/* main content */}
           <div className={st.main}>
             <div className={st.main_title}>
               <span className={st.highlight}>리드미</span>를 작성해보세요
             </div>
             <div className={st.main_content}>
-              Git Hub에 프로필을 사용할 리드미를<br></br>GUI를 활용하여 간단하게
-              작성해보세요!
+              Git Hub에 프로필을 사용할 리드미를<br></br>GUI를 활용하여 간단하게 작성해보세요!
               <br />
               남들에게 자신을 알리기 좋은 방법입니다.
             </div>
