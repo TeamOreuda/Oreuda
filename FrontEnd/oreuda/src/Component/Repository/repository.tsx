@@ -5,6 +5,7 @@ import st from "./repository.module.scss";
 import RepositoryGraph from "./repositoryGraph";
 import RepositoryGrassGraph from "./repositoryGrassGraph";
 import fontColor from "../../Style/repository/languageColor.module.scss";
+import { log } from "util";
 
 export interface DailyCommit {
   date: string;
@@ -35,7 +36,8 @@ export default function Repository(props: {
   checkedItems: string[];
   setCheckedItems: React.Dispatch<React.SetStateAction<string[]>>;
 }) {
-  const { moveRepositoryMode, repositoryList, checkedItems, setCheckedItems } = props;
+  const { moveRepositoryMode, repositoryList, checkedItems, setCheckedItems } =
+    props;
 
   function formattedDate(date: string) {
     date.replace(/^(\d{4})-(\d{2})-(\d{2})$/, (year, month, day) => {
@@ -71,6 +73,9 @@ export default function Repository(props: {
 
     setCheckedItems(newCheckedItems);
   };
+  repositoryList.forEach((e) => {
+    console.log(e);
+  });
   return (
     <div>
       {repositoryList?.map((e, index) => (
