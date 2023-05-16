@@ -73,9 +73,6 @@ export default function Repository(props: {
 
     setCheckedItems(newCheckedItems);
   };
-  repositoryList.forEach((e) => {
-    console.log(e);
-  });
   return (
     <div>
       {repositoryList?.map((e, index) => (
@@ -102,7 +99,9 @@ export default function Repository(props: {
 
             <div className={st.infoBottom}>
               <div>
-                {e.language && <div className={fontColor[e.language]}></div>}
+                {e.language && (
+                  <div className={fontColor[e.language.replace(" ", "")]}></div>
+                )}
                 {e.language && <span>{e.language}</span>}
                 <Image
                   className={st.img}
