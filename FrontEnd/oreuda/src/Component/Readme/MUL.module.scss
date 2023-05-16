@@ -2,6 +2,13 @@
 
 .body {
   @include comm.title;
+  label {
+    height: 44px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
   .contentDiv {
     display: flex;
@@ -30,6 +37,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        cursor: pointer;
       }
       // label 내의 텍스트
       .p {
@@ -49,11 +57,12 @@
 
       .selectSV {
         width: 40%;
-        height: 70%;
+        height: 50px;
         margin: 20px;
         border-radius: 10px;
         border: 3px solid black;
         text-indent: 10px;
+        font-size: 16px;
       }
     }
   }

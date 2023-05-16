@@ -13,6 +13,13 @@
       bottom: 32px;
     }
   }
+
+  .repository {
+    height: calc(100vh - 260px);
+    z-index: -100;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+  }
 }
 
 .button {
@@ -22,4 +29,49 @@
   button {
     @include comm.button;
   }
+  .rollbackButton {
+    background-color: #836141;
+  }
+}
+
+.dropdown {
+  width: 120px;
+  z-index: 100;
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .img {
+    margin-left: 48px;
+  }
+
+  .label {
+    margin-bottom: 16px;
+  }
+
+  .options {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    top: 100%;
+    left: -5%;
+    right: 0;
+    max-height: 150px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+
+    .option {
+      padding: 8px;
+      cursor: pointer;
+
+      &.active,
+      &:hover {
+        background-color: #eee;
+      }
+    }
+  }
+}
+.dropdown:hover {
+  cursor: pointer;
 }

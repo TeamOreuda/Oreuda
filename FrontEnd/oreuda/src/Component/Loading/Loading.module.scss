@@ -1,0 +1,27 @@
+.body {
+  background: url("/images/loading/background.svg") no-repeat;
+  background-size: cover;
+  width: 90%;
+  height: 100vh;
+  padding: 0 5%;
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .tip {
+      background-color: rgba(255, 255, 255, 0.78);
+      color: #000;
+      width: 1000px;
+      height: 70px;
+      margin-top: 2rem;
+      display: flex;
+      align-items: center;
+
+      //font-size: 1.5rem;
+      //font-weight: 600;
+      text-align: center;
+    }
+  }
+}

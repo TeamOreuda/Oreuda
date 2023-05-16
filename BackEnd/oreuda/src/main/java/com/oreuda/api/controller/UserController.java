@@ -3,6 +3,7 @@ package com.oreuda.api.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +30,7 @@ public class UserController {
 	// 첫 로그인 -> 회원가입
 	@PostMapping()
 	// 인증서버로부터 받는 값
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	public ResponseEntity<?> firstLogin(@RequestBody SignUpDto signUpDto) {
 		userService.signup(signUpDto);
 
@@ -38,8 +40,21 @@ public class UserController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
+	// 오늘 첫 로그인이라면
+	@PostMapping("/today")
+	// 인증서버로부터 받는 값
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
+	public ResponseEntity<?> todayFirstLogin(@RequestHeader String userId) {
+		if (userService.isTodayFirstLogin(userId)) {
+			dataClient.setData(userId);
+		}
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+
 	// 사용자 정보 조회
 	@GetMapping()
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	public ResponseEntity<?> getUser(@RequestHeader String userId) throws Exception {
 		log.info(userId);
 
@@ -49,6 +64,7 @@ public class UserController {
 
 	// 사용자 프로필 이미지 조회
 	@GetMapping("/profile")
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	public ResponseEntity<?> getImage(@RequestHeader String userId) throws Exception {
 		log.info(userId);
 

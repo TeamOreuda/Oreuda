@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import st from "./Baekjoon.module.scss";
+import st from "./Github.module.scss";
 import {
   selectReadme,
   setBaekjoonId,
@@ -16,14 +16,10 @@ import PrevBtn from "./PrevBtn";
 const svDesignData: string[] = [
   "dark",
   "radical",
-  "merko",
   "gruvbox",
   "tokyonight",
   "onedark",
   "cobalt",
-  "synthwave",
-  "highcontrast",
-  "dracula",
 ];
 
 export default function Github() {
@@ -32,7 +28,6 @@ export default function Github() {
   const githubTheme = useAppSelector(selectReadme).githubTheme;
   const githubId = useAppSelector(selectReadme).githubId;
   const [id, setId] = useState(githubId);
-  console.log(id);
 
   const dispatch = useAppDispatch();
   const activeEnter = (e: any) => {
@@ -49,8 +44,8 @@ export default function Github() {
   return (
     <div className={st.body}>
       <div className={st.titleDiv}>
-        <span>깃헙 스택(Github Stats)</span>
-        <p>깃헙 스택을 보여주는 컴포넌트 입니다.</p>
+        <span>깃헙 스탯(Stats)</span>
+        <p>총 커밋 수, 이슈 등의 지표를 보여줍니다🤠</p>
       </div>
       <div className={st.contentDiv}>
         {/* <input
@@ -61,15 +56,6 @@ export default function Github() {
           value={id}
         ></input> */}
         <div className={st.selectBox}>
-          {/* <select className={st.selectBJ} onClick={onClickBJTheme}>
-            {bjDesignData.map((data: string, index: number) => {
-              return (
-                <option value={data} key={index}>
-                  {data}
-                </option>
-              );
-            })}
-          </select> */}
           <span>테마 설정</span>
           <select
             className={st.selectSV}
@@ -85,8 +71,6 @@ export default function Github() {
             })}
           </select>
         </div>
-        <PrevBtn />
-        <NextBtn />
       </div>
     </div>
   );

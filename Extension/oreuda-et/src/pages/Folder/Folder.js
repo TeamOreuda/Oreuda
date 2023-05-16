@@ -1,32 +1,34 @@
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 
 import Header from "../../components/Main/Header";
-import Footer from "../../components/Main/Footer";
 import FolderHeader from "../../components/Folder/FolderHeader";
 import RepoList from "../../components/Folder/RepoList";
 
+import {
+  setPageCookie,
+  setFolderIDCookie,
+  setColorCookie,
+  setFolderNameCookie,
+} from "../../api/cookie";
+
 const Folder = () => {
   const params = useParams();
-  console.log(params.name)
-  // useEffect(() => {
-  //   // 마지막 페이지를 저장하는 부분
-  //   window.chrome.cookies.set({
-  //     url: "http://localhost:3000",
-  //     name: "page",
-  //     value: "folder",
-  //   });
-  // }, []);
+  const { state } = useLocation();
 
+  const { color, name } = state;
+
+  // console.log(params.name);
+
+  setPageCookie("page");
+  setFolderIDCookie(params.name);
+  setColorCookie(color);
+  setFolderNameCookie(name);
 
   return (
     <>
       <Header />
-
-      <FolderHeader folderName = {params.name}/>
-      <RepoList folderName = {params.name}/>
-
-      {/* <Footer/> */}
+      <FolderHeader folderName={name} folderColor={color} />
+      <RepoList folderId={params.name} />
     </>
   );
 };

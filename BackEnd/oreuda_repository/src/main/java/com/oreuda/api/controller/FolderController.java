@@ -4,13 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.oreuda.api.domain.dto.FolderDto;
 import com.oreuda.api.domain.dto.InputFolderDto;
@@ -31,6 +25,7 @@ public class FolderController {
 	 * @return
 	 */
 	@GetMapping
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	public ResponseEntity<List<FolderDto>> getFolders(@RequestHeader String userId) {
 		return new ResponseEntity<>(folderService.getFolders(userId), HttpStatus.OK);
 	}
@@ -42,6 +37,7 @@ public class FolderController {
 	 * @return
 	 */
 	@PostMapping
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	public ResponseEntity<?> addFolder(@RequestHeader String userId, @RequestBody InputFolderDto inputFolderDto) {
 		folderService.addFolder(userId, inputFolderDto);
 		return new ResponseEntity(HttpStatus.OK);
@@ -54,6 +50,7 @@ public class FolderController {
 	 * @return
 	 */
 	@PatchMapping("delete")
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	public ResponseEntity<?> deleteFolder(@RequestHeader String userId, @RequestBody List<Integer> folders) {
 		folderService.deleteFolder(userId, folders);
 		return new ResponseEntity(HttpStatus.OK);
@@ -66,6 +63,7 @@ public class FolderController {
 	 * @return
 	 */
 	@PatchMapping
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	public ResponseEntity<?> updateFolder(@RequestHeader String userId, @RequestBody FolderDto folderDto) {
 		folderService.updateFolder(userId, folderDto);
 		return new ResponseEntity(HttpStatus.OK);
@@ -78,7 +76,9 @@ public class FolderController {
 	 * @return
 	 */
 	@PatchMapping("rearrange")
-	public ResponseEntity<List<FolderDto>> rearrangeFolder(@RequestHeader String userId, @RequestBody FolderDto folderDto) {
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
+	public ResponseEntity<List<FolderDto>> rearrangeFolder(@RequestHeader String userId,
+		@RequestBody FolderDto folderDto) {
 		return new ResponseEntity(folderService.rearrangeFolder(userId, folderDto), HttpStatus.OK);
 	}
 }

@@ -1,6 +1,5 @@
 package com.oreuda.oreuda_plant.api.Service;
 
-import com.oreuda.oreuda_plant.Common.Redis.RedisBase;
 import com.oreuda.oreuda_plant.api.Domain.Dto.PlantDto;
 import com.oreuda.oreuda_plant.api.Domain.Dto.StatusDto;
 import com.oreuda.oreuda_plant.api.Domain.Entity.Plant;
@@ -19,10 +18,11 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
-import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -34,6 +34,11 @@ public class PlantService {
     private final UserRepository userRepository;
     private final UserLogRepository userLogRepository;
     private final CommitRepository commitRepository;
+
+    public String getUserId(String nickname) {
+        User user = userRepository.findByNickname(nickname).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+        return user.getId();
+    }
 
     public PlantDto getPlant(String userId) {
 //        log.info("userId = {}", userId);
@@ -51,8 +56,25 @@ public class PlantService {
         return null;
     }
 
+    public Map<?, ?> getInfo(String userId) {
+        PlantDto plantDto = getPlant(userId);
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+        String nextLevel = "MAX";
+        int nextLevelExp = 0;
+        if (!Objects.equals(plantDto.getName(), "Earth")) {
+            Plant plant = plantRepository.findById(plantDto.getId() + 1).orElseThrow(() -> new IllegalArgumentException("해당 식물이 없습니다."));
+            nextLevel = plant.getName();
+            nextLevelExp = plant.getMin() - user.getStats();
+        }
+        return Map.of(
+                "nextLevel", nextLevel,
+                "nextLevelExp", nextLevelExp,
+                "userStats", user.getStats()
+        );
+    }
+
     public List<StatusDto> getStatus(String userId) {
-        List<UserLog> userLogs = userLogRepository.findAllByUserIdOrderByTimeDesc(userId);
+        List<UserLog> userLogs = userLogRepository.findAllByUserIdOrderByTime(userId);
         List<StatusDto> statusDtoList = new ArrayList<>();
         for (UserLog userLog : userLogs) {
             statusDtoList.add(StatusDto.builder()
@@ -64,17 +86,17 @@ public class PlantService {
         return statusDtoList;
     }
 
-    public int getDailyPoint(int commitCnt, int day, int streak) {
+    public int getDailyPoint(int commitCnt, long day, int streak) {
 //        log.info("commitCnt = {}, day = {}, streak = {}", commitCnt, day, streak);
         // decay = 0.9748 ^ day
         final double DECAY_RATE = 0.9748;
         // streakBonus = 300 * (1 - 0.905 ^ (streak - 1))
         final double STREAK_BONUS_RATE = 0.905;
         // 첫 커밋 50, 이후 20, 최대 250
-        int point = Math.min(50 + (commitCnt - 1) * 20, 250);
+        int point = Math.min(75 + (commitCnt - 1) * 25, 250);
         double decay = Math.pow(DECAY_RATE, day);
         // 66일간 유지되면 300점 보너스 이후 고정
-        int streakBonus = (int) Math.round(300 * (1 - Math.pow(STREAK_BONUS_RATE, streak - 1)));
+        int streakBonus = (int) Math.round(200 * (1 - Math.pow(STREAK_BONUS_RATE, streak - 1)));
 //        log.info("point = {}, decay = {}, streakBonus = {}", point, decay, streakBonus);
         int result = (int) Math.round((point + streakBonus) * decay);
 //        log.info("result = {}", result);
@@ -88,9 +110,9 @@ public class PlantService {
         LocalDate prev = null;
         for (String key : userCommits.keySet()) {
             LocalDate date = LocalDate.parse(key);
-            if (date.isAfter(start)) continue;
+            if (date.isAfter(start)) break;
             // streak 계산
-            if (prev != null && prev.minusDays(1).isEqual(date)) {
+            if (prev != null && prev.plusDays(1).isEqual(date)) {
                 // 연속된 경우
                 streak++;
             } else {
@@ -98,10 +120,9 @@ public class PlantService {
                 streak = 1;
             }
             // 며칠전 커밋인지 계산
-            Period period = Period.between(date, start);
-            int day = period.getYears() * 365 + period.getMonths() * 30 + period.getDays();
+            long day = ChronoUnit.DAYS.between(date, start);
             // 6달 이상은 무조건 0점이므로 계산할 필요 없음
-            if (day > 180) break;
+            if (day > 180) continue;
             // 점수 계산
             point += getDailyPoint(userCommits.get(key), day, streak);
             prev = date;
@@ -111,26 +132,30 @@ public class PlantService {
 
     public void setStatus(String userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
-        UserLog userLog = userLogRepository.findTopByUserIdOrderByTimeDesc(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저의 로그가 없습니다."));
+        UserLog userLog = userLogRepository.findTopByUserIdOrderByTimeDesc(userId).orElse(null);
+        if (userLog == null) {
+            LocalDateTime startTime = user.getJoinDate().minusMonths(1).withHour(0).withMinute(0).withSecond(0);
+            userLog = UserLog.builder()
+                    .user(user)
+                    .time(startTime)
+                    .val(0)
+                    .build();
+        }
         LocalDate today = LocalDate.now();
-        Map<String, Integer> userCommits = commitRepository.getList(userId, user.getJoinDate());
-//        for (String key : userCommits.keySet()) {
-//            log.info("{}: {}", key, userCommits.get(key));
-//        }
-        userLog = UserLog.builder()
-                .user(user)
-                .time(userLog.getTime().plusDays(1))
-                .val(getPoint(today, userCommits))
-                .build();
-        log.info("{}: {}",user.getNickname(), userLog.getVal());
-//        while (userLog.getTime().toLocalDate().isBefore(today)) {
-//            userLog = UserLog.builder()
-//                    .user(user)
-//                    .time(userLog.getTime().plusDays(1))
-//                    .val(getPoint(user.getJoinDate(), userLog.getTime().toLocalDate(), userCommits))
-//                    .build();
-//            log.info("userLog = {}", userLog.getVal());
-////            userLogRepository.save(userLog);
-//        }
+        Map<String, Integer> userCommits = commitRepository.getList(userId, userLog.getTime().minusMonths(6).toLocalDate());
+        // 현재 포인트 저장
+        user.setStats(getPoint(today, userCommits));
+//        log.info("{}: {}", user.getNickname(), user.getStats());
+        userRepository.save(user);
+        // 그래프 채우기
+        while (userLog.getTime().toLocalDate().isBefore(today)) {
+            userLog = UserLog.builder()
+                    .user(user)
+                    .time(userLog.getTime().plusDays(1))
+                    .val(getPoint(userLog.getTime().toLocalDate(), userCommits))
+                    .build();
+//            log.info("{}: {}", userLog.getTime(), userLog.getVal());
+            userLogRepository.save(userLog);
+        }
     }
 }

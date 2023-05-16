@@ -39,7 +39,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
             String token = exchange.getRequest().getHeaders().get("Authorization").get(0).substring(7);   // 헤더의 토큰 파싱 (Bearer 제거)
-
+            log.info(token);
             String userId = jwtUtil.getUid(token);
 
             addAuthorizationHeaders(exchange.getRequest(), userId);
@@ -68,6 +68,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
             if(errorCode == 100)
             {
                 str = "토큰이 없습니다.";
+                log.info("토큰이 없습니다.");
             } else if (errorCode == 200) {
                 str = "토큰이 만료됐습니다.";
             }
@@ -81,6 +82,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
             int errorCode = 500;
             if (ex.getClass() == NullPointerException.class) {
                 errorCode = 100;
+                log.info("토큰이 없습니다.");
             } else if (ex.getClass() == ExpiredJwtException.class) {
                 errorCode = 200;
             }
@@ -91,6 +93,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
              // 토큰 값 null 일 시에 403 or 만료 시에 401 에러 발생
              if (errorCode == 100) {
                  exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);
+                 log.info("토큰이 없습니다.");
                  return exchange.getResponse().writeWith(Flux.just(buffer));
              }
              else if (errorCode == 200) {

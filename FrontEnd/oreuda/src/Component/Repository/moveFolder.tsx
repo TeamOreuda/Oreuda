@@ -1,58 +1,68 @@
-import { useState } from "react";
+"use client";
+
+import Image from "next/image";
+import Cookies from "js-cookie";
+import { redirect } from "next/navigation";
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
+
 import st from "./moveFolder.module.scss";
+import { Folder } from "@/Component/Folder/folder";
 
-export default function MoveFolder() {
-  const options = [
-    { id: 1, value: "hello" },
-    { id: 2, value: "111" },
-    { id: 3, value: "2222" },
-    { id: 1, value: "hello" },
-    { id: 2, value: "111" },
-    { id: 3, value: "2222" },
-    { id: 1, value: "hello" },
-    { id: 2, value: "111" },
-    { id: 3, value: "2222" },
-    { id: 1, value: "hello" },
-    { id: 2, value: "111" },
-    { id: 3, value: "2222" },
-    { id: 1, value: "hello" },
-    { id: 2, value: "111" },
-    { id: 3, value: "2222" },
-    { id: 1, value: "hello" },
-    { id: 2, value: "111" },
-    { id: 3, value: "2222" },
-  ];
+import { GetFolderList } from "@/Api/Folders/getFolderList";
+import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
+import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(options[0]);
+export default function MoveFolder(props: {
+  closeModal: () => void;
+  folderId: number;
+  setMoveFolderId: Dispatch<SetStateAction<number>>;
+  moveRepository: () => void;
+}) {
+  const { closeModal, folderId, setMoveFolderId, moveRepository } = props;
+  const ACCESS_TOKEN = Cookies.get("Authorization");
+  const REFRESH_TOKEN = Cookies.get("RefreshToken");
+  const [folderList, setFolderList] = useState<{ id: number; name: string }[]>([]);
 
-  const handleOptionClick = (option: any) => {
-    setSelectedOption(option);
-    setIsOpen(!isOpen);
-  };
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
+  const loadFolderList = useCallback(async () => {
+    try {
+      const res = await GetFolderList(ACCESS_TOKEN);
+      setFolderList(res.data.filter((folder: Folder) => folder.id != folderId));
+    } catch (err: any) {
+      if (err.response?.status == 401) {
+        const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+        try {
+          await GetFolderList(token.data.Authorization);
+        } catch (error) {
+          redirect("/landing");
+        }
+      } else {
+        redirect("/landing");
+      }
+    }
+  }, [ACCESS_TOKEN, REFRESH_TOKEN, folderId]);
+
+  useEffect(() => {
+    loadFolderList();
+  }, [loadFolderList]);
 
   return (
-    <div onClick={(e) => e.stopPropagation()}>
-      <div className={st.dropdown} onClick={toggleDropdown}>
-        {selectedOption.value}
-      </div>
-      <div className={st.dropdown}>
-        {isOpen && (
-          <div className={st.options}>
-            {options.map((option) => (
-              <div
-                key={option.id}
-                className={`${st.option} ${option.value === selectedOption.value ? st.active : ""}`}
-                onClick={() => handleOptionClick(option)}
-              >
-                {option.value}
-              </div>
-            ))}
-          </div>
-        )}
+    <div className={st.modalBox} onClick={closeModal}>
+      <div className={st.modalContent} onClick={(e) => e.stopPropagation()}>
+        <div>
+          <Image src="/images/folder/white.svg" alt="" width={48} height={48} />
+          <button onClick={moveRepository}>확인</button>
+        </div>
+
+        <p>이동할 폴더</p>
+        <div className={st.checkItem}>
+          {folderList?.map((folder, index) => (
+            <div key={index}>
+              <input type="radio" value={folder.id} onChange={() => setMoveFolderId(folder.id)} />
+              {folder.name}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

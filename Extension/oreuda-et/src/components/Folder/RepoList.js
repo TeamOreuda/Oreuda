@@ -1,243 +1,53 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 import st from "./RepoList.module.scss";
 import RepoItem from "./RepoItem";
 import FooterLabel from "../common/FooterLabel";
 
-// const repoList = [
-//   {
-//     id: 1,
-//     name: "twitter-algorithm",
-//     visibility: "private",
-//     language: "Python",
-//     description: "Source code for Twitter's Recommendation Algorithm ",
-//     updateDate: "Dec 29, 2021",
-//     url: "https://github.com/tykimdream/twitter-algorithm",
-//   },
-//   {
-//     id: 2,
-//     name: "movie-list-crawling",
-//     visibility: "public",
-//     language: "Python",
-//     description:
-//       "movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project",
-//     updateDate: "Dec 29, 2022",
-//     url: "https://github.com/tykimdream/twitter-algorithm",
-//   },
-//   {
-//     id: 3,
-//     name: "twitter-algorithm",
-//     visibility: "private",
-//     language: "Python",
-//     description: "Source code for Twitter's Recommendation Algorithm ",
-//     updateDate: "Dec 29, 2021",
+import { getFolderList } from "../../api/folder";
+import { getRepoList } from "../../api/repo";
 
-//     url: "https://github.com/tykimdream/twitter-algorithm",
-//   },
-//   {
-//     id: 4,
-//     name: "movie-list-crawling",
-//     visibility: "public",
-//     language: "Python",
-//     description:
-//       "movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project",
-//     updateDate: "Dec 29, 2022",
-//     url: "https://github.com/tykimdream/twitter-algorithm",
-//   },
-//   {
-//     id: 5,
-//     name: "twitter-algorithm",
-//     visibility: "private",
-//     language: "Python",
-//     description: "Source code for Twitter's Recommendation Algorithm ",
-//     updateDate: "Dec 29, 2021",
-//     url: "https://github.com/tykimdream/twitter-algorithm",
-//   },
-//   {
-//     id: 6,
-//     name: "movie-list-crawling",
-//     visibility: "public",
-//     language: "Python",
-//     description:
-//       "movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project",
-//     updateDate: "Dec 29, 2022",
-//     url: "https://github.com/tykimdream/twitter-algorithm",
-//   },
-//   {
-//     id: 7,
-//     name: "twitter-algorithm",
-//     visibility: "private",
-//     language: "Python",
-//     description: "Source code for Twitter's Recommendation Algorithm ",
-//     updateDate: "Dec 29, 2021",
-//     url: "https://github.com/tykimdream/twitter-algorithm",
-//   },
-//   {
-//     id: 8,
-//     name: "movie-list-crawling",
-//     visibility: "public",
-//     language: "Python",
-//     description:
-//       "movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project",
-//     updateDate: "Dec 29, 2022",
-//     url: "https://github.com/tykimdream/twitter-algorithm",
-//   },
-// ];
-
-// const folderList = [
-//   {
-//     id: 1,
-//     name: "FE",
-//     color: "blue",
-//     order: 1,
-//     repositoryCount: 3,
-//   },
-//   {
-//     id: 2,
-//     name: "BE",
-//     color: "pink",
-//     order: 2,
-//     repositoryCount: 3,
-//   },
-//   {
-//     id: 3,
-//     name: "Team Project For SSAFY 8th Generation",
-//     color: "green",
-//     order: 3,
-//     repositoryCount: 3,
-//   },
-// ];
-const RepoList = ({ folderName }) => {
+const RepoList = ({ folderId }) => {
   const [repoList, setRepoList] = useState([]);
   const [folderList, setFolderList] = useState([]);
-
   const [dropDownIndex, setDropDownIndex] = useState(-1);
+  const [isMoved, setIsMoved] = useState(false);
+
+  const atk = useSelector((state) => state.accessToken.token);
 
   useEffect(() => {
-    console.log(folderName);
-    // folderName을 기반으로 axios해온다.
-    setRepoList([
-      {
-        id: 1,
-        name: "twitter-algorithm",
-        visibility: "private",
-        language: "Python",
-        description: "Source code for Twitter's Recommendation Algorithm ",
-        updateDate: "Dec 29, 2021",
-        url: "https://github.com/tykimdream/twitter-algorithm",
-      },
-      {
-        id: 2,
-        name: "movie-list-crawling",
-        visibility: "public",
-        language: "Python",
-        description:
-          "movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project",
-        updateDate: "Dec 29, 2022",
-        url: "https://github.com/tykimdream/twitter-algorithm",
-      },
-      {
-        id: 3,
-        name: "twitter-algorithm",
-        visibility: "private",
-        language: "Python",
-        description: "Source code for Twitter's Recommendation Algorithm ",
-        updateDate: "Dec 29, 2021",
+    getFolderList(atk).then((response) => {
+      setFolderList(response);
+    });
+    getRepoList(atk, folderId).then((response) => {
+      setRepoList(response);
+    });
+  }, [atk]);
 
-        url: "https://github.com/tykimdream/twitter-algorithm",
-      },
-      {
-        id: 4,
-        name: "movie-list-crawling",
-        visibility: "public",
-        language: "Python",
-        description:
-          "movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project",
-        updateDate: "Dec 29, 2022",
-        url: "https://github.com/tykimdream/twitter-algorithm",
-      },
-      {
-        id: 5,
-        name: "twitter-algorithm",
-        visibility: "private",
-        language: "Python",
-        description: "Source code for Twitter's Recommendation Algorithm ",
-        updateDate: "Dec 29, 2021",
-        url: "https://github.com/tykimdream/twitter-algorithm",
-      },
-      {
-        id: 6,
-        name: "movie-list-crawling",
-        visibility: "public",
-        language: "Python",
-        description:
-          "movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project",
-        updateDate: "Dec 29, 2022",
-        url: "https://github.com/tykimdream/twitter-algorithm",
-      },
-      {
-        id: 7,
-        name: "twitter-algorithm",
-        visibility: "private",
-        language: "Python",
-        description: "Source code for Twitter's Recommendation Algorithm ",
-        updateDate: "Dec 29, 2021",
-        url: "https://github.com/tykimdream/twitter-algorithm",
-      },
-      {
-        id: 8,
-        name: "movie-list-crawling",
-        visibility: "public",
-        language: "Python",
-        description:
-          "movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project movie list crawling project",
-        updateDate: "Dec 29, 2022",
-        url: "https://github.com/tykimdream/twitter-algorithm",
-      },
-    ]);
-    setFolderList([
-      {
-        id: 1,
-        name: "FE",
-        color: "blue",
-        order: 1,
-        repositoryCount: 3,
-      },
-      {
-        id: 2,
-        name: "BE",
-        color: "pink",
-        order: 2,
-        repositoryCount: 3,
-      },
-      {
-        id: 3,
-        name: "Team Project For SSAFY 8th Generation",
-        color: "green",
-        order: 3,
-        repositoryCount: 3,
-      },
-      {
-        id: 4,
-        name: "기본 폴더",
-        color: "white",
-        order: 4,
-        repositoryCount: 3,
-      }
-    ]);
-  }, []);
+  // 폴더가 이동하면 화면을 다시 렌더링한다.
+  useEffect(() => {
+    getFolderList(atk).then((response) => {
+      setFolderList(response);
+    });
+    getRepoList(atk, folderId).then((response) => {
+      setRepoList(response);
+    });
+  }, [isMoved]);
 
   return (
     <>
       <div className={st.cardList}>
         {repoList.map((repo) => {
-          // console.log(repo);
           return (
             <RepoItem
               repo={repo}
+              folderId = {folderId}
               folderList={folderList}
               dropDownIndex={dropDownIndex}
               setDropDownIndex={setDropDownIndex}
+              isMoved={isMoved}
+              setIsMoved={setIsMoved}
             />
           );
         })}

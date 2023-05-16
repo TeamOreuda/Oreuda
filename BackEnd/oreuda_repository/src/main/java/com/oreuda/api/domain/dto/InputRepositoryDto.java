@@ -24,5 +24,6 @@ public class InputRepositoryDto {
 	int moveFolderId;
 
 	// 이동할 레포지토리 목록
+	@Builder.Default
 	List<String> repositories = new ArrayList<>();
 }

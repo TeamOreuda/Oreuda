@@ -6,6 +6,7 @@
   margin-right: 2px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
   flex-direction: row;
   justify-content: space-between;
   @include list.list;
@@ -17,7 +18,7 @@
     cursor: pointer;
   }
   .folderTitle {
-    width: 80.64px;
+    width: 95px;
     text-align: center;
     margin: 0 auto;
     overflow: hidden;

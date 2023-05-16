@@ -1,20 +1,22 @@
 .body {
   display: grid;
   grid-template-columns: 2fr 2fr 1fr;
+  height: 150px;
 
   margin: {
     left: 32px;
-    right: 16px;
+    bottom: 64px;
   }
 }
 
 .info {
   padding-right: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
-  div {
-    display: flex;
-  }
-
+.infoTop {
   p {
     color: #858181;
     font-size: 16px;
@@ -27,15 +29,23 @@
   }
 }
 
-.infofirst {
+.infoFirst {
+  display: flex;
   align-items: center;
+  max-width: 450px;
+
   .link {
     font-size: 24px;
     font-weight: bold;
     margin-right: 16px;
     text-decoration: none;
     color: black;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
+
   div {
     font-size: 8px;
     font-weight: bold;
@@ -47,21 +57,26 @@
   }
 }
 
-.infosecond {
+.infoBottom {
+  display: flex;
+  div {
+    display: flex;
+  }
   justify-content: space-between;
 
   & div {
     div:nth-of-type(1) {
       width: 16px;
       height: 16px;
-      background-color: blue;
       border-radius: 16px;
-
       margin-right: 8px;
     }
 
+    span:nth-of-type(1) {
+      margin-right: 16px;
+    }
+
     .img {
-      margin-left: 16px;
       margin-right: 8px;
     }
   }
@@ -69,4 +84,14 @@
   span {
     font-size: 12px;
   }
+}
+
+.repositoryGrass {
+  position: relative;
+  z-index: -1;
+}
+
+.repositoryGrassGraph .repositoryGraph {
+  display: flex;
+  align-items: center;
 }

@@ -13,12 +13,13 @@ import lombok.RequiredArgsConstructor;
 public class RepositoryRepository {
 
 	private final RedisBase redisBase;
+	private final static String KEY = "repository_";
 
-	public Optional<com.oreuda.api.domain.entity.Repository> get(String key) {
-		return redisBase.get(getKey(key), com.oreuda.api.domain.entity.Repository.class);
+	public Optional<com.oreuda.api.domain.entity.Repository> get(String userId, String repoId) {
+		return redisBase.get(getKey(userId, repoId), com.oreuda.api.domain.entity.Repository.class);
 	}
 
-	private String getKey(String id) {
-		return "repository_" + id;
+	private String getKey(String userId, String repoId) {
+		return KEY + userId + "_" + repoId;
 	}
 }

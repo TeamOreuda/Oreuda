@@ -49,11 +49,25 @@
       cursor: pointer;
     }
 
-    .btnDiv {
+    .btnReset {
       position: absolute;
       width: 130px;
       height: 45px;
       right: 0px;
+      background: #cccccc;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      border-radius: 10px;
+      font-family: "GmarketSansMedium";
+      border: none;
+      // cursor: pointer;
+    }
+    .btnSave {
+      position: absolute;
+      width: 80px;
+      height: 45px;
+      right: 250px;
       background: #4bca80;
       color: white;
       font-weight: bold;
@@ -63,11 +77,75 @@
       border: none;
       cursor: pointer;
     }
+    .disabledBtn {
+      background-color: #cccccc;
+      cursor: auto;
+    }
   }
 
   & .contentDiv {
     width: 100%;
     height: calc(95vh - 180px);
     margin-top: 3vh;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
   }
+}
+
+.techBadgeDiv {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 300px;
+}
+.techBadge {
+  margin: 5px 5px;
+}
+
+.card {
+  display: flex;
+  position: absolute;
+  width: 280px;
+  height: 140px;
+  border-radius: 10px;
+  background: #4bca80;
+  color: white;
+
+  span {
+    font-size: 14px;
+    right: 5px;
+    top: 0px;
+  }
+}
+.contactBadgeDiv {
+  display: flex;
+  justify-content: flex-start;
+  width: 220px;
+  margin: 10px;
+
+  a {
+    margin: 0 5px;
+  }
+}
+
+.TextArr {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  h3 {
+    text-align: center;
+    margin: 10px 0px;
+  }
+}
+
+.textareaParse {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }

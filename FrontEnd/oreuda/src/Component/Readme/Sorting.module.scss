@@ -1,0 +1,47 @@
+@use "../../Style/index.scss" as comm;
+
+.body {
+  @include comm.title;
+  .contentDiv {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+
+    .boxDiv {
+      width: 360px;
+      border: 3px solid black;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+
+      .componentDiv {
+        width: 300px;
+        height: 50px;
+        border: 2px solid #b9b5b5;
+        margin: 10px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        border-radius: 10px;
+        padding-left: 20px;
+        cursor: grab;
+        &.true {
+          transition: transform 400ms ease 0s;
+        }
+        &.grabbing {
+          cursor: grabbing;
+        }
+        &.move_up {
+          transform: translate(0, -41px);
+        }
+        &.move_down {
+          transform: translate(0, 41px);
+        }
+      }
+    }
+  }
+}

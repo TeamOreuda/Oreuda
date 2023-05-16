@@ -66,6 +66,7 @@ public class Folder {
 	private LocalDateTime date;
 
 	// 해당 폴더의 레포지토리 목록
+	@Builder.Default
 	@OneToMany(mappedBy = "folder", fetch = FetchType.EAGER)
 	private List<FolderRepository> repositories = new ArrayList<>();
 
@@ -76,6 +77,7 @@ public class Folder {
 			.name(name)
 			.color(color)
 			.order(order)
+			.status(status)
 			.repositoryCount(repositories.size())
 			.build();
 	}

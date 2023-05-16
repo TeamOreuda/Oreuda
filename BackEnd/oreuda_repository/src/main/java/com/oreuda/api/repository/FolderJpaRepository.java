@@ -12,4 +12,6 @@ import com.oreuda.api.domain.entity.User;
 public interface FolderJpaRepository extends JpaRepository<Folder, Long> {
 
 	List<Folder> findByUserAndStatusNotOrderByOrder(User user, String status);
+
+	Folder findByUserAndStatus(User user, String status);
 }

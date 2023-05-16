@@ -5,8 +5,6 @@ import st from "./MUL.module.scss";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 
 import { selectReadme, setMULTheme, setMULType } from "@/store/modules/readme";
-import PrevBtn from "./PrevBtn";
-import NextBtn from "./NextBtn";
 
 const MULThemeData: string[] = [
   "dark",
@@ -38,7 +36,7 @@ export default function MUL() {
     <div className={st.body}>
       <div className={st.titleDiv}>
         <span>주 사용 언어(MUL)</span>
-        <p>주로 많이 사용한 언어들 순으로 정렬해서 보여줍니다.</p>
+        <p>가장 많이 사용한 5개의 언어들을 보여줍니다🐸</p>
       </div>
       <div className={st.contentDiv}>
         <div className={st.radioBtnDiv}>
@@ -74,6 +72,7 @@ export default function MUL() {
           </label>
         </div>
         <div className={st.selectBox}>
+          <span>테마 설정</span>
           <select
             className={st.selectSV}
             onClick={onClickSVTheme}
@@ -87,10 +86,6 @@ export default function MUL() {
               );
             })}
           </select>
-        </div>
-        <div className={st.btnDiv}>
-          <PrevBtn />
-          <NextBtn />
         </div>
       </div>
     </div>

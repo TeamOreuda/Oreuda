@@ -1,5 +1,7 @@
 package com.oreuda.api.domain.dto;
 
+import java.time.LocalDateTime;
+
 import com.oreuda.api.domain.entity.User;
 
 import lombok.AllArgsConstructor;
@@ -16,6 +18,7 @@ public class UserDto {
 	int repositoryCnt;
 	int streakMax;
 	String mainLanguage;
+	LocalDateTime updateTime;
 
 	public static UserDto toEntity(User user){
 		return UserDto.builder()
@@ -24,6 +27,7 @@ public class UserDto {
 			.repositoryCnt(user.getRepositoryCnt())
 			.streakMax(user.getStreakMax())
 			.mainLanguage(user.getMostLanguage())
+			.updateTime(user.getUpdateTime())
 			.build();
 	}
 }

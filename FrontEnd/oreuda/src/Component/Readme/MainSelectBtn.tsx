@@ -7,11 +7,16 @@ import { mainCompChoiceData } from "./Main";
 
 export default function MainSelectBtn() {
   const nextComp = useAppSelector(selectReadme).nextComp;
+  const componentArr = useAppSelector(selectReadme).componentArr;
+
   const dispatch = useAppDispatch();
 
   const onClickRemoveComp = (e: any) => {
-    console.log(e.target.id);
-    dispatch(setDeleteComponent(e.target.id));
+    // console.log(e.target.id);
+    // console.log(`nextComp:`, nextComp);
+    // console.log(`componentArr:`, componentArr);
+
+    dispatch(setDeleteComponent(Number(e.target.id)));
   };
   return (
     <div className={st.choiceBox}>
@@ -23,7 +28,7 @@ export default function MainSelectBtn() {
             onClick={onClickRemoveComp}
             className={st.choiceComp}
           >
-            {mainCompChoiceData[el]}
+            {mainCompChoiceData[el].split("(")[0]}
           </div>
         );
       })}

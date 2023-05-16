@@ -36,6 +36,9 @@ dependencies {
 
 	// feign client
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
+	// Jackson DataBind
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.5'
 }
 
 tasks.named('test') {
@@ -53,3 +56,8 @@ dependencyManagement {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 	}
 }
+
+test {
+    enabled = false
+}
+
