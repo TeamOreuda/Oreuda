@@ -36,7 +36,11 @@ const navList: NavList[] = [
   },
 ];
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   if (children && typeof children === "object" && "props" in children) {
     // 로그인이 되어있지 않다면
     if (
@@ -63,12 +67,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         })
         .catch(async (err) => {
           if (err.response?.status == 401) {
-            return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN).then(async (res) => {
-              saveCookiesAndRedirect(res.data.Authorization, res.data.RefreshToken);
-              return await GetProfile(res.data.Authorization).then((res) => {
-                return res.data;
-              });
-            });
+            return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN).then(
+              async (res) => {
+                saveCookiesAndRedirect(
+                  res.data.Authorization,
+                  res.data.RefreshToken
+                );
+                return await GetProfile(res.data.Authorization).then((res) => {
+                  return res.data;
+                });
+              }
+            );
           } else {
             redirect("/landing");
           }
@@ -80,12 +89,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         })
         .catch(async (err) => {
           if (err.response?.status == 401) {
-            return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN).then(async (res) => {
-              saveCookiesAndRedirect(res.data.Authorization, res.data.RefreshToken);
-              return await GetCharacter(ACCESS_TOKEN).then((res) => {
-                return res.data;
-              });
-            });
+            return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN).then(
+              async (res) => {
+                saveCookiesAndRedirect(
+                  res.data.Authorization,
+                  res.data.RefreshToken
+                );
+                return await GetCharacter(ACCESS_TOKEN).then((res) => {
+                  return res.data;
+                });
+              }
+            );
           } else {
             redirect("/landing");
           }
@@ -144,7 +158,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
               <ul>
                 <Link href="http://localhost:3000/landing" className={st.link}>
-                  <Image className={st.logout} src={userProfile} alt="" width={32} height={32} />
+                  <Image
+                    className={st.logout}
+                    src={userProfile}
+                    alt=""
+                    width={32}
+                    height={32}
+                  />
                   로그아웃
                 </Link>
               </ul>

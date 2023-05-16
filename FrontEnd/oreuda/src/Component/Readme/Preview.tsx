@@ -240,6 +240,10 @@ export default function Preview() {
   `;
   };
 
+  const onClickReset = () => {
+    alert("준비중입니다.");
+  };
+
   // md parsing을 위하여 변수가 포함된 src를 사용하기 위하여 빼놓은 문자열입니다.
   const blogImg = `https://img.shields.io/badge/TechBlog-7FD2F5?style=flat&logo=Hoppscotch&logoColor=white&link=${blogLink}/`;
   const notionImg = `https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white&link=${notionLink}/`;
@@ -477,6 +481,7 @@ export default function Preview() {
       } catch (err: any) {
         console.log(err);
       }
+      alert("저장이 완료되었습니다.");
     }
   };
   return (
@@ -503,7 +508,9 @@ export default function Preview() {
             alt="download"
           />
         </div>
-        <button className={st.btnReset}>초기화</button>
+        <button className={st.btnReset} onClick={onClickReset}>
+          초기화
+        </button>
         <button
           className={`${st.btnSave} ${
             currComponent === 8 ? undefined : st.disabledBtn
