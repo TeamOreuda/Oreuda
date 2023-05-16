@@ -22,6 +22,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -53,6 +54,23 @@ public class PlantService {
             }
         }
         return null;
+    }
+
+    public Map<?, ?> getInfo(String userId) {
+        PlantDto plantDto = getPlant(userId);
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+        String nextLevel = "MAX";
+        int nextLevelExp = 0;
+        if (!Objects.equals(plantDto.getName(), "Earth")) {
+            Plant plant = plantRepository.findById(plantDto.getId() + 1).orElseThrow(() -> new IllegalArgumentException("해당 식물이 없습니다."));
+            nextLevel = plant.getName();
+            nextLevelExp = plant.getMin() - user.getStats();
+        }
+        return Map.of(
+                "nextLevel", nextLevel,
+                "nextLevelExp", nextLevelExp,
+                "userStats", user.getStats()
+        );
     }
 
     public List<StatusDto> getStatus(String userId) {
