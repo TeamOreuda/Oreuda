@@ -14,7 +14,7 @@ import React, {
 
 import { ChangeFolder } from "@/Api/Folders/changeFolder";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
-import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
+import { saveCookies } from "@/Api/Oauth/saveCookies";
 
 export interface Folder {
   id: number;
@@ -53,11 +53,12 @@ export default function Folder(props: {
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(
+        saveCookies(token.data.Authorization, token.data.RefreshToken);
+        await ChangeFolder(
           token.data.Authorization,
-          token.data.RefreshToken
+          targetName,
+          targetPosition
         );
-        await ChangeFolder(ACCESS_TOKEN, targetName, targetPosition);
       }
     }
   }, [ACCESS_TOKEN, REFRESH_TOKEN, targetName, targetPosition]);

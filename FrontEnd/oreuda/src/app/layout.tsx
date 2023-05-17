@@ -10,7 +10,7 @@ import { Providers } from "@/store/provider";
 import { GetProfile } from "@/Api/Users/getProfile";
 import { GetCharacter } from "@/Api/Plant/getCharacter";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
-import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
+import { saveCookies } from "@/Api/Oauth/saveCookies";
 
 interface NavList {
   moveTo: string;
@@ -69,10 +69,7 @@ export default async function RootLayout({
           if (err.response?.status == 401) {
             return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN).then(
               async (res) => {
-                saveCookiesAndRedirect(
-                  res.data.Authorization,
-                  res.data.RefreshToken
-                );
+                saveCookies(res.data.Authorization, res.data.RefreshToken);
                 try {
                   return await GetProfile(res.data.Authorization).then(
                     (res) => {
@@ -97,14 +94,13 @@ export default async function RootLayout({
           if (err.response?.status == 401) {
             return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN).then(
               async (res) => {
-                saveCookiesAndRedirect(
-                  res.data.Authorization,
-                  res.data.RefreshToken
-                );
+                saveCookies(res.data.Authorization, res.data.RefreshToken);
                 try {
-                  return await GetCharacter(ACCESS_TOKEN).then((res) => {
-                    return res.data;
-                  });
+                  return await GetCharacter(res.data.Authorization).then(
+                    (res) => {
+                      return res.data;
+                    }
+                  );
                 } catch {
                   redirect("/landing");
                 }
