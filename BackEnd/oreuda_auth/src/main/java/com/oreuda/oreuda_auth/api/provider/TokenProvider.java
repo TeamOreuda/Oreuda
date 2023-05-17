@@ -130,7 +130,7 @@ public class TokenProvider implements InitializingBean {
         String delimiter = tokenKey.getKey();
         if (delimiter.equals(TokenKey.ACCESS.getKey())) {
             // 2시간
-            return tokenValidityInSeconds * 2;
+            return tokenValidityInSeconds /6 /60;
         } else if (delimiter.equals(TokenKey.REFRESH.getKey())) {
             // 1달
             return tokenValidityInSeconds * 24 * 30;
