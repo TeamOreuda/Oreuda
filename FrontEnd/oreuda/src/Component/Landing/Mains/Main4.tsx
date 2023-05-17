@@ -80,8 +80,8 @@ export default function Main4() {
           data-name={1}
           src={`/images/landing/main4/CircleGraph.gif`}
           alt="스택"
-          width={780}
-          height={480}
+          width={800}
+          height={460}
           draggable={false}
           priority
         />
