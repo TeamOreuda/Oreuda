@@ -18,7 +18,7 @@ import st from "./charactergraph.module.scss";
 
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { GetCharacterGraph } from "@/Api/Plant/getCharacterGraph";
-import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
+import { saveCookies } from "@/Api/Oauth/saveCookies";
 
 export interface Charactergraph {
   id: number;
@@ -26,7 +26,14 @@ export interface Charactergraph {
   val: number;
 }
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Filler,
+  Tooltip
+);
 
 export default function Character() {
   const ACCESS_TOKEN = Cookies.get("Authorization");
@@ -40,7 +47,7 @@ export default function Character() {
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+        saveCookies(token.data.Authorization, token.data.RefreshToken);
         try {
           const res = await GetCharacterGraph(token.data.Authorization);
           setCharacterGraph(res.data);
@@ -62,10 +69,10 @@ export default function Character() {
       {
         fill: true,
         data: characterGraph?.map((e: Charactergraph) => {
-          const date = `${e.time.substring(2, 4)}.${e.time.substring(5, 7)}.${e.time.substring(
-            8,
-            10
-          )}`;
+          const date = `${e.time.substring(2, 4)}.${e.time.substring(
+            5,
+            7
+          )}.${e.time.substring(8, 10)}`;
           return { x: date, y: e.val };
         }),
       },

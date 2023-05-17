@@ -12,7 +12,7 @@ export default function Token() {
   const ACCESS_TOKEN = searchParams.get("Authorization");
   const REFRESH_TOKEN = searchParams.get("RefreshToken");
 
-  const saveCookiesAndRedirect = useCallback(() => {
+  const saveCookies = useCallback(() => {
     if (ACCESS_TOKEN && REFRESH_TOKEN) {
       Cookies.set("Authorization", ACCESS_TOKEN, {
         path: "/",
@@ -32,9 +32,9 @@ export default function Token() {
   }, [ACCESS_TOKEN, REFRESH_TOKEN]);
 
   useEffect(() => {
-    saveCookiesAndRedirect();
+    saveCookies();
     window.location.replace("/");
-  }, [saveCookiesAndRedirect]);
+  }, [saveCookies]);
 
   return <Loading />;
 }

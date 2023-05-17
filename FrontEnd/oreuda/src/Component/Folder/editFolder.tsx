@@ -8,8 +8,14 @@ import fontColor from "../../Style/repository/folderColor.module.scss";
 
 import { EditFolderInfo } from "@/Api/Folders/editFolderInfo";
 import Image from "next/image";
+import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
+import { saveCookies } from "@/Api/Oauth/saveCookies";
+import { redirect } from "next/navigation";
 
-export default function EditFolder(props: { folderId: number; changeFolder: any }) {
+export default function EditFolder(props: {
+  folderId: number;
+  changeFolder: any;
+}) {
   const { folderId, changeFolder } = props;
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
@@ -22,18 +28,50 @@ export default function EditFolder(props: { folderId: number; changeFolder: any 
     folderName: string,
     folderColor: string
   ) => {
-    await EditFolderInfo(ACCESS_TOKEN, id, folderName, folderColor);
+    try {
+      await EditFolderInfo(ACCESS_TOKEN, id, folderName, folderColor);
+    } catch (err: any) {
+      if (err.response?.status == 401) {
+        const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+        saveCookies(token.data.Authorization, token.data.RefreshToken);
+        try {
+          await EditFolderInfo(
+            token.data.Authorization,
+            id,
+            folderName,
+            folderColor
+          );
+        } catch (error) {
+          redirect("/landing");
+        }
+      } else {
+        redirect("/landing");
+      }
+    }
+
     changeFolder();
   };
 
-  const colorList = ["yellow", "orange", "red", "green", "blue", "purple", "black"];
+  const colorList = [
+    "yellow",
+    "orange",
+    "red",
+    "green",
+    "blue",
+    "purple",
+    "black",
+  ];
 
   return (
     <div className={st.modalBox} onClick={changeFolder}>
       <div className={st.modalContent} onClick={(e) => e.stopPropagation()}>
         <div>
           <Image src="/images/folder/white.svg" alt="" width={48} height={48} />
-          <button onClick={() => editInfo(ACCESS_TOKEN, folderId, folderName, folderColor)}>
+          <button
+            onClick={() =>
+              editInfo(ACCESS_TOKEN, folderId, folderName, folderColor)
+            }
+          >
             확인
           </button>
         </div>
@@ -50,7 +88,9 @@ export default function EditFolder(props: { folderId: number; changeFolder: any 
             return (
               <div
                 key={color}
-                className={`${fontColor[color]} ${folderColor === color ? st.select : ""}`}
+                className={`${fontColor[color]} ${
+                  folderColor === color ? st.select : ""
+                }`}
                 onClick={() => setFolderColor(color)}
               />
             );

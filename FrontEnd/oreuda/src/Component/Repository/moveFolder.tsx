@@ -3,14 +3,20 @@
 import Image from "next/image";
 import Cookies from "js-cookie";
 import { redirect } from "next/navigation";
-import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 
 import st from "./moveFolder.module.scss";
 import { Folder } from "@/Component/Folder/folder";
 
 import { GetFolderList } from "@/Api/Folders/getFolderList";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
-import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
+import { saveCookies } from "@/Api/Oauth/saveCookies";
 
 export default function MoveFolder(props: {
   closeModal: () => void;
@@ -21,7 +27,9 @@ export default function MoveFolder(props: {
   const { closeModal, folderId, setMoveFolderId, moveRepository } = props;
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
-  const [folderList, setFolderList] = useState<{ id: number; name: string }[]>([]);
+  const [folderList, setFolderList] = useState<{ id: number; name: string }[]>(
+    []
+  );
 
   const loadFolderList = useCallback(async () => {
     try {
@@ -30,7 +38,7 @@ export default function MoveFolder(props: {
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+        saveCookies(token.data.Authorization, token.data.RefreshToken);
         try {
           await GetFolderList(token.data.Authorization);
         } catch (error) {
@@ -58,7 +66,11 @@ export default function MoveFolder(props: {
         <div className={st.checkItem}>
           {folderList?.map((folder, index) => (
             <div key={index}>
-              <input type="radio" value={folder.id} onChange={() => setMoveFolderId(folder.id)} />
+              <input
+                type="radio"
+                value={folder.id}
+                onChange={() => setMoveFolderId(folder.id)}
+              />
               {folder.name}
             </div>
           ))}
