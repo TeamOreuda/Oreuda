@@ -36,7 +36,7 @@ const navList: NavList[] = [
   },
 ];
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -57,10 +57,11 @@ export default async function RootLayout({
     } else {
       /* 로그인이 되어있다면 */
 
-      const cookieStore = cookies();
-      const ACCESS_TOKEN = cookieStore.get("Authorization")?.value;
-      const REFRESH_TOKEN = cookieStore.get("RefreshToken")?.value;
+      // const cookieStore = cookies();
+      // const ACCESS_TOKEN = cookieStore.get("Authorization")?.value;
+      // const REFRESH_TOKEN = cookieStore.get("RefreshToken")?.value;
 
+<<<<<<< HEAD
       const userProfile = await GetProfile(ACCESS_TOKEN)
         .then((res) => {
           return res.data;
@@ -104,6 +105,51 @@ export default async function RootLayout({
             // redirect("/landing");
           }
         });
+=======
+      // const userProfile = await GetProfile(ACCESS_TOKEN)
+      //   .then((res) => {
+      //     return res.data;
+      //   })
+      //   .catch(async (err) => {
+      //     if (err.response?.status == 401) {
+      //       return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN).then(
+      //         async (res) => {
+      //           saveCookiesAndRedirect(
+      //             res.data.Authorization,
+      //             res.data.RefreshToken
+      //           );
+      //           return await GetProfile(res.data.Authorization).then((res) => {
+      //             return res.data;
+      //           });
+      //         }
+      //       );
+      //     } else {
+      //       redirect("/landing");
+      //     }
+      //   });
+
+      // const characterData = await GetCharacter(ACCESS_TOKEN)
+      //   .then((res) => {
+      //     return res.data;
+      //   })
+      //   .catch(async (err) => {
+      //     if (err.response?.status == 401) {
+      //       return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN).then(
+      //         async (res) => {
+      //           saveCookiesAndRedirect(
+      //             res.data.Authorization,
+      //             res.data.RefreshToken
+      //           );
+      //           return await GetCharacter(ACCESS_TOKEN).then((res) => {
+      //             return res.data;
+      //           });
+      //         }
+      //       );
+      //     } else {
+      //       redirect("/landing");
+      //     }
+      //   });
+>>>>>>> 200d20df17a43a23b022aadb69792406cc0ab1eb
       return (
         <html lang="kr">
           <Head>
@@ -138,13 +184,13 @@ export default async function RootLayout({
                     </ul>
                   );
                 })}
-                <Image
-                  className={st.characterImg}
-                  src={`/images/character/${characterData?.name}.svg`}
-                  alt=""
-                  width={144}
-                  height={144}
-                />
+                {/*<Image*/}
+                {/*  className={st.characterImg}*/}
+                {/*  src={`/images/character/${characterData?.name}.svg`}*/}
+                {/*  alt=""*/}
+                {/*  width={144}*/}
+                {/*  height={144}*/}
+                {/*/>*/}
                 <ul>
                   <Link
                     href="https://docs.google.com/forms/d/e/1FAIpQLSfenPmbzW6hablBx_67BMY5AECAXep2SAHcm3JgQoSkQCMpJQ/viewform"
@@ -157,13 +203,13 @@ export default async function RootLayout({
 
               <ul>
                 <Link href="/landing" className={st.link}>
-                  <Image
-                    className={st.logout}
-                    src={userProfile}
-                    alt=""
-                    width={32}
-                    height={32}
-                  />
+                  {/*<Image*/}
+                  {/*  className={st.logout}*/}
+                  {/*  src={userProfile}*/}
+                  {/*  alt=""*/}
+                  {/*  width={32}*/}
+                  {/*  height={32}*/}
+                  {/*/>*/}
                   로그아웃
                 </Link>
               </ul>
