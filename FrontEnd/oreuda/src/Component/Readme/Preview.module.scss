@@ -27,47 +27,59 @@
       position: absolute;
       width: 45px;
       height: 45px;
-      right: 140px;
+      right: 80px;
       background-color: #4bca80;
       border-radius: 10px;
       display: flex;
       justify-content: center;
       align-items: center;
       cursor: pointer;
+      &:hover {
+        background: rgb(113, 240, 166);
+      }
     }
 
     .CopyBtn {
       position: absolute;
       width: 45px;
       height: 45px;
-      right: 195px;
+      right: 135px;
       background-color: #4bca80;
       border-radius: 10px;
       display: flex;
       justify-content: center;
       align-items: center;
       cursor: pointer;
+      &:hover {
+        background: rgb(113, 240, 166);
+      }
     }
 
     .btnReset {
       position: absolute;
-      width: 130px;
+      width: 45px;
       height: 45px;
-      right: 0px;
-      background: #cccccc;
+      right: 25px;
+      background: #4bca80;
       color: white;
       font-weight: bold;
       font-size: 16px;
       border-radius: 10px;
       font-family: "GmarketSansMedium";
       border: none;
-      // cursor: pointer;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &:hover {
+        background: rgb(113, 240, 166);
+      }
     }
     .btnSave {
       position: absolute;
-      width: 80px;
+      width: 100px;
       height: 45px;
-      right: 250px;
+      right: 190px;
       background: #4bca80;
       color: white;
       font-weight: bold;
@@ -77,6 +89,7 @@
       border: none;
       cursor: pointer;
     }
+
     .disabledBtn {
       background-color: #cccccc;
       cursor: auto;
