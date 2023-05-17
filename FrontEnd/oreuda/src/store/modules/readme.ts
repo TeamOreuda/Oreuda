@@ -404,7 +404,7 @@ const themeSlice = createSlice({
       // console.log(action.payload);
       state.nPrevComp = action.payload;
     },
-    // 리드미 store값 초기화
+    // [초기화] 리드미 store값 초기화
     setClearReadmeStore(state, action) {
       state.baekjoonId = "";
       state.solvedTheme = "warm";
@@ -493,7 +493,7 @@ const themeSlice = createSlice({
       state.nextComp = [];
       state.nPrevComp = [];
     },
-    // 불러온 데이터 활용해 store 변경
+    // [불러오기] 불러온 데이터 활용해 store 변경
     setLoadDataMapping(state, action) {
       const data = action.payload;
       // console.log();
@@ -562,7 +562,7 @@ const themeSlice = createSlice({
       state.techPlusWhole = techWholeTmpArr;
       state.textArr = textWholeTmpArr;
     },
-    // DB에 리드미가 저장되어 불러올 수 있는지 없는지 유무값 저장
+    // [DB Readme 체크] DB에 저장된 리드미가 있는지, booelan값 저장
     setIsSaveReadme(state, action) {
       state.isSaveReadme = action.payload;
     },

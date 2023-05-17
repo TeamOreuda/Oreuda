@@ -2,16 +2,8 @@
 
 import { useState } from "react";
 import st from "./Github.module.scss";
-import {
-  selectReadme,
-  setBaekjoonId,
-  setGithubId,
-  setGithubTheme,
-  setSolvedTheme,
-} from "@/store/modules/readme";
+import { selectReadme, setGithubTheme } from "@/store/modules/readme";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import NextBtn from "./NextBtn";
-import PrevBtn from "./PrevBtn";
 
 const svDesignData: string[] = [
   "dark",
@@ -27,9 +19,9 @@ export default function Github() {
   // const prevComp = useAppSelector(selectReadme).prevComp;
   const githubTheme = useAppSelector(selectReadme).githubTheme;
   const githubId = useAppSelector(selectReadme).githubId;
-  const [id, setId] = useState(githubId);
+  // const [id, setId] = useState(githubId);
   const [openModal, setOpenModal] = useState(false);
-  const [optionVal, setOptionVal] = useState("");
+  // const [optionVal, setOptionVal] = useState("");
 
   const dispatch = useAppDispatch();
   // const activeEnter = (e: any) => {
@@ -79,27 +71,25 @@ export default function Github() {
             className={openModal ? st.focusInput : ""}
             placeholder="테마를 선택해주세요"
             readOnly
-            value={optionVal}
+            value={githubTheme}
             onClick={(e) => {
               setOpenModal(!openModal);
             }}
           />
           <div className={` ${openModal ? st.option : st.display}`}>
             {svDesignData.map((data: string, index: number) => {
-              if (index !== 0) {
-                return (
-                  <div
-                    key={index}
-                    onClick={(e) => {
-                      setOptionVal(data);
-                      setOpenModal(!openModal);
-                      onClickSVTheme(data);
-                    }}
-                  >
-                    {data}
-                  </div>
-                );
-              }
+              return (
+                <div
+                  key={index}
+                  onClick={(e) => {
+                    // setOptionVal(data);
+                    setOpenModal(!openModal);
+                    onClickSVTheme(data);
+                  }}
+                >
+                  {data}
+                </div>
+              );
             })}
           </div>
         </div>
