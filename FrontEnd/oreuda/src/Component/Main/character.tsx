@@ -17,10 +17,7 @@ export default function Character() {
   const [characterData, setCharacterData] = useState<{
     id: number;
     name: string;
-  }>({
-    id: 0,
-    name: "",
-  });
+  }>();
   const [characterInfoData, setCharacterInfoData] = useState<{
     userStats: number;
     nextLevelExp: number;
@@ -38,7 +35,10 @@ export default function Character() {
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+        saveCookiesAndRedirect(
+          token.data.Authorization,
+          token.data.RefreshToken
+        );
         try {
           const res = await GetCharacterInfo(token.data.Authorization);
           setCharacterInfoData(res.data);
@@ -58,7 +58,10 @@ export default function Character() {
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+        saveCookiesAndRedirect(
+          token.data.Authorization,
+          token.data.RefreshToken
+        );
         try {
           const res = await GetCharacter(token.data.Authorization);
           setCharacterData(res.data);
@@ -99,15 +102,17 @@ export default function Character() {
           />
         )}
       </div>
-      <ul className={st.discription}>현재 능력치: {characterInfoData.userStats}</ul>
+      <ul className={st.discription}>
+        현재 능력치: {characterInfoData.userStats}
+      </ul>
       <ul className={st.discription}>
         {characterInfoData.nextLevel !== "MAX" ? (
           <div>
             <Image
               src={`/images/character/${characterInfoData.nextLevel}.svg`}
               alt=""
-              width={16}
-              height={16}
+              width={24}
+              height={24}
             />
             <p> 승급까지 남은 능력치: {characterInfoData.nextLevelExp}</p>
           </div>
