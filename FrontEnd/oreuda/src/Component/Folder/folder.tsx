@@ -101,7 +101,10 @@ export default function Folder(props: {
         return (
           <div key={index} data-position={index} className={st.folder}>
             <Link
-              href={`/repository/${folder.id}`}
+              href={{
+                pathname: `/repository/${folder.id}`,
+                query: { folderName: folder.name, folderColor: folder.color },
+              }}
               {...(clickDelete ? { onClick: (e) => e.preventDefault() } : {})}
               data-position={index}
               data-name={folder.id}

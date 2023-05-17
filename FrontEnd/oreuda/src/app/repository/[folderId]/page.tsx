@@ -17,6 +17,9 @@ import { saveCookies } from "@/Api/Oauth/saveCookies";
 export default function RepositoryPage() {
   const params = useParams();
   const folderId = Number(params.folderId);
+  const searchParams = new URLSearchParams(window.location.search);
+  const folderName = searchParams.get("folderName");
+  const folderColor = searchParams.get("folderColor");
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
 
@@ -122,6 +125,22 @@ export default function RepositoryPage() {
 
   return (
     <div className={st.body}>
+      <div className={st.folderName}>
+        <Image
+          src={`/images/folder/${folderColor}.svg`}
+          alt=""
+          width={36}
+          height={36}
+        />
+        <span>{folderName}</span>
+        <Image
+          className={st.editImg}
+          src={`/images/repository/editing.svg`}
+          alt=""
+          width={24}
+          height={24}
+        />
+      </div>
       <div className={st.button}>
         {moveRepositoryMode && (
           <button
