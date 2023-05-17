@@ -144,6 +144,7 @@ export default async function RootLayout({
                   alt=""
                   width={144}
                   height={144}
+                  priority
                 />
                 <ul>
                   <Link

@@ -29,7 +29,7 @@ export default function Main2() {
         </div>
 
         {/* 로그인 버튼들 */}
-        <LoginButtons />
+        {/* <LoginButtons /> */}
         {/* 사진 영역 */}
         {/* 타원 */}
         <Folders />

@@ -17,7 +17,10 @@ export default function Character() {
   const [characterData, setCharacterData] = useState<{
     id: number;
     name: string;
-  }>();
+  }>({
+    id: 0,
+    name: "Soil",
+  });
   const [characterInfoData, setCharacterInfoData] = useState<{
     userStats: number;
     nextLevelExp: number;
@@ -91,14 +94,16 @@ export default function Character() {
           alt=""
           width={24}
           height={24}
+          priority
         />
         {isHovered && (
           <Image
             className={isHovered ? st.infohovered : ""}
-            src="/images/main/Characterinfo.svg"
+            src="/images/main/CharacterInfo.svg"
             alt=""
             width={24}
             height={24}
+            priority
           />
         )}
       </div>
@@ -109,10 +114,13 @@ export default function Character() {
         {characterInfoData.nextLevel !== "MAX" ? (
           <div>
             <Image
-              src={`/images/character/${characterInfoData.nextLevel}.svg`}
+              src={`/images/character/${
+                characterInfoData.nextLevel || "Soil"
+              }.svg`}
               alt=""
               width={24}
               height={24}
+              priority
             />
             <p> 승급까지 남은 능력치: {characterInfoData.nextLevelExp}</p>
           </div>
@@ -126,6 +134,7 @@ export default function Character() {
         alt=""
         width={304}
         height={304}
+        priority
       />
     </div>
   );
