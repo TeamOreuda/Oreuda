@@ -7,6 +7,10 @@ import { selectReadme } from "@/store/modules/readme";
 import Image from "next/image";
 import Cookies from "js-cookie";
 import axios from "axios";
+import { saveReadmeAxios } from "@/Api/Readme/saveReadmeAxios";
+import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
+import { saveCookies } from "@/Api/Oauth/saveCookies";
+import { redirect } from "next/navigation";
 
 export default function Preview() {
   const BaekJoonData = useAppSelector(selectReadme).baekjoonId;
@@ -469,18 +473,20 @@ export default function Preview() {
       });
       try {
         // console.log(`pushArr: `, arr);
-        const res = await axios.patch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/readme`,
-          arr,
-          {
-            headers: {
-              Authorization: ACCESS_TOKEN,
-            },
-          }
-        );
+        await saveReadmeAxios(ACCESS_TOKEN, arr);
         // console.log(res);
       } catch (err: any) {
-        console.log(err);
+        if (err.response.status == 401) {
+          const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+          saveCookies(token.data.Authorization, token.data.RefreshToken);
+          try {
+            await saveReadmeAxios(token.data.Authorization, arr);
+          } catch {
+            redirect("/landing");
+          }
+        } else {
+          redirect("/landing");
+        }
       }
       alert("저장이 완료되었습니다.");
     }
