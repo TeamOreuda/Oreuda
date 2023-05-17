@@ -73,9 +73,15 @@ export default async function RootLayout({
                   res.data.Authorization,
                   res.data.RefreshToken
                 );
-                return await GetProfile(res.data.Authorization).then((res) => {
-                  return res.data;
-                });
+                try {
+                  return await GetProfile(res.data.Authorization).then(
+                    (res) => {
+                      return res.data;
+                    }
+                  );
+                } catch {
+                  redirect("/landing");
+                }
               }
             );
           } else {
@@ -95,9 +101,13 @@ export default async function RootLayout({
                   res.data.Authorization,
                   res.data.RefreshToken
                 );
-                return await GetCharacter(ACCESS_TOKEN).then((res) => {
-                  return res.data;
-                });
+                try {
+                  return await GetCharacter(ACCESS_TOKEN).then((res) => {
+                    return res.data;
+                  });
+                } catch {
+                  redirect("/landing");
+                }
               }
             );
           } else {
