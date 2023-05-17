@@ -2,7 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 import Cookies from "js-cookie";
 
-import EditFolder from "./editFolder";
 import st from "./folder.module.scss";
 import React, { useEffect, useState, SetStateAction, Dispatch, useCallback } from "react";
 
@@ -29,7 +28,6 @@ export default function Folder(props: {
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
 
-  const [openEdit, setOpenEdit] = useState(false);
   const [grab, setGrab] = useState<{ dataset: any }>();
   const [targetName, setTargetName] = useState<number>();
   const [targetPosition, setTargetPosition] = useState<number>();
@@ -75,10 +73,7 @@ export default function Folder(props: {
     setCheckedItems(newCheckedItems);
   };
 
-  const changeFolder = () => {
-    setOpenEdit(!openEdit);
-  };
-
+  
   return (
     <div className={st.folders}>
       {folderList?.map((folder: Folder, index: number) => {
@@ -86,9 +81,7 @@ export default function Folder(props: {
           <div key={index} data-position={index} className={st.folder}>
             <Link
               href={{
-                pathname: `/repository/${folder.id}`,
-                query: { folderName: folder.name, folderColor: folder.color },
-              }}
+                pathname: `/repository/${folder.id}`              }}
               {...(clickDelete ? { onClick: (e) => e.preventDefault() } : {})}
               data-position={index}
               data-name={folder.id}
@@ -96,7 +89,6 @@ export default function Folder(props: {
               onDragStart={onDragStart}
               onDrop={onDrop}
               draggable={!clickDelete}
-              className={st.folderDiv}
             >
               {clickDelete && folder.name !== "기본 폴더" && (
                 <input
@@ -119,16 +111,11 @@ export default function Folder(props: {
                   priority
                 />
               </div>
-            </Link>
-            <div
-              className={st.folderName}
-              data-position={index}
-              data-name={folder.id}
-              onClick={changeFolder}
-            >
               {folder.name}
-            </div>
+            </Link>
           </div>
+            
+          
         );
       })}
     </div>
