@@ -1,0 +1,40 @@
+.layout {
+  width: 80vw;
+  margin: auto;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  .layoutLeft {
+    flex: 1;
+  }
+  .layoutRight {
+    flex: 2;
+
+    .content {
+      .title {
+        font-size: 58px;
+        line-height: 64px;
+        // display: flex;
+        align-items: end;
+        text-align: right;
+
+        .highlight {
+          color: #1087A0;
+        }
+      }
+      .intro {
+        padding-top: 60px;
+        font-size: 24px;
+        line-height: 24px;
+        /* identical to box height */
+
+        display: flex;
+        flex-direction: column;
+        text-align: right;
+        // align-items: center;
+
+        color: #555555;
+      }
+    }
+  }
+}
