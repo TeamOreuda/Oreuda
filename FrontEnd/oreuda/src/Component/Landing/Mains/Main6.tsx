@@ -48,7 +48,7 @@ export default function Main6() {
                 src={`/images/landing/main6/StoreIcon.svg`}
                 alt="스토어 이미지"
                 width={120}
-                height={102}
+                height={100}
                 draggable={false}
                 priority
               />
@@ -58,8 +58,8 @@ export default function Main6() {
                 data-name={1}
                 src={`/images/landing/main6/Puzzle.svg`}
                 alt="퍼즐 아이콘"
-                width={94}
-                height={94}
+                width={100}
+                height={100}
                 draggable={false}
                 priority
               />
