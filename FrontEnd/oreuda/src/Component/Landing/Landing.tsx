@@ -24,7 +24,7 @@ export default function Landing() {
   return (
     <div className={st.page}>
       <Main1 />
-      <Main4 />
+      {/* <Main4 /> */}
       <Main3 />
       <Main2 />
     </div>
