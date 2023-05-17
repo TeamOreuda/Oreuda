@@ -162,8 +162,7 @@ const themeSlice = createSlice({
     },
     // [Github] Github 테마 저장
     setGithubTheme(state, action) {
-      const temp = state;
-      temp.githubTheme = action.payload;
+      state.githubTheme = action.payload;
     },
     // [MUL] MUL 타입 저장
     setMULType(state, action) {
