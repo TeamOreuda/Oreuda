@@ -165,7 +165,7 @@ export default function Statistic() {
               )}
             </div>
             <Image
-              src={`/images/main/${e.imageName}.svg`}
+              src={`/images/main/${e.imageName.toLowerCase()}.svg`}
               alt="주언어"
               width={80}
               height={80}
