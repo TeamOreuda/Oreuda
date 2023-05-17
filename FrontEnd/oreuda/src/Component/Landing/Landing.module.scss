@@ -8,4 +8,7 @@
   font-family: "Gmarket Sans";
   // font-family: "Gmarket Sans TTF";
     font-style: normal;
-}
+  }
+  .page::-webkit-scrollbar {
+    display: none;
+  }
