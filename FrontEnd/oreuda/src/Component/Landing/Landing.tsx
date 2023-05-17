@@ -12,6 +12,7 @@ import Main4 from "./Mains/Main4";
 import Main5 from "./Mains/Main5";
 import Main6 from "./Mains/Main6";
 import Main7 from "./Mains/Main7";
+import Footer from "./Mains/Footer"
 
 export default function Landing() {
   const outerDivRef = useRef<HTMLDivElement | null>(null); // useRef 제네릭 타입 추가
@@ -85,10 +86,17 @@ export default function Landing() {
               left: 0,
               behavior: "smooth",
             });
-          } else {
+          } else if (scrollTop >= pageHeight && scrollTop < pageHeight * 8) {
             console.log("현재 8페이지, down");
             outerDivRefCurrent.scrollTo({
               top: pageHeight * 8,
+              left: 0,
+              behavior: "smooth",
+            });
+          }else {
+            console.log("현재 footer, down");
+            outerDivRefCurrent.scrollTo({
+              top: pageHeight * 9,
               left: 0,
               behavior: "smooth",
             });
@@ -194,6 +202,7 @@ export default function Landing() {
       <Main5 />
       <Main6 />
       <Main7 />
+      <Footer />
     </div>
   );
 }
