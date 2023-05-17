@@ -1,6 +1,6 @@
 "use client";
 
-import { hotjar } from "react-hotjar";
+// import { hotjar } from "react-hotjar";
 import { useEffect } from "react";
 
 import st from "./page.module.scss";
@@ -9,11 +9,11 @@ import Character from "@/Component/Main/character";
 import CharacterGraph from "@/Component/Main/charactergraph";
 
 export default function Home() {
-  useEffect(() => {
-    if (process.env.NODE_ENV !== "development") {
-      hotjar.initialize(3483558, 6);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (process.env.NODE_ENV !== "development") {
+  //     hotjar.initialize(3483558, 6);
+  //   }
+  // }, []);
 
   return (
     <div className={st.body}>

@@ -58,7 +58,8 @@ export default function Tech() {
   const [techIdx, setTechIdx] = useState(0);
   const [curr, setCurr] = useState(0);
   const [modifyText, setModifyText] = useState("");
-  const [optionVal, setOptionVal] = useState("선택해주세요");
+  const [optionVal, setOptionVal] = useState("");
+  const [openModal, setOpenModal] = useState(false);
 
   let currTitle = "";
   const techTitle = useAppSelector(selectReadme).techTitle;
@@ -83,13 +84,11 @@ export default function Tech() {
     dispatch(setTechTitle(""));
     dispatch(setChoiceTechClear(0));
   };
-  const rNum = Math.floor(Math.random() * (1000000 - 1));
-
   return (
     <div className={st.body}>
       <div className={st.indexBtns}>
         <Image
-          src="/images/readme/notebook.gif"
+          src="/images/readme/plus.gif"
           alt=""
           className={st.btnDefault}
           width={40}
@@ -122,7 +121,8 @@ export default function Tech() {
         <p>
           리드미에서 어필하고 싶은 기술들을 작성해보세요🤲
           <br />
-          제목과 기술들을 선택하고 추가를 누르면 저장 완료!
+          제목과 기술들을 선택하고 <strong className={st.strong}>추가</strong>를
+          누르면 저장 완료!
         </p>
       </div>
       <div className={st.contentDiv}>
@@ -161,6 +161,36 @@ export default function Tech() {
             })}
           </select>
         </div>
+        {/* <div className={`${st.dropdown} ${openModal ? st.option : ""}`}>
+          <input
+            type="text"
+            className={openModal ? st.focusInput : ""}
+            placeholder="테마를 선택해주세요"
+            readOnly
+            value={optionVal}
+            onClick={(e) => {
+              setOpenModal(!openModal);
+            }}
+          />
+          <div className={` ${openModal ? st.option : st.display}`}>
+            {techData.map((data: string, index: number) => {
+              if (index !== 0) {
+                return (
+                  <div
+                    key={Math.random() * (1000000 - 1)}
+                    onClick={(e) => {
+                      setOptionVal(data);
+                      setOpenModal(!openModal);
+                      onChangeTechOption(1);
+                    }}
+                  >
+                    {data}
+                  </div>
+                );
+              }
+            })}
+          </div>
+        </div> */}
         <div className={st.TechSelectBtnDiv}>
           <TechSelectBtn curr={curr} />
         </div>
