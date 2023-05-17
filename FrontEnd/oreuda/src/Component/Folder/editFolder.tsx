@@ -15,12 +15,14 @@ import { redirect } from "next/navigation";
 export default function EditFolder(props: {
   folderId: number;
   changeFolder: any;
+  folderName: string;
+  setFolderName: any;
+  folderColor: string;
+  setFolderColor: any;
 }) {
-  const { folderId, changeFolder } = props;
+  const { folderId, changeFolder, folderName, setFolderName, folderColor, setFolderColor } = props;
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
-  const [folderName, setFolderName] = useState("");
-  const [folderColor, setFolderColor] = useState("");
 
   const editInfo = async (
     ACCESS_TOKEN: any,
@@ -35,12 +37,7 @@ export default function EditFolder(props: {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
         saveCookies(token.data.Authorization, token.data.RefreshToken);
         try {
-          await EditFolderInfo(
-            token.data.Authorization,
-            id,
-            folderName,
-            folderColor
-          );
+          await EditFolderInfo(token.data.Authorization, id, folderName, folderColor);
         } catch (error) {
           redirect("/landing");
         }
@@ -52,26 +49,14 @@ export default function EditFolder(props: {
     changeFolder();
   };
 
-  const colorList = [
-    "yellow",
-    "orange",
-    "red",
-    "green",
-    "blue",
-    "purple",
-    "black",
-  ];
+  const colorList = ["yellow", "orange", "red", "green", "blue", "purple", "black"];
 
   return (
     <div className={st.modalBox} onClick={changeFolder}>
       <div className={st.modalContent} onClick={(e) => e.stopPropagation()}>
         <div>
           <Image src="/images/folder/white.svg" alt="" width={48} height={48} />
-          <button
-            onClick={() =>
-              editInfo(ACCESS_TOKEN, folderId, folderName, folderColor)
-            }
-          >
+          <button onClick={() => editInfo(ACCESS_TOKEN, folderId, folderName, folderColor)}>
             확인
           </button>
         </div>
@@ -88,9 +73,7 @@ export default function EditFolder(props: {
             return (
               <div
                 key={color}
-                className={`${fontColor[color]} ${
-                  folderColor === color ? st.select : ""
-                }`}
+                className={`${fontColor[color]} ${folderColor === color ? st.select : ""}`}
                 onClick={() => setFolderColor(color)}
               />
             );

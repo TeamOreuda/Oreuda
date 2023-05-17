@@ -16,8 +16,8 @@ export default function Footer() {
               data-name={1}
               src={`/images/landing/main6/Puzzle.svg`}
               alt="폴더"
-              width={42}
-              height={42}
+              width={30}
+              height={30}
               draggable={false}
               priority
             />
@@ -28,8 +28,8 @@ export default function Footer() {
               data-name={1}
               src={`/images/landing/footer/Github.svg`}
               alt="폴더"
-              width={42}
-              height={42}
+              width={30}
+              height={30}
               draggable={false}
               priority
             />
@@ -43,8 +43,8 @@ export default function Footer() {
               data-name={1}
               src={`/images/landing/footer/Notion.svg`}
               alt="폴더"
-              width={42}
-              height={42}
+              width={30}
+              height={30}
               draggable={false}
               priority
             />

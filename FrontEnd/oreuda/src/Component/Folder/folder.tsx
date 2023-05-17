@@ -4,13 +4,7 @@ import Cookies from "js-cookie";
 
 import EditFolder from "./editFolder";
 import st from "./folder.module.scss";
-import React, {
-  useEffect,
-  useState,
-  SetStateAction,
-  Dispatch,
-  useCallback,
-} from "react";
+import React, { useEffect, useState, SetStateAction, Dispatch, useCallback } from "react";
 
 import { ChangeFolder } from "@/Api/Folders/changeFolder";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
@@ -31,13 +25,7 @@ export default function Folder(props: {
   setCheckedItems: Dispatch<SetStateAction<number[]>>;
   loadFolderList: () => Promise<void>;
 }) {
-  const {
-    clickDelete,
-    folderList,
-    checkedItems,
-    setCheckedItems,
-    loadFolderList,
-  } = props;
+  const { clickDelete, folderList, checkedItems, setCheckedItems, loadFolderList } = props;
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
 
@@ -54,11 +42,7 @@ export default function Folder(props: {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
         saveCookies(token.data.Authorization, token.data.RefreshToken);
-        await ChangeFolder(
-          token.data.Authorization,
-          targetName,
-          targetPosition
-        );
+        await ChangeFolder(token.data.Authorization, targetName, targetPosition);
       }
     }
   }, [ACCESS_TOKEN, REFRESH_TOKEN, targetName, targetPosition]);
@@ -101,7 +85,10 @@ export default function Folder(props: {
         return (
           <div key={index} data-position={index} className={st.folder}>
             <Link
-              href={`/repository/${folder.id}`}
+              href={{
+                pathname: `/repository/${folder.id}`,
+                query: { folderName: folder.name, folderColor: folder.color },
+              }}
               {...(clickDelete ? { onClick: (e) => e.preventDefault() } : {})}
               data-position={index}
               data-name={folder.id}
@@ -139,9 +126,6 @@ export default function Folder(props: {
               data-name={folder.id}
               onClick={changeFolder}
             >
-              {openEdit && (
-                <EditFolder folderId={folder.id} changeFolder={changeFolder} />
-              )}
               {folder.name}
             </div>
           </div>
