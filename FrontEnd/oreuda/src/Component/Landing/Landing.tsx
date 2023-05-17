@@ -189,9 +189,9 @@ export default function Landing() {
     <div ref={outerDivRef} className={st.page}>
       <Main1 />
       <Main2 />
-      <Main5 />
       <Main3 />
       <Main4 />
+      <Main5 />
       <Main6 />
       <Main7 />
     </div>
