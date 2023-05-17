@@ -60,7 +60,8 @@ export default function Main3() {
           </div>
           {/* sub content */}
           <div className={st.sub}>
-            <div className={st.sub_title}>작성을 다했다면!?</div>
+            <div className={st.sub_title}>
+              작성을 다했다면!?</div>
             <div className={st.sub_content}>
               드래그를 해서 배치를 정하면 끝!
               <br />
@@ -68,31 +69,27 @@ export default function Main3() {
               <br />
               깃헙 리드미에 적용해보세요.
             </div>
-          </div>
-          {/* buttons */}
-          <div className={st.img}>
-            <Image
-              // className={st.stacks}
-              // data-position={1}
-              // data-name={1}
-              src={`/images/landing/main3/Download.svg`}
-              alt="스택"
-              width={100}
-              height={100}
-              draggable={false}
-              priority
-            />
-            <Image
-              // className={st.stacks}
-              // data-position={1}
-              // data-name={1}
-              src={`/images/landing/main3/Copy.svg`}
-              alt="스택"
-              width={100}
-              height={100}
-              draggable={false}
-              priority
-            />
+            {/* buttons */}
+            <div className={st.sub_img}>
+              <Image
+                className={st.sub_icon}
+                src={`/images/landing/main3/Download.svg`}
+                alt="스택"
+                width={80}
+                height={80}
+                draggable={false}
+                priority
+              />
+              <Image
+                className={st.sub_icon}
+                src={`/images/landing/main3/Copy.svg`}
+                alt="스택"
+                width={80}
+                height={80}
+                draggable={false}
+                priority
+              />
+            </div>
           </div>
         </div>
       </div>
