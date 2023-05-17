@@ -94,7 +94,7 @@ export default function Landing() {
             });
           }
         } else {
-          if (scrollTop >= 0 && scrollTop <= pageHeight + 50) {
+          if (scrollTop >= 0 && scrollTop <= pageHeight + 30) {
             console.log("현재 1페이지, up");
             outerDivRefCurrent.scrollTo({
               top: 0,
@@ -189,9 +189,9 @@ export default function Landing() {
     <div ref={outerDivRef} className={st.page}>
       <Main1 />
       <Main2 />
+      <Main5 />
       <Main3 />
       <Main4 />
-      <Main5 />
       <Main6 />
       <Main7 />
     </div>
