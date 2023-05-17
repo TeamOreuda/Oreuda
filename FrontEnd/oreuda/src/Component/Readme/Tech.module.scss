@@ -14,12 +14,15 @@
       width: 350px;
       .TextTitleInput {
         width: 100%;
-        height: 50px;
+        height: 60px;
         border-radius: 10px;
         font-family: "GmarketSansMedium";
         font-size: 16px;
         border: 3px solid #000000;
-        text-indent: 10px;
+        text-indent: 20px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        border: none;
+        outline: none;
       }
       .TextDescInput {
         width: 100%;
@@ -109,6 +112,11 @@
     background-color: #ffffff;
     margin: 10px 5px;
     cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 .btnDiv {
@@ -139,4 +147,8 @@
 }
 .subText2 {
   line-height: 1px;
+}
+
+.strong {
+  color: #4bca80;
 }
