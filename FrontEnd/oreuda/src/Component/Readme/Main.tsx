@@ -165,7 +165,7 @@ export default function Main() {
       <div className={`${st.dropdown} ${openModal ? st.option : ""}`}>
         <input
           type="text"
-          className="textBox"
+          className={openModal ? st.focusInput : ""}
           placeholder="선택해주세요"
           readOnly
           value={optionVal}
