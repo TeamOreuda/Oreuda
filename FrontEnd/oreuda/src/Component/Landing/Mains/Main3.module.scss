@@ -11,15 +11,18 @@
   justify-content: space-between;
 
   z-index: 1;
+
   .layout_left {
     flex: 1;
     height: 80vh;
+
     .stacks {
       position: absolute;
       top: 120px;
       left: 120px;
       z-index: 1;
     }
+
     .finger {
       position: absolute;
       bottom: 60px;
@@ -27,12 +30,15 @@
       z-index: -1;
     }
   }
+
   .layout_right {
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 140px;
+    padding: 120px;
+    // padding-right: 140px;
+
     .main {
       .main_title {
         height: 48px;
@@ -48,9 +54,40 @@
 
         .highlight {
           color: #4bca80;
+          font-weight: 700;
         }
       }
+
       .main_content {
+        font-size: 24px;
+        line-height: 29px;
+        display: flex;
+        align-items: center;
+        text-align: right;
+        justify-content: flex-end;
+        padding: 30px 0 30px 0;
+
+        color: #555555;
+      }
+    }
+
+    .sub {
+      .sub_title {
+        font-size: 36px;
+        font-weight: 700;
+        line-height: 40px;
+        /* identical to box height */
+
+        display: flex;
+        align-items: center;
+        text-align: right;
+        justify-content: flex-end;
+        padding: 30px 0 30px 0;
+
+        color: #4bca80;
+      }
+
+      .sub_content {
         font-size: 24px;
         line-height: 29px;
         display: flex;
@@ -60,29 +97,12 @@
 
         color: #555555;
       }
-    }
-    .sub {
-      .sub_title {
-        font-size: 40px;
-        line-height: 40px;
-        /* identical to box height */
 
+      .sub_img {
         display: flex;
-        align-items: center;
-        text-align: right;
         justify-content: flex-end;
-
-        color: #4bca80;
-      }
-      .sub_content {
-        font-size: 28.8px;
-        line-height: 29px;
-        display: flex;
-        align-items: center;
-        text-align: right;
-        justify-content: flex-end;
-
-        color: #555555;
+        padding-top: 20px;
+        gap: 15px;
       }
     }
   }

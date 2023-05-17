@@ -9,7 +9,7 @@ export default function Main4() {
       {/* content 영역 */}
       <div className={st.content}>
         <div className={st.title}>
-          오르와 함께&nbsp;<span className={st.highlight}>성장</span>하세요!
+          오르와 함께&nbsp;<span className={st.highlight}>성장</span>
         </div>
         <div className={st.intro}>
           <div>사용자의 깃헙 활동을 분석하여 오르가 성장합니다.</div>
@@ -47,7 +47,7 @@ export default function Main4() {
             className={st.arrow}
             data-position={1}
             data-name={1}
-            src={`/images/landing/main4/arrow.svg`}
+            src={`/images/landing/main5/arrow.svg`}
             alt="스택"
             width={50}
             height={86}
