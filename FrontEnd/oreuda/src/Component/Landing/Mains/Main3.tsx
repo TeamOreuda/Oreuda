@@ -19,8 +19,8 @@ export default function Main3() {
             data-name={1}
             src={`/images/landing/main3/Stack.svg`}
             alt="스택"
-            width={600}
-            height={545}
+            width={520}
+            height={460}
             draggable={false}
             priority
           />
@@ -39,14 +39,14 @@ export default function Main3() {
             className={st.finger}
             src={`/images/landing/main3/Finger.gif`}
             alt="폴더"
-            width={400}
-            height={400}
+            width={320}
+            height={320}
             draggable={false}
           />
         </div>
         <div className={st.layout_right}>
           {/* 로그인 버튼들 */}
-          <LoginButtons />
+          {/* <LoginButtons /> */}
           {/* main content */}
           <div className={st.main}>
             <div className={st.main_title}>
@@ -70,7 +70,30 @@ export default function Main3() {
             </div>
           </div>
           {/* buttons */}
-          <div className={st.img}></div>
+          <div className={st.img}>
+            <Image
+              // className={st.stacks}
+              // data-position={1}
+              // data-name={1}
+              src={`/images/landing/main3/Download.svg`}
+              alt="스택"
+              width={100}
+              height={100}
+              draggable={false}
+              priority
+            />
+            <Image
+              // className={st.stacks}
+              // data-position={1}
+              // data-name={1}
+              src={`/images/landing/main3/Copy.svg`}
+              alt="스택"
+              width={100}
+              height={100}
+              draggable={false}
+              priority
+            />
+          </div>
         </div>
       </div>
     </>
