@@ -60,16 +60,16 @@
     .ellipse {
       position: relative;
       // opacity: 5%;
-      right: -680px;
-      bottom: 840px;
+      right: -660px;
+      bottom: 860px;
       // transform: rotate(3deg);
       z-index: 0;
     }
     .state{
-      position: absolute;
+      position: relative;
       // opacity: 5%;
-      right: 80px;
-      bottom: 100px;
+      right: -960px;
+      bottom: 1950px;
       border-radius: 10px;
       // transform: rotate(3deg);
       z-index: 1;
