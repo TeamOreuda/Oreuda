@@ -3,7 +3,7 @@ import Image from "next/image";
 import pg from "../Landing.module.scss";
 import st from "./Main5.module.scss";
 
-export default function Main4() {
+export default function Main5() {
   return (
     <div className={`${pg.page} ${st.layout}`}>
       {/* content 영역 */}

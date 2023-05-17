@@ -10,24 +10,29 @@
   flex-direction: column;
 
   z-index: 1;
-  padding-top: 66px;
+  padding-top: 50px;
   padding-left: 115px;
+
   .content {
     margin-bottom: 20%;
     z-index: 6;
+
     .title {
-      font-size: 58px;
+      font-size: 48px;
       line-height: 64px;
       display: flex;
       align-items: center;
 
       padding-bottom: 30px;
+
       .highlight {
         color: #1087a0;
+        font-weight: 600;
       }
     }
+
     .intro {
-      font-size: 24px;
+      font-size: 22px;
       line-height: 29px;
       display: flex;
       align-items: center;
@@ -35,64 +40,80 @@
       color: #555555;
     }
   }
+
   .subContent {
     font-weight: 300;
-    font-size: 20px;
-    line-height: 50px;
+    font-size: 18px;
+    line-height: 70px;
     display: flex;
     flex-direction: column;
+    color: #898989;
+    padding-top: 40px;
+    justify-content: space-between;
+
     .colorPallets {
       width: 49%;
       display: flex;
       justify-content: space-between;
       gap: 15;
+
       .pallet {
         display: flex;
-        line-height: 30px;
+        line-height: 28px;
+        font-weight: 500;
+        color: #6c6c6c;
+
         .indicator {
-          width: 30px;
-          height: 30px;
+          width: 28px;
+          height: 28px;
           border-radius: 15px;
         }
+
         .pink {
           background-color: #ff6384;
         }
+
         .blue {
           background-color: #36a2eb;
         }
+
         .yellow {
           background-color: #ffce56;
         }
+
         .green {
           background-color: #4bc0c0;
         }
+
         .purple {
           background-color: #9966ff;
         }
+
         .orange {
           background-color: #ff9f40;
         }
       }
     }
-    .colorManual {
-    }
   }
+
   .BlueEllipse {
     position: absolute;
-    top: -100px;
-    left: -100px;
+    top: -110px;
+    left: -130px;
     z-index: 2;
   }
+
   .Capture {
     position: absolute;
-    top: 300px;
-    left: 150px;
+    top: 360px;
+    left: 110px;
     z-index: 2;
   }
+
   .CircleGraph {
     position: absolute;
-    top: 100px;
-    left: 900px;
+    top: 220px;
+    left: 870px;
     z-index: 1;
   }
 }
