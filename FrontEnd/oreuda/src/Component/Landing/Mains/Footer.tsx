@@ -35,7 +35,7 @@ export default function Footer() {
             />
           </Link>
           <Link
-            href="https://sprout-duckling-7b8.notion.site/32925d41ab6741dcbed82b75aeec14b5"
+           href="https://sprout-duckling-7b8.notion.site/32925d41ab6741dcbed82b75aeec14b5"
             target="_blank"
           >
             <Image
