@@ -92,7 +92,9 @@ export default function Statistic() {
     const rotateInterval = setInterval(() => {
       if (refreshIconRef.current) {
         refreshIconRef.current.style.transform = `rotate(${(
-          Number(refreshIconRef.current.style.transform.replace(/[^0-9]/g, "")) + 10
+          Number(
+            refreshIconRef.current.style.transform.replace(/[^0-9]/g, "")
+          ) + 10
         ).toString()}deg)`;
       }
     }, 1000 / (360 / 10));
@@ -116,6 +118,12 @@ export default function Statistic() {
       }
     }
   };
+
+  useEffect(() => {
+    console.log();
+
+    dispatch(setGithubId(userData?.nickname));
+  }, [userData]);
 
   return (
     <div>
@@ -145,7 +153,11 @@ export default function Statistic() {
                 {e.count} <span>{e.howCount}</span>
               </span>
               {e.language && (
-                <span className={e.language.length > 6 ? st.language : st.count}>{e.language}</span>
+                <span
+                  className={e.language.length > 6 ? st.language : st.count}
+                >
+                  {e.language}
+                </span>
               )}
             </div>
             <Image

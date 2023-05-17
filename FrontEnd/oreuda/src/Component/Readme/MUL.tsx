@@ -31,8 +31,8 @@ export default function MUL() {
     dispatch(setMULType(e.target.value));
   };
 
-  const onClickSVTheme = (e: any) => {
-    dispatch(setMULTheme(e.target.value));
+  const onClickSVTheme = (data: any) => {
+    dispatch(setMULTheme(data));
   };
   return (
     <div className={st.body}>
@@ -109,7 +109,7 @@ export default function MUL() {
                     onClick={(e) => {
                       setOptionVal(data);
                       setOpenModal(!openModal);
-                      onClickSVTheme;
+                      onClickSVTheme(data);
                     }}
                   >
                     {data}

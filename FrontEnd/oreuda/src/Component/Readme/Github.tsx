@@ -39,8 +39,8 @@ export default function Github() {
   //   }
   // };
 
-  const onClickSVTheme = (e: any) => {
-    dispatch(setGithubTheme(e.target.value));
+  const onClickSVTheme = (data: any) => {
+    dispatch(setGithubTheme(data));
   };
 
   return (
@@ -93,7 +93,7 @@ export default function Github() {
                     onClick={(e) => {
                       setOptionVal(data);
                       setOpenModal(!openModal);
-                      onClickSVTheme;
+                      onClickSVTheme(data);
                     }}
                   >
                     {data}
