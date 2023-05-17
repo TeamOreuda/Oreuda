@@ -86,30 +86,6 @@ export default async function RootLayout({
           }
         });
 
-      const characterData = await GetCharacter(ACCESS_TOKEN)
-        .then((res) => {
-          return res.data;
-        })
-        .catch(async (err) => {
-          if (err.response?.status == 401) {
-            return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN).then(
-              async (res) => {
-                saveCookies(res.data.Authorization, res.data.RefreshToken);
-                try {
-                  return await GetCharacter(res.data.Authorization).then(
-                    (res) => {
-                      return res.data;
-                    }
-                  );
-                } catch {
-                  redirect("/landing");
-                }
-              }
-            );
-          } else {
-            redirect("/landing");
-          }
-        });
       return (
         <html lang="kr">
           <Head>
@@ -144,14 +120,6 @@ export default async function RootLayout({
                     </ul>
                   );
                 })}
-                <Image
-                  className={st.characterImg}
-                  src={`/images/character/${characterData?.name}.svg`}
-                  alt=""
-                  width={144}
-                  height={144}
-                  priority
-                />
                 <ul>
                   <Link
                     href="https://docs.google.com/forms/d/e/1FAIpQLSfenPmbzW6hablBx_67BMY5AECAXep2SAHcm3JgQoSkQCMpJQ/viewform"

@@ -11,8 +11,24 @@ import { getRegisteredUser } from "@/Api/Users/getRegisteredUser";
 export default function Main1() {
   const [isLoading, setIsLoading] = useState(false);
   const [userCnt, setUserCnt] = useState(0);
-  const [mountainEye, SetMountainEye] = useState(false);
+  const [mountainEye, setMountainEye] = useState(false);
   const [mountainEyeNumber, setMountainEyeNumber] = useState(0);
+  const [seconds, setSeconds] = useState(1);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const temp = Math.floor(Math.random() * 10);
+      // setMountainEyeNumber(temp);
+      if (temp === 7 || temp === 5 || temp === 3) {
+        setMountainEye(prevMountainEye => !prevMountainEye);
+      }
+      // console.log(temp)
+      // console.log(mountainEye)
+    }, 400);
+
+    return () => {
+      clearInterval(intervalId); // 컴포넌트가 언마운트될 때 타이머 정리
+    };
+  }, []);
 
   useEffect(() => {
     getRegisteredUser().then((response) => {
@@ -22,21 +38,7 @@ export default function Main1() {
     });
   }, []);
 
-  //   setInterval(() => {
-  //     const temp = Math.floor(Math.random() * 100);
-  //     setMountainEyeNumber(mountainEyeNumber + temp);
-  //   }, 100);
-
-  if (mountainEyeNumber >= 1000) {
-    // console.log(mountainEyeNumber)
-    SetMountainEye(true);
-    setMountainEyeNumber(0);
-    if (mountainEyeNumber >= 1000) {
-      SetMountainEye(false);
-      setMountainEyeNumber(0);
-    }
-  }
-
+  
   if (isLoading) {
     return (
       <div className={`${pg.page} ${st.layout}`} id="page">
@@ -148,6 +150,7 @@ export default function Main1() {
                 data-position={1}
                 data-name={1}
                 src={`/images/landing/main1/Mountain.svg`}
+                className = {st.mountainOpen}
                 alt="산"
                 width={1200}
                 height={800}
@@ -159,6 +162,8 @@ export default function Main1() {
                 data-position={1}
                 data-name={1}
                 src={`/images/landing/main1/Mountain_close.svg`}
+                className = {st.mountainClose}
+
                 alt="산"
                 width={1200}
                 height={800}

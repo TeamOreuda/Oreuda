@@ -1,3 +1,22 @@
+@keyframes closeEye{
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
+}
+@keyframes openEye{
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
+}
+
+
+
 @keyframes cloud1 {
   0% {
     transform: translateX(-10%) scale(1);
@@ -154,23 +173,6 @@
           align-items: center;
         }
       }
-
-      // .button {
-      //   display: flex; /* 부모 요소를 플렉스 박스로 설정 */
-      //   align-items: center;
-      //   margin: 2% 0 2% 0;
-      //   .extension {
-      //     display: flex;
-      //     align-items: center;
-      //     width: 463.2px;
-      //     height: 60px;
-
-      //     background: #d9e7ff;
-      //     justify-content: center;
-      //     border-radius: 12px;
-      //     color: #518ef8;
-      //   }
-      // }
     }
   }
 
@@ -182,7 +184,7 @@
       position: absolute;
       left: -20px;
       top: -105.93px;
-      z-index: 4;
+      z-index: 40;
       animation: cloud1 16s ease-in-out infinite alternate;
     }
 
@@ -190,7 +192,7 @@
       position: absolute;
       left: 360px;
       top: -62px;
-      z-index: 1;
+      z-index: 10;
       //   animation: sun 12s ease-in-out infinite alternate;
 
     }
@@ -199,7 +201,7 @@
       position: absolute;
       left: 600px;
       top: 100px;
-      z-index: 2;
+      z-index: 20;
       animation: cloud2 6s ease-in-out infinite alternate;
 
     }
@@ -208,9 +210,16 @@
       position: absolute;
       left: -80px;
       top: 198.01px;
-      z-index: 3;
+      z-index: 30;
       //   animation: mountain 8s ease-in-out infinite alternate;
-
+      .mountainOpen{
+        // animation: openEye 1s ease-in-out infinite alternate;
+        z-index: 2;
+      }
+      .mountainClose{
+        // animation: closeEye 1s ease-in-out infinite alternate;
+        z-index: 50;
+      }
     }
   }
 }

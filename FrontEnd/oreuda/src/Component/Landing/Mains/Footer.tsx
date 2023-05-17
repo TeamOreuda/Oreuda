@@ -16,8 +16,8 @@ export default function Footer() {
               data-name={1}
               src={`/images/landing/main6/Puzzle.svg`}
               alt="폴더"
-              width={42}
-              height={42}
+              width={30}
+              height={30}
               draggable={false}
               priority
             />
@@ -28,14 +28,14 @@ export default function Footer() {
               data-name={1}
               src={`/images/landing/footer/Github.svg`}
               alt="폴더"
-              width={42}
-              height={42}
+              width={30}
+              height={30}
               draggable={false}
               priority
             />
           </Link>
           <Link
-            href="https://sprout-duckling-7b8.notion.site/32925d41ab6741dcbed82b75aeec14b5"
+           href="https://sprout-duckling-7b8.notion.site/32925d41ab6741dcbed82b75aeec14b5"
             target="_blank"
           >
             <Image
@@ -43,8 +43,8 @@ export default function Footer() {
               data-name={1}
               src={`/images/landing/footer/Notion.svg`}
               alt="폴더"
-              width={42}
-              height={42}
+              width={30}
+              height={30}
               draggable={false}
               priority
             />

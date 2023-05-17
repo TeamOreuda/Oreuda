@@ -6,6 +6,7 @@ import { redirect, useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 import st from "./page.module.scss";
+import EditFolder from "@/Component/Folder/editFolder";
 import MoveFolder from "@/Component/Repository/moveFolder";
 import Repository from "@/Component/Repository/repository";
 
@@ -13,14 +14,20 @@ import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { MoveRepository } from "@/Api/Repository/moveRepository";
 import { GetRepositoryLst } from "@/Api/Repository/getRepositoryList";
 import { saveCookies } from "@/Api/Oauth/saveCookies";
+import { ChangeFolder } from "@/Api/Folders/changeFolder";
+import { EditFolderInfo } from "@/Api/Folders/editFolderInfo";
 
 export default function RepositoryPage() {
   const params = useParams();
   const folderId = Number(params.folderId);
+  const searchParams = new URLSearchParams(window.location.search);
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
 
+  const [openEdit, setOpenEdit] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [folderName, setFolderName] = useState<string>(searchParams.get("folderName") || "");
+  const [folderColor, setFolderColor] = useState<string>(searchParams.get("folderColor") || "");
   const [moveRepositoryMode, setMoveRepositoryMode] = useState(false);
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
   const [moveFolderId, setMoveFolderId] = useState<number>(-1);
@@ -47,22 +54,14 @@ export default function RepositoryPage() {
 
   const loadRepositoryList = useCallback(async () => {
     try {
-      const res = await GetRepositoryLst(
-        ACCESS_TOKEN,
-        folderId,
-        filtering.value
-      );
+      const res = await GetRepositoryLst(ACCESS_TOKEN, folderId, filtering.value);
       setRepositoryList(res.data);
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
         saveCookies(token.data.Authorization, token.data.RefreshToken);
         try {
-          const res = await GetRepositoryLst(
-            token.data.Authorization,
-            folderId,
-            filtering.value
-          );
+          const res = await GetRepositoryLst(token.data.Authorization, folderId, filtering.value);
           setRepositoryList(res.data);
         } catch (error) {
           redirect("/landing");
@@ -75,7 +74,7 @@ export default function RepositoryPage() {
 
   useEffect(() => {
     loadRepositoryList();
-  }, [loadRepositoryList]);
+  }, [loadRepositoryList, folderName, folderColor]);
 
   const clickModal = () => {
     if (moveRepositoryMode) {
@@ -120,8 +119,34 @@ export default function RepositoryPage() {
     }
   };
 
+  const changeFolder = () => {
+    setOpenEdit(!openEdit);
+  };
+
   return (
     <div className={st.body}>
+      <div className={st.folderName}>
+        <Image src={`/images/folder/${folderColor}.svg`} alt="" width={36} height={36} />
+        <span>{folderName}</span>
+        <Image
+          className={st.editImg}
+          src={`/images/repository/editing.svg`}
+          alt=""
+          width={20}
+          height={20}
+          onClick={changeFolder}
+        />
+        {openEdit && (
+          <EditFolder
+            folderId={folderId}
+            changeFolder={changeFolder}
+            folderName={folderName}
+            setFolderName={setFolderName}
+            folderColor={folderColor}
+            setFolderColor={setFolderColor}
+          />
+        )}
+      </div>
       <div className={st.button}>
         {moveRepositoryMode && (
           <button
@@ -168,9 +193,7 @@ export default function RepositoryPage() {
               {options.map((option) => (
                 <div
                   key={option.id}
-                  className={`${st.option} ${
-                    option.value === filtering.value ? st.active : ""
-                  }`}
+                  className={`${st.option} ${option.value === filtering.value ? st.active : ""}`}
                   onClick={() => handleOptionClick(option)}
                 >
                   {option.name}

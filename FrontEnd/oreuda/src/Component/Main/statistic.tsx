@@ -42,7 +42,6 @@ export default function Statistic() {
     try {
       const res = await GetUser(ACCESS_TOKEN);
       setUserData(res.data);
-      // dispatch(setGithubId(res.data.nickname));
     } catch (e: any) {
       if (e.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
@@ -53,12 +52,11 @@ export default function Statistic() {
         } catch {
           redirect("/landing");
         }
-        // dispatch(setGithubId(res.data.nickname));
       } else {
         redirect("/landing");
       }
     }
-  }, [ACCESS_TOKEN, REFRESH_TOKEN, dispatch]);
+  }, [ACCESS_TOKEN, REFRESH_TOKEN]);
 
   useEffect(() => {
     loadUserData();
