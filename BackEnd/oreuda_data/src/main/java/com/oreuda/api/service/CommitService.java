@@ -131,7 +131,7 @@ public class CommitService {
 			if (!yearlyCommit.containsKey(y)) yearlyCommit.put(y, new YearlyCommit(y, 0));
 		}
 		List<YearlyCommit> yearlyCommits = new ArrayList<>(yearlyCommit.values());
-		Collections.sort(yearlyCommits, (o1, o2) -> o1.getYear() - o2.getYear());
+		Collections.sort(yearlyCommits, (o1, o2) -> o2.getYear() - o1.getYear());
 		repository.setYearlyCommit(yearlyCommits);
 
 		repositoryRepository.set(userId, repoId, repository);
