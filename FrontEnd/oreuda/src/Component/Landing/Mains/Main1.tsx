@@ -42,24 +42,27 @@ export default function Main1() {
       <div className={`${pg.page} ${st.layout}`} id="page">
         {/* 텍스트 영역 */}
         <div className={st.content}>
-          <div className={st.title}>Oreuda</div>
-          <div className={st.intro}>
-            <div>
-              오르다 서비스로 깃헙을 커스텀하고 자신을 나타내고<br></br>
-              성장해보세요! 자신을 성장시켜보세요!
-            </div>
-            <div className={st.userCnt}>
-              <Image
-                data-position={1}
-                data-name={1}
-                src={`/images/landing/main1/Soil.svg`}
-                alt="폴더"
-                width={35}
-                height={32}
-                draggable={false}
-                priority
-              />{" "}
-              &nbsp; 함께 성장하고 있는 오르 수 <b>{userCnt}명</b>
+          <div>
+            <div className={st.title}>Oreuda</div>
+            <div className={st.intro}>
+              <div>
+                오르다 서비스로 깃헙을 커스텀하고 자신을 나타내고<br></br>
+                성장해보세요! 자신을 성장시켜보세요!
+              </div>
+              <div className={st.userCnt}>
+                <Image
+                  className={st.soil}
+                  data-position={1}
+                  data-name={1}
+                  src={`/images/landing/main1/Soil.svg`}
+                  alt="폴더"
+                  width={35}
+                  height={32}
+                  draggable={false}
+                  priority
+                />{" "}
+                &nbsp; 함께 성장하고 있는 오르 수 <b>{userCnt}명</b>
+              </div>
             </div>
           </div>
           <div className={st.buttons}>

@@ -1,0 +1,25 @@
+.layout {
+  height: 25vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+.icons {
+  text-align: center;
+  display: flex;
+  gap: 44px;
+  padding-bottom: 45px;
+}
+
+.copyright {
+  text-align: center;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 24px;
+
+  color: #1d1d1d;
+}
