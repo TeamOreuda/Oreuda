@@ -61,51 +61,6 @@ export default function RootLayout({
       // const ACCESS_TOKEN = cookieStore.get("Authorization")?.value;
       // const REFRESH_TOKEN = cookieStore.get("RefreshToken")?.value;
 
-<<<<<<< HEAD
-      const userProfile = await GetProfile(ACCESS_TOKEN)
-        .then((res) => {
-          return res.data;
-        })
-        .catch(async (err) => {
-          if (err.response?.status == 401) {
-            return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN).then(
-              async (res) => {
-                saveCookiesAndRedirect(
-                  res.data.Authorization,
-                  res.data.RefreshToken
-                );
-                return await GetProfile(res.data.Authorization).then((res) => {
-                  return res.data;
-                });
-              }
-            );
-          } else {
-            // redirect("/landing");
-          }
-        });
-
-      const characterData = await GetCharacter(ACCESS_TOKEN)
-        .then((res) => {
-          return res.data;
-        })
-        .catch(async (err) => {
-          if (err.response?.status == 401) {
-            return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN).then(
-              async (res) => {
-                saveCookiesAndRedirect(
-                  res.data.Authorization,
-                  res.data.RefreshToken
-                );
-                return await GetCharacter(ACCESS_TOKEN).then((res) => {
-                  return res.data;
-                });
-              }
-            );
-          } else {
-            // redirect("/landing");
-          }
-        });
-=======
       // const userProfile = await GetProfile(ACCESS_TOKEN)
       //   .then((res) => {
       //     return res.data;
@@ -149,7 +104,6 @@ export default function RootLayout({
       //       redirect("/landing");
       //     }
       //   });
->>>>>>> 200d20df17a43a23b022aadb69792406cc0ab1eb
       return (
         <html lang="kr">
           <Head>
