@@ -26,7 +26,8 @@ export default function Landing() {
       <Main1 />
       <Main4 />
       <Main3 />
-      <Main2 />
+      <Main4 />
+      <Main5 />
     </div>
   );
 }
