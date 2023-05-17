@@ -61,55 +61,55 @@ export default async function RootLayout({
       const ACCESS_TOKEN = cookieStore.get("Authorization")?.value;
       const REFRESH_TOKEN = cookieStore.get("RefreshToken")?.value;
 
-      // const userProfile = await GetProfile(ACCESS_TOKEN)
-      //   .then((res) => {
-      //     return res.data;
-      //   })
-      //   .catch(async (err) => {
-      //     if (err.response?.status == 401) {
-      //       return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN).then(
-      //         async (res) => {
-      //           saveCookies(res.data.Authorization, res.data.RefreshToken);
-      //           try {
-      //             return await GetProfile(res.data.Authorization).then(
-      //               (res) => {
-      //                 return res.data;
-      //               }
-      //             );
-      //           } catch {
-      //             redirect("/landing");
-      //           }
-      //         }
-      //       );
-      //     } else {
-      //       redirect("/landing");
-      //     }
-      //   });
-      //
-      // const characterData = await GetCharacter(ACCESS_TOKEN)
-      //   .then((res) => {
-      //     return res.data;
-      //   })
-      //   .catch(async (err) => {
-      //     if (err.response?.status == 401) {
-      //       return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN).then(
-      //         async (res) => {
-      //           saveCookies(res.data.Authorization, res.data.RefreshToken);
-      //           try {
-      //             return await GetCharacter(res.data.Authorization).then(
-      //               (res) => {
-      //                 return res.data;
-      //               }
-      //             );
-      //           } catch {
-      //             redirect("/landing");
-      //           }
-      //         }
-      //       );
-      //     } else {
-      //       redirect("/landing");
-      //     }
-      //   });
+      const userProfile = await GetProfile(ACCESS_TOKEN)
+        .then((res) => {
+          return res.data;
+        })
+        .catch(async (err) => {
+          if (err.response?.status == 401) {
+            return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN).then(
+              async (res) => {
+                saveCookies(res.data.Authorization, res.data.RefreshToken);
+                try {
+                  return await GetProfile(res.data.Authorization).then(
+                    (res) => {
+                      return res.data;
+                    }
+                  );
+                } catch {
+                  redirect("/landing");
+                }
+              }
+            );
+          } else {
+            redirect("/landing");
+          }
+        });
+
+      const characterData = await GetCharacter(ACCESS_TOKEN)
+        .then((res) => {
+          return res.data;
+        })
+        .catch(async (err) => {
+          if (err.response?.status == 401) {
+            return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN).then(
+              async (res) => {
+                saveCookies(res.data.Authorization, res.data.RefreshToken);
+                try {
+                  return await GetCharacter(res.data.Authorization).then(
+                    (res) => {
+                      return res.data;
+                    }
+                  );
+                } catch {
+                  redirect("/landing");
+                }
+              }
+            );
+          } else {
+            redirect("/landing");
+          }
+        });
       return (
         <html lang="kr">
           <Head>
@@ -144,14 +144,14 @@ export default async function RootLayout({
                     </ul>
                   );
                 })}
-                {/*<Image*/}
-                {/*  className={st.characterImg}*/}
-                {/*  src={`/images/character/${characterData?.name}.svg`}*/}
-                {/*  alt=""*/}
-                {/*  width={144}*/}
-                {/*  height={144}*/}
-                {/*  priority*/}
-                {/*/>*/}
+                <Image
+                  className={st.characterImg}
+                  src={`/images/character/${characterData?.name}.svg`}
+                  alt=""
+                  width={144}
+                  height={144}
+                  priority
+                />
                 <ul>
                   <Link
                     href="https://docs.google.com/forms/d/e/1FAIpQLSfenPmbzW6hablBx_67BMY5AECAXep2SAHcm3JgQoSkQCMpJQ/viewform"
@@ -163,16 +163,16 @@ export default async function RootLayout({
               </div>
 
               <ul>
-                {/*<Link href="/landing" className={st.link}>*/}
-                {/*  <Image*/}
-                {/*    className={st.logout}*/}
-                {/*    src={userProfile}*/}
-                {/*    alt=""*/}
-                {/*    width={32}*/}
-                {/*    height={32}*/}
-                {/*  />*/}
-                {/*  로그아웃*/}
-                {/*</Link>*/}
+                <Link href="/landing" className={st.link}>
+                  <Image
+                    className={st.logout}
+                    src={userProfile}
+                    alt=""
+                    width={32}
+                    height={32}
+                  />
+                  로그아웃
+                </Link>
               </ul>
             </nav>
             <Providers>{children}</Providers>
