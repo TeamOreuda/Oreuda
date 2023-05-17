@@ -17,10 +17,11 @@
 
   .folderName {
     margin-top: 8px;
+    cursor: pointer;
   }
 }
 
-.folderdiv {
+.folderDiv {
   display: flex;
   align-items: center;
   text-decoration: none;

@@ -50,8 +50,12 @@ export default function Statistic() {
           token.data.Authorization,
           token.data.RefreshToken
         );
-        const res = await GetUser(token.data.Authorization);
-        setUserData(res.data);
+        try {
+          const res = await GetUser(token.data.Authorization);
+          setUserData(res.data);
+        } catch {
+          redirect("/landing");
+        }
         // dispatch(setGithubId(res.data.nickname));
       } else {
         redirect("/landing");
@@ -165,7 +169,7 @@ export default function Statistic() {
               )}
             </div>
             <Image
-              src={`/images/main/${e.imageName}.svg`}
+              src={`/images/main/${e.imageName.toLowerCase()}.svg`}
               alt="주언어"
               width={80}
               height={80}
