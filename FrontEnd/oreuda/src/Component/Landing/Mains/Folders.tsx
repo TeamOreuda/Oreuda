@@ -6,7 +6,6 @@ import st from "./Main2.module.scss";
 
 export default function Folders() {
   const [counter, setCounter] = useState(0);
-  console.log("asd");
 
   // useEffect(() => {
   //   const interval = setInterval(() => {
@@ -19,7 +18,7 @@ export default function Folders() {
   // }, []);
 
   useEffect(() => {
-    console.log(counter);
+    // console.log(counter);
   }, [counter]);
 
   return (

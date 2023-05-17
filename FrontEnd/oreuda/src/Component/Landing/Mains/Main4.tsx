@@ -9,7 +9,7 @@ export default function Main4() {
         {/* content */}
         <div className={st.content}>
           <div className={st.title}>
-            레포지토리들을 쉽게 <span className={st.highlight}>정렬</span>
+            레포지토리들을 쉽게&nbsp;<span className={st.highlight}>정렬</span>
             해보세요!
           </div>
           <div className={st.intro}>
@@ -25,28 +25,27 @@ export default function Main4() {
         <div className={st.subContent}>
           <div className={st.colorPallets}>
             <div className={st.pallet}>
-              <div className={`${st.indicator} ${st.pink}`}></div>&nbsp;:
-              2023
-            </div>
-            <div className={st.pallet}>
-              <div className={`${st.indicator} ${st.blue}`}></div>&nbsp; :
-              2022
-            </div>
-            <div className={st.pallet}>
-              <div className={`${st.indicator} ${st.yellow}`}></div>&nbsp; :
-              2021
-            </div>
-            <div className={st.pallet}>
-              <div className={`${st.indicator} ${st.green}`}></div>&nbsp; :
-              2020
+              <div className={`${st.indicator} ${st.orange}`}></div>&nbsp; : ~ 2018
             </div>
             <div className={st.pallet}>
               <div className={`${st.indicator} ${st.purple}`}></div>&nbsp; :
               2019
             </div>
             <div className={st.pallet}>
-              <div className={`${st.indicator} ${st.orange}`}></div>&nbsp; : ~
-              2018
+              <div className={`${st.indicator} ${st.green}`}></div>&nbsp; :
+              2020
+            </div>
+            <div className={st.pallet}>
+              <div className={`${st.indicator} ${st.yellow}`}></div>&nbsp; :
+              2021
+            </div>
+            <div className={st.pallet}>
+              <div className={`${st.indicator} ${st.blue}`}></div>&nbsp; :
+              2022
+            </div>
+            <div className={st.pallet}>
+              <div className={`${st.indicator} ${st.pink}`}></div>&nbsp;:
+              2023
             </div>
           </div>
           <div className={st.colorManual}>
@@ -59,8 +58,8 @@ export default function Main4() {
           data-name={1}
           src={`/images/landing/main4/BlueEllipse.svg`}
           alt="스택"
-          width={1320}
-          height={420}
+          width={1360}
+          height={460}
           draggable={false}
           priority
         />
@@ -70,8 +69,8 @@ export default function Main4() {
           data-name={1}
           src={`/images/landing/main4/Capture.svg`}
           alt="잔디"
-          width={950}
-          height={217}
+          width={880}
+          height={200}
           draggable={false}
           priority
         />
@@ -82,7 +81,7 @@ export default function Main4() {
           src={`/images/landing/main4/CircleGraph.gif`}
           alt="스택"
           width={800}
-          height={511}
+          height={460}
           draggable={false}
           priority
         />
