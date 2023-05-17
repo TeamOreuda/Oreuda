@@ -24,10 +24,10 @@ export default function Landing() {
 
   return (
     <div className={st.page}>
-      <Main4 />
       <Main1 />
       <Main2 />
       <Main3 />
+      <Main4 />
       <Main5 />
     </div>
   );
