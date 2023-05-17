@@ -7,7 +7,7 @@ import st from "./character.module.scss";
 
 import { GetCharacter } from "@/Api/Plant/getCharacter";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
-import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
+import { saveCookies } from "@/Api/Oauth/saveCookies";
 import { GetCharacterInfo } from "@/Api/Plant/getCharacterInfo";
 
 export default function Character() {
@@ -19,7 +19,7 @@ export default function Character() {
     name: string;
   }>({
     id: 0,
-    name: "Soil",
+    name: "",
   });
   const [characterInfoData, setCharacterInfoData] = useState<{
     userStats: number;
@@ -38,10 +38,7 @@ export default function Character() {
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(
-          token.data.Authorization,
-          token.data.RefreshToken
-        );
+        saveCookies(token.data.Authorization, token.data.RefreshToken);
         try {
           const res = await GetCharacterInfo(token.data.Authorization);
           setCharacterInfoData(res.data);
@@ -61,10 +58,7 @@ export default function Character() {
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(
-          token.data.Authorization,
-          token.data.RefreshToken
-        );
+        saveCookies(token.data.Authorization, token.data.RefreshToken);
         try {
           const res = await GetCharacter(token.data.Authorization);
           setCharacterData(res.data);
@@ -113,29 +107,31 @@ export default function Character() {
       <ul className={st.discription}>
         {characterInfoData.nextLevel !== "MAX" ? (
           <div>
-            <Image
-              src={`/images/character/${
-                characterInfoData.nextLevel || "Soil"
-              }.svg`}
-              alt=""
-              width={24}
-              height={24}
-              priority
-            />
+            {characterInfoData.nextLevel && (
+              <Image
+                src={`/images/character/${characterInfoData.nextLevel}.svg`}
+                alt=""
+                width={24}
+                height={24}
+                priority
+              />
+            )}
             <p> 승급까지 남은 능력치: {characterInfoData.nextLevelExp}</p>
           </div>
         ) : (
           "현재 최종레벨에 도달하셨습니다"
         )}
       </ul>
-      <Image
-        className={st.character}
-        src={`/images/character/${characterData?.name}.svg`}
-        alt=""
-        width={304}
-        height={304}
-        priority
-      />
+      {characterData?.name && (
+        <Image
+          className={st.character}
+          src={`/images/character/${characterData?.name}.svg`}
+          alt=""
+          width={304}
+          height={304}
+          priority
+        />
+      )}
     </div>
   );
 }

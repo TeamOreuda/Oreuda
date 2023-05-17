@@ -14,7 +14,7 @@ import { DeleteFolder } from "@/Api/Folders/deleteFolder";
 import { GetFolderList } from "@/Api/Folders/getFolderList";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { GetBasicFolder } from "@/Api/Folders/getBasicFolder";
-import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
+import { saveCookies } from "@/Api/Oauth/saveCookies";
 
 export default function Repository() {
   const ACCESS_TOKEN = Cookies.get("Authorization");
@@ -40,12 +40,9 @@ export default function Repository() {
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(
-          token.data.Authorization,
-          token.data.RefreshToken
-        );
+        saveCookies(token.data.Authorization, token.data.RefreshToken);
         try {
-          await GetFolderList(ACCESS_TOKEN);
+          await GetFolderList(token.data.Authorization);
         } catch (error) {
           redirect("/landing");
         }
@@ -62,12 +59,9 @@ export default function Repository() {
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(
-          token.data.Authorization,
-          token.data.RefreshToken
-        );
+        saveCookies(token.data.Authorization, token.data.RefreshToken);
         try {
-          const res = await GetBasicFolder(ACCESS_TOKEN);
+          const res = await GetBasicFolder(token.data.Authorization);
           setRepositoryListData(res.data);
         } catch (error) {
           redirect("/landing");
@@ -97,10 +91,7 @@ export default function Repository() {
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(
-          token.data.Authorization,
-          token.data.RefreshToken
-        );
+        saveCookies(token.data.Authorization, token.data.RefreshToken);
         try {
           await DeleteFolder(token.data.Authorization, checkedItems);
         } catch (error) {
