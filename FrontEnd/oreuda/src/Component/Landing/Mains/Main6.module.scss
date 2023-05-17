@@ -11,23 +11,30 @@
   background-image: url("/images/landing/main6/BackEllipse.svg");
   background-position: center;
   background-size: cover;
+
   .layoutRight {
     padding: 200px 0 0 0;
+
     .content {
       position: relative;
       // width: fit-content;
+      padding-right: 80px;
       z-index: 9;
+
       .title {
-        font-size: 54px;
+        font-size: 52px;
         line-height: 64px;
         // display: flex;
-        align-items: end;
+        align-items: flex-end;
         text-align: right;
         z-index: 9;
+
         .highlight {
           color: #1087a0;
+          font-weight: 600;
         }
       }
+
       .intro {
         padding-top: 30px;
         font-size: 24px;
@@ -41,11 +48,12 @@
 
         color: #555555;
       }
+
       .icons {
         display: flex;
         margin: 15px;
         justify-content: flex-end;
-        align-items: end;
+        align-items: flex-end;
         text-align: right;
         gap: 20px;
       }
@@ -57,14 +65,15 @@
   // }
   .extension1 {
     position: absolute;
-    top: 15px;
-    left: 15px;
+    top: 80px;
+    left: 100px;
     z-index: 2;
   }
+
   .extension2 {
     position: absolute;
-    top: 115px;
-    left: 15px;
+    top: 200px;
+    left: 420px;
     z-index: 2;
   }
 }

@@ -33,6 +33,7 @@ export default function Landing() {
       <Main3 />
       <Main4 />
       <Main5 />
+      <Main6 />
     </div>
   );
 }
