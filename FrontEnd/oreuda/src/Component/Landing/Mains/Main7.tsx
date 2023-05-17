@@ -19,7 +19,7 @@ export default function Main7() {
             priority
           />
           <div className={st.title}>
-            <span className={st.highlight}>팀원</span> 소개
+            <span className={st.highlight}>팀원</span> &nbsp;소개
           </div>
           <div className={st.intro}>
             오르다 서비스를 만든 팀원을 소개합니다. <br /> 열심히 서비스를
@@ -34,8 +34,8 @@ export default function Main7() {
               data-name={1}
               src={`/images/landing/main7/JY.svg`}
               alt="유지연"
-              width={423}
-              height={211}
+              width={470}
+              height={235}
               draggable={false}
               priority
             />
