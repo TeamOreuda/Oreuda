@@ -50,8 +50,12 @@ export default function Statistic() {
           token.data.Authorization,
           token.data.RefreshToken
         );
-        const res = await GetUser(token.data.Authorization);
-        setUserData(res.data);
+        try {
+          const res = await GetUser(token.data.Authorization);
+          setUserData(res.data);
+        } catch {
+          redirect("/landing");
+        }
         // dispatch(setGithubId(res.data.nickname));
       } else {
         redirect("/landing");
