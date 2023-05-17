@@ -1,9 +1,11 @@
 .layout {
   position: relative;
   display: flex;
-    overflow: hidden;
+  overflow: hidden;
   flex-direction: row;
+  justify-content: space-between;
   z-index: 9;
+
   .layoutLeft {
     width: 35%;
     display: flex;
@@ -11,23 +13,28 @@
     justify-content: center;
     text-align: center;
     z-index: 9;
-    padding-left: 5%;
+    padding-left: 8%;
+
     .greenEllipse {
       position: absolute;
-      left: -100px;
-      top: -220px;
+      left: -370px;
+      top: -360px;
       z-index: 0;
     }
+
     .title {
       font-size: 56px;
       line-height: 64px;
       display: flex;
       z-index: 9;
       align-items: center;
+
       .highlight {
         color: #4bca80;
+        font-weight: 600;
       }
     }
+
     .intro {
       padding-top: 5%;
       font-size: 24px;
@@ -39,17 +46,21 @@
       color: #555555;
     }
   }
+
   .layoutRight {
     z-index: 9;
-    margin-top: 27px;
+
+    // margin-top: 20px;
+    margin: 46px;
     .cardRow {
       display: flex;
       flex-direction: row;
-      gap: 10px;
-      margin-top: 10px;
+      // gap: 30px;
+
       .card {
-        width: 423px;
-        height: 211px;
+        width: 360px;
+        height: 180px;
+        margin: 14px;
       }
     }
   }
