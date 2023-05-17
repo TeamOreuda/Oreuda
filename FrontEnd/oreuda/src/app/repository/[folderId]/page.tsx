@@ -12,7 +12,7 @@ import Repository from "@/Component/Repository/repository";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { MoveRepository } from "@/Api/Repository/moveRepository";
 import { GetRepositoryLst } from "@/Api/Repository/getRepositoryList";
-import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
+import { saveCookies } from "@/Api/Oauth/saveCookies";
 
 export default function RepositoryPage() {
   const params = useParams();
@@ -47,14 +47,22 @@ export default function RepositoryPage() {
 
   const loadRepositoryList = useCallback(async () => {
     try {
-      const res = await GetRepositoryLst(ACCESS_TOKEN, folderId, filtering.value);
+      const res = await GetRepositoryLst(
+        ACCESS_TOKEN,
+        folderId,
+        filtering.value
+      );
       setRepositoryList(res.data);
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+        saveCookies(token.data.Authorization, token.data.RefreshToken);
         try {
-          const res = await GetRepositoryLst(ACCESS_TOKEN, folderId, filtering.value);
+          const res = await GetRepositoryLst(
+            token.data.Authorization,
+            folderId,
+            filtering.value
+          );
           setRepositoryList(res.data);
         } catch (error) {
           redirect("/landing");
@@ -103,8 +111,8 @@ export default function RepositoryPage() {
       } catch (err: any) {
         if (err.response?.status == 401) {
           const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-          saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
-          await MoveRepository(ACCESS_TOKEN, data);
+          saveCookies(token.data.Authorization, token.data.RefreshToken);
+          await MoveRepository(token.data.Authorization, data);
         }
       }
       await loadRepositoryList();
@@ -160,7 +168,9 @@ export default function RepositoryPage() {
               {options.map((option) => (
                 <div
                   key={option.id}
-                  className={`${st.option} ${option.value === filtering.value ? st.active : ""}`}
+                  className={`${st.option} ${
+                    option.value === filtering.value ? st.active : ""
+                  }`}
                   onClick={() => handleOptionClick(option)}
                 >
                   {option.name}

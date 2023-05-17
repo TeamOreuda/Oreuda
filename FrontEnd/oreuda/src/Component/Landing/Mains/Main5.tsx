@@ -21,7 +21,7 @@ export default function Main4() {
               data-name={1}
               src={`/images/character/CrySoil.svg`}
               alt="스택"
-              width={52}
+              width={48}
               height={50}
               draggable={false}
               priority
@@ -30,15 +30,15 @@ export default function Main4() {
           </div>
         </div>
 
-        <div>
+        <div className={st.plant}>
           <Image
             className={st.soil}
             data-position={1}
             data-name={1}
             src={`/images/character/Soil.svg`}
             alt="스택"
-            width={300}
-            height={280}
+            width={220}
+            height={200}
             draggable={false}
             priority
           />
@@ -47,7 +47,7 @@ export default function Main4() {
             className={st.arrow}
             data-position={1}
             data-name={1}
-            src={`/images/landing/main4/arrow.svg`}
+            src={`/images/landing/main5/arrow.svg`}
             alt="스택"
             width={50}
             height={86}
@@ -61,8 +61,8 @@ export default function Main4() {
             data-name={1}
             src={`/images/character/Earth.svg`}
             alt="스택"
-            width={550}
-            height={440}
+            width={320}
+            height={320}
             draggable={false}
             priority
           />
@@ -74,11 +74,11 @@ export default function Main4() {
         <Image
           data-position={1}
           data-name={1}
-          src={`images/landing/main5/GreenEllipse.svg`}
+          src={`/images/landing/main5/GreenEllipse.svg`}
           className={st.ellipse}
           alt="타원"
-          width={1037}
-          height={1370}
+          width={1400}
+          height={1600}
           draggable={false}
         />
         <Image
@@ -87,8 +87,8 @@ export default function Main4() {
           src={`/images/landing/main5/GreenState.gif`}
           className={st.state}
           alt="chart gif"
-          width={300}
-          height={300}
+          width={480}
+          height={380}
           draggable={false}
         />
       </div>
