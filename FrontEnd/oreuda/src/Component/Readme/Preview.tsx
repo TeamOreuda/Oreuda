@@ -2,8 +2,8 @@
 import { CreateReadme } from "@/Api/Readme/createReadme";
 /* eslint-disable @next/next/no-img-element */
 import st from "./Preview.module.scss";
-import { useAppSelector } from "@/store/hooks";
-import { selectReadme } from "@/store/modules/readme";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { selectReadme, setClearReadmeStore } from "@/store/modules/readme";
 import Image from "next/image";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -41,6 +41,8 @@ export default function Preview() {
 
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
+
+  const dispatch = useAppDispatch();
 
   // 연락처
   // const mailURL = `https://mail.${mailDomain}/mail/?view=cm&amp;fs=1&amp;to=${mailId}@${mailDomain}/`;
@@ -245,7 +247,13 @@ export default function Preview() {
   };
 
   const onClickReset = () => {
-    alert("준비중입니다.");
+    if (
+      window.confirm("초기화 하시겠습니까!? \n작성한 내용이 모두 사라집니다.")
+    ) {
+      dispatch(setClearReadmeStore(0)); // store 값 모두 초기화
+
+      alert("초기화 되었습니다.");
+    }
   };
 
   // md parsing을 위하여 변수가 포함된 src를 사용하기 위하여 빼놓은 문자열입니다.
@@ -419,7 +427,11 @@ export default function Preview() {
 
   // 저장 버튼 클릭시 readme 저장 axios 요청
   const saveReadme = async () => {
-    if (window.confirm("저장하시겠습니까!?")) {
+    if (
+      window.confirm(
+        "저장하시겠습니까!? \n다음 작성 시 불러오기가 가능하게 DB에 저장됩니다."
+      )
+    ) {
       const arr: any = [];
       nPrevComp.map((el: any, idx: any) => {
         let curr = Number(el);
@@ -502,30 +514,35 @@ export default function Preview() {
         <div className={st.CopyBtn} onClick={onClickCopy}>
           <Image
             src="/images/readme/copy.svg"
-            width="30"
-            height="30"
+            width="25"
+            height="25"
             alt="download"
           />
         </div>
         <div className={st.downloadBtn} onClick={onClickDownload}>
           <Image
-            src="/images/readme/download.svg"
-            width="30"
-            height="30"
-            alt="download"
+            src="/images/readme/save.svg"
+            width="25"
+            height="25"
+            alt="save"
           />
         </div>
         <button className={st.btnReset} onClick={onClickReset}>
-          초기화
+          <Image
+            src="/images/readme/clean.svg"
+            width="30"
+            height="30"
+            alt="clean"
+          />
         </button>
         <button
           className={`${st.btnSave} ${
-            currComponent === 8 ? undefined : st.disabledBtn
+            currComponent === 8 ? st.abledBtn : st.disabledBtn
           }`}
           onClick={saveReadme}
           disabled={currComponent !== 8}
         >
-          저장
+          DB에 저장
         </button>
       </div>
       <div className={st.contentDiv}>

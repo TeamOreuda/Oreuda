@@ -20,9 +20,10 @@ const MULThemeData: string[] = [
 ];
 
 export default function MUL() {
+  const mulType = useAppSelector(selectReadme).mulType;
   const mulTheme = useAppSelector(selectReadme).mulTheme;
 
-  const [checkedIdx, setCheckedIdx] = useState(1);
+  const [checkedIdx, setCheckedIdx] = useState(mulType);
   const [openModal, setOpenModal] = useState(false);
   const [optionVal, setOptionVal] = useState("");
   const dispatch = useAppDispatch();
@@ -95,7 +96,7 @@ export default function MUL() {
             className={openModal ? st.focusInput : ""}
             placeholder="테마를 선택해주세요"
             readOnly
-            value={optionVal}
+            value={mulTheme}
             onClick={(e) => {
               setOpenModal(!openModal);
             }}
@@ -107,7 +108,7 @@ export default function MUL() {
                   <div
                     key={index}
                     onClick={(e) => {
-                      setOptionVal(data);
+                      // setOptionVal(data);
                       setOpenModal(!openModal);
                       onClickSVTheme(data);
                     }}

@@ -108,7 +108,9 @@ export default function Character() {
       <div className={st.header}>
         <ul>성장 차트</ul>
       </div>
-      <ul className={st.discription}>날짜별 캐릭터 능력치 변화추이입니다</ul>
+      <ul className={st.discription}>
+        0시 기준 날짜별 캐릭터 능력치 변화추이입니다.
+      </ul>
       <Line options={options} data={data} width={600} height={320} />
     </div>
   );
