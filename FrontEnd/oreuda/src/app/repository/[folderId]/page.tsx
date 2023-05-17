@@ -6,6 +6,7 @@ import { redirect, useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 import st from "./page.module.scss";
+import EditFolder from "@/Component/Folder/editFolder";
 import MoveFolder from "@/Component/Repository/moveFolder";
 import Repository from "@/Component/Repository/repository";
 
@@ -13,17 +14,20 @@ import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { MoveRepository } from "@/Api/Repository/moveRepository";
 import { GetRepositoryLst } from "@/Api/Repository/getRepositoryList";
 import { saveCookies } from "@/Api/Oauth/saveCookies";
+import { ChangeFolder } from "@/Api/Folders/changeFolder";
+import { EditFolderInfo } from "@/Api/Folders/editFolderInfo";
 
 export default function RepositoryPage() {
   const params = useParams();
   const folderId = Number(params.folderId);
   const searchParams = new URLSearchParams(window.location.search);
-  const folderName = searchParams.get("folderName");
-  const folderColor = searchParams.get("folderColor");
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
 
+  const [openEdit, setOpenEdit] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [folderName, setFolderName] = useState<string>(searchParams.get("folderName") || "");
+  const [folderColor, setFolderColor] = useState<string>(searchParams.get("folderColor") || "");
   const [moveRepositoryMode, setMoveRepositoryMode] = useState(false);
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
   const [moveFolderId, setMoveFolderId] = useState<number>(-1);
@@ -70,7 +74,7 @@ export default function RepositoryPage() {
 
   useEffect(() => {
     loadRepositoryList();
-  }, [loadRepositoryList]);
+  }, [loadRepositoryList, folderName, folderColor]);
 
   const clickModal = () => {
     if (moveRepositoryMode) {
@@ -115,6 +119,10 @@ export default function RepositoryPage() {
     }
   };
 
+  const changeFolder = () => {
+    setOpenEdit(!openEdit);
+  };
+
   return (
     <div className={st.body}>
       <div className={st.folderName}>
@@ -126,7 +134,18 @@ export default function RepositoryPage() {
           alt=""
           width={20}
           height={20}
+          onClick={changeFolder}
         />
+        {openEdit && (
+          <EditFolder
+            folderId={folderId}
+            changeFolder={changeFolder}
+            folderName={folderName}
+            setFolderName={setFolderName}
+            folderColor={folderColor}
+            setFolderColor={setFolderColor}
+          />
+        )}
       </div>
       <div className={st.button}>
         {moveRepositoryMode && (
