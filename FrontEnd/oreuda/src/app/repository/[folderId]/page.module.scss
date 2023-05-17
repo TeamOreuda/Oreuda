@@ -23,19 +23,22 @@
 
   .folderName {
     display: flex;
-    align-items: end;
+    align-items: center;
     position: absolute;
     justify-content: space-between;
 
     span {
-      font-size: 24px;
-      //position: absolute;
-      //left: 44px;
-      //top: 8px;
+      margin: {
+        left: 8px;
+        right: 8px;
+        top: 8px;
+      }
+      font-size: 28px;
     }
 
     .editImg {
       cursor: pointer;
+      opacity: 0.5;
     }
   }
 
@@ -94,7 +97,3 @@
     cursor: pointer;
   }
 }
-
-
-
-

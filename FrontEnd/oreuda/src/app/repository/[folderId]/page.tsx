@@ -50,22 +50,14 @@ export default function RepositoryPage() {
 
   const loadRepositoryList = useCallback(async () => {
     try {
-      const res = await GetRepositoryLst(
-        ACCESS_TOKEN,
-        folderId,
-        filtering.value
-      );
+      const res = await GetRepositoryLst(ACCESS_TOKEN, folderId, filtering.value);
       setRepositoryList(res.data);
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
         saveCookies(token.data.Authorization, token.data.RefreshToken);
         try {
-          const res = await GetRepositoryLst(
-            token.data.Authorization,
-            folderId,
-            filtering.value
-          );
+          const res = await GetRepositoryLst(token.data.Authorization, folderId, filtering.value);
           setRepositoryList(res.data);
         } catch (error) {
           redirect("/landing");
@@ -126,19 +118,14 @@ export default function RepositoryPage() {
   return (
     <div className={st.body}>
       <div className={st.folderName}>
-        <Image
-          src={`/images/folder/${folderColor}.svg`}
-          alt=""
-          width={36}
-          height={36}
-        />
+        <Image src={`/images/folder/${folderColor}.svg`} alt="" width={36} height={36} />
         <span>{folderName}</span>
         <Image
           className={st.editImg}
           src={`/images/repository/editing.svg`}
           alt=""
-          width={24}
-          height={24}
+          width={20}
+          height={20}
         />
       </div>
       <div className={st.button}>
@@ -187,9 +174,7 @@ export default function RepositoryPage() {
               {options.map((option) => (
                 <div
                   key={option.id}
-                  className={`${st.option} ${
-                    option.value === filtering.value ? st.active : ""
-                  }`}
+                  className={`${st.option} ${option.value === filtering.value ? st.active : ""}`}
                   onClick={() => handleOptionClick(option)}
                 >
                   {option.name}
