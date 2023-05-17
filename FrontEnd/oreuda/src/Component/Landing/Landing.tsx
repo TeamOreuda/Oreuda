@@ -12,6 +12,7 @@ import Main3 from "./Mains/Main3";
 import Main4 from "./Mains/Main4";
 import Main5 from "./Mains/Main5";
 import Main6 from "./Mains/Main6";
+import Main7 from "./Mains/Main7";
 
 export default function Landing() {
   const ACCESS_TOKEN = Cookies?.get("Authorization");
@@ -25,6 +26,8 @@ export default function Landing() {
 
   return (
     <div className={st.page}>
+      <Main7 />
+      <Main6 />
       <Main1 />
       <Main2 />
       <Main3 />
