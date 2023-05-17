@@ -231,9 +231,9 @@ export default function Preview() {
     return `
   <div key="7" >
     <div key=${id - 1} >
-          <h3 style ="font-size : 1.5em; font-weight:700;">${
-            textArr[id - 1].titleArr
-          }</h3>
+          <h3 style ="font-size : 1.5em; font-weight:700;">
+          ${textArr[id - 1].titleArr}
+          </h3>
           <p style ="font-size : 20px;">${textArr[id - 1].descArr}</p>
     </div>
   </div>
@@ -330,6 +330,7 @@ export default function Preview() {
     if (key > 10) {
       // text arr 인 경우
       toMD += AdditionalTextMD(key % 10);
+      // toMD += 1;
     } else {
       toMD += selected[key - 1];
     }
@@ -361,7 +362,7 @@ export default function Preview() {
         arr.push(tmp[el]);
       } else {
         let i = el.substring(1, 2);
-        let tmp = choiceTempArr(i);
+        let tmp = choiceTempArr(Number(i));
         arr.push(tmp);
       }
     });

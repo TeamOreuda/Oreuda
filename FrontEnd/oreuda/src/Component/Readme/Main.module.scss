@@ -49,12 +49,13 @@
 }
 
 .choiceBox {
-  width: 400px;
+  width: 800px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  margin-top: 15px;
 
   .choiceComp {
     margin: 10px;
