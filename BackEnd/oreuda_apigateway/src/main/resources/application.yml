@@ -13,20 +13,20 @@ spring:
       default-filters:
       - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials 
       globalcors:
-        # cors-configurations:
-        #   '[/**]':
-        #     allowedOrigins: 
-        #     - 'http://localhost:3000'
-        #     - 'https://oreuda.kr'
-        #     allow-credentials: true
-        #     allowedHeaders: '*'
-        #     allowedMethods:
-        #     - PUT
-        #     - GET
-        #     - POST
-        #     - PATCH
-        #     - DELETE
-        #     - OPTIONS
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: 
+            - 'http://localhost:3000'
+            - 'https://oreuda.kr'
+            allow-credentials: true
+            allowedHeaders: '*'
+            allowedMethods:
+            - PUT
+            - GET
+            - POST
+            - PATCH
+            - DELETE
+            - OPTIONS
 
       routes:
         # business-server
