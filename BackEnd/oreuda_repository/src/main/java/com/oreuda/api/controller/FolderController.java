@@ -39,6 +39,17 @@ public class FolderController {
 	}
 
 	/**
+	 * 폴더 정보 조회
+	 * @param userId
+	 * @return
+	 */
+	@GetMapping("{folderId}")
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
+	public ResponseEntity<FolderDto> getFolder(@RequestHeader String userId, @PathVariable String folderId) {
+		return new ResponseEntity<>(folderService.getFolder(userId, folderId), HttpStatus.OK);
+	}
+
+	/**
 	 * 폴더 추가
 	 * @param userId
 	 * @param inputFolderDto
