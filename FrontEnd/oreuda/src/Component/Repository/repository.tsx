@@ -1,3 +1,4 @@
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -5,7 +6,6 @@ import st from "./repository.module.scss";
 import RepositoryGraph from "./repositoryGraph";
 import RepositoryGrassGraph from "./repositoryGrassGraph";
 import fontColor from "../../Style/repository/languageColor.module.scss";
-import { log } from "util";
 
 export interface DailyCommit {
   date: string;

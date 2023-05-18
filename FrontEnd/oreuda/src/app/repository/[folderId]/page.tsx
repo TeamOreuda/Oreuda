@@ -14,24 +14,34 @@ import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { MoveRepository } from "@/Api/Repository/moveRepository";
 import { GetRepositoryLst } from "@/Api/Repository/getRepositoryList";
 import { saveCookies } from "@/Api/Oauth/saveCookies";
-import { ChangeFolder } from "@/Api/Folders/changeFolder";
-import { EditFolderInfo } from "@/Api/Folders/editFolderInfo";
+
+interface InnerFolder {
+  id: number;
+  name: string;
+  color: string;
+  status: string;
+  repositories: any[];
+}
 
 export default function RepositoryPage() {
   const params = useParams();
   const folderId = Number(params.folderId);
-  const searchParams = new URLSearchParams(window.location.search);
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
 
   const [openEdit, setOpenEdit] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [folderName, setFolderName] = useState<string>(searchParams.get("folderName") || "");
-  const [folderColor, setFolderColor] = useState<string>(searchParams.get("folderColor") || "");
-  const [moveRepositoryMode, setMoveRepositoryMode] = useState(false);
-  const [checkedItems, setCheckedItems] = useState<string[]>([]);
+  // const [repositoryList, setRepositoryList] = useState<{ id: number, name: string, color: string, state: string, repositories: [] }>({});
+  const [innerFolder, setInnerFolder] = useState<InnerFolder>({
+    id: 0,
+    name: "",
+    color: "",
+    status: "",
+    repositories: [],
+  });
   const [moveFolderId, setMoveFolderId] = useState<number>(-1);
-  const [repositoryList, setRepositoryList] = useState([]);
+  const [checkedItems, setCheckedItems] = useState<string[]>([]);
+  const [moveRepositoryMode, setMoveRepositoryMode] = useState(false);
 
   const options = [
     { id: 1, value: "recent", name: "최신순" },
@@ -54,15 +64,23 @@ export default function RepositoryPage() {
 
   const loadRepositoryList = useCallback(async () => {
     try {
-      const res = await GetRepositoryLst(ACCESS_TOKEN, folderId, filtering.value);
-      setRepositoryList(res.data);
+      const res = await GetRepositoryLst(
+        ACCESS_TOKEN,
+        folderId,
+        filtering.value
+      );
+      setInnerFolder(res.data);
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
         saveCookies(token.data.Authorization, token.data.RefreshToken);
         try {
-          const res = await GetRepositoryLst(token.data.Authorization, folderId, filtering.value);
-          setRepositoryList(res.data);
+          const res = await GetRepositoryLst(
+            token.data.Authorization,
+            folderId,
+            filtering.value
+          );
+          setInnerFolder(res.data);
         } catch (error) {
           redirect("/landing");
         }
@@ -74,7 +92,7 @@ export default function RepositoryPage() {
 
   useEffect(() => {
     loadRepositoryList();
-  }, [loadRepositoryList, folderName, folderColor]);
+  }, [loadRepositoryList]);
 
   const clickModal = () => {
     if (moveRepositoryMode) {
@@ -120,14 +138,36 @@ export default function RepositoryPage() {
   };
 
   const changeFolder = () => {
-    setOpenEdit(!openEdit);
+    if (innerFolder.status === "B") {
+      alert("기본 폴더는 수정할 수 없습니다");
+    } else {
+      setOpenEdit(!openEdit);
+    }
+  };
+
+  const rollback = () => {
+    redirect("/repository");
   };
 
   return (
     <div className={st.body}>
       <div className={st.folderName}>
-        <Image src={`/images/folder/${folderColor}.svg`} alt="" width={36} height={36} />
-        <span>{folderName}</span>
+        <Image
+          src={`/images/folder/left.svg`}
+          alt=""
+          width={36}
+          height={36}
+          onClick={rollback}
+        />
+        {innerFolder.color && (
+          <Image
+            src={`/images/folder/${innerFolder.color}.svg`}
+            alt=""
+            width={36}
+            height={36}
+          />
+        )}
+        <span>{innerFolder.name}</span>
         <Image
           className={st.editImg}
           src={`/images/repository/editing.svg`}
@@ -137,14 +177,7 @@ export default function RepositoryPage() {
           onClick={changeFolder}
         />
         {openEdit && (
-          <EditFolder
-            folderId={folderId}
-            changeFolder={changeFolder}
-            folderName={folderName}
-            setFolderName={setFolderName}
-            folderColor={folderColor}
-            setFolderColor={setFolderColor}
-          />
+          <EditFolder folderId={folderId} changeFolder={changeFolder} />
         )}
       </div>
       <div className={st.button}>
@@ -193,7 +226,9 @@ export default function RepositoryPage() {
               {options.map((option) => (
                 <div
                   key={option.id}
-                  className={`${st.option} ${option.value === filtering.value ? st.active : ""}`}
+                  className={`${st.option} ${
+                    option.value === filtering.value ? st.active : ""
+                  }`}
                   onClick={() => handleOptionClick(option)}
                 >
                   {option.name}
@@ -215,7 +250,7 @@ export default function RepositoryPage() {
       <div className={st.repository}>
         <Repository
           moveRepositoryMode={moveRepositoryMode}
-          repositoryList={repositoryList}
+          repositoryList={innerFolder.repositories}
           checkedItems={checkedItems}
           setCheckedItems={setCheckedItems}
         />

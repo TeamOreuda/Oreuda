@@ -15,14 +15,13 @@ import { redirect } from "next/navigation";
 export default function EditFolder(props: {
   folderId: number;
   changeFolder: any;
-  folderName: string;
-  setFolderName: any;
-  folderColor: string;
-  setFolderColor: any;
 }) {
-  const { folderId, changeFolder, folderName, setFolderName, folderColor, setFolderColor } = props;
+  const { folderId, changeFolder } = props;
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
+
+  const [folderName, setFolderName] = useState("");
+  const [folderColor, setFolderColor] = useState("");
 
   const editInfo = async (
     ACCESS_TOKEN: any,
