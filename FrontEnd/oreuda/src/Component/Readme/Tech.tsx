@@ -41,7 +41,6 @@ export const techData: any = [
   { name: "python", color: "3581ba", index: 21 },
   { name: "jupyter-notebook", color: "36a2eb", index: 22 },
   { name: "other", color: "b8b7b7", index: 23 },
-
   { name: "node.js", color: "339933", index: 24 },
   { name: "react", color: "61DAFB", index: 25 },
   { name: "jquery", color: "0769AD", index: 26 },
@@ -198,7 +197,7 @@ export default function Tech() {
           <input
             type="text"
             className={openModal ? st.focusInput : ""}
-            placeholder="테마를 선택해주세요"
+            placeholder="선택해주세요"
             readOnly
             value={optionVal}
             onClick={(e) => {
