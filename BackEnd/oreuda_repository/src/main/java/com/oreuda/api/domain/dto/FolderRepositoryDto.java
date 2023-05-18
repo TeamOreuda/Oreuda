@@ -1,5 +1,8 @@
 package com.oreuda.api.domain.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FolderDto {
+public class FolderRepositoryDto {
 
 	// 기본키
 	Long id;
@@ -20,12 +23,9 @@ public class FolderDto {
 	// 폴더 색상
 	String color;
 
-	// 폴더 순서
-	int order;
-
 	// 폴더 상태
 	String status;
 
 	// 해당 폴더의 레포지토리 수
-	int repositoryCount;
+	List<RepositoryDto> repositories = new ArrayList<>();
 }
