@@ -9,7 +9,7 @@
     border: 0;
     background-color: #d9d9d9;
     margin: {
-      top: 32px;
+      top: 16px;
       bottom: 32px;
     }
   }
@@ -26,6 +26,7 @@
     align-items: center;
     position: absolute;
     justify-content: space-between;
+    margin-bottom: 16px;
 
     .backImg {
       cursor: pointer;
