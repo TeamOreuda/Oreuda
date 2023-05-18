@@ -158,14 +158,14 @@ export default function Preview() {
       <img src={mulUrl} width="280" height={mulHeight} alt="MUL" />
     </div>,
     <div key="4" className={st.TextArr}>
-      <h2>🍀Tech Stack🍀</h2>
+      <h3>🍀Tech Stack🍀</h3>
       {/* <h3>{techTitle}</h3> */}
       <div className={st.TextArr}>{showTechWhole()}</div>
       <h3>{techTitle}</h3>
       <div className={st.techBadgeDiv}>{showTechArr()}</div>
     </div>,
     <div key="5" className={st.TextArr}>
-      <h2>💙Contact💙</h2>
+      <h3>💙Contact💙</h3>
       <div className={st.contactBadgeDiv}>
         {mailId.length > 0 ? (
           <a href={mailURL} target="_blank">
@@ -283,7 +283,7 @@ export default function Preview() {
   `,
     `
   <div key="4">
-  <h2 style ="font-size : 2em; font-weight:700;">🍀Tech Stack🍀</h2>
+  <h3 style ="font-size : 2em; font-weight:700;">🍀Tech Stack🍀</h3>
     <div >${showTechWholeMD()}</div>
   </div>
   `,
@@ -544,7 +544,7 @@ export default function Preview() {
           onClick={saveReadme}
           disabled={currComponent !== 8}
         >
-          DB에 저장
+          오르다에 저장
         </button>
       </div>
       <div className={st.contentDiv}>
