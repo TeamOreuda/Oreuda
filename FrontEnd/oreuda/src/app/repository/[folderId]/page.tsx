@@ -153,7 +153,7 @@ export default function RepositoryPage() {
     <div className={st.body}>
       <div className={st.folderName}>
         <Image
-          src={`/images/folder/left.svg`}
+          src={`/images/repository/left.svg`}
           alt=""
           width={36}
           height={36}
