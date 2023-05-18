@@ -57,7 +57,7 @@ export default function Main() {
   const [openModal, setOpenModal] = useState(false);
   // option select 변경했을 때 동작하는 메서드
   const onChangeCompOption = (index: any) => {
-    console.log(index);
+    // console.log(index);
 
     dispatch(setPushComponent(index));
     // setOptionVal("선택해주세요");

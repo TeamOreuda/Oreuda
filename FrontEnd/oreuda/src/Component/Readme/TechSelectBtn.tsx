@@ -22,6 +22,13 @@ export default function TechSelectBtn({ curr }: any) {
   };
 
   const rNum = Math.floor(Math.random() * (1000000 - 1));
+  const parserStackName = (data: any) => {
+    if (data.length > 18) {
+      return "microsoft";
+    } else {
+      return data.replace(".", "-");
+    }
+  };
 
   return (
     <div className={st.choiceBox}>
@@ -31,7 +38,7 @@ export default function TechSelectBtn({ curr }: any) {
             key={Math.random() * (1000000 - 1)}
             id={el.index}
             onClick={onClickRemoveComp}
-            className={lang[el.name]}
+            className={lang[parserStackName(el.name)]}
           >
             {el.name}
           </div>
