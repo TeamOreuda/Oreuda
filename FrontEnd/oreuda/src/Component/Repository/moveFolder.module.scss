@@ -28,21 +28,34 @@
     }
   }
 
-  .checkItem {
-    max-height: 144px;
-    overflow-y: auto;
+  > div:nth-of-type(1) {
+    display: flex;
+    justify-content: space-between;
 
-    input {
-      margin: {
-        top: 0px;
-        bottom: 0px;
-        right: 8px;
-        left: 0px;
-      }
-    }
-
-    div {
+    button {
+      width: 64px;
       margin: 8px 0px;
+      @include comm.button;
     }
+  }
+}
+
+
+.checkItem {
+  max-height: 72px;
+  overflow-y: auto;
+
+  input {
+    margin: {
+      top: 0px;
+      bottom: 0px;
+      right: 8px;
+      left: 0px;
+    }
+  }
+
+  div {
+    display: flex;
+    margin: 8px 0px;
   }
 }
