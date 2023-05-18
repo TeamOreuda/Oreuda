@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.oreuda.api.domain.dto.FolderRepositoryDto;
 import com.oreuda.api.domain.dto.InputRepositoryDto;
 import com.oreuda.api.domain.dto.OutputRepositoryDto;
 import com.oreuda.api.domain.dto.RepositoryDto;
@@ -38,7 +37,7 @@ public class RepositoryController {
 	 */
 	@GetMapping("{folderId}")
 	@CrossOrigin(origins = "*", allowedHeaders = "*")
-	public ResponseEntity<FolderRepositoryDto> getRepositories(@RequestHeader String userId, @PathVariable int folderId,
+	public ResponseEntity<List<RepositoryDto>> getRepositories(@RequestHeader String userId, @PathVariable int folderId,
 		@RequestParam String filtering) {
 		return new ResponseEntity<>(repositoryService.getRepositories(userId, folderId, filtering), HttpStatus.OK);
 	}
@@ -62,7 +61,7 @@ public class RepositoryController {
 	 */
 	@PatchMapping
 	@CrossOrigin(origins = "*", allowedHeaders = "*")
-	public ResponseEntity<FolderRepositoryDto> moveRepository(@RequestHeader String userId,
+	public ResponseEntity<List<RepositoryDto>> moveRepository(@RequestHeader String userId,
 		@RequestBody InputRepositoryDto inputRepositoryDto) {
 		return new ResponseEntity<>(repositoryService.moveRepository(userId, inputRepositoryDto), HttpStatus.OK);
 	}

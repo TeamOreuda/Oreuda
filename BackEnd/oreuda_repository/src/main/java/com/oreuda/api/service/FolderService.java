@@ -40,6 +40,21 @@ public class FolderService {
 			.collect(Collectors.toList());
 	}
 
+	public FolderDto getFolder(String userId, String folderId) {
+		Folder folder = folderJpaRepository.findById(Long.valueOf(folderId)).orElseThrow(NotFoundException::new);
+
+		// 해당 폴더에 대한 사용자 권한 확인
+		checkFolderAccessPermission(userId, folder.getUser().getId());
+
+		return FolderDto.builder()
+			.id(folder.getId())
+			.name(folder.getName())
+			.color(folder.getColor())
+			.order(folder.getOrder())
+			.status(folder.getStatus())
+			.build();
+	}
+
 	public void addFolder(String userId, InputFolderDto inputFolderDto) {
 		// 폴더명 유효성 검사
 		checkFolderName(userId, inputFolderDto.getName());
