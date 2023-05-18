@@ -18,7 +18,6 @@ import { MoveRepository } from "@/Api/Repository/moveRepository";
 import { GetRepositoryLst } from "@/Api/Repository/getRepositoryList";
 import { saveCookies } from "@/Api/Oauth/saveCookies";
 import { GetFolder } from "@/Api/Folders/getFolder";
-import { setIn } from "immutable";
 
 interface InnerFolder {
   id: number;
@@ -180,6 +179,9 @@ export default function RepositoryPage() {
     if (innerFolder.status === "B") {
       alert("기본 폴더는 수정할 수 없습니다");
     } else {
+      if (openEdit) {
+        loadFolderList();
+      }
       setOpenEdit(!openEdit);
     }
   };
