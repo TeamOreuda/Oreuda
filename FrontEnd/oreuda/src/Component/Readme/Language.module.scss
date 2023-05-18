@@ -12,6 +12,33 @@ div .css,
 .scala,
 .perl,
 .cpp,
+.node-js,
+.react,
+.jquery,
+.express,
+.angular,
+.vue-js,
+.django,
+.flask,
+.next-js,
+.spring,
+.laravel,
+.flutter,
+.mysql,
+.sqlite,
+.mariadb,
+.mongodb,
+.redis,
+.postgresql,
+.oracle,
+.kotlin,
+.jenkins,
+.docker,
+.svelte,
+.unity,
+.figma,
+.git,
+.nginx,
 .other {
   margin: 5px;
   font-size: 12px;
@@ -43,7 +70,11 @@ div .r,
 div .javascript,
 .typescript,
 .assembly,
+.amazonaws,
+.kubernetes,
+.apachekafka,
 .objective-c,
+.springboot,
 .jupyter-notebook {
   margin: 5px;
   font-size: 12px;
@@ -57,22 +88,125 @@ div .javascript,
   color: white;
 }
 
-.jupyter-notebook {
+.elasticsearch,
+.jirasoftware,
+.jupyter-notebook,
+.microsoft {
   margin: 5px;
   font-size: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  width: 130px;
+  width: 150px;
   height: 35px;
   font-weight: bold;
   color: white;
 }
 
+.jirasoftware {
+  background: #0052cc;
+}
+.nginx {
+  background: #009639;
+}
+.git {
+  background: #f05032;
+}
+.figma {
+  background: #f24e1e;
+}
+.amazonaws {
+  background: #232f3e;
+}
+.unity {
+  background: #ffffff;
+  color: black;
+}
+.svelte {
+  background: #ff3e00;
+}
+.kubernetes {
+  background: #326ce5;
+}
+.apachekafka {
+  background: #231f20;
+}
+.docker {
+  background: #2496ed;
+}
+.jenkins {
+  background: #d24939;
+}
+.kotlin {
+  background: #7f52ff;
+}
+.elasticsearch {
+  background: #005571;
+}
+.oracle {
+  background: #f80000;
+}
+.microsoft {
+  background: #cc2927;
+}
+.postgresql {
+  background: #4169e1;
+}
+.redis {
+  background: #dc382d;
+}
+.mongodb {
+  background: #47a248;
+}
+.mariadb {
+  background: #003545;
+}
+.sqlite {
+  background: #003b57;
+}
+.mysql {
+  background: #4479a1;
+}
+.flutter {
+  background: #02569b;
+}
+.laravel {
+  background: #ff2d20;
+}
+.spring,
+.springboot {
+  background: #6db33f;
+}
+.next-js {
+  background: #000000;
+}
+.flask {
+  background: #000000;
+}
+.django {
+  background: #092e20;
+}
+.vue-js {
+  background: #4fc08d;
+}
+.angular {
+  background: #dd0031;
+}
+.express {
+  background: #000000;
+}
+.jquery {
+  background: #0769ad;
+}
+.react {
+  background: #61dafb;
+}
+.node-js {
+  background: #339933;
+}
 .javascript {
   background-color: #f1e05a;
-  color: white;
 }
 .html5 {
   background-color: #e44b23;
