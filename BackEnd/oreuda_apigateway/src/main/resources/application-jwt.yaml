@@ -1,5 +1,0 @@
-# JWT
-jwt:
-  header: Authorization
-  secret: 6015c999199ff10b966d382494c4796244359a0a97e78be2de11b978402207f1028c2dc780185fac08dd3ef8b7c81b8e99a29130e4f3c130ef7e33c27f2a2d69
-  token-validity-in-seconds: 3600
