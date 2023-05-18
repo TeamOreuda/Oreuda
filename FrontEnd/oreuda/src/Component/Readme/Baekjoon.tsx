@@ -5,8 +5,6 @@ import st from "./Baekjoon.module.scss";
 import {
   selectReadme,
   setBaekjoonId,
-  setNextCompMoving,
-  setPrevCompMoving,
   setSolvedTheme,
 } from "@/store/modules/readme";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -14,11 +12,10 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 const svDesignData: string[] = ["warm", "cold", "dark"];
 
 export default function Baekjoon() {
-  const choiceStackData = useAppSelector(selectReadme).nextComp;
-  const prevCompData = useAppSelector(selectReadme).prevComp;
   const baekJoonIdData = useAppSelector(selectReadme).baekjoonId;
   const solvedTheme = useAppSelector(selectReadme).solvedTheme;
   const [id, setId] = useState(baekJoonIdData);
+  const [openModal, setOpenModal] = useState(false);
 
   const dispatch = useAppDispatch();
 
@@ -29,8 +26,8 @@ export default function Baekjoon() {
     }
   };
 
-  const onClickSVTheme = (e: any) => {
-    dispatch(setSolvedTheme(e.target.value));
+  const onClickSVTheme = (data: any) => {
+    dispatch(setSolvedTheme(data));
   };
 
   return (
@@ -48,7 +45,7 @@ export default function Baekjoon() {
           onKeyUp={() => dispatch(setBaekjoonId(id))}
           value={id}
         ></input>
-        <div className={st.selectBox}>
+        {/* <div className={st.selectBox}>
           <span>테마 설정</span>
           <select
             className={st.selectSV}
@@ -63,6 +60,34 @@ export default function Baekjoon() {
               );
             })}
           </select>
+        </div> */}
+        <div className={`${st.dropdown} ${openModal ? st.option : ""}`}>
+          <input
+            type="text"
+            className={openModal ? st.focusInput : ""}
+            placeholder="테마를 선택해주세요"
+            readOnly
+            value={solvedTheme}
+            onClick={(e) => {
+              setOpenModal(!openModal);
+            }}
+          />
+          <div className={` ${openModal ? st.option : st.display}`}>
+            {svDesignData.map((data: string, index: number) => {
+              return (
+                <div
+                  key={index}
+                  onClick={(e) => {
+                    // setOptionVal(data);
+                    setOpenModal(!openModal);
+                    onClickSVTheme(data);
+                  }}
+                >
+                  {data}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
