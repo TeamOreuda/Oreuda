@@ -283,13 +283,13 @@ export default function Preview() {
   `,
     `
   <div key="4">
-  <h3 style ="font-size : 2em; font-weight:700;">Tech Stack</h3>
+  <h2 style ="font-size : 2em; font-weight:700;">🍀Tech Stack🍀</h2>
     <div >${showTechWholeMD()}</div>
   </div>
   `,
     `
   <div key="5">
-    <h3 style ="font-size : 2em; font-weight:700;">Contact</h3>
+    <h3 style ="font-size : 2em; font-weight:700;">💙Contact💙</h3>
     <div className=${st.contactBadgeDiv}>
       ${
         mailId.length > 0
