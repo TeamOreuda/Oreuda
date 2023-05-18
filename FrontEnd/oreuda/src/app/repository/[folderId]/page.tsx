@@ -79,7 +79,7 @@ export default function RepositoryPage() {
     setIsOpen(!isOpen);
   };
 
-  const loadFolderList = useCallback(async () => {
+  const loadFolder = useCallback(async () => {
     try {
       const res = await GetFolder(ACCESS_TOKEN, folderId);
       setInnerFolder(res.data);
@@ -129,8 +129,8 @@ export default function RepositoryPage() {
 
   useEffect(() => {
     loadRepositoryList();
-    loadFolderList();
-  }, [loadRepositoryList, loadFolderList]);
+    loadFolder();
+  }, [loadRepositoryList, loadFolder]);
 
   const clickModal = () => {
     if (moveRepositoryMode) {
@@ -180,7 +180,7 @@ export default function RepositoryPage() {
       alert("기본 폴더는 수정할 수 없습니다");
     } else {
       if (openEdit) {
-        loadFolderList();
+        loadFolder();
       }
       setOpenEdit(!openEdit);
     }
