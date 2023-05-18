@@ -42,7 +42,7 @@
 
 
 .checkItem {
-  max-height: 72px;
+  max-height: 144px;
   overflow-y: auto;
 
   input {
@@ -55,6 +55,7 @@
   }
 
   div {
+    border: 1px solid gray;
     display: flex;
     margin: 8px 0px;
   }
