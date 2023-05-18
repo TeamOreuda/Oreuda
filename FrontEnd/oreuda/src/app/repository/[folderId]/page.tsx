@@ -146,7 +146,7 @@ export default function RepositoryPage() {
   };
 
   const rollback = () => {
-    redirect("/repository");
+    window.history.back();
   };
 
   return (
@@ -158,6 +158,7 @@ export default function RepositoryPage() {
           width={36}
           height={36}
           onClick={rollback}
+          className={st.backImg}
         />
         {innerFolder.color && (
           <Image

@@ -93,41 +93,41 @@ export default function Folder(props: {
     <div className={st.folders}>
       {folderList?.map((folder: Folder, index: number) => {
         return (
-          <div key={index} data-position={index} className={st.folder}>
-            <Link
-              href={`/repository/${folder.id}`}
-              {...(clickDelete ? { onClick: (e) => e.preventDefault() } : {})}
-              data-position={index}
-              data-name={folder.id}
-              onDragOver={(e) => e.preventDefault()}
-              onDragStart={onDragStart}
-              onDrop={onDrop}
-              draggable={!clickDelete}
-            >
-              {clickDelete && folder.name !== "기본 폴더" && (
-                <input
-                  type="checkbox"
-                  value={folder.id}
-                  checked={checkedItems.indexOf(folder.id) !== -1}
-                  onChange={handleCheckboxChange}
-                  onClick={(event) => event.stopPropagation()}
-                />
-              )}
-              <div data-position={index} data-name={folder.id}>
-                <Image
-                  data-position={index}
-                  data-name={folder.id}
-                  src={`images/folder/${folder.color}.svg`}
-                  alt="폴더"
-                  width={128}
-                  height={128}
-                  draggable={false}
-                  priority
-                />
-              </div>
-              {folder.name}
-            </Link>
-          </div>
+          <Link
+            key={index}
+            className={st.folder}
+            href={`/repository/${folder.id}`}
+            {...(clickDelete ? { onClick: (e) => e.preventDefault() } : {})}
+            data-position={index}
+            data-name={folder.id}
+            onDragOver={(e) => e.preventDefault()}
+            onDragStart={onDragStart}
+            onDrop={onDrop}
+            draggable={!clickDelete}
+          >
+            {clickDelete && folder.name !== "기본 폴더" && (
+              <input
+                type="checkbox"
+                value={folder.id}
+                checked={checkedItems.indexOf(folder.id) !== -1}
+                onChange={handleCheckboxChange}
+                onClick={(event) => event.stopPropagation()}
+              />
+            )}
+            <div data-position={index} data-name={folder.id}>
+              <Image
+                data-position={index}
+                data-name={folder.id}
+                src={`images/folder/${folder.color}.svg`}
+                alt="폴더"
+                width={128}
+                height={128}
+                draggable={false}
+                priority
+              />
+            </div>
+            {folder.name}
+          </Link>
         );
       })}
     </div>
