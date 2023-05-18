@@ -65,12 +65,11 @@ export default function Tech() {
   const techTitle = useAppSelector(selectReadme).techTitle;
   const techPlusArr = useAppSelector(selectReadme).techPlusArr;
   // option select 변경했을 때 동작하는 메서드
-  const onChangeTechOption = (e: any) => {
-    if (curr === 0)
-      dispatch(setPushTech({ data: techData[e.target.value], curr: curr }));
+  const onChangeTechOption = (data: any) => {
+    if (curr === 0) dispatch(setPushTech({ data: techData[data], curr: curr }));
     else {
-      console.log(techData[e.target.value]);
-      dispatch(setPushTech({ data: techData[e.target.value], curr: curr }));
+      console.log(techData[data]);
+      dispatch(setPushTech({ data: techData[data], curr: curr }));
     }
     setOptionVal("선택해주세요");
   };
@@ -102,7 +101,7 @@ export default function Tech() {
         {techPlusWhole?.map((el, index) => {
           return (
             <button
-              key={index + 1}
+              key={Math.random() * (1000000 - 1)}
               onClick={() => {
                 // setTitle(el.name);
                 setModifyText(el.name);
@@ -127,7 +126,7 @@ export default function Tech() {
       </div>
       <div className={st.contentDiv}>
         <div className={st.mailDiv}>
-          <p>제목</p>
+          {/* <p>제목</p> */}
           <input
             className={st.TextTitleInput}
             type="text"
@@ -145,7 +144,7 @@ export default function Tech() {
             value={curr == 0 ? title : modifyText}
           ></input>
         </div>
-        <div className={st.selectBox}>
+        {/* <div className={st.selectBox}>
           <span>기술 설정</span>
           <select
             className={st.selectSV}
@@ -160,8 +159,8 @@ export default function Tech() {
               );
             })}
           </select>
-        </div>
-        {/* <div className={`${st.dropdown} ${openModal ? st.option : ""}`}>
+        </div> */}
+        <div className={`${st.dropdown} ${openModal ? st.option : ""}`}>
           <input
             type="text"
             className={openModal ? st.focusInput : ""}
@@ -173,24 +172,24 @@ export default function Tech() {
             }}
           />
           <div className={` ${openModal ? st.option : st.display}`}>
-            {techData.map((data: string, index: number) => {
+            {techData.map((data: any, index: number) => {
               if (index !== 0) {
                 return (
                   <div
                     key={Math.random() * (1000000 - 1)}
                     onClick={(e) => {
-                      setOptionVal(data);
+                      setOptionVal(data.name);
                       setOpenModal(!openModal);
-                      onChangeTechOption(1);
+                      onChangeTechOption(index);
                     }}
                   >
-                    {data}
+                    {data.name}
                   </div>
                 );
               }
             })}
           </div>
-        </div> */}
+        </div>
         <div className={st.TechSelectBtnDiv}>
           <TechSelectBtn curr={curr} />
         </div>

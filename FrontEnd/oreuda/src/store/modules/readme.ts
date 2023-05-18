@@ -59,7 +59,7 @@ const initialState: readmeSlice = {
   githubTheme: "dark",
 
   mulTheme: "dark",
-  mulType: 0,
+  mulType: 1,
 
   // curr
   techPlusWhole: [],

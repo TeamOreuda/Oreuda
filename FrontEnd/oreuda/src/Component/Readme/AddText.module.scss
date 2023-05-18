@@ -13,26 +13,40 @@
     .mailDiv {
       width: 400px;
       .TextTitleInput {
-        width: calc(100% - 20px);
-        height: 30px;
+        width: calc(100% - 40px);
+        height: 20px;
         border-radius: 10px;
         font-family: "GmarketSansMedium";
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        border: none;
+        outline: none;
         font-size: 16px;
-        border: 3px solid #000000;
-        padding: 10px;
+        padding: 20px;
+        margin-bottom: 10px;
+      }
+      .TextTitleInput:focus {
+        color: #000000;
+        outline: 4px solid comm.$mainGreen !important;
       }
       .TextDescInput {
-        width: calc(100% - 20px);
+        width: calc(100% - 40px);
         height: 180px;
         border-radius: 10px;
         font-family: "GmarketSansMedium";
         font-size: 16px;
-        border: 3px solid #000000;
-        padding: 10px;
+        border: none;
+        padding: 20px;
+        outline: none;
         display: flex;
         justify-content: left;
         text-align: left;
         flex-wrap: wrap;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        resize: none;
+      }
+      .TextDescInput:focus {
+        color: #000000;
+        outline: 4px solid comm.$mainGreen !important;
       }
     }
   }

@@ -234,7 +234,8 @@ export default function Preview() {
   };
 
   const AdditionalTextMD = (id: number) => {
-    return `
+    if (textArr[id - 1]) {
+      return `
   <div key="7" >
     <div key=${id - 1} >
           <h3 style ="font-size : 1.5em; font-weight:700;">
@@ -244,6 +245,7 @@ export default function Preview() {
     </div>
   </div>
   `;
+    }
   };
 
   const onClickReset = () => {
@@ -297,21 +299,21 @@ export default function Preview() {
               alt="Mail"
             />
           </a>`
-          : ""
+          : `<span></span>`
       }
       ${
         blogLink.length > 0
           ? `<a href=${blogLink} target="_blank">
             <img src=${blogImg} alt="blog" />
           </a>`
-          : ""
+          : `<span></span>`
       }
       ${
         notionLink.length > 0
           ? `<a href=${notionLink} target="_blank">
             <img src=${notionImg} alt="notion" />
           </a>`
-          : ""
+          : `<span></span>`
       }
     </div>
   </div>
@@ -334,7 +336,7 @@ export default function Preview() {
   <!-- 불편 사항 및 문의는 tykimdream@gmail.com으로 보내주세요 -->`;
 
   // toMD : 작성된 HTML을 md로 변환한 문자열을 저장합니다.
-  let toMD = `<div  style = "display: flex;  align-items: center; flex-direction: column;  justify-content: center;">`;
+  let toMD = `<div  style = "display: flex;  align-items: center; flex-direction: column;  justify-content: center;" align = "center";>`;
   toMD += caution;
 
   // nPrevComp : toMD에 작성한 컴포넌트들을 붙히는 함수입니다.
@@ -530,8 +532,8 @@ export default function Preview() {
         <button className={st.btnReset} onClick={onClickReset}>
           <Image
             src="/images/readme/clean.svg"
-            width="30"
-            height="30"
+            width="25"
+            height="25"
             alt="clean"
           />
         </button>

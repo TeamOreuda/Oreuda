@@ -46,7 +46,7 @@ export default function AddText() {
     <div className={st.body}>
       <div className={st.indexBtns}>
         <Image
-          src="/images/readme/notebook.gif"
+          src="/images/readme/plus.gif"
           alt=""
           className={st.btnDefault}
           width={40}
