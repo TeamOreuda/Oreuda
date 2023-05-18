@@ -3,7 +3,13 @@ import Image from "next/image";
 import Cookies from "js-cookie";
 
 import st from "./folder.module.scss";
-import React, { useEffect, useState, SetStateAction, Dispatch, useCallback } from "react";
+import React, {
+  useEffect,
+  useState,
+  SetStateAction,
+  Dispatch,
+  useCallback,
+} from "react";
 
 import { ChangeFolder } from "@/Api/Folders/changeFolder";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
@@ -24,7 +30,13 @@ export default function Folder(props: {
   setCheckedItems: Dispatch<SetStateAction<number[]>>;
   loadFolderList: () => Promise<void>;
 }) {
-  const { clickDelete, folderList, checkedItems, setCheckedItems, loadFolderList } = props;
+  const {
+    clickDelete,
+    folderList,
+    checkedItems,
+    setCheckedItems,
+    loadFolderList,
+  } = props;
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
 
@@ -40,7 +52,11 @@ export default function Folder(props: {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
         saveCookies(token.data.Authorization, token.data.RefreshToken);
-        await ChangeFolder(token.data.Authorization, targetName, targetPosition);
+        await ChangeFolder(
+          token.data.Authorization,
+          targetName,
+          targetPosition
+        );
       }
     }
   }, [ACCESS_TOKEN, REFRESH_TOKEN, targetName, targetPosition]);
@@ -73,15 +89,13 @@ export default function Folder(props: {
     setCheckedItems(newCheckedItems);
   };
 
-  
   return (
     <div className={st.folders}>
       {folderList?.map((folder: Folder, index: number) => {
         return (
           <div key={index} data-position={index} className={st.folder}>
             <Link
-              href={{
-                pathname: `/repository/${folder.id}`              }}
+              href={`/repository/${folder.id}`}
               {...(clickDelete ? { onClick: (e) => e.preventDefault() } : {})}
               data-position={index}
               data-name={folder.id}
@@ -114,8 +128,6 @@ export default function Folder(props: {
               {folder.name}
             </Link>
           </div>
-            
-          
         );
       })}
     </div>
