@@ -77,12 +77,12 @@ export default async function RootLayout({
                     }
                   );
                 } catch {
-                  redirect("/landing");
+                  // redirect("/landing");
                 }
               }
             );
           } else {
-            redirect("/landing");
+            // redirect("/landing");
           }
         });
 

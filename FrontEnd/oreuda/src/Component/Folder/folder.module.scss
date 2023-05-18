@@ -17,6 +17,11 @@
   text-decoration: none;
   color: black;
 
+  .checkbox {
+    position: absolute;
+    margin-top: 4px;
+  }
+
   div {
     border: #d9d9d9 solid 1px;
     border-radius: 16px;
