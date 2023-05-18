@@ -8,19 +8,37 @@ import { useCallback, useEffect, useState } from "react";
 import st from "./page.module.scss";
 import EditFolder from "@/Component/Folder/editFolder";
 import MoveFolder from "@/Component/Repository/moveFolder";
-import Repository from "@/Component/Repository/repository";
+import Repository, {
+  DailyCommit,
+  YearlyCommit,
+} from "@/Component/Repository/repository";
 
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { MoveRepository } from "@/Api/Repository/moveRepository";
 import { GetRepositoryLst } from "@/Api/Repository/getRepositoryList";
 import { saveCookies } from "@/Api/Oauth/saveCookies";
+import { GetFolder } from "@/Api/Folders/getFolder";
+import { setIn } from "immutable";
 
 interface InnerFolder {
   id: number;
   name: string;
   color: string;
   status: string;
-  repositories: any[];
+  repositoryCount: number;
+}
+
+interface RepositoryType {
+  id: string;
+  name: string;
+  description: string;
+  url: string;
+  language: string;
+  starCount: number;
+  isPrivate: string;
+  updateDate: string;
+  yearlyCommits: YearlyCommit[];
+  dailyCommits: DailyCommit[];
 }
 
 export default function RepositoryPage() {
@@ -31,13 +49,13 @@ export default function RepositoryPage() {
 
   const [openEdit, setOpenEdit] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  // const [repositoryList, setRepositoryList] = useState<{ id: number, name: string, color: string, state: string, repositories: [] }>({});
+  const [repositoryList, setRepositoryList] = useState<RepositoryType[]>([]);
   const [innerFolder, setInnerFolder] = useState<InnerFolder>({
     id: 0,
     name: "",
     color: "",
     status: "",
-    repositories: [],
+    repositoryCount: 0,
   });
   const [moveFolderId, setMoveFolderId] = useState<number>(-1);
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
@@ -62,6 +80,26 @@ export default function RepositoryPage() {
     setIsOpen(!isOpen);
   };
 
+  const loadFolderList = useCallback(async () => {
+    try {
+      const res = await GetFolder(ACCESS_TOKEN, folderId);
+      setInnerFolder(res.data);
+    } catch (err: any) {
+      if (err.response?.status == 401) {
+        const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+        saveCookies(token.data.Authorization, token.data.RefreshToken);
+        try {
+          const res = await GetFolder(token.data.Authorization, folderId);
+          setInnerFolder(res.data);
+        } catch {
+          redirect("/landing");
+        }
+      } else {
+        redirect("/landing");
+      }
+    }
+  }, [ACCESS_TOKEN, REFRESH_TOKEN, folderId]);
+
   const loadRepositoryList = useCallback(async () => {
     try {
       const res = await GetRepositoryLst(
@@ -69,7 +107,7 @@ export default function RepositoryPage() {
         folderId,
         filtering.value
       );
-      setInnerFolder(res.data);
+      setRepositoryList(res.data);
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
@@ -80,7 +118,7 @@ export default function RepositoryPage() {
             folderId,
             filtering.value
           );
-          setInnerFolder(res.data);
+          setRepositoryList(res.data);
         } catch (error) {
           redirect("/landing");
         }
@@ -92,7 +130,8 @@ export default function RepositoryPage() {
 
   useEffect(() => {
     loadRepositoryList();
-  }, [loadRepositoryList]);
+    loadFolderList();
+  }, [loadRepositoryList, loadFolderList]);
 
   const clickModal = () => {
     if (moveRepositoryMode) {
@@ -251,7 +290,7 @@ export default function RepositoryPage() {
       <div className={st.repository}>
         <Repository
           moveRepositoryMode={moveRepositoryMode}
-          repositoryList={innerFolder.repositories}
+          repositoryList={repositoryList}
           checkedItems={checkedItems}
           setCheckedItems={setCheckedItems}
         />
