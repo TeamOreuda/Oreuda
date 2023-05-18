@@ -54,7 +54,7 @@ export default function Sorting() {
         }
       }
     });
-    console.log("newPrevComp: ", newPrevComp);
+    // console.log("newPrevComp: ", newPrevComp);
 
     dispatch(setNewPrevComp(newPrevComp));
   };
