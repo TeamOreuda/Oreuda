@@ -112,6 +112,7 @@ export default function Folder(props: {
                 checked={checkedItems.indexOf(folder.id) !== -1}
                 onChange={handleCheckboxChange}
                 onClick={(event) => event.stopPropagation()}
+                className={st.checkbox}
               />
             )}
             <div data-position={index} data-name={folder.id}>
