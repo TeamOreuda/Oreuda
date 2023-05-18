@@ -11,26 +11,27 @@ import Image from "next/image";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { saveCookies } from "@/Api/Oauth/saveCookies";
 import { redirect } from "next/navigation";
+import { InnerFolder } from "@/app/repository/[folderId]/page";
 
 export default function EditFolder(props: {
-  folderId: number;
   changeFolder: any;
+  prevFolder: InnerFolder;
 }) {
-  const { folderId, changeFolder } = props;
+  const { changeFolder, prevFolder } = props;
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
 
-  const [folderName, setFolderName] = useState("");
-  const [folderColor, setFolderColor] = useState("");
+  const [folderName, setFolderName] = useState(prevFolder.name);
+  const [folderColor, setFolderColor] = useState(prevFolder.color);
 
-  const editInfo = async (
-    ACCESS_TOKEN: any,
-    id: number,
-    folderName: string,
-    folderColor: string
-  ) => {
+  const editInfo = async (ACCESS_TOKEN: any) => {
     try {
-      await EditFolderInfo(ACCESS_TOKEN, id, folderName, folderColor);
+      await EditFolderInfo(
+        ACCESS_TOKEN,
+        prevFolder.id,
+        folderName,
+        folderColor
+      );
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
@@ -38,7 +39,7 @@ export default function EditFolder(props: {
         try {
           await EditFolderInfo(
             token.data.Authorization,
-            id,
+            prevFolder.id,
             folderName,
             folderColor
           );
@@ -67,13 +68,7 @@ export default function EditFolder(props: {
       <div className={st.modalContent} onClick={(e) => e.stopPropagation()}>
         <div>
           <Image src="/images/folder/white.svg" alt="" width={48} height={48} />
-          <button
-            onClick={() =>
-              editInfo(ACCESS_TOKEN, folderId, folderName, folderColor)
-            }
-          >
-            확인
-          </button>
+          <button onClick={() => editInfo(ACCESS_TOKEN)}>확인</button>
         </div>
         <p>폴더명</p>
         <input

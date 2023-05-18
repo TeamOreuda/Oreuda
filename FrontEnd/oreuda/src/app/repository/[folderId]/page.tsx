@@ -19,7 +19,7 @@ import { GetRepositoryLst } from "@/Api/Repository/getRepositoryList";
 import { saveCookies } from "@/Api/Oauth/saveCookies";
 import { GetFolder } from "@/Api/Folders/getFolder";
 
-interface InnerFolder {
+export interface InnerFolder {
   id: number;
   name: string;
   color: string;
@@ -219,7 +219,7 @@ export default function RepositoryPage() {
           onClick={changeFolder}
         />
         {openEdit && (
-          <EditFolder folderId={folderId} changeFolder={changeFolder} />
+          <EditFolder changeFolder={changeFolder} prevFolder={innerFolder} />
         )}
       </div>
       <div className={st.button}>
