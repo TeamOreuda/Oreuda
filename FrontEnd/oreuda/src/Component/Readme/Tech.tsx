@@ -41,6 +41,41 @@ export const techData: any = [
   { name: "python", color: "3581ba", index: 21 },
   { name: "jupyter-notebook", color: "36a2eb", index: 22 },
   { name: "other", color: "b8b7b7", index: 23 },
+
+  { name: "node.js", color: "339933", index: 24 },
+  { name: "react", color: "61DAFB", index: 25 },
+  { name: "jquery", color: "0769AD", index: 26 },
+  { name: "express", color: "000000", index: 27 },
+  { name: "angular", color: "DD0031", index: 28 },
+  { name: "vue.js", color: "4FC08D", index: 29 },
+  { name: "django", color: "092E20", index: 30 },
+  { name: "flask", color: "000000", index: 31 },
+  { name: "next.js", color: "000000", index: 32 },
+  { name: "spring", color: "6DB33F", index: 33 },
+  { name: "springboot", color: "6DB33F", index: 34 },
+  { name: "laravel", color: "FF2D20", index: 35 },
+  { name: "flutter", color: "02569B", index: 36 },
+  { name: "mysql", color: "4479A1", index: 37 },
+  { name: "sqlite", color: "003B57", index: 38 },
+  { name: "mariadb", color: "003545", index: 39 },
+  { name: "mongodb", color: "47A248", index: 40 },
+  { name: "redis", color: "DC382D", index: 41 },
+  { name: "postgresql", color: "4169E1", index: 42 },
+  { name: "microsoft sql server", color: "CC2927", index: 43 },
+  { name: "oracle", color: "F80000", index: 44 },
+  { name: "elasticsearch", color: "005571", index: 45 },
+  { name: "kotlin", color: "7F52FF", index: 46 },
+  { name: "jenkins", color: "D24939", index: 47 },
+  { name: "docker", color: "2496ED", index: 48 },
+  { name: "apachekafka", color: "231F20", index: 49 },
+  { name: "kubernetes", color: "326CE5", index: 50 },
+  { name: "svelte", color: "FF3E00", index: 51 },
+  { name: "unity", color: "FFFFFF", index: 52 },
+  { name: "amazonaws", color: "232F3E", index: 53 },
+  { name: "figma", color: "F24E1E", index: 54 },
+  { name: "git", color: "F05032", index: 55 },
+  { name: "nginx", color: "009639", index: 56 },
+  { name: "jirasoftware", color: "0052CC", index: 57 },
 ];
 
 export default function Tech() {
@@ -68,7 +103,6 @@ export default function Tech() {
   const onChangeTechOption = (data: any) => {
     if (curr === 0) dispatch(setPushTech({ data: techData[data], curr: curr }));
     else {
-      console.log(techData[data]);
       dispatch(setPushTech({ data: techData[data], curr: curr }));
     }
     setOptionVal("선택해주세요");
