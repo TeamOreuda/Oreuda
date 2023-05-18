@@ -4,7 +4,6 @@ import java.util.*;
 
 import org.springframework.stereotype.Service;
 
-import com.oreuda.api.domain.dto.FolderRepositoryDto;
 import com.oreuda.api.domain.dto.InputRepositoryDto;
 import com.oreuda.api.domain.dto.OutputRepositoryDto;
 import com.oreuda.api.domain.entity.Folder;
@@ -39,7 +38,7 @@ public class RepositoryService {
 	 * @param filtering recent(최신순), commit(커밋순), name(이름순), star(별점순)
 	 * @return
 	 */
-	public FolderRepositoryDto getRepositories(String userId, int folderId, String filtering) {
+	public List<RepositoryDto> getRepositories(String userId, int folderId, String filtering) {
 		Folder folder = folderJpaRepository.findById(Long.valueOf(folderId)).orElseThrow(NotFoundException::new);
 		// 사용자 접근 권한 확인
 		folderService.checkFolderAccessPermission(userId, folder.getUser().getId());
@@ -86,13 +85,7 @@ public class RepositoryService {
 				throw new InvalidInputException();
 		}
 
-		return FolderRepositoryDto.builder()
-			.id(folder.getId())
-			.name(folder.getName())
-			.color(folder.getColor())
-			.status(folder.getStatus())
-			.repositories(repositories)
-			.build();
+		return repositories;
 	}
 
 	public List<OutputRepositoryDto> getRepositoriesByBaseFolder(String userId) {
@@ -121,7 +114,7 @@ public class RepositoryService {
 		return repositories;
 	}
 
-	public FolderRepositoryDto moveRepository(String userId, InputRepositoryDto inputRepositoryDto) {
+	public List<RepositoryDto> moveRepository(String userId, InputRepositoryDto inputRepositoryDto) {
 		// 레포지토리를 이동할 폴더 정보 불러오기
 		Folder folder = folderJpaRepository.findById(Long.valueOf(inputRepositoryDto.getMoveFolderId()))
 			.orElseThrow(NotFoundException::new);

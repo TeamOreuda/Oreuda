@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -35,6 +36,17 @@ public class FolderController {
 	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	public ResponseEntity<List<FolderDto>> getFolders(@RequestHeader String userId) {
 		return new ResponseEntity<>(folderService.getFolders(userId), HttpStatus.OK);
+	}
+
+	/**
+	 * 폴더 정보 조회
+	 * @param userId
+	 * @return
+	 */
+	@GetMapping("{folderId}")
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
+	public ResponseEntity<FolderDto> getFolder(@RequestHeader String userId, @PathVariable String folderId) {
+		return new ResponseEntity<>(folderService.getFolder(userId, folderId), HttpStatus.OK);
 	}
 
 	/**
