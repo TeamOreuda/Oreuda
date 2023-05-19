@@ -26,6 +26,6 @@ public class FolderDto {
 	// 폴더 상태
 	String status;
 
-	// 해당 폴도의 레포지토리 수
+	// 해당 폴더의 레포지토리 수
 	int repositoryCount;
 }

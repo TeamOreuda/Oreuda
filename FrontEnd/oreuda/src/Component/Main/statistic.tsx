@@ -12,7 +12,7 @@ import { setGithubId } from "@/store/modules/readme";
 import { GetUser } from "@/Api/Users/getUsers";
 import { RefreshData } from "@/Api/Data/refreshData";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
-import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
+import { saveCookies } from "@/Api/Oauth/saveCookies";
 
 interface gitHubStatistic {
   title: string;
@@ -42,22 +42,21 @@ export default function Statistic() {
     try {
       const res = await GetUser(ACCESS_TOKEN);
       setUserData(res.data);
-      // dispatch(setGithubId(res.data.nickname));
     } catch (e: any) {
       if (e.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(
-          token.data.Authorization,
-          token.data.RefreshToken
-        );
-        const res = await GetUser(token.data.Authorization);
-        setUserData(res.data);
-        // dispatch(setGithubId(res.data.nickname));
+        saveCookies(token.data.Authorization, token.data.RefreshToken);
+        try {
+          const res = await GetUser(token.data.Authorization);
+          setUserData(res.data);
+        } catch {
+          redirect("/landing");
+        }
       } else {
         redirect("/landing");
       }
     }
-  }, [ACCESS_TOKEN, REFRESH_TOKEN, dispatch]);
+  }, [ACCESS_TOKEN, REFRESH_TOKEN]);
 
   useEffect(() => {
     loadUserData();
@@ -109,10 +108,7 @@ export default function Statistic() {
     } catch (e: any) {
       if (e.response.status === 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(
-          token.data.Authorization,
-          token.data.RefreshToken
-        );
+        saveCookies(token.data.Authorization, token.data.RefreshToken);
         await RefreshData(token.data.Authorization);
         await loadUserData();
         clearInterval(rotateInterval);
@@ -124,8 +120,10 @@ export default function Statistic() {
   };
 
   useEffect(() => {
+    // console.log();
+
     dispatch(setGithubId(userData?.nickname));
-  }, []);
+  }, [userData]);
 
   return (
     <div>
@@ -163,7 +161,7 @@ export default function Statistic() {
               )}
             </div>
             <Image
-              src={`/images/main/${e.imageName}.svg`}
+              src={`/images/main/${e.imageName.toLowerCase()}.svg`}
               alt="주언어"
               width={80}
               height={80}

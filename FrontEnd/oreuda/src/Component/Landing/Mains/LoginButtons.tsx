@@ -12,7 +12,7 @@ export default function LoginButtons() {
             <Image
               data-position={1}
               data-name={1}
-              src={`/images/landing/main1/github.svg`}
+              src={`/images/landing/main1/Github.svg`}
               alt="폴더"
               width={32}
               height={32}

@@ -20,17 +20,20 @@ const MULThemeData: string[] = [
 ];
 
 export default function MUL() {
+  const mulType = useAppSelector(selectReadme).mulType;
   const mulTheme = useAppSelector(selectReadme).mulTheme;
 
-  const [checkedIdx, setCheckedIdx] = useState(1);
+  const [checkedIdx, setCheckedIdx] = useState(mulType);
+  const [openModal, setOpenModal] = useState(false);
+  const [optionVal, setOptionVal] = useState("");
   const dispatch = useAppDispatch();
   const onChangeRadioBtn = (e: any) => {
     setCheckedIdx(e.target.value);
     dispatch(setMULType(e.target.value));
   };
 
-  const onClickSVTheme = (e: any) => {
-    dispatch(setMULTheme(e.target.value));
+  const onClickSVTheme = (data: any) => {
+    dispatch(setMULTheme(data));
   };
   return (
     <div className={st.body}>
@@ -71,7 +74,7 @@ export default function MUL() {
             <span className={st.p}>언어만</span>
           </label>
         </div>
-        <div className={st.selectBox}>
+        {/* <div className={st.selectBox}>
           <span>테마 설정</span>
           <select
             className={st.selectSV}
@@ -86,6 +89,36 @@ export default function MUL() {
               );
             })}
           </select>
+        </div> */}
+        <div className={`${st.dropdown} ${openModal ? st.option : ""}`}>
+          <input
+            type="text"
+            className={openModal ? st.focusInput : ""}
+            placeholder="테마를 선택해주세요"
+            readOnly
+            value={mulTheme}
+            onClick={(e) => {
+              setOpenModal(!openModal);
+            }}
+          />
+          <div className={` ${openModal ? st.option : st.display}`}>
+            {MULThemeData.map((data: string, index: number) => {
+              if (index !== 0) {
+                return (
+                  <div
+                    key={index}
+                    onClick={(e) => {
+                      // setOptionVal(data);
+                      setOpenModal(!openModal);
+                      onClickSVTheme(data);
+                    }}
+                  >
+                    {data}
+                  </div>
+                );
+              }
+            })}
+          </div>
         </div>
       </div>
     </div>

@@ -6,13 +6,39 @@ import { redirect, useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 import st from "./page.module.scss";
+import EditFolder from "@/Component/Folder/editFolder";
 import MoveFolder from "@/Component/Repository/moveFolder";
-import Repository from "@/Component/Repository/repository";
+import Repository, {
+  DailyCommit,
+  YearlyCommit,
+} from "@/Component/Repository/repository";
 
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
 import { MoveRepository } from "@/Api/Repository/moveRepository";
 import { GetRepositoryLst } from "@/Api/Repository/getRepositoryList";
-import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
+import { saveCookies } from "@/Api/Oauth/saveCookies";
+import { GetFolder } from "@/Api/Folders/getFolder";
+
+export interface InnerFolder {
+  id: number;
+  name: string;
+  color: string;
+  status: string;
+  repositoryCount: number;
+}
+
+interface RepositoryType {
+  id: string;
+  name: string;
+  description: string;
+  url: string;
+  language: string;
+  starCount: number;
+  isPrivate: string;
+  updateDate: string;
+  yearlyCommits: YearlyCommit[];
+  dailyCommits: DailyCommit[];
+}
 
 export default function RepositoryPage() {
   const params = useParams();
@@ -20,11 +46,19 @@ export default function RepositoryPage() {
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
 
+  const [openEdit, setOpenEdit] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [moveRepositoryMode, setMoveRepositoryMode] = useState(false);
-  const [checkedItems, setCheckedItems] = useState<string[]>([]);
+  const [repositoryList, setRepositoryList] = useState<RepositoryType[]>([]);
+  const [innerFolder, setInnerFolder] = useState<InnerFolder>({
+    id: 0,
+    name: "",
+    color: "",
+    status: "",
+    repositoryCount: 0,
+  });
   const [moveFolderId, setMoveFolderId] = useState<number>(-1);
-  const [repositoryList, setRepositoryList] = useState([]);
+  const [checkedItems, setCheckedItems] = useState<string[]>([]);
+  const [moveRepositoryMode, setMoveRepositoryMode] = useState(false);
 
   const options = [
     { id: 1, value: "recent", name: "최신순" },
@@ -45,16 +79,44 @@ export default function RepositoryPage() {
     setIsOpen(!isOpen);
   };
 
+  const loadFolder = useCallback(async () => {
+    try {
+      const res = await GetFolder(ACCESS_TOKEN, folderId);
+      setInnerFolder(res.data);
+    } catch (err: any) {
+      if (err.response?.status == 401) {
+        const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+        saveCookies(token.data.Authorization, token.data.RefreshToken);
+        try {
+          const res = await GetFolder(token.data.Authorization, folderId);
+          setInnerFolder(res.data);
+        } catch {
+          redirect("/landing");
+        }
+      } else {
+        redirect("/landing");
+      }
+    }
+  }, [ACCESS_TOKEN, REFRESH_TOKEN, folderId]);
+
   const loadRepositoryList = useCallback(async () => {
     try {
-      const res = await GetRepositoryLst(ACCESS_TOKEN, folderId, filtering.value);
+      const res = await GetRepositoryLst(
+        ACCESS_TOKEN,
+        folderId,
+        filtering.value
+      );
       setRepositoryList(res.data);
     } catch (err: any) {
       if (err.response?.status == 401) {
         const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-        saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
+        saveCookies(token.data.Authorization, token.data.RefreshToken);
         try {
-          const res = await GetRepositoryLst(ACCESS_TOKEN, folderId, filtering.value);
+          const res = await GetRepositoryLst(
+            token.data.Authorization,
+            folderId,
+            filtering.value
+          );
           setRepositoryList(res.data);
         } catch (error) {
           redirect("/landing");
@@ -67,7 +129,8 @@ export default function RepositoryPage() {
 
   useEffect(() => {
     loadRepositoryList();
-  }, [loadRepositoryList]);
+    loadFolder();
+  }, [loadRepositoryList, loadFolder]);
 
   const clickModal = () => {
     if (moveRepositoryMode) {
@@ -103,8 +166,8 @@ export default function RepositoryPage() {
       } catch (err: any) {
         if (err.response?.status == 401) {
           const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-          saveCookiesAndRedirect(token.data.Authorization, token.data.RefreshToken);
-          await MoveRepository(ACCESS_TOKEN, data);
+          saveCookies(token.data.Authorization, token.data.RefreshToken);
+          await MoveRepository(token.data.Authorization, data);
         }
       }
       await loadRepositoryList();
@@ -112,8 +175,53 @@ export default function RepositoryPage() {
     }
   };
 
+  const changeFolder = () => {
+    if (innerFolder.status === "B") {
+      alert("기본 폴더는 수정할 수 없습니다");
+    } else {
+      if (openEdit) {
+        loadFolder();
+      }
+      setOpenEdit(!openEdit);
+    }
+  };
+
+  const rollback = () => {
+    window.history.back();
+  };
+
   return (
     <div className={st.body}>
+      <div className={st.folderName}>
+        <Image
+          src={`/images/repository/left.svg`}
+          alt=""
+          width={36}
+          height={36}
+          onClick={rollback}
+          className={st.backImg}
+        />
+        {innerFolder.color && (
+          <Image
+            src={`/images/folder/${innerFolder.color}.svg`}
+            alt=""
+            width={36}
+            height={36}
+          />
+        )}
+        <span>{innerFolder.name}</span>
+        <Image
+          className={st.editImg}
+          src={`/images/repository/editing.svg`}
+          alt=""
+          width={20}
+          height={20}
+          onClick={changeFolder}
+        />
+        {openEdit && (
+          <EditFolder changeFolder={changeFolder} prevFolder={innerFolder} />
+        )}
+      </div>
       <div className={st.button}>
         {moveRepositoryMode && (
           <button
@@ -160,7 +268,9 @@ export default function RepositoryPage() {
               {options.map((option) => (
                 <div
                   key={option.id}
-                  className={`${st.option} ${option.value === filtering.value ? st.active : ""}`}
+                  className={`${st.option} ${
+                    option.value === filtering.value ? st.active : ""
+                  }`}
                   onClick={() => handleOptionClick(option)}
                 >
                   {option.name}

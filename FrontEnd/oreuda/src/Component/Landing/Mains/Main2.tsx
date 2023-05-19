@@ -1,8 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-
 import pg from "../Landing.module.scss";
 import st from "./Main2.module.scss";
 
@@ -32,7 +29,7 @@ export default function Main2() {
         </div>
 
         {/* 로그인 버튼들 */}
-        <LoginButtons />
+        {/* <LoginButtons /> */}
         {/* 사진 영역 */}
         {/* 타원 */}
         <Folders />

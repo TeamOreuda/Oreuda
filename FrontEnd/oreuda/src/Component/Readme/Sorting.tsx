@@ -47,14 +47,14 @@ export default function Sorting() {
       if (Number(el) !== 0) {
         if (Number(el) == 7) {
           textArr.filter((el, index) => {
-            newPrevComp.push(7 + `${el.index + 1}`);
+            newPrevComp.push(7 + `${index + 1}`);
           });
         } else {
           newPrevComp.push(el);
         }
       }
     });
-    console.log("newPrevComp: ", newPrevComp);
+    // console.log("newPrevComp: ", newPrevComp);
 
     dispatch(setNewPrevComp(newPrevComp));
   };

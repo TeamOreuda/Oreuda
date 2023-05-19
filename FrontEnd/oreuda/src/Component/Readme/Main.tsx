@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 import { GetHasReadme } from "@/Api/Readme/getHasReadme";
 import Cookies from "js-cookie";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
-import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
+import { saveCookies } from "@/Api/Oauth/saveCookies";
 import { GetLoadReadme } from "@/Api/Readme/getLoadReadme";
 
 export const mainCompChoiceData: any = [
@@ -57,7 +57,7 @@ export default function Main() {
   const [openModal, setOpenModal] = useState(false);
   // option select 변경했을 때 동작하는 메서드
   const onChangeCompOption = (index: any) => {
-    console.log(index);
+    // console.log(index);
 
     dispatch(setPushComponent(index));
     // setOptionVal("선택해주세요");
@@ -86,12 +86,9 @@ export default function Main() {
         } catch (err: any) {
           if (err.response?.status == 401) {
             const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-            saveCookiesAndRedirect(
-              token.data.Authorization,
-              token.data.RefreshToken
-            );
+            saveCookies(token.data.Authorization, token.data.RefreshToken);
             try {
-              const res = await GetHasReadme(ACCESS_TOKEN);
+              const res = await GetHasReadme(token.data.Authorization);
               // store에 저장
             } catch (error) {
               // redirect("/landing")
@@ -116,12 +113,9 @@ export default function Main() {
       } catch (err: any) {
         if (err.response?.status == 401) {
           const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
-          saveCookiesAndRedirect(
-            token.data.Authorization,
-            token.data.RefreshToken
-          );
+          saveCookies(token.data.Authorization, token.data.RefreshToken);
           try {
-            const res = await GetHasReadme(ACCESS_TOKEN);
+            const res = await GetHasReadme(token.data.Authorization);
             // store에 저장
           } catch (error) {
             // redirect("/landing")
@@ -165,7 +159,7 @@ export default function Main() {
       <div className={`${st.dropdown} ${openModal ? st.option : ""}`}>
         <input
           type="text"
-          className="textBox"
+          className={openModal ? st.focusInput : ""}
           placeholder="선택해주세요"
           readOnly
           value={optionVal}

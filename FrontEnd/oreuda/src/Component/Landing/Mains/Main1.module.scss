@@ -1,60 +1,89 @@
-@keyframes cloud1 {
-    0% {
-      transform: translateX(-10%) scale(1);
-    }
-    25%{
-        transform: translateX(-5%) translateY(-5%) ;
-    }
-    50%{
-      transform: translateX(0) scale(1.0);
-    }
-    75%{
-        transform: translateX(5%)  translateY(5%) ;
+@keyframes closeEye{
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
+}
+@keyframes openEye{
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
+}
 
-    }
-    100% {
-      transform: translateX(10%) scale(1);
-    }
+
+
+@keyframes cloud1 {
+  0% {
+    transform: translateX(-10%) scale(1);
   }
-  
-  @keyframes cloud2 {
-    0% {
-      transform: translateY(5%);
-    }
-    100% {
-      transform: translateY(-5%);
-    }
+
+  25% {
+    transform: translateX(-5%) translateY(-5%);
   }
-  
-  @keyframes sun {
-    0% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.2);
-    }
-    100% {
-      transform: scale(1);
-    }
+
+  50% {
+    transform: translateX(0) scale(1.0);
   }
-  
-  @keyframes mountain {
-    0% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.1);
-      }
-      100% {
-        transform: scale(1);
-      }
+
+  75% {
+    transform: translateX(5%) translateY(5%);
+
   }
+
+  100% {
+    transform: translateX(10%) scale(1);
+  }
+}
+
+@keyframes cloud2 {
+  0% {
+    transform: translateY(5%);
+  }
+
+  100% {
+    transform: translateY(-5%);
+  }
+}
+
+@keyframes sun {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes mountain {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
 
 .layout {
   display: flex;
   overflow: hidden;
   height: 100vh;
   width: 100vw;
+
   .content {
     margin: 5% 0 0 5%;
     z-index: 500;
@@ -62,6 +91,7 @@
     justify-content: space-between;
     display: flex;
     flex-direction: column;
+
     .title {
       //   width: 658.8px;
       width: 100%;
@@ -75,96 +105,121 @@
 
       color: #67cd6b;
     }
+
     .intro {
       width: 650.4px;
 
       font-weight: 500;
-      font-size: 20px;
+      font-size: 24px;
       line-height: 33px;
       align-items: center;
 
       color: #555555;
+
       .userCnt {
+        font-size: 20px;
+        color: #404040;
         margin: 1.5% 0 0 0;
+
+        .soil {
+          padding-bottom: 10px;
+          vertical-align: middle;
+        }
       }
     }
+
     .buttons {
       font-family: "Gmarket Sans";
       font-weight: 400;
-      font-size: 24px;
+      font-size: 20px;
 
       align-items: center;
       text-align: center;
+
       a {
         text-decoration: none;
       }
+
       .button {
-        display: flex; /* 부모 요소를 플렉스 박스로 설정 */
-        align-items: center;
-        margin: 2% 0 2% 0;
+        display: flex;
+        /* 부모 요소를 플렉스 박스로 설정 */
+        align-items: flex-start;
+        margin-top: 20px;
+
+        // margin: 2% 0 2% 0;
         .github {
-          width: 463.2px;
+          width: 440px;
           height: 60px;
+          padding: 4px 0 4px 20px;
 
           background: #000000;
           border-radius: 12px;
           color: #ffffff;
           display: flex;
           align-items: center;
-          justify-content: center;
+          justify-content: flex-start;
         }
-      }
-      .button {
-        display: flex; /* 부모 요소를 플렉스 박스로 설정 */
-        align-items: center;
-        margin: 2% 0 2% 0;
+
         .extension {
-          display: flex;
-          align-items: center;
-          width: 463.2px;
+          width: 440px;
           height: 60px;
+          padding: 4px 0 4px 20px;
 
           background: #d9e7ff;
-          justify-content: center;
+          justify-content: flex-start;
           border-radius: 12px;
           color: #518ef8;
+          display: flex;
+          align-items: center;
         }
       }
     }
   }
+
   .img {
     position: relative;
     left: -100px;
+
     .cloud1 {
       position: absolute;
       left: -20px;
       top: -105.93px;
-      z-index: 4;
+      z-index: 40;
       animation: cloud1 16s ease-in-out infinite alternate;
     }
+
     .sun {
       position: absolute;
       left: 360px;
       top: -62px;
-      z-index: 1;
-    //   animation: sun 12s ease-in-out infinite alternate;
+      z-index: 10;
+      //   animation: sun 12s ease-in-out infinite alternate;
 
     }
+
     .cloud2 {
       position: absolute;
       left: 600px;
       top: 100px;
-      z-index: 2;
+      z-index: 20;
       animation: cloud2 6s ease-in-out infinite alternate;
 
     }
+
     .mountain {
       position: absolute;
       left: -80px;
       top: 198.01px;
-      z-index: 3;
-    //   animation: mountain 8s ease-in-out infinite alternate;
-
+      z-index: 30;
+      //   animation: mountain 8s ease-in-out infinite alternate;
+      .mountainOpen{
+        // animation: openEye 1s ease-in-out infinite alternate;
+        z-index: 2;
+      }
+      .mountainClose{
+        // animation: closeEye 1s ease-in-out infinite alternate;
+        z-index: 50;
+      }
     }
   }
 }

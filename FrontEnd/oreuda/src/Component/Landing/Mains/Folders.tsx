@@ -6,8 +6,7 @@ import st from "./Main2.module.scss";
 
 export default function Folders() {
   const [counter, setCounter] = useState(0);
-  console.log("asd");
-  
+
   // useEffect(() => {
   //   const interval = setInterval(() => {
   //     setCounter((prevCounter) => prevCounter + 1);
@@ -19,13 +18,12 @@ export default function Folders() {
   // }, []);
 
   useEffect(() => {
-    console.log(counter);
+    // console.log(counter);
   }, [counter]);
 
   return (
     <>
       <Image
-        key={`folder1-${counter}`}
         data-position={1}
         data-name={counter}
         src={`images/landing/back_ellipse.svg`}
@@ -37,7 +35,6 @@ export default function Folders() {
       />
       {/* 폴더들 */}
       <Image
-        key={`folder1-${counter}`}
         data-position={1}
         data-name={counter}
         src={`images/landing/main2/1.svg`}
@@ -49,7 +46,6 @@ export default function Folders() {
         priority
       />
       <Image
-        key={`folder1-${counter}`}
         data-position={1}
         data-name={counter}
         src={`images/landing/main2/2.svg`}
@@ -61,7 +57,6 @@ export default function Folders() {
         priority
       />
       <Image
-        key={`folder1-${counter}`}
         data-position={1}
         data-name={counter}
         src={`images/landing/main2/3.svg`}
@@ -74,7 +69,6 @@ export default function Folders() {
       />
 
       <Image
-        key={`folder1-${counter}`}
         data-position={1}
         data-name={counter}
         src={`images/landing/main2/4.svg`}
@@ -86,7 +80,6 @@ export default function Folders() {
         priority
       />
       <Image
-        key={`folder1-${counter}`}
         data-position={1}
         data-name={counter}
         src={`images/landing/main2/5.svg`}
@@ -98,7 +91,6 @@ export default function Folders() {
         priority
       />
       <Image
-        key={`folder1-${counter}`}
         data-position={1}
         data-name={counter}
         src={`images/landing/main2/6.svg`}
@@ -111,7 +103,6 @@ export default function Folders() {
       />
 
       <Image
-        key={`folder1-${counter}`}
         data-position={1}
         data-name={1}
         src={`images/landing/main2/7.svg`}
@@ -123,7 +114,6 @@ export default function Folders() {
         priority
       />
       <Image
-        key={`folder1-${counter}`}
         data-position={1}
         data-name={1}
         src={`images/landing/main2/8.svg`}

@@ -1,0 +1,79 @@
+.layout {
+  position: relative;
+
+  height: 100vh;
+  width: 100vw;
+
+  // display: flex;
+  overflow: hidden;
+  margin-top: -50px;
+
+  z-index: 1;
+  background-image: url("/images/landing/main6/BackEllipse.svg");
+  background-position: center;
+  background-size: cover;
+  .layoutRight {
+    padding: 200px 0 0 0;
+
+    .content {
+      position: relative;
+      // width: fit-content;
+      padding-right: 80px;
+      z-index: 9;
+
+      .title {
+        font-size: 52px;
+        line-height: 64px;
+        // display: flex;
+        align-items: flex-end;
+        text-align: right;
+        z-index: 9;
+
+        .highlight {
+          color: #1087a0;
+          font-weight: 600;
+        }
+      }
+
+      .intro {
+        padding-top: 30px;
+        font-size: 24px;
+        line-height: 24px;
+        /* identical to box height */
+
+        display: flex;
+        flex-direction: column;
+        text-align: right;
+        // align-items: center;
+
+        color: #555555;
+      }
+
+      .icons {
+        display: flex;
+        margin: 15px;
+        justify-content: flex-end;
+        align-items: flex-end;
+        text-align: right;
+        gap: 20px;
+      }
+    }
+  }
+
+  // .backEllipse {
+  //   position: absolute;
+  // }
+  .extension1 {
+    position: absolute;
+    top: 80px;
+    left: 100px;
+    z-index: 2;
+  }
+
+  .extension2 {
+    position: absolute;
+    top: 200px;
+    left: 420px;
+    z-index: 2;
+  }
+}

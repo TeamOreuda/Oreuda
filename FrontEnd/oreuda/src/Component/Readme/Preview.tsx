@@ -2,11 +2,15 @@
 import { CreateReadme } from "@/Api/Readme/createReadme";
 /* eslint-disable @next/next/no-img-element */
 import st from "./Preview.module.scss";
-import { useAppSelector } from "@/store/hooks";
-import { selectReadme } from "@/store/modules/readme";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { selectReadme, setClearReadmeStore } from "@/store/modules/readme";
 import Image from "next/image";
 import Cookies from "js-cookie";
 import axios from "axios";
+import { saveReadmeAxios } from "@/Api/Readme/saveReadmeAxios";
+import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
+import { saveCookies } from "@/Api/Oauth/saveCookies";
+import { redirect } from "next/navigation";
 
 export default function Preview() {
   const BaekJoonData = useAppSelector(selectReadme).baekjoonId;
@@ -37,6 +41,8 @@ export default function Preview() {
 
   const ACCESS_TOKEN = Cookies.get("Authorization");
   const REFRESH_TOKEN = Cookies.get("RefreshToken");
+
+  const dispatch = useAppDispatch();
 
   // 연락처
   // const mailURL = `https://mail.${mailDomain}/mail/?view=cm&amp;fs=1&amp;to=${mailId}@${mailDomain}/`;
@@ -152,14 +158,14 @@ export default function Preview() {
       <img src={mulUrl} width="280" height={mulHeight} alt="MUL" />
     </div>,
     <div key="4" className={st.TextArr}>
-      <h3>Tech Stack</h3>
+      <h3>🍀Tech Stack🍀</h3>
       {/* <h3>{techTitle}</h3> */}
       <div className={st.TextArr}>{showTechWhole()}</div>
       <h3>{techTitle}</h3>
       <div className={st.techBadgeDiv}>{showTechArr()}</div>
     </div>,
     <div key="5" className={st.TextArr}>
-      <h3>Contact</h3>
+      <h3>💙Contact💙</h3>
       <div className={st.contactBadgeDiv}>
         {mailId.length > 0 ? (
           <a href={mailURL} target="_blank">
@@ -228,20 +234,28 @@ export default function Preview() {
   };
 
   const AdditionalTextMD = (id: number) => {
-    return `
+    if (textArr[id - 1]) {
+      return `
   <div key="7" >
     <div key=${id - 1} >
-          <h3 style ="font-size : 1.5em; font-weight:700;">${
-            textArr[id - 1].titleArr
-          }</h3>
+          <h3 style ="font-size : 1.5em; font-weight:700;">
+          ${textArr[id - 1].titleArr}
+          </h3>
           <p style ="font-size : 20px;">${textArr[id - 1].descArr}</p>
     </div>
   </div>
   `;
+    }
   };
 
   const onClickReset = () => {
-    alert("준비중입니다.");
+    if (
+      window.confirm("초기화 하시겠습니까!? \n작성한 내용이 모두 사라집니다.")
+    ) {
+      dispatch(setClearReadmeStore(0)); // store 값 모두 초기화
+
+      alert("초기화 되었습니다.");
+    }
   };
 
   // md parsing을 위하여 변수가 포함된 src를 사용하기 위하여 빼놓은 문자열입니다.
@@ -269,13 +283,13 @@ export default function Preview() {
   `,
     `
   <div key="4">
-  <h3 style ="font-size : 2em; font-weight:700;">Tech Stack</h3>
+  <h3 style ="font-size : 2em; font-weight:700;">🍀Tech Stack🍀</h3>
     <div >${showTechWholeMD()}</div>
   </div>
   `,
     `
   <div key="5">
-    <h3 style ="font-size : 2em; font-weight:700;">Contact</h3>
+    <h3 style ="font-size : 2em; font-weight:700;">💙Contact💙</h3>
     <div className=${st.contactBadgeDiv}>
       ${
         mailId.length > 0
@@ -285,21 +299,21 @@ export default function Preview() {
               alt="Mail"
             />
           </a>`
-          : ""
+          : `<span></span>`
       }
       ${
         blogLink.length > 0
           ? `<a href=${blogLink} target="_blank">
             <img src=${blogImg} alt="blog" />
           </a>`
-          : ""
+          : `<span></span>`
       }
       ${
         notionLink.length > 0
           ? `<a href=${notionLink} target="_blank">
             <img src=${notionImg} alt="notion" />
           </a>`
-          : ""
+          : `<span></span>`
       }
     </div>
   </div>
@@ -322,7 +336,7 @@ export default function Preview() {
   <!-- 불편 사항 및 문의는 tykimdream@gmail.com으로 보내주세요 -->`;
 
   // toMD : 작성된 HTML을 md로 변환한 문자열을 저장합니다.
-  let toMD = `<div  style = "display: flex;  align-items: center; flex-direction: column;  justify-content: center;">`;
+  let toMD = `<div  style = "display: flex;  align-items: center; flex-direction: column;  justify-content: center;" align = "center";>`;
   toMD += caution;
 
   // nPrevComp : toMD에 작성한 컴포넌트들을 붙히는 함수입니다.
@@ -330,6 +344,7 @@ export default function Preview() {
     if (key > 10) {
       // text arr 인 경우
       toMD += AdditionalTextMD(key % 10);
+      // toMD += 1;
     } else {
       toMD += selected[key - 1];
     }
@@ -361,7 +376,7 @@ export default function Preview() {
         arr.push(tmp[el]);
       } else {
         let i = el.substring(1, 2);
-        let tmp = choiceTempArr(i);
+        let tmp = choiceTempArr(Number(i));
         arr.push(tmp);
       }
     });
@@ -414,7 +429,11 @@ export default function Preview() {
 
   // 저장 버튼 클릭시 readme 저장 axios 요청
   const saveReadme = async () => {
-    if (window.confirm("저장하시겠습니까!?")) {
+    if (
+      window.confirm(
+        "저장하시겠습니까!? \n다음 작성 시 불러오기가 가능하게 DB에 저장됩니다."
+      )
+    ) {
       const arr: any = [];
       nPrevComp.map((el: any, idx: any) => {
         let curr = Number(el);
@@ -468,18 +487,20 @@ export default function Preview() {
       });
       try {
         // console.log(`pushArr: `, arr);
-        const res = await axios.patch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/readme`,
-          arr,
-          {
-            headers: {
-              Authorization: ACCESS_TOKEN,
-            },
-          }
-        );
+        await saveReadmeAxios(ACCESS_TOKEN, arr);
         // console.log(res);
       } catch (err: any) {
-        console.log(err);
+        if (err.response.status == 401) {
+          const token = await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN);
+          saveCookies(token.data.Authorization, token.data.RefreshToken);
+          try {
+            await saveReadmeAxios(token.data.Authorization, arr);
+          } catch {
+            redirect("/landing");
+          }
+        } else {
+          redirect("/landing");
+        }
       }
       alert("저장이 완료되었습니다.");
     }
@@ -495,30 +516,35 @@ export default function Preview() {
         <div className={st.CopyBtn} onClick={onClickCopy}>
           <Image
             src="/images/readme/copy.svg"
-            width="30"
-            height="30"
+            width="25"
+            height="25"
             alt="download"
           />
         </div>
         <div className={st.downloadBtn} onClick={onClickDownload}>
           <Image
-            src="/images/readme/download.svg"
-            width="30"
-            height="30"
-            alt="download"
+            src="/images/readme/save.svg"
+            width="25"
+            height="25"
+            alt="save"
           />
         </div>
         <button className={st.btnReset} onClick={onClickReset}>
-          초기화
+          <Image
+            src="/images/readme/clean.svg"
+            width="25"
+            height="25"
+            alt="clean"
+          />
         </button>
         <button
           className={`${st.btnSave} ${
-            currComponent === 8 ? undefined : st.disabledBtn
+            currComponent === 8 ? st.abledBtn : st.disabledBtn
           }`}
           onClick={saveReadme}
           disabled={currComponent !== 8}
         >
-          저장
+          오르다에 저장
         </button>
       </div>
       <div className={st.contentDiv}>

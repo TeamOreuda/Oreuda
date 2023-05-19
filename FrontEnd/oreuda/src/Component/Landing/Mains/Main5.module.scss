@@ -1,0 +1,78 @@
+.layout {
+  // width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  .content {
+    margin-left: 80px;
+    // margin-top: 50px;
+    padding-top:50px;
+    // height: 100vh;
+  }
+  .title {
+    font-size: 48px;
+    line-height: 64px;
+    display: flex;
+    align-items: center;
+    .highlight {
+      color: #4bca80;
+      font-weight: 600;
+    }
+  }
+  .intro {
+    padding-top: 40px;
+    font-size: 24px;
+    line-height: 24px;
+    /* identical to box height */
+
+    display: flex;
+    flex-direction: column;
+    // align-items: center;
+
+    color: #555555;
+    .crySoil {
+      display: inline;
+      vertical-align: middle;
+      padding: 6px;
+    }
+  }
+
+  .plant {
+    .soil {
+      position: relative;
+      // top : -100px;
+    }
+    .arrow {
+      position: relative;
+      // top : -400px;
+      // left: 40px;
+      padding: 60px;
+    }
+    .earth {
+      position: relative;
+      top: 70px;
+      right: 30px;
+      z-index: 2;
+    }
+  }
+  
+
+  .imgs {
+    .ellipse {
+      position: relative;
+      // opacity: 5%;
+      right: -660px;
+      bottom: 860px;
+      // transform: rotate(3deg);
+      z-index: 0;
+    }
+    .state{
+      position: relative;
+      // opacity: 5%;
+      right: -960px;
+      bottom: 1950px;
+      border-radius: 10px;
+      // transform: rotate(3deg);
+      z-index: 1;
+    }
+  }
+}

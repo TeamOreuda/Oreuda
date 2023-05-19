@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 
 import pg from "../Landing.module.scss";
 // import bt from "./login_buttons.module.scss";
@@ -20,8 +19,8 @@ export default function Main3() {
             data-name={1}
             src={`/images/landing/main3/Stack.svg`}
             alt="스택"
-            width={600}
-            height={545}
+            width={520}
+            height={460}
             draggable={false}
             priority
           />
@@ -40,14 +39,14 @@ export default function Main3() {
             className={st.finger}
             src={`/images/landing/main3/Finger.gif`}
             alt="폴더"
-            width={400}
-            height={400}
+            width={320}
+            height={320}
             draggable={false}
           />
         </div>
         <div className={st.layout_right}>
           {/* 로그인 버튼들 */}
-          <LoginButtons />
+          {/* <LoginButtons /> */}
           {/* main content */}
           <div className={st.main}>
             <div className={st.main_title}>
@@ -61,7 +60,8 @@ export default function Main3() {
           </div>
           {/* sub content */}
           <div className={st.sub}>
-            <div className={st.sub_title}>작성을 다했다면!?</div>
+            <div className={st.sub_title}>
+              작성을 다했다면!?</div>
             <div className={st.sub_content}>
               드래그를 해서 배치를 정하면 끝!
               <br />
@@ -69,9 +69,28 @@ export default function Main3() {
               <br />
               깃헙 리드미에 적용해보세요.
             </div>
+            {/* buttons */}
+            <div className={st.sub_img}>
+              <Image
+                className={st.sub_icon}
+                src={`/images/landing/main3/Download.svg`}
+                alt="스택"
+                width={80}
+                height={80}
+                draggable={false}
+                priority
+              />
+              <Image
+                className={st.sub_icon}
+                src={`/images/landing/main3/Copy.svg`}
+                alt="스택"
+                width={80}
+                height={80}
+                draggable={false}
+                priority
+              />
+            </div>
           </div>
-          {/* buttons */}
-          <div className={st.img}></div>
         </div>
       </div>
     </>

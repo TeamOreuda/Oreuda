@@ -10,7 +10,7 @@ import { Providers } from "@/store/provider";
 import { GetProfile } from "@/Api/Users/getProfile";
 import { GetCharacter } from "@/Api/Plant/getCharacter";
 import { GetUserRefresh } from "@/Api/Oauth/getUserRefresh";
-import { saveCookiesAndRedirect } from "@/Api/Oauth/saveCookiesAndRedirect";
+import { saveCookies } from "@/Api/Oauth/saveCookies";
 
 interface NavList {
   moveTo: string;
@@ -69,41 +69,23 @@ export default async function RootLayout({
           if (err.response?.status == 401) {
             return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN).then(
               async (res) => {
-                saveCookiesAndRedirect(
-                  res.data.Authorization,
-                  res.data.RefreshToken
-                );
-                return await GetProfile(res.data.Authorization).then((res) => {
-                  return res.data;
-                });
+                saveCookies(res.data.Authorization, res.data.RefreshToken);
+                try {
+                  return await GetProfile(res.data.Authorization).then(
+                    (res) => {
+                      return res.data;
+                    }
+                  );
+                } catch {
+                  redirect("/landing");
+                }
               }
             );
           } else {
-            // redirect("/landing");
+            redirect("/landing");
           }
         });
 
-      const characterData = await GetCharacter(ACCESS_TOKEN)
-        .then((res) => {
-          return res.data;
-        })
-        .catch(async (err) => {
-          if (err.response?.status == 401) {
-            return await GetUserRefresh(ACCESS_TOKEN, REFRESH_TOKEN).then(
-              async (res) => {
-                saveCookiesAndRedirect(
-                  res.data.Authorization,
-                  res.data.RefreshToken
-                );
-                return await GetCharacter(ACCESS_TOKEN).then((res) => {
-                  return res.data;
-                });
-              }
-            );
-          } else {
-            // redirect("/landing");
-          }
-        });
       return (
         <html lang="kr">
           <Head>
@@ -138,13 +120,6 @@ export default async function RootLayout({
                     </ul>
                   );
                 })}
-                <Image
-                  className={st.characterImg}
-                  src={`/images/character/${characterData?.name}.svg`}
-                  alt=""
-                  width={144}
-                  height={144}
-                />
                 <ul>
                   <Link
                     href="https://docs.google.com/forms/d/e/1FAIpQLSfenPmbzW6hablBx_67BMY5AECAXep2SAHcm3JgQoSkQCMpJQ/viewform"

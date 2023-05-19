@@ -1,0 +1,119 @@
+.layout {
+  position: relative;
+
+  height: 100vh;
+  width: 100vw;
+
+  display: flex;
+  overflow: hidden;
+
+  flex-direction: column;
+
+  z-index: 1;
+  padding-top: 50px;
+  padding-left: 115px;
+
+  .content {
+    margin-bottom: 20%;
+    z-index: 6;
+
+    .title {
+      font-size: 48px;
+      line-height: 64px;
+      display: flex;
+      align-items: center;
+
+      padding-bottom: 30px;
+
+      .highlight {
+        color: #1087a0;
+        font-weight: 600;
+      }
+    }
+
+    .intro {
+      font-size: 22px;
+      line-height: 29px;
+      display: flex;
+      align-items: center;
+
+      color: #555555;
+    }
+  }
+
+  .subContent {
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 70px;
+    display: flex;
+    flex-direction: column;
+    color: #898989;
+    padding-top: 40px;
+    justify-content: space-between;
+
+    .colorPallets {
+      width: 49%;
+      display: flex;
+      justify-content: space-between;
+      gap: 15;
+
+      .pallet {
+        display: flex;
+        line-height: 28px;
+        font-weight: 500;
+        color: #6c6c6c;
+
+        .indicator {
+          width: 28px;
+          height: 28px;
+          border-radius: 15px;
+        }
+
+        .pink {
+          background-color: #ff6384;
+        }
+
+        .blue {
+          background-color: #36a2eb;
+        }
+
+        .yellow {
+          background-color: #ffce56;
+        }
+
+        .green {
+          background-color: #4bc0c0;
+        }
+
+        .purple {
+          background-color: #9966ff;
+        }
+
+        .orange {
+          background-color: #ff9f40;
+        }
+      }
+    }
+  }
+
+  .BlueEllipse {
+    position: absolute;
+    top: -130px;
+    left: -130px;
+    z-index: 2;
+  }
+
+  .Capture {
+    position: absolute;
+    top: 360px;
+    left: 110px;
+    z-index: 2;
+  }
+
+  .CircleGraph {
+    position: absolute;
+    top: 220px;
+    left: 870px;
+    z-index: 1;
+  }
+}

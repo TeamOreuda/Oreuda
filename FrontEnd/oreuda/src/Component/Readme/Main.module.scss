@@ -49,25 +49,28 @@
 }
 
 .choiceBox {
-  width: 400px;
+  width: 600px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  margin-top: 15px;
 
   .choiceComp {
     margin: 10px;
-    border-radius: 20px;
+    margin-bottom: 15px;
+    border-radius: 30px;
     height: 40px;
-    width: 80px;
+    width: 100px;
     background: white;
     color: comm.$mainGreen;
     border: 3px solid comm.$mainGreen;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 12px;
+    font-size: 14px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   }
   :hover {
     cursor: pointer;
@@ -121,6 +124,7 @@
   height: 60px;
   margin-right: 15px;
   background: comm.$mainGreen;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
   color: #ffffff;
   display: flex;
   justify-content: center;
@@ -129,16 +133,17 @@
 
 .dropdown {
   position: relative;
-  width: 400px;
+  width: 380px;
   height: 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 15px 0px;
+  margin-left: 15px;
 }
 
 .dropdown input {
-  width: 300px;
+  width: 280px;
   height: 100%;
   top: 0;
   left: 0;
@@ -152,10 +157,13 @@
   font-size: 17px;
   border-radius: 10px;
 }
-
+.focusInput {
+  color: #000000;
+  outline: 4px solid comm.$mainGreen !important;
+}
 .dropdown .option {
   position: absolute;
-  width: 300px;
+  width: 280px;
   height: 200px;
   top: 80px;
   background: #fff;
